@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             theme: ThemeData(useMaterial3: true),
             debugShowCheckedModeBanner: false,
-            home: ProfileScreen(),
+            home: AppearanceScreen(),
             defaultTransition: Transition.fadeIn,
            // initialRoute: RouteHelper.getHomeScreen(),
             getPages: RouteHelper.routes,
