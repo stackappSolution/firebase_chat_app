@@ -10,5 +10,7 @@ class StringConstant
   static const String toMakeYourDayGreat = ' to make your day great! ';
 static const String calls='Calls';
 static const String chats='Chats';
+static const String signIndis='Enter Your Phone Number To Get Started';
+static const String verifyOtp='Emter The Code We Sent To';
 
 }

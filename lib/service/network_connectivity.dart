@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:connectivity/connectivity.dart';
+
 
 class NetworkConnectivity {
   NetworkConnectivity._();

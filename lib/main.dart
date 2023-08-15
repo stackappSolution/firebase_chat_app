@@ -1,11 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/pages/intro_page/intro_page.dart';
-import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/pages/signin_pages/sign_in_page.dart';
+import 'package:signal/routes/route_helper.dart';
 
-void main() {
+
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -24,12 +30,10 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(useMaterial3: true),
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
-            // initialRoute: RouteHelper.getHomeScreen(),
-            // getPages: RouteHelper.routes,
-            // home: const LoginScreen(),
-            // initialRoute: RouteHelper.getHomeScreen(),
-            // getPages: RouteHelper.routes,
-            home: IntroPage(),
+            getPages: RouteHelper.routes,
+            initialRoute: RouteHelper.getSignInPage(),
+             home: SignInPage(),
+
           ),
         );
       },
