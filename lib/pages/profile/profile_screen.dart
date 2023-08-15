@@ -8,7 +8,7 @@ import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
-import 'package:signal/page/profile/profile_view_model.dart';
+import 'package:signal/pages/profile/profile_view_model.dart';
 
 import '../../constant/app_asset.dart';
 

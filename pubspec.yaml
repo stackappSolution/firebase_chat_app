@@ -43,8 +43,7 @@ dependencies:
   # contact numbers
   contacts_service: ^0.6.3
 
-  # permissions
-  permission_handler: ^10.4.3
+
 
 dev_dependencies:
   flutter_test:
