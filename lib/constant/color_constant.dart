@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class AppColorConstant {
   static const Color appScaffold = Color(0xFFD8D6D9);
   static const Color appTransparent = Color(0x00000000);
-  static const Color appThemColor = Color(0xffA10035);
   static const Color appWhite = Color(0xffFFFFFF);
   static const Color appBlack = Color(0xFF000000);
   static const Color appLightBlack = Color(0xFF5E5F60);
@@ -12,6 +11,7 @@ class AppColorConstant {
   static const Color appYellow= Color(0xFFFE9532);
   static const Color appYellowBorder= Color(0xFFFE9532);
   static const Color red= Color(0xFFdb1e1e);
+  static const Color appTheme= Color(0xFFFE9532);
 
   static Color hex(String hexString) {
     final buffer = StringBuffer();

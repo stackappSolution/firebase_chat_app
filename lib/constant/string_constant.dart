@@ -8,5 +8,7 @@ class StringConstant{
   static String enterValidName  = 'Enter Valid Name';
   static String choose  = 'choose';
   static String cansel  = 'Cansel';
+  static const String calls='Calls';
+  static const String chats='Chats';
 
 }
