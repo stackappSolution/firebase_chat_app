@@ -1,0 +1,47 @@
+name: signal
+description: A new Flutter project.
+
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.5
+
+  # Local Database :
+  shared_preferences: ^2.2.0
+
+  # Responsive UI :
+  responsive_sizer: ^3.1.1
+
+  # Web module :
+  url_launcher: ^6.1.7
+
+  # Image View :
+  flutter_svg: ^2.0.7
+  cached_network_image: ^3.2.3
+
+  # Fetch server data & State management :
+  get: ^4.6.5
+  internet_connection_checker: ^1.0.0+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.2
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
