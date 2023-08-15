@@ -28,15 +28,23 @@ dependencies:
   flutter_svg: ^2.0.7
   cached_network_image: ^3.2.3
 
+  #permission :
+  permission_handler: ^10.4.3
+
+  #image Picker :
+  image_picker: ^1.0.2
+
+
+
   # Fetch server data & State management :
   get: ^4.6.5
-  internet_connection_checker: ^1.0.0+1
+  connectivity: ^3.0.6
 
   # contact numbers
   contacts_service: ^0.6.3
 
-  # permissions
-  permission_handler: ^10.4.3
+
+
 
 dev_dependencies:
   flutter_test:

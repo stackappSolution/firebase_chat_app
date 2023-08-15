@@ -1,8 +1,8 @@
 class AppAsset {
   static const String defaultFont = 'Montserrat';
-  static const String imagePath = 'assets/images/';
-  static const String iconPath = 'assets/icons/';
 
+  static const String iconPath = 'assets/icons/';
+  static const String imagePath = 'assets/images/';
   //     ======================= Sounds =======================     //
   /// static const String addToCartVoiceNote = '${soundPath}add_to_cart.wav';
 
@@ -15,6 +15,8 @@ class AppAsset {
   static const String appIcon = '${imagePath}app_icon.png';
   static const String appIconText = '${imagePath}app_logo_text.png';
   static const String appBar = '${imagePath}appbar.png';
+
+  static const String introPage = '${imagePath}intro_page.png';
 
   //     ======================= Icons =======================     //
   static const String drawerIcon = '${iconPath}drawer.svg';
