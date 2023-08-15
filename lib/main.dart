@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
+import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 void main() {
@@ -23,13 +24,16 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             theme: ThemeData(useMaterial3: true),
             debugShowCheckedModeBanner: false,
+            home: ProfileScreen(),
             defaultTransition: Transition.fadeIn,
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,
+           // initialRoute: RouteHelper.getHomeScreen(),
+            getPages: RouteHelper.routes,
             // home: const LoginScreen(),
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,
-            home: IntroPage(),
+
           ),
         );
       },

@@ -4,6 +4,7 @@ class AppAlertDialog extends StatelessWidget {
   final ShapeBorder? shape;
   final AlignmentGeometry? alignment;
   final Widget title;
+  final Widget widget;
   final List<Widget>? actions;
   final Color? backgroundColor;
   final EdgeInsetsGeometry? titlePadding;
@@ -24,6 +25,18 @@ class AppAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+        this.shape,
+        this.alignment,
+        required this.title,
+        this.actions,
+        this.backgroundColor,
+        this.titlePadding,
+        this.titleTextStyle,
+        this.actionsPadding, required this.widget});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(content: widget,
       actionsPadding: actionsPadding,
       backgroundColor: backgroundColor,
       titlePadding: titlePadding,
@@ -34,4 +47,5 @@ class AppAlertDialog extends StatelessWidget {
       alignment: alignment,
     );
   }
+}
 }
