@@ -32,6 +32,12 @@ dependencies:
   get: ^4.6.5
   internet_connection_checker: ^1.0.0+1
 
+  # contact numbers
+  contacts_service: ^0.6.3
+
+  # permissions
+  permission_handler: ^10.4.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
