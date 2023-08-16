@@ -15,7 +15,6 @@ class AppTextFormField extends StatelessWidget {
   final String? suffixIcon;
   final GestureTapCallback? onSuffixTap;
   final ValueChanged<String>? onChanged;
-  final TextEditingController textEditingController;
   final FormFieldValidator<String>? validator;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
@@ -47,6 +46,7 @@ class AppTextFormField extends StatelessWidget {
   final InputDecoration? decoration = const InputDecoration();
   final double? fontSize;
 
+
   const AppTextFormField({super.key,
     this.suffixIcon,
     this.onSuffixTap,
@@ -64,7 +64,6 @@ class AppTextFormField extends StatelessWidget {
     this.lable,
     required this.textEditingController,
   });
-
 
   @override
   Widget build(BuildContext context) {

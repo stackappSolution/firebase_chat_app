@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:signal/constant/string_constant.dart';
 
 class ThemeUtil {
   static ThemeMode selectedTheme = ThemeMode.system;
@@ -27,7 +28,7 @@ class ThemeUtil {
 
   static Future<ThemeMode> getThemeMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int themeIndex = prefs.getInt('theme') ?? 0;
+    int themeIndex = prefs.getInt(StringConstant.theme) ?? 0;
     return ThemeMode.values[themeIndex];
   }
 }
