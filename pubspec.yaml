@@ -31,6 +31,8 @@ dependencies:
   #image Picker :
   image_picker: ^1.0.2
 
+  #slidable massge :
+  flutter_slidable: ^3.0.0
 
 
   # Fetch server data & State management :

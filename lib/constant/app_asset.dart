@@ -1,11 +1,10 @@
 class AppAsset {
   static const String defaultFont = 'Montserrat';
-  static const String defaultFont = 'poppins';
+
   static const String imagePath = 'assets/images/';
   static const String iconPath = 'assets/icons/';
 
-  static const String iconPath = 'assets/icons/';
-  static const String imagePath = 'assets/images/';
+
   //     ======================= Sounds =======================     //
   /// static const String addToCartVoiceNote = '${soundPath}add_to_cart.wav';
 

@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/pages/signin_pages/sign_in_page.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             theme: ThemeData(useMaterial3: true),
             debugShowCheckedModeBanner: false,
-            home: ProfileScreen(),
+            home: ChatingPage(),
             defaultTransition: Transition.fadeIn,
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,

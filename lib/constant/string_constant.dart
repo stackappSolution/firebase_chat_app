@@ -21,5 +21,8 @@ static const String chats='Chats';
 
 static const String signIndis='Enter Your Phone Number To Get Started';
 static const String verifyOtp='Emter The Code We Sent To';
+static const String signalMessage='Signal message';
+static const String oneTwoOne='121';
+static const String userName='User Name';
 
 }
