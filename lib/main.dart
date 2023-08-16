@@ -35,7 +35,6 @@ class MyApp extends StatelessWidget {
             //theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
             themeMode: ThemeUtil.selectedTheme,
-
             debugShowCheckedModeBanner: false,
             home: ChatingPage(),
             defaultTransition: Transition.fadeIn,
@@ -48,7 +47,6 @@ class MyApp extends StatelessWidget {
             // getPages: RouteHelper.routes,
             // initialRoute: RouteHelper.getSignInPage(),
             //  home: SignInPage(),
-            home: SignInPage(),
             defaultTransition: Transition.fadeIn,
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,
