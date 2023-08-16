@@ -159,12 +159,12 @@ class SignInPage extends StatelessWidget {
                                 controller.update();
                               }
                             },
-                            labelText: "Phone Number",
                             labelStyle: TextStyle(
                               height: 0.1,
                               color: AppColorConstant.appTheme,
                               fontSize: 20.px,
                             ),
+                            lable: "Phone Number",
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -210,7 +210,7 @@ class SignInPage extends StatelessWidget {
                     },
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12))),
+                            borderRadius: BorderRadius.circular(12)),),
                         backgroundColor: const MaterialStatePropertyAll(
                             AppColorConstant.appTheme),
                         fixedSize:
