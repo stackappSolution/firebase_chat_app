@@ -30,7 +30,7 @@ class IntroPage extends StatelessWidget {
               body: Container(
                   padding: EdgeInsets.all(10.px),
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       gradient: LinearGradient(
                           colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
                           begin: Alignment.topCenter,
@@ -114,7 +114,7 @@ class IntroPage extends StatelessWidget {
       builder: (context) {return
         AppAlertDialog(
           title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            AppText(
+            const AppText(
               'Network error : \n',
               fontWeight: FontWeight.bold,
             ),

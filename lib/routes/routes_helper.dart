@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:signal/pages/home/home_screen.dart';
+import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
@@ -15,6 +16,7 @@ class RouteHelper {
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
+    GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.signInPage,page: () => SignInPage(),),

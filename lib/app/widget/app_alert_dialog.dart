@@ -22,6 +22,14 @@ class AppAlertDialog extends StatelessWidget {
       this.titleTextStyle,
       this.actionsPadding,
       this.widget});
+        this.shape,
+        this.alignment,
+        required this.title,
+        this.actions,
+        this.backgroundColor,
+        this.titlePadding,
+        this.titleTextStyle,
+        this.actionsPadding,  this.widget});
 
   @override
   Widget build(BuildContext context) {
@@ -37,3 +45,13 @@ class AppAlertDialog extends StatelessWidget {
         alignment: alignment);
   }
 }
+      actionsPadding: actionsPadding,
+      backgroundColor: backgroundColor,
+      titlePadding: titlePadding,
+      titleTextStyle: titleTextStyle,
+      shape: shape,
+      actions: actions,
+      title: title,
+      alignment: alignment,
+    );
+  }}

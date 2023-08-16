@@ -10,20 +10,21 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/route_helper.dart';
 
-
+import 'package:signal/pages/appearance/appearance_screen.dart';
+import 'package:signal/pages/signin_pages/sign_in_page.dart';
+import 'app/app/utills/theme_util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await ThemeUtil.loadThemeMode();
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    logs('Current screen --> $runtimeType');
     return ResponsiveSizer(
       builder: (BuildContext context, Orientation orientation, screenType) {
         return GestureDetector(
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
           child: GetMaterialApp(
             title: 'Flutter matrimonial app',
             theme: ThemeData(useMaterial3: true),
+            //theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: ThemeUtil.selectedTheme,
+
             debugShowCheckedModeBanner: false,
             home: ChatingPage(),
             defaultTransition: Transition.fadeIn,
@@ -43,6 +48,11 @@ class MyApp extends StatelessWidget {
             // getPages: RouteHelper.routes,
             // initialRoute: RouteHelper.getSignInPage(),
             //  home: SignInPage(),
+            home: SignInPage(),
+            defaultTransition: Transition.fadeIn,
+            // initialRoute: RouteHelper.getHomeScreen(),
+            // getPages: RouteHelper.routes,
+            // initialRoute: RouteHelper.getSignInPage(),
 
           ),
         );
@@ -50,3 +60,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

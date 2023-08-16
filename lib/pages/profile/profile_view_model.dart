@@ -101,8 +101,12 @@ class ProfileViewModel {
       await Permission.storage.request();
       await Permission.camera.request();
 
-      // ignore: use_build_context_synchronously
-      showDialogs(context);
+      if(permissionStatus.isGranted && permissionStatus1.isGranted)
+        {
+          // ignore: use_build_context_synchronously
+          showDialogs(context);
+        }
+
     } else if (permissionStatus.isPermanentlyDenied &&
         permissionStatus1.isPermanentlyDenied) {
       await openAppSettings();

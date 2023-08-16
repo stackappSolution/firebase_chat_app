@@ -11,6 +11,11 @@ class AppTextFormField extends StatelessWidget {
   final String? suffixIcon;
   final GestureTapCallback? onSuffixTap;
   final ValueChanged<String>? onChanged;
+  final String? lable;
+  final String? suffixIcon;
+  final GestureTapCallback? onSuffixTap;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController textEditingController;
   final FormFieldValidator<String>? validator;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
@@ -23,7 +28,7 @@ class AppTextFormField extends StatelessWidget {
 
   const AppTextFormField({
     super.key,
- this.hintText,
+    this.hintText,
     this.suffixIcon,
     this.onSuffixTap,
     this.validator,
@@ -34,10 +39,32 @@ class AppTextFormField extends StatelessWidget {
     this.labelText,
     this.labelStyle,
     this.keyboardType,
-this.decoration = const InputDecoration(),
+    this.decoration = const InputDecoration(),
     this.fontSize,
     this.leble,
   });
+
+  final InputDecoration? decoration = const InputDecoration();
+  final double? fontSize;
+
+  const AppTextFormField({super.key,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.validator,
+    this.inputFormatters,
+    this.controller,
+    this.style,
+    this.onChanged,
+    this.labelText,
+    this.labelStyle,
+    this.keyboardType,
+    required InputDecoration decoration,
+    required this.fontSize,
+    this.hintText,
+    this.lable,
+    required this.textEditingController,
+  });
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +75,8 @@ this.decoration = const InputDecoration(),
         color: AppColorConstant.appTheme.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10.px),
         border: Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
+        border:
+        Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
       ),
       child: Column(
         children: [
@@ -57,6 +86,7 @@ this.decoration = const InputDecoration(),
                 alignment: Alignment.centerLeft,
                 child: AppText(
                   leble!,
+                  lable!,
                   color: AppColorConstant.appYellow,
                   fontSize: 13.px,
                 )),
@@ -72,6 +102,14 @@ this.decoration = const InputDecoration(),
                 labelText: labelText,
                 labelStyle: labelStyle,
               ),
+              decoration: decoration ??
+                  InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    hintText: hintText,
+                    labelText: labelText,
+                    labelStyle: labelStyle,
+                  ),
               keyboardType: keyboardType,
               validator: validator,
               inputFormatters: inputFormatters,

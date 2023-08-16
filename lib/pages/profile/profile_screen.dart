@@ -85,10 +85,10 @@ class ProfileScreen extends StatelessWidget {
                   AppTextFormField(
                   controller:
                         profileViewModel!.firstNameController,
-                    leble: StringConstant.firstName,
+                    lable: StringConstant.firstName,
                     onChanged: (value) {
                       profileViewModel!.onChangedValue(value, controller);
-                    },
+                    }, decoration: InputDecoration(), fontSize: null,
                   ),
                   Align(
                       alignment: Alignment.centerLeft,
@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                     child: AppTextFormField(
                      controller:
                           profileViewModel!.lastNameController,
-                      leble: StringConstant.lastName,
+                      lable: StringConstant.lastName, decoration: InputDecoration(), fontSize: null,
                     ),
                   ),
                   SizedBox(
