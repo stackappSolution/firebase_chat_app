@@ -1,5 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:pinput/pinput.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
 
@@ -11,7 +13,11 @@ class VerifyOtpViewModel{
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   String smsCode = "";
   bool isValidOTP = false;
-  Map<String , dynamic> parameter= {} ;
+  final Map<String, dynamic> arguments = Get.arguments;
+
+  // final arg1 = arguments['arg1'];
+  // final arg2 = arguments['arg2'];
+
 
 
   final defaultPinTheme = PinTheme(

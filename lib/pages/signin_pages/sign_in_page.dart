@@ -83,14 +83,11 @@ class SignInPage extends StatelessWidget {
                     fontSize: 30.px,
                     fontWeight: FontWeight.w600,
                   )),
-              SizedBox(
-                height: 5.px,
-              ),
               Container(
                 margin: EdgeInsets.only(left: 20.px),
                 child: AppText(
                   StringConstant.signIndis,
-                  color: AppColorConstant.appLightBlack.withOpacity(0.3),
+                  color: AppColorConstant.appLightBlack.withOpacity(0.4),
                   fontWeight: FontWeight.w400,
                   fontSize: 15.px,
                 ),
@@ -103,7 +100,7 @@ class SignInPage extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(left: 20.px),
-                    height: 60.px,
+                    height: 50.px,
                     width: 80.px,
                     decoration: BoxDecoration(
                         color: AppColorConstant.appTheme.withOpacity(0.1),
@@ -116,7 +113,8 @@ class SignInPage extends StatelessWidget {
                       },
                       initialSelection: 'IN',
                       textStyle: TextStyle(
-                          fontSize: 20.px, color: AppColorConstant.appBlack),
+                          height: 0.1,
+                          fontSize: 18.px, color: AppColorConstant.appBlack),
                       // Set initial country code
                       favorite: const ['IN'], // Specify favorite country codes
                     ),
@@ -126,15 +124,11 @@ class SignInPage extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.center,
-                          height: 60.px,
+                          height: 50.px,
                           margin: EdgeInsets.only(left: 10.px, right: 10.px),
-                          decoration: BoxDecoration(
-                              color: AppColorConstant.appTheme.withOpacity(0.1),
-                              border:
-                                  Border.all(color: AppColorConstant.appTheme),
-                              borderRadius: BorderRadius.circular(13.px)),
                           child: AppTextFormField(
-                            textEditingController: signInViewModel!.phoneNumber,
+                            leble: 'Phone Number',
+                            controller:signInViewModel!.phoneNumber,
                             style: TextStyle(
                               fontSize: 22.px,
                               fontWeight: FontWeight.w400,
@@ -161,14 +155,7 @@ class SignInPage extends StatelessWidget {
                                 controller.update();
                               }
                             },
-                            lable: 'Phone Number',
-                            labelStyle: const TextStyle(
-                                fontWeight: FontWeight.w600,fontSize: 20
-                            ),
                             keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none),
                             fontSize: 20.px,
                           ),
                         ),
@@ -205,8 +192,9 @@ class SignInPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () async {
-                      Get.toNamed(RouteHelper.getVerifyOtpPage(),parameters: {'phone' : "${phoneNumber}"
-                      });
+                      Get.toNamed(RouteHelper.getVerifyOtpPage(),
+                          arguments:  {'arg1': 'Hello', 'arg2': 123},
+                      );
                     },
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(

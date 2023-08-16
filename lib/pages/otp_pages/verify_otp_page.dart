@@ -73,14 +73,12 @@ class VerifyOtpPage extends StatelessWidget {
                     fontSize: 30.px,
                     fontWeight: FontWeight.w600,
                   )),
-              SizedBox(
-                height: 5.px,
-              ),
+
               Container(
                 margin: EdgeInsets.only(left: 20.px),
                 child: AppText(
-                  '${StringConstant.verifyOtp} - ${verifyOtpViewModel!.parameter['phone']}',
-                  color: AppColorConstant.appBlack,
+                  '${StringConstant.verifyOtp} - ${verifyOtpViewModel!.arguments['phone']}',
+                  color: AppColorConstant.appLightBlack.withOpacity(0.4),
                   fontWeight: FontWeight.w400,
                   fontSize: 15.px,
                 ),
@@ -93,8 +91,8 @@ class VerifyOtpPage extends StatelessWidget {
                   Expanded(
                     child: Container(
                       margin: EdgeInsets.only(left: 20.px, right: 20.px),
-                      height: 65.px,
-                      width: 80.px,
+                      height: 50.px,
+                      //width: 80.px,
                       decoration: BoxDecoration(
                           color: AppColorConstant.appTheme.withOpacity(0.1),
                           border: Border.all(color: AppColorConstant.appTheme),
@@ -103,11 +101,11 @@ class VerifyOtpPage extends StatelessWidget {
                         padding: EdgeInsets.all(8),
                         child: Pinput(
                           defaultPinTheme: PinTheme(
-                              height: 45.px,
+                              height: 30.px,
                               textStyle: TextStyle(fontSize: 20,color: AppColorConstant.appBlack,fontWeight: FontWeight.w600),
                               decoration: BoxDecoration(
                                   color: AppColorConstant.appTheme
-                                      .withOpacity(0.1))),
+                                      .withOpacity(0.0))),
                           validator: (value) {
                             if (value == null && value!.isEmpty) {
                               //return 'OTP is required';

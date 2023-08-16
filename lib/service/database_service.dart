@@ -1,7 +1,6 @@
 //
 //
 // import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:signal/pages/signin_pages/sign_in_view_model.dart';
 //
 // class DatabaseService {
 //   Future<String?> addMobileNumber(
