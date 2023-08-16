@@ -8,11 +8,12 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
+
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
-import 'package:signal/routes/routes_helper.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:signal/routes/route_helper.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
@@ -77,7 +78,7 @@ class ChatScreen extends StatelessWidget {
             child: AppImageAsset(
                 image: AppAsset.camera, height: 25.px, width: 25.px),
             onPressed: () {
-              Get.toNamed(RouteHelper.getSettingScreen());
+              Get.toNamed(RouteHelper.getSettingsScreen());
             },
           ),
         ),

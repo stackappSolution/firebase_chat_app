@@ -4,9 +4,7 @@ class AppAsset {
   static const String imagePath = 'assets/images/';
   static const String iconPath = 'assets/icons/';
 
-  static const String defaultFont = 'poppins';
-  static const String imagePath = 'assets/images/';
-  static const String iconPath = 'assets/icons/';
+
 
   //     ======================= Sounds =======================     //
   /// static const String addToCartVoiceNote = '${soundPath}add_to_cart.wav';

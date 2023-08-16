@@ -61,7 +61,7 @@ class ProfileViewModel {
                 buttonColor: AppColorConstant.appWhite,
                 buttonHeight: 10,
                 widget: AppText(
-                  StringConstant.cansel,
+                  StringConstant.cancel,
                   color: AppColorConstant.appYellow,
                   fontSize: 15.px,
                 ),
