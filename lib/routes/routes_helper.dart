@@ -1,6 +1,7 @@
 
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:signal/pages/home/home_screen.dart';
+import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/routes/routes_constant.dart';
 
 class RouteHelper {
@@ -8,10 +9,12 @@ class RouteHelper {
 
   static String getVerifyOtpPage() => RouteConstant.verifyOtpScreen;
   static String getHomeScreen() => RouteConstant.homeScreen;
+  static String getSettingScreen() => RouteConstant.settingScreen;
 
   static List<GetPage> routes = [
 
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
+    GetPage(name: RouteConstant.settingScreen, page: () => SettingScreen()),
 
 
   ];

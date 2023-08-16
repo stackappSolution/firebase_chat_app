@@ -4,12 +4,13 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/constant/app_asset.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/home_controller.dart';
 import 'package:signal/pages/calls/calls_screen.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/pages/home/home_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -21,10 +22,11 @@ class HomeScreen extends StatelessWidget {
     homeViewModel ?? (homeViewModel = HomeViewModel(this));
     logs('Current screen --> $runtimeType');
 
-
     return GetBuilder<HomeScreenController>(
       init: HomeScreenController(),
-      initState: (state) {},
+      initState: (state) {
+        homeViewModel!.getLocalizationKey();
+      },
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
@@ -56,7 +58,7 @@ buildBottomBar(HomeScreenController controller) {
       currentIndex: controller.tabIndex,
       items: [
         BottomNavigationBarItem(
-            label: StringConstant.calls,
+            label: AppLocalizations.of(Get.context!)!.chats,
             icon: AppImageAsset(
                 height: 28.px,
                 width: 28.px,
@@ -64,7 +66,7 @@ buildBottomBar(HomeScreenController controller) {
                     ? AppAsset.chat
                     : AppAsset.chatOutline)),
         BottomNavigationBarItem(
-            label: StringConstant.calls,
+            label: AppLocalizations.of(Get.context!)!.calls,
             icon: AppImageAsset(
                 height: 28.px,
                 width: 28.px,

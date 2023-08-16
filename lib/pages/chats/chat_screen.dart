@@ -11,6 +11,8 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
+import 'package:signal/routes/routes_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
@@ -46,7 +48,7 @@ class ChatScreen extends StatelessWidget {
           image: AppAsset.person,
         ),
       ),
-      title: AppText(StringConstant.chats,
+      title: AppText(AppLocalizations.of(Get.context!)!.chats,
           color: AppColorConstant.appBlack, fontSize: 20.px),
       actions: [
         Padding(
@@ -74,7 +76,9 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: AppColorConstant.appTheme,
             child: AppImageAsset(
                 image: AppAsset.camera, height: 25.px, width: 25.px),
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed(RouteHelper.getSettingScreen());
+            },
           ),
         ),
         Padding(
@@ -100,7 +104,9 @@ class ChatScreen extends StatelessWidget {
         Contact contact = chatViewModel!.contacts[index];
         String? mobileNumber =
             contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
-        String firstLetter = contact.displayName!.substring(0, 1).toUpperCase();
+        String? displayName = contact.displayName ?? 'unknown';
+        String firstLetter = displayName.substring(0, 1).toUpperCase();
+
         return Container(
             margin: EdgeInsets.all(10.px),
             decoration: BoxDecoration(
@@ -116,7 +122,7 @@ class ChatScreen extends StatelessWidget {
                   fontSize: 22.px,
                 ),
               ),
-              title: AppText(contact.displayName!),
+              title: AppText(displayName),
               subtitle: AppText(mobileNumber!,
                   color: AppColorConstant.appBlack, fontSize: 12.px),
             ));

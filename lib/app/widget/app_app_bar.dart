@@ -10,6 +10,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? leadingWidth;
   final bool? centerTitle;
 
+
   const AppAppBar({
     Key? key,
     this.backgroundColor,
@@ -25,7 +26,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(forceMaterialTransparency: false,
+    return AppBar(forceMaterialTransparency: true,
       leading: leading,
       shape: shape,
       leadingWidth: leadingWidth,

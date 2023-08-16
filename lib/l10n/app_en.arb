@@ -1,0 +1,14 @@
+{
+       "chats": "Chats",
+       "calls": "Calls",
+       "settings": "Settings",
+        "appearance": "Appearance",
+        "account":"Account",
+        "linkedDevice": "Linked Devices",
+        "donateToSignal": "Donate To Signal",
+        "notification" : "Notification",
+        "privacyPolicy": "Privacy Policy",
+        "inviteFriends" : "Invite Friends",
+        "gujarati" : "Gujarati",
+        "english" : "English"
+}

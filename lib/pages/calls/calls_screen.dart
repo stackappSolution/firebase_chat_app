@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
@@ -6,7 +7,7 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CallsScreen extends StatelessWidget {
   const CallsScreen({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class CallsScreen extends StatelessWidget {
           image: AppAsset.person,
         ),
       ),
-      title: AppText(StringConstant.calls,
+      title: AppText(AppLocalizations.of(Get.context!)!.calls,
           color: AppColorConstant.appBlack, fontSize: 20.px),
       actions: [
         Padding(
