@@ -29,9 +29,8 @@ class MyApp extends StatelessWidget {
             //theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
             themeMode: ThemeUtil.selectedTheme,
-
             debugShowCheckedModeBanner: false,
-            home: SignInPage(),
+            home: AppearanceScreen(),
             defaultTransition: Transition.fadeIn,
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,
