@@ -18,7 +18,8 @@ static const String chats='Chats';
   static String enterValidName  = 'Enter Valid Name';
   static String choose  = 'choose';
   static String cansel  = 'Cansel';
-  static const String calls='Calls';
-  static const String chats='Chats';
+
+static const String signIndis='Enter Your Phone Number To Get Started';
+static const String verifyOtp='Emter The Code We Sent To';
 
 }
