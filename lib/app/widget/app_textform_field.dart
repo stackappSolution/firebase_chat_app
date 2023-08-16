@@ -7,7 +7,7 @@ import 'package:signal/constant/color_constant.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String? hintText;
-  final String? leble;
+  final String? lable;
   final String? suffixIcon;
   final GestureTapCallback? onSuffixTap;
   final ValueChanged<String>? onChanged;
@@ -22,23 +22,25 @@ class AppTextFormField extends StatelessWidget {
   final InputDecoration? decoration = const InputDecoration();
   final double? fontSize;
 
-  const AppTextFormField({
-    super.key,
-    this.hintText,
-    this.leble,
-    this.suffixIcon,
-    this.onSuffixTap,
-    this.onChanged,
-    required this.textEditingController,
-    this.validator,
-    this.inputFormatters,
-    this.controller,
-    this.style,
-    this.labelText,
-    this.labelStyle,
-    this.keyboardType,
-    this.fontSize,
-  });
+  const AppTextFormField(
+      {super.key,
+        this.suffixIcon,
+        this.onSuffixTap,
+        this.validator,
+        this.inputFormatters,
+        this.controller,
+        this.style,
+        this.onChanged,
+        this.labelText,
+        this.labelStyle,
+        this.keyboardType,
+        required InputDecoration decoration,
+        required this.fontSize,
+        this.hintText,
+        this.lable,
+        required this.textEditingController,
+      });
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +60,7 @@ class AppTextFormField extends StatelessWidget {
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: AppText(
-                  leble!,
+                  lable!,
                   color: AppColorConstant.appYellow,
                   fontSize: 13.px,
                 )),

@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                     child: AppTextFormField(
                       textEditingController:
                           profileViewModel!.lastNameController,
-                      leble: StringConstant.lastName,
+                      lable: StringConstant.lastName,
                     ),
                   ),
                   SizedBox(

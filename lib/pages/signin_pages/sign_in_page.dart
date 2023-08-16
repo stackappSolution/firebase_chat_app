@@ -1,5 +1,4 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,12 +23,14 @@ class SignInPage extends StatelessWidget {
     signInViewModel ?? (signInViewModel = SignInViewModel(this));
     return GetBuilder(
       init: SignInController(),
-      initState: (state) {},
+      initState: (state) {
+
+      },
       builder: (SignInController controller) {
         return SafeArea(
           child: Scaffold(
               body: buildSignInpage(signInViewModel!.countryCode,
-                  signInViewModel!.phoneNumber.text, context)),
+                  signInViewModel!.phoneNumber.text, context, controller)),
         );
       },
     );
@@ -39,6 +40,7 @@ class SignInPage extends StatelessWidget {
     String countryCode,
     String phoneNumber,
     BuildContext context,
+    SignInController controller,
   ) =>
       SingleChildScrollView(
         child: Container(
@@ -149,10 +151,12 @@ class SignInPage extends StatelessWidget {
                               return null;
                             },
                             onChanged: (value) {
-                              if (value.length <= 10) {
+                              if (value.length == 10) {
                                 signInViewModel!.isValidNumber = true;
+                                controller.update();
                               } else {
                                 signInViewModel!.isValidNumber = false;
+                                controller.update();
                               }
                             },
                             labelText: "Phone Number",
@@ -162,11 +166,10 @@ class SignInPage extends StatelessWidget {
                               fontSize: 20.px,
                             ),
                             keyboardType: TextInputType.number,
-                            // decoration: const InputDecoration(
-                            //     border: InputBorder.none,
-                            //     focusedBorder: InputBorder.none),
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none),
                             fontSize: 20.px,
-                            hintText: '',
                           ),
                         ),
                       ],
@@ -177,67 +180,48 @@ class SignInPage extends StatelessWidget {
               SizedBox(
                 height: 150.px,
               ),
-              (signInViewModel!.phoneNumber == true)
-                  ? Align(
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Get.toNamed(RouteHelper.getVerifyOtpPage());
-                        },
-                        style: ButtonStyle(
-                            shape: MaterialStatePropertyAll(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12))),
-                            backgroundColor: MaterialStatePropertyAll(
-                                AppColorConstant.appTheme.withOpacity(0.1)),
-                            fixedSize:
-                                MaterialStatePropertyAll(Size(230.px, 50.px))),
-                        child: AppText(
-                          'Continue',
-                          fontSize: 22.px,
-                          color: AppColorConstant.appWhite,
-                        ),
-                      ),
-                    )
-                  : Align(
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await FirebaseAuth.instance.verifyPhoneNumber(
-                              phoneNumber: '$countryCode,$phoneNumber',
-                              verificationCompleted:
-                                  (PhoneAuthCredential credential) async {
-                                await signInViewModel!.auth
-                                    .signInWithCredential(credential);
-                              },
-                              verificationFailed: (FirebaseAuthException e) {
-                                if (e.code ==
-                                    'the provided phone number is not valid.') ;
-                              },
-                              codeSent:
-                                  (String verificationId, int? resendToken) {
-                                signInViewModel!.v_id = verificationId;
-                              },
-                              codeAutoRetrievalTimeout:
-                                  (String verificationId) {});
-
-                          Get.toNamed(RouteHelper.getVerifyOtpPage());
-                        },
-                        style: ButtonStyle(
-                            shape: MaterialStatePropertyAll(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12))),
-                            backgroundColor: const MaterialStatePropertyAll(
-                                AppColorConstant.appTheme),
-                            fixedSize:
-                                MaterialStatePropertyAll(Size(230.px, 50.px))),
-                        child: AppText(
-                          'Continue',
-                          fontSize: 22.px,
-                          color: AppColorConstant.appWhite,
-                        ),
-                      ),
+              if (signInViewModel!.isValidNumber != true)
+                Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      //Get.toNamed(RouteHelper.getVerifyOtpPage());
+                    },
+                    style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12))),
+                        backgroundColor: MaterialStatePropertyAll(
+                            AppColorConstant.appTheme.withOpacity(0.1)),
+                        fixedSize:
+                            MaterialStatePropertyAll(Size(230.px, 50.px))),
+                    child: AppText(
+                      'Continue',
+                      fontSize: 22.px,
+                      color: AppColorConstant.appWhite,
                     ),
+                  ),
+                )
+              else
+                Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Get.toNamed(RouteHelper.getVerifyOtpPage());
+                    },
+                    style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12))),
+                        backgroundColor: const MaterialStatePropertyAll(
+                            AppColorConstant.appTheme),
+                        fixedSize:
+                            MaterialStatePropertyAll(Size(230.px, 50.px))),
+                    child: AppText(
+                      'Continue',
+                      fontSize: 22.px,
+                      color: AppColorConstant.appWhite,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

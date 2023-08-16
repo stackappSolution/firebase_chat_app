@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
+import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'app/app/utills/theme_util.dart';
 
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             themeMode: ThemeUtil.selectedTheme,
 
             debugShowCheckedModeBanner: false,
-            home: AppearanceScreen(),
+            home: SignInPage(),
             defaultTransition: Transition.fadeIn,
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,
