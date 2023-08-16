@@ -29,5 +29,7 @@ class StringConstant
   static const String toMakeYourDayGreat = ' to make your day great! ';
   static const String signIndis='Enter Your Phone Number To Get Started';
   static const String verifyOtp='Emter The Code We Sent To';
+  static const String light ='Light';
+  static const String dark ='Dark';
 
 }
