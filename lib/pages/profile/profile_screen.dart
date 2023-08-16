@@ -84,11 +84,12 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   AppTextFormField(
                     controller:
+
                         profileViewModel!.firstNameController,
                     lable: StringConstant.firstName,
                     onChanged: (value) {
                       profileViewModel!.onChangedValue(value, controller);
-                    },
+                    }, decoration: InputDecoration(), fontSize: null,
                   ),
                   Align(
                       alignment: Alignment.centerLeft,

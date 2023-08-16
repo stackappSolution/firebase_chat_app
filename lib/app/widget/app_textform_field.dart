@@ -7,6 +7,10 @@ import 'package:signal/constant/color_constant.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String? hintText;
+  final String? leble;
+  final String? suffixIcon;
+  final GestureTapCallback? onSuffixTap;
+  final ValueChanged<String>? onChanged;
   final String? lable;
   final String? suffixIcon;
   final GestureTapCallback? onSuffixTap;
@@ -18,23 +22,48 @@ class AppTextFormField extends StatelessWidget {
   final String? labelText;
   final TextStyle? labelStyle;
   final TextInputType? keyboardType;
-  final InputDecoration? decoration = const InputDecoration();
+  final InputDecoration? decoration;
   final double? fontSize;
 
   const AppTextFormField({
-      this.hintText,
-      this.lable,
-      this.suffixIcon,
-      this.onSuffixTap,
-      this.onChanged,
-      this.controller,
-      this.validator,
-      this.inputFormatters,
-      this.style,
-      this.labelText,
-      this.labelStyle,
-      this.keyboardType,
-      this.fontSize, super.key});
+    super.key,
+    this.hintText,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.validator,
+    this.inputFormatters,
+    this.controller,
+    this.style,
+    this.onChanged,
+    this.labelText,
+    this.labelStyle,
+    this.keyboardType,
+    this.decoration = const InputDecoration(),
+    this.fontSize,
+    this.leble,
+  });
+
+  final InputDecoration? decoration = const InputDecoration();
+  final double? fontSize;
+
+
+  const AppTextFormField({super.key,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.validator,
+    this.inputFormatters,
+    this.controller,
+    this.style,
+    this.onChanged,
+    this.labelText,
+    this.labelStyle,
+    this.keyboardType,
+    required InputDecoration decoration,
+    required this.fontSize,
+    this.hintText,
+    this.lable,
+    required this.textEditingController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +73,9 @@ class AppTextFormField extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColorConstant.appTheme.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10.px),
+        border: Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
         border:
-            Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
+        Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
       ),
       child: Column(
         children: [
@@ -54,6 +84,7 @@ class AppTextFormField extends StatelessWidget {
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: AppText(
+                  leble!,
                   lable!,
                   color: AppColorConstant.appYellow,
                   fontSize: 13.px,
@@ -63,6 +94,13 @@ class AppTextFormField extends StatelessWidget {
             child: TextFormField(
               onChanged: onChanged,
               controller: controller,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: hintText,
+                labelText: labelText,
+                labelStyle: labelStyle,
+              ),
               decoration: decoration ??
                   InputDecoration(
                     border: InputBorder.none,
@@ -83,8 +121,7 @@ class AppTextFormField extends StatelessWidget {
             SizedBox(width: 12.px),
             InkWell(
                 onTap: onSuffixTap,
-                child: AppImageAsset(
-                    image: suffixIcon, height: 22.px, width: 22.px)),
+                child: AppImageAsset(image: suffixIcon, height: 22.px, width: 22.px)),
             SizedBox(width: 12.px),
           ]
         ],
