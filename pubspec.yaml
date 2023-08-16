@@ -31,15 +31,36 @@ dependencies:
   flutter_svg: ^2.0.7
   cached_network_image: ^3.2.3
 
+
+  #image Picker :
+  image_picker: ^1.0.2
+
+  #slidable massge :
+  flutter_slidable: ^3.0.0
+
+
+
+
   # Fetch server data & State management :
   get: ^4.6.5
-  internet_connection_checker: ^1.0.0+1
+  connectivity: ^3.0.6
+
 
   # contact numbers
   contacts_service: ^0.6.3
 
+
   # permissions
   permission_handler: ^10.4.3
+  country_code_picker: ^3.0.0
+  pinput: ^3.0.0
+
+  #firebase :
+  firebase_auth: ^4.7.2
+  firebase_core: ^2.15.0
+  cloud_firestore: ^4.8.4
+
+
 
 
 dev_dependencies:
@@ -56,3 +77,26 @@ flutter:
     - assets/fonts/
     - assets/icons/
     - assets/images/
+
+
+  fonts:
+    - family: poppins
+      fonts:
+        - asset: assets/fonts/poppins/Poppins-Black.ttf
+        - asset: assets/fonts/poppins/Poppins-BlackItalic.ttf
+        - asset: assets/fonts/poppins/Poppins-Bold.ttf
+        - asset: assets/fonts/poppins/Poppins-BoldItalic.ttf
+        - asset: assets/fonts/poppins/Poppins-ExtraBold.ttf
+        - asset: assets/fonts/poppins/Poppins-ExtraBoldItalic.ttf
+        - asset: assets/fonts/poppins/Poppins-ExtraLight.ttf
+        - asset: assets/fonts/poppins/Poppins-ExtraLightItalic.ttf
+        - asset: assets/fonts/poppins/Poppins-Italic.ttf
+        - asset: assets/fonts/poppins/Poppins-Light.ttf
+        - asset: assets/fonts/poppins/Poppins-LightItalic.ttf
+        - asset: assets/fonts/poppins/Poppins-Medium.ttf
+        - asset: assets/fonts/poppins/Poppins-MediumItalic.ttf
+        - asset: assets/fonts/poppins/Poppins-Regular.ttf
+        - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
+        - asset: assets/fonts/poppins/Poppins-SemiBoldItalic.ttf
+        - asset: assets/fonts/poppins/Poppins-Thin.ttf
+        - asset: assets/fonts/poppins/Poppins-ThinItalic.ttf

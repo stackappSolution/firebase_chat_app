@@ -1,5 +1,10 @@
 class AppAsset {
   static const String defaultFont = 'Montserrat';
+
+  static const String imagePath = 'assets/images/';
+  static const String iconPath = 'assets/icons/';
+
+  static const String defaultFont = 'poppins';
   static const String imagePath = 'assets/images/';
   static const String iconPath = 'assets/icons/';
 
@@ -12,9 +17,14 @@ class AppAsset {
   /// static const String confirmationTickAnimation = '${animationsPath}confirmed_tick.json';
 
   //     ======================= Images =======================     //
-  static const String appIcon = '${imagePath}app_icon.png';
+  static const String profile = '${imagePath}profile.png';
+  static const String background = '${imagePath}background.png';
   static const String appIconText = '${imagePath}app_logo_text.png';
   static const String appBar = '${imagePath}appbar.png';
+
+  static const String introPage = '${imagePath}intro_page.png';
+  static const String signIn='${imagePath}signin.png';
+  static const String verifyOtp='${imagePath}verifyotp.png';
 
   //     ======================= Icons =======================     //
   static const String drawerIcon = '${iconPath}drawer.svg';
@@ -39,6 +49,7 @@ class AppAsset {
   static const String linkedDevice='${iconPath}linked_device.png';
   static const String notification='${iconPath}notification.png';
   static const String privacyPolicy='${iconPath}privacy_policy.png';
+
 
 
 
