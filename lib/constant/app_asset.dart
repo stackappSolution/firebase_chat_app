@@ -1,8 +1,9 @@
 class AppAsset {
-  static const String defaultFont = 'Montserrat';
-
-  static const String iconPath = 'assets/icons/';
+  static const String defaultFont = 'poppins';
   static const String imagePath = 'assets/images/';
+  static const String iconPath = 'assets/icons/';
+
+
   //     ======================= Sounds =======================     //
   /// static const String addToCartVoiceNote = '${soundPath}add_to_cart.wav';
 
@@ -12,7 +13,8 @@ class AppAsset {
   /// static const String confirmationTickAnimation = '${animationsPath}confirmed_tick.json';
 
   //     ======================= Images =======================     //
-  static const String appIcon = '${imagePath}app_icon.png';
+  static const String profile = '${imagePath}profile.png';
+  static const String background = '${imagePath}background.png';
   static const String appIconText = '${imagePath}app_logo_text.png';
   static const String appBar = '${imagePath}appbar.png';
 

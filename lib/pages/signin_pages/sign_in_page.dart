@@ -130,7 +130,7 @@ class SignInPage extends StatelessWidget {
                                   Border.all(color: AppColorConstant.appTheme),
                               borderRadius: BorderRadius.circular(13.px)),
                           child: AppTextFormField(
-                            controller: signInViewModel!.phoneNumber,
+                            textEditingController: signInViewModel!.phoneNumber,
                             style: TextStyle(
                               fontSize: 22.px,
                               fontWeight: FontWeight.w400,
@@ -162,9 +162,9 @@ class SignInPage extends StatelessWidget {
                               fontSize: 20.px,
                             ),
                             keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none),
+                            // decoration: const InputDecoration(
+                            //     border: InputBorder.none,
+                            //     focusedBorder: InputBorder.none),
                             fontSize: 20.px,
                             hintText: '',
                           ),
