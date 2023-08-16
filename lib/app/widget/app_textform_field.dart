@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -6,32 +7,49 @@ import 'package:signal/constant/color_constant.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String? hintText;
-  final String leble;
+  final String? leble;
   final String? suffixIcon;
   final GestureTapCallback? onSuffixTap;
   final ValueChanged<String>? onChanged;
-
-
   final TextEditingController textEditingController;
+  final FormFieldValidator<String>? validator;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextEditingController? controller;
+  final TextStyle? style;
+  final String? labelText;
+  final TextStyle? labelStyle;
+  final TextInputType? keyboardType;
+  final InputDecoration? decoration = const InputDecoration();
+  final double? fontSize;
 
-  const AppTextFormField(
-      {super.key,
-      this.hintText,
-      required this.textEditingController,
-      this.suffixIcon,
-      this.onSuffixTap,
-      required this.leble, this.onChanged});
+  const AppTextFormField({
+    super.key,
+    this.hintText,
+    this.leble,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.onChanged,
+    required this.textEditingController,
+    this.validator,
+    this.inputFormatters,
+    this.controller,
+    this.style,
+    this.labelText,
+    this.labelStyle,
+    this.keyboardType,
+    this.fontSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 60.px,
       padding: EdgeInsets.only(left: 12.px, right: 10.px),
-      alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColorConstant.appWhite,
+        color: AppColorConstant.appTheme.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10.px),
-        border: Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
+        border:
+            Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
       ),
       child: Column(
         children: [
@@ -40,19 +58,28 @@ class AppTextFormField extends StatelessWidget {
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: AppText(
-                  leble,
+                  leble!,
                   color: AppColorConstant.appYellow,
                   fontSize: 13.px,
                 )),
           ),
           Expanded(
             child: TextFormField(
-              controller: textEditingController,
-              onChanged:onChanged ,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                hintText: hintText,
+              onChanged: onChanged,
+              controller: controller,
+              decoration: decoration ??
+                  InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    hintText: hintText,
+                    labelText: labelText,
+                    labelStyle: labelStyle,
+                  ),
+              keyboardType: keyboardType,
+              validator: validator,
+              inputFormatters: inputFormatters,
+              style: TextStyle(
+                fontSize: fontSize,
               ),
             ),
           ),

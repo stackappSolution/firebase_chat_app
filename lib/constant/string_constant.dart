@@ -1,5 +1,7 @@
-class StringConstant{
 
+
+class StringConstant
+{
   static const String yourProfile  = 'Your Profile';
   static const String profileAreVisible  = 'Profiles Are Visible To People You Message,Contacts, and Groups.';
   static const String firstName  = 'First Name ( Required )';
@@ -19,5 +21,13 @@ class StringConstant{
   static const String messageFontSize ='Message Font Size';
   static const String normal ='Normal';
   static const String navigationBarSize ='Navigation Bar Size';
+  static const String transferOrRestoreAccount = ' Transfer or Restore Account ';
+  static const String getStarted = ' Get Started ';
+  static const String termsPrivacyPolicy = ' Terms & Privacy Policy ';
+  static const String welcomeToChat = ' Welcome To Chat ';
+  static const String theBestMessengerAndChat = ' The best messenger and chat ';
+  static const String toMakeYourDayGreat = ' to make your day great! ';
+  static const String signIndis='Enter Your Phone Number To Get Started';
+  static const String verifyOtp='Emter The Code We Sent To';
 
 }

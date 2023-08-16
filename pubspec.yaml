@@ -38,10 +38,19 @@ dependencies:
 
   # Fetch server data & State management :
   get: ^4.6.5
-  internet_connection_checker: ^1.0.0+1
+  connectivity: ^3.0.6
+
 
   # contact numbers
   contacts_service: ^0.6.3
+
+  country_code_picker: ^3.0.0
+  pinput: ^3.0.0
+
+  #firebase :
+  firebase_auth: ^4.7.2
+  firebase_core: ^2.15.0
+  cloud_firestore: ^4.8.4
 
 
 
