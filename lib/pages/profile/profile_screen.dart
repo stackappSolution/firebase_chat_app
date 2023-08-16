@@ -122,8 +122,8 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       isBorderShape: true,
                       buttonColor: (profileViewModel!.isButtonActive)
-                          ? AppColorConstant.appYellow
-                          : AppColorConstant.appYellow.withOpacity(0.5),
+                          ? AppColorConstant.appTheme
+                          : AppColorConstant.appTheme.withOpacity(0.5),
                       onPressed: (profileViewModel!.isButtonActive)
                           ? () {
                               profileViewModel!.onChangedValue(

@@ -51,20 +51,10 @@ class AppTextFormField extends StatelessWidget {
         color: AppColorConstant.appTheme.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10.px),
         border:
-            Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
+            Border.all(color: AppColorConstant.appTheme, width: 1.px),
       ),
       child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: 5.px),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: AppText(
-                  lable!,
-                  color: AppColorConstant.appYellow,
-                  fontSize: 13.px,
-                )),
-          ),
           Expanded(
             child: TextFormField(
               onChanged: onChanged,

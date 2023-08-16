@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/signin_pages/sign_in_page.dart';
+import 'package:signal/routes/routes_helper.dart';
 import 'app/app/utills/theme_util.dart';
 
 
@@ -26,16 +26,14 @@ class MyApp extends StatelessWidget {
           child: GetMaterialApp(
             title: 'Flutter matrimonial app',
             theme: ThemeData(useMaterial3: true),
-            //theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
             themeMode: ThemeUtil.selectedTheme,
-
             debugShowCheckedModeBanner: false,
             home: SignInPage(),
             defaultTransition: Transition.fadeIn,
-            // initialRoute: RouteHelper.getHomeScreen(),
-            // getPages: RouteHelper.routes,
-            // initialRoute: RouteHelper.getSignInPage(),
+             initialRoute: RouteHelper.getSignInPage(),
+             getPages: RouteHelper.routes,
+
 
           ),
         );

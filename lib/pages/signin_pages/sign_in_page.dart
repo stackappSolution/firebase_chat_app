@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +13,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/sign_in_controller.dart';
 import 'package:signal/pages/signin_pages/sign_in_view_model.dart';
-import 'package:signal/routes/route_helper.dart';
+import 'package:signal/routes/routes_helper.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -159,12 +161,10 @@ class SignInPage extends StatelessWidget {
                                 controller.update();
                               }
                             },
-                            labelStyle: TextStyle(
-                              height: 0.1,
-                              color: AppColorConstant.appTheme,
-                              fontSize: 20.px,
+                            lable: 'Phone Number',
+                            labelStyle: const TextStyle(
+                                fontWeight: FontWeight.w600,fontSize: 20
                             ),
-                            lable: "Phone Number",
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -185,7 +185,6 @@ class SignInPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () {
-                      //Get.toNamed(RouteHelper.getVerifyOtpPage());
                     },
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
@@ -206,7 +205,8 @@ class SignInPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () async {
-                      Get.toNamed(RouteHelper.getVerifyOtpPage());
+                      Get.toNamed(RouteHelper.getVerifyOtpPage(),parameters: {'phone' : "${phoneNumber}"
+                      });
                     },
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(

@@ -7,9 +7,11 @@ class VerifyOtpViewModel{
   late VerifyOtpPage? verifyOtpPage;
 
 
-  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController Otp = TextEditingController();
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   String smsCode = "";
+  bool isValidOTP = false;
+  Map<String , dynamic> parameter= {} ;
 
 
   final defaultPinTheme = PinTheme(
@@ -25,4 +27,8 @@ class VerifyOtpViewModel{
   );
 
   VerifyOtpViewModel(this.verifyOtpPage);
+
+  bool isValidOtp(String value) {
+    return value.length == 6 && int.tryParse(value) != null;
+  }
 }

@@ -13,7 +13,6 @@ class SignInViewModel {
   FirebaseAuth auth = FirebaseAuth.instance;
   String v_id = "";
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
-  String mobileNumber = '';
   bool isValidNumber = false;
   var data;
 
