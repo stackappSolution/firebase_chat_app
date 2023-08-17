@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../constant/color_constant.dart';
-
-
-
 
 class AppElevatedButton extends StatelessWidget {
   final Color buttonColor;
@@ -17,7 +13,6 @@ class AppElevatedButton extends StatelessWidget {
   final String? buttonName;
   final Widget widget;
 
-
   const AppElevatedButton(
       {Key? key,
       this.onPressed,
@@ -26,18 +21,19 @@ class AppElevatedButton extends StatelessWidget {
       this.buttonWidth = double.infinity,
       this.isBorderShape = false,
       this.buttonRadius,
-       this.buttonName,
+      this.buttonName,
       this.fontSize,
-      this.fontColor = Colors.white, required this.widget})
+      this.fontColor = Colors.white,
+      required this.widget})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          minimumSize: MaterialStateProperty.all(Size(buttonWidth, buttonHeight)),
+          minimumSize:
+              MaterialStateProperty.all(Size(buttonWidth, buttonHeight)),
           shape: isBorderShape
               ? MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(

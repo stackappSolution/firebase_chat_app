@@ -3,19 +3,21 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
+import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/shared_preferance.dart';
+import '../../app/app/utills/theme_util.dart';
 
 class AppearanceViewModel {
   AppearanceScreen? appearanceScreen;
   bool isLightTheme = false;
-  ThemeMode _selectedTheme = ThemeMode.light;
+  ThemeMode _selectedTheme = ThemeUtil.selectedTheme;
   String? selectedLanguage;
-   String? selectedFontSize;
+  String? selectedFontSize;
 
   AppearanceViewModel(this.appearanceScreen) {}
 
@@ -29,11 +31,14 @@ class AppearanceViewModel {
         return StatefulBuilder(
           builder: (context, setState) {
             return AppAlertDialog(
+              backgroundColor: AppColorConstant.blackOff,
               title: const AppText(StringConstant.theme),
               actions: [
                 Column(
                   children: [
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.systemDefault),
                       value: ThemeMode.system,
                       groupValue: _selectedTheme,
@@ -46,6 +51,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.light),
                       value: ThemeMode.light,
                       groupValue: _selectedTheme,
@@ -58,6 +65,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.dark),
                       value: ThemeMode.dark,
                       groupValue: _selectedTheme,
@@ -89,11 +98,15 @@ class AppearanceViewModel {
         return StatefulBuilder(
           builder: (context, setState) {
             return AppAlertDialog(
+              backgroundColor: AppColorConstant.blackOff,
+
               title: const AppText(StringConstant.language),
               actions: [
                 Column(
                   children: [
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.gujarati),
                       value: StringConstant.gujarati,
                       groupValue: selectedLanguage,
@@ -104,6 +117,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.english),
                       value: StringConstant.english,
                       groupValue: selectedLanguage,
@@ -133,11 +148,15 @@ class AppearanceViewModel {
         return StatefulBuilder(
           builder: (context, setState) {
             return AppAlertDialog(
+              backgroundColor: AppColorConstant.blackOff,
+
               title: const AppText(StringConstant.language),
               actions: [
                 Column(
                   children: [
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.small),
                       value: StringConstant.small,
                       groupValue: selectedLanguage,
@@ -149,6 +168,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.normal),
                       value: StringConstant.normal,
                       groupValue: selectedLanguage,
@@ -160,6 +181,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.large),
                       value: StringConstant.large,
                       groupValue: selectedLanguage,
@@ -171,6 +194,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.extraLarge),
                       value: StringConstant.extraLarge,
                       groupValue: selectedLanguage,
@@ -224,7 +249,7 @@ class AppearanceViewModel {
     }
   }
 
-   loadSelectedFontSize() async {
+  loadSelectedFontSize() async {
     final fontSize =
         await getPrefStringValue(StringConstant.selectedFontSize) ??
             StringConstant.normal;

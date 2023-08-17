@@ -164,7 +164,7 @@ class SignInPage extends StatelessWidget {
                               color: AppColorConstant.appTheme,
                               fontSize: 20.px,
                             ),
-                            lable: "Phone Number",
+                            label: "Phone Number",
                             keyboardType: TextInputType.number,
                             // decoration: const InputDecoration(
                             //     border: InputBorder.none,
