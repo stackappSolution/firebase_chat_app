@@ -1,10 +1,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:signal/service/auth_service.dart';
 
-
-class DatabaseService {
+class AuthService{
 
   // FirebaseAuth auth = FirebaseAuth.instance;
   // DocumentReference<Map<String, dynamic>> users = FirebaseFirestore.instance
@@ -27,4 +25,3 @@ class DatabaseService {
   //   }
   // }
 }
-

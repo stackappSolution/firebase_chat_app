@@ -5,4 +5,5 @@ class RouteConstant{
   static const String verifyOtpScreen = '/VerifyOtpPage';
   static const String homeScreen = '/home';
   static const String profileScreen = '/profile';
+  static const String settingScreen = '/SettingScreen';
 }

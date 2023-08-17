@@ -2,6 +2,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/routes/routes_helper.dart';
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -54,7 +55,9 @@ class IntroPage extends StatelessWidget {
 
   AppButton getStartedButton(bool isConnected, context, IntroPageController controller) {
     return AppButton(
-        onTap: () {},
+        onTap: () {
+          Get.toNamed(RouteHelper.getSignInPage());
+        },
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
         borderRadius: BorderRadius.circular(10.px),
@@ -83,7 +86,7 @@ class IntroPage extends StatelessWidget {
               fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 20.px)),
       AppText(StringConstant.toMakeYourDayGreat,
           fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 18.px),
-      SizedBox(height: 230.px)
+      SizedBox(height: 200.px)
     ]);
   }
 

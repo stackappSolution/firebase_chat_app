@@ -7,18 +7,20 @@ import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/routes_constant.dart';
 
 class RouteHelper {
+  static String getIntroPage() => RouteConstant.introPage;
   static String getSignInPage() => RouteConstant.signInPage;
   static String getVerifyOtpPage() => RouteConstant.verifyOtpScreen;
-
   static String getHomeScreen() => RouteConstant.homeScreen;
-
   static String getProfileScreen() => RouteConstant.profileScreen;
+  static String getSettingScreen() => RouteConstant.settingScreen;
 
   static List<GetPage> routes = [
+    GetPage(name: RouteConstant.introPage, page: () => IntroPage()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
     GetPage(name: RouteConstant.signInPage,page: () => SignInPage(),),
-    GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage(),)
+    GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage(),),
+   // GetPage(name: RouteConstant.settingScreen, page: () => SettingScreen(),)
   ];
 }

@@ -13,7 +13,7 @@ class VerifyOtpViewModel{
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   String smsCode = "";
   bool isValidOTP = false;
-  final Map<String, dynamic> arguments = Get.arguments;
+ // final Map<String, dynamic> arguments = Get.arguments;
 
   // final arg1 = arguments['arg1'];
   // final arg2 = arguments['arg2'];

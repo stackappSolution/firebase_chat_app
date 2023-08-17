@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/pages/intro_page/intro_page.dart';
 import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'app/app/utills/theme_util.dart';
@@ -29,12 +30,10 @@ class MyApp extends StatelessWidget {
             darkTheme: ThemeData.dark(),
             themeMode: ThemeUtil.selectedTheme,
             debugShowCheckedModeBanner: false,
-            home: SignInPage(),
+            home: IntroPage(),
             defaultTransition: Transition.fadeIn,
-             initialRoute: RouteHelper.getSignInPage(),
+             initialRoute: RouteHelper.getIntroPage(),
              getPages: RouteHelper.routes,
-
-
           ),
         );
       },

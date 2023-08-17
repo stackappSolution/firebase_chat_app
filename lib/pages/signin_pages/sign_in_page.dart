@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -108,13 +109,13 @@ class SignInPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(13.px)),
                     child: CountryCodePicker(
                       showFlag: false,
+                      showFlagDialog: true,
                       onChanged: (country) {
                         signInViewModel!.selectedCountry = country;
                       },
                       initialSelection: 'IN',
                       textStyle: TextStyle(
-                          height: 0.1,
-                          fontSize: 18.px, color: AppColorConstant.appBlack),
+                          color: AppColorConstant.appBlack,fontWeight: FontWeight.w600),
                       // Set initial country code
                       favorite: const ['IN'], // Specify favorite country codes
                     ),

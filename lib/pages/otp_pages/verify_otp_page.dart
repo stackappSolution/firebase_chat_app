@@ -9,7 +9,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/vreify_otp_controller.dart';
 import 'package:signal/pages/otp_pages/verify_otp_view_model.dart';
-import 'package:signal/pages/signin_pages/sign_in_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 class VerifyOtpPage extends StatelessWidget {
@@ -77,7 +76,7 @@ class VerifyOtpPage extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(left: 20.px),
                 child: AppText(
-                  '${StringConstant.verifyOtp} - ${verifyOtpViewModel!.arguments['phone']}',
+                  StringConstant.verifyOtp,
                   color: AppColorConstant.appLightBlack.withOpacity(0.4),
                   fontWeight: FontWeight.w400,
                   fontSize: 15.px,
