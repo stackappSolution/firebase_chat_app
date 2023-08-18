@@ -83,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   AppTextFormField(
-                    leble: "",
+                    label: "",
                     controller:
                         profileViewModel!.firstNameController,
                     labelText: StringConstant.firstName,
@@ -104,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(top: 10.px),
                     child: AppTextFormField(
-                      leble: "",
+                      label: "",
                       controller:
                           profileViewModel!.lastNameController,
                       labelText: StringConstant.lastName, fontSize: null,

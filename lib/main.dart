@@ -1,20 +1,27 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
-import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/routes_helper.dart';
-import 'app/app/utills/theme_util.dart';
 
+import 'app/app/utills/theme_util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
-  runApp(const MyApp());
+  runApp(DevicePreview(
+    enabled: true,
+    tools: const [
+      ...DevicePreview.defaultTools,
+    ],
+    builder: (context) => const MyApp(),
+  ));
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -32,12 +39,11 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: IntroPage(),
             defaultTransition: Transition.fadeIn,
-             initialRoute: RouteHelper.getIntroPage(),
-             getPages: RouteHelper.routes,
+            initialRoute: RouteHelper.getIntroPage(),
+            getPages: RouteHelper.routes,
           ),
         );
       },
     );
   }
 }
-

@@ -9,9 +9,8 @@ class SignInViewModel {
 
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController countrycode = TextEditingController();
-  String countryCode = '';
   FirebaseAuth auth = FirebaseAuth.instance;
-  String v_id = "";
+  String countryCode = '';
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   bool isValidNumber = false;
   var data;
@@ -23,31 +22,3 @@ class SignInViewModel {
     return value.length == 10 && int.tryParse(value) != null;
   }
 }
-
-// class   AuthenticationHelper {
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-//   get user => _auth.currentUser;
-//
-//
-//   // Future signUp({required String countryCode, required String phoneNumber}) async {
-//   //   try {
-//   //     await _auth.signInWithPhoneNumber(
-//   //         countryCode,
-//   //         phoneNumber as RecaptchaVerifier?,
-//   //     );
-//   //     return 'sucess';
-//   //   } on FirebaseAuthException catch (e) {
-//   //     return e.message;
-//   //   }
-//   // }
-//   //
-//   //
-//   // Future signIn({required String phoneNumber, required String countryCode}) async {
-//   //   try {
-//   //     await _auth.signInWithPhoneNumber(phoneNumber : PhoneNumber,countryCode : CountryCode);
-//   //     return 'sucess';
-//   //   } on FirebaseAuthException catch (e) {
-//   //     return 'invalid mobile Number try again later';
-//   //   }
-//   // }
-// }

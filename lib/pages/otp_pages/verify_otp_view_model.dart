@@ -1,23 +1,17 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:pinput/pinput.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
 
 class VerifyOtpViewModel{
   late VerifyOtpPage? verifyOtpPage;
 
-
+  final FirebaseAuth auth = FirebaseAuth.instance;
   TextEditingController Otp = TextEditingController();
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   String smsCode = "";
   bool isValidOTP = false;
- // final Map<String, dynamic> arguments = Get.arguments;
-
-  // final arg1 = arguments['arg1'];
-  // final arg2 = arguments['arg2'];
-
 
 
   final defaultPinTheme = PinTheme(
@@ -37,4 +31,17 @@ class VerifyOtpViewModel{
   bool isValidOtp(String value) {
     return value.length == 6 && int.tryParse(value) != null;
   }
+
+  // Future<void> verifyOTPAndNavigate() async {
+  //   try {
+  //     PhoneAuthCredential credential = PhoneAuthProvider.credential(
+  //       verificationId:  verifyOtpPage!.verifyOtpViewModel!.smsCode,
+  //       smsCode: Otp.text,
+  //     );
+  //     await auth.signInWithCredential(credential);
+  //     Get.toNamed(RouteHelper.getProfileScreen());
+  //   } catch (e) {
+  //     print('Error verifying OTP: $e');
+  //   }
+  // }
 }

@@ -29,22 +29,25 @@ class IntroPage extends StatelessWidget {
         builder: (IntroPageController controller) {
           return Scaffold(
               body: Container(
-                  padding: EdgeInsets.all(10.px),
+                  //padding: EdgeInsets.all(10.px),
+                height: double.infinity,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
                           colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter)),
-                  child: Column(children: [
-                    SizedBox(height: 80.px),
-                    Padding(padding: EdgeInsets.only(left: 8.px), child: image()),
-                    textWelcome(),
-                    termsPrivacyPolicy(),
-                    getStartedButton(
-                        controller.introPageViewModal.isConnected, context, controller),
-                    transferOrRestoreAccount()
-                  ])));
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      SizedBox(height: 80.px),
+                      Padding(padding: EdgeInsets.only(left: 8.px), child: image()),
+                      textWelcome(),
+                      termsPrivacyPolicy(),
+                      getStartedButton(
+                          controller.introPageViewModal.isConnected, context, controller),
+                      transferOrRestoreAccount()
+                    ]),
+                  )));
         });
   }
 

@@ -27,10 +27,14 @@ class StringConstant
   static const String welcomeToChat = ' Welcome To Chat ';
   static const String theBestMessengerAndChat = ' The best messenger and chat ';
   static const String toMakeYourDayGreat = ' to make your day great! ';
-  static const String signIndis='Enter Your Phone Number To Get Started';
-  static const String verifyOtp='Enter The Code We Sent To';
+  static const String signInDis='Enter Your Phone Number To Get Started';
+  static const String verifyOtp='Enter The Code We Sent To ';
   static const String light ='Light';
   static const String dark ='Dark';
+  static const String signIn ='Sign In';
+  static const String continueButton  ='Continue';
+  static const String verify='Verify OTP';
+  static const String verifyButton='Verify';
 
 
 }
