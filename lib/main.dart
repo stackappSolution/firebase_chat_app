@@ -6,7 +6,15 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
 import 'package:signal/routes/routes_helper.dart';
-
+import 'app/app/utills/theme_util.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/pages/chating_page/chating_page.dart';
+import 'package:signal/pages/profile/profile_screen.dart';
+import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/pages/signin_pages/sign_in_page.dart';
+import 'package:signal/routes/route_helper.dart';
+import 'package:signal/pages/appearance/appearance_screen.dart';
+import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'app/app/utills/theme_util.dart';
 
 Future<void> main() async {
@@ -38,6 +46,18 @@ class MyApp extends StatelessWidget {
             themeMode: ThemeUtil.selectedTheme,
             debugShowCheckedModeBanner: false,
             home: IntroPage(),
+
+            home: ChatingPage(),
+            defaultTransition: Transition.fadeIn,
+            // initialRoute: RouteHelper.getHomeScreen(),
+            // getPages: RouteHelper.routes,
+           // initialRoute: RouteHelper.getHomeScreen(),
+            // home: const LoginScreen(),
+            // initialRoute: RouteHelper.getHomeScreen(),
+            // getPages: RouteHelper.routes,
+            // getPages: RouteHelper.routes,
+            // initialRoute: RouteHelper.getSignInPage(),
+            //  home: SignInPage(),
             defaultTransition: Transition.fadeIn,
             initialRoute: RouteHelper.getIntroPage(),
             getPages: RouteHelper.routes,

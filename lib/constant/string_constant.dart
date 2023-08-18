@@ -2,6 +2,13 @@
 
 class StringConstant
 {
+  //=====================shared pref keys=======================//
+
+  static const String selectedFontSize  = 'SelectedFontSize';
+  static const String theme  = 'Theme';
+
+
+
   static const String yourProfile  = 'Your Profile';
   static const String profileAreVisible  = 'Profiles Are Visible To People You Message,Contacts, and Groups.';
   static const String firstName  = 'First Name ( Required )';
@@ -15,7 +22,6 @@ class StringConstant
   static const String appearance='Appearance';
   static const String language='Language';
   static const String systemDefault ='System Default';
-  static const String theme ='Theme';
   static const String chatColor ='Chat Color & wallpaper';
   static const String appIcon ='App Icon';
   static const String messageFontSize ='Message Font Size';
@@ -35,6 +41,28 @@ class StringConstant
   static const String continueButton  ='Continue';
   static const String verify='Verify OTP';
   static const String verifyButton='Verify';
-
-
+static const String calls='Calls';
+static const String chats='Chats';
+  static String yourProfile  = 'Your Profile';
+  static String profileAreVisible  = 'Profiles Are Visible To People You Message,Contacts, and Groups.';
+  static String firstName  = 'First Name ( Required )';
+  static String lastName  = 'Last Name ( Required )';
+  static String next  = 'Next';
+  static String enterValidName  = 'Enter Valid Name';
+  static String choose  = 'choose';
+  static String cansel  = 'Cansel';
+static const String signIndis='Enter Your Phone Number To Get Started';
+static const String verifyOtp='Emter The Code We Sent To';
+static const String signalMessage='Signal message';
+static const String oneTwoOne='121';
+static const String userName='User Name';
+  static const String signIndis='Enter Your Phone Number To Get Started';
+  static const String verifyOtp='Enter The Code We Sent To';
+  static const String light ='Light';
+  static const String dark ='Dark';
+  static const String english ='English';
+  static const String gujarati ='Gujarati';
+  static const String small ='Small';
+  static const String large ='Large';
+  static const String extraLarge ='Extra Large';
 }

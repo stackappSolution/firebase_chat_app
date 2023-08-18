@@ -137,6 +137,9 @@ class SignInPage extends StatelessWidget {
                                 fontSize: 20.px),
                             controller: signInViewModel!.phoneNumber,
                             style: const TextStyle(
+                            controller: signInViewModel!.phoneNumber,
+                            style: TextStyle(
+                              fontSize: 22.px,
                               fontWeight: FontWeight.w400,
                             ),
                             inputFormatters: [
@@ -162,6 +165,9 @@ class SignInPage extends StatelessWidget {
                               }
                             },
                             keyboardType: TextInputType.number,
+                            // decoration: const InputDecoration(
+                            //     border: InputBorder.none,
+                            //     focusedBorder: InputBorder.none),
                             fontSize: 20.px,
                           ),
                         ),

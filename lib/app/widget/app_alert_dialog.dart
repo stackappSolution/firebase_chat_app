@@ -13,6 +13,15 @@ class AppAlertDialog extends StatelessWidget {
 
   const AppAlertDialog(
       {super.key,
+      this.shape,
+      this.alignment,
+      required this.title,
+      this.actions,
+      this.backgroundColor,
+      this.titlePadding,
+      this.titleTextStyle,
+      this.actionsPadding,
+      this.widget});
         this.shape,
         this.alignment,
         required this.title,
@@ -25,6 +34,17 @@ class AppAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+        content: widget,
+        actionsPadding: actionsPadding,
+        backgroundColor: backgroundColor,
+        titlePadding: titlePadding,
+        titleTextStyle: titleTextStyle,
+        shape: shape,
+        actions: actions,
+        title: title,
+        alignment: alignment);
+  }
+}
       actionsPadding: actionsPadding,
       backgroundColor: backgroundColor,
       titlePadding: titlePadding,
