@@ -22,7 +22,7 @@ class ChatingPage extends StatelessWidget {
           return Scaffold(
               appBar: appBar(controller),
               body: Container(
-                  decoration: BoxDecoration(color: AppColorConstant.lightpurple),
+                  decoration: const BoxDecoration(color: AppColorConstant.lightpurple),
                   child: Column(children: [
                     Expanded(
                         child: chatList(controller)),

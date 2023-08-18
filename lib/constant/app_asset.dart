@@ -40,9 +40,13 @@ class AppAsset {
   static const String search='${iconPath}search.png';
   static const String gallery='${iconPath}gallery.png';
 
-
-
-
-
+  static const String appearance='${iconPath}appearance.png';
+  static const String chats='${iconPath}chats.png';
+  static const String donate='${iconPath}donate.png';
+  static const String invite='${iconPath}invite.png';
+  static const String account='${iconPath}account.png';
+  static const String linkedDevice='${iconPath}linked_device.png';
+  static const String notification='${iconPath}notification.png';
+  static const String privacyPolicy='${iconPath}privacy_policy.png';
 
 }

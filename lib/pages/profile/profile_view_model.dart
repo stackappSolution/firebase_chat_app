@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -45,9 +46,7 @@ class ProfileViewModel {
   }
 
   onTapNext(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return AppearanceScreen();
-    },));
+
     logs("NextTapped");
   }
 
@@ -132,6 +131,56 @@ class ProfileViewModel {
                 ),
               ],
             ),
+                padding: EdgeInsets.only(
+                    left: 80.px, top: 20.px, bottom: 10.px, right: 10.px),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  // buttonColor: AppColorConstant.appWhite,
+                  // buttonHeight: 10,
+                  // widget: AppText(
+                  //   StringConstant.cancel,
+                  //   color: AppColorConstant.appYellow,
+                  //   child: AppText(
+                  //     StringConstant.cansel,
+                  //     color: AppColorConstant.appTheme,
+                  //     fontSize: 15.px,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                ))
+          ],
+          widget: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 30.px),
+                child: IconButton(
+                    onPressed: () {
+                      pickImageCamera(controller);
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.camera_alt_rounded,
+                      color: AppColorConstant.appWhite,
+                      size: 70.px,
+                    )),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 30.px),
+                child: IconButton(
+                    onPressed: () {
+                      pickImageGallery(controller);
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.image,
+                      color: AppColorConstant.appWhite,
+                      size: 70.px,
+                    )),
+              ),
+            ],
           ),
         );
       },

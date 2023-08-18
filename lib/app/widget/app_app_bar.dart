@@ -12,6 +12,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? leadingWidth;
   final bool? centerTitle;
 
+
   const AppAppBar({
     Key? key,
     this.backgroundColor,
@@ -27,16 +28,19 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return AppBar(forceMaterialTransparency: false,
       // ignore: deprecated_member_use
-      backgroundColor: AppColorConstant.yellowAppBar,
+      backgroundColor: Theme.of(context).colorScheme.background,
+    elevation: 0.0,
       leading: leading,
       shape: shape,
       leadingWidth: leadingWidth,
-     // backgroundColor: AppColorConstant.appWhite,
       title: title,
       centerTitle: centerTitle,
-      actions: actions,elevation: 0,
+      actions: actions,
     );
   }
 }

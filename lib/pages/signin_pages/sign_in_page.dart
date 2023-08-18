@@ -11,6 +11,7 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/sign_in_controller.dart';
+
 import 'package:signal/pages/signin_pages/sign_in_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
@@ -24,7 +25,7 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     signInViewModel ?? (signInViewModel = SignInViewModel(this));
-    return GetBuilder(
+    return GetBuilder<SignInController>(
       init: SignInController(),
       initState: (state) {},
       builder: (SignInController controller) {
@@ -87,6 +88,13 @@ class SignInPage extends StatelessWidget {
   //               child: AppText(
   //                 StringConstant.signInDis,
   //                 color: AppColorConstant.appLightBlack.withOpacity(0.4),
+  //
+  //                 StringConstant.signInDescription,
+  //                 color: AppColorConstant.appLightBlack.withOpacity(0.3),
+  //
+  //                 StringConstant.signInDis,
+  //                 color: AppColorConstant.appLightBlack.withOpacity(0.4),
+  //
   //                 fontWeight: FontWeight.w400,
   //                 fontSize: 15.px,
   //               ),
