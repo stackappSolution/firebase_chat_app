@@ -26,6 +26,20 @@ class AppTextFormField extends StatelessWidget {
 
   const AppTextFormField(
       {super.key,
+      this.hintText,
+      this.label,
+      this.suffixIcon,
+      this.onSuffixTap,
+      this.onChanged,
+      this.validator,
+      this.inputFormatters,
+      this.controller,
+      this.style,
+      this.labelText,
+      this.labelStyle,
+      this.keyboardType,
+      this.decoration,
+      this.fontSize});
         this.hintText,
         this.label,
         this.suffixIcon,
@@ -40,44 +54,6 @@ class AppTextFormField extends StatelessWidget {
         this.keyboardType,
         this.decoration,
         this.fontSize});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      onChanged: onChanged,
-      controller: controller,
-      decoration: decoration ??
-          InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                 const BorderSide(color: AppColorConstant.appTheme),
-                borderRadius: BorderRadius.all(Radius.circular(11.px))),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(11.px)),
-              borderSide:  const BorderSide(
-                color: AppColorConstant.appTheme,
-  final double? fontSize;
-  const AppTextFormField({
-    super.key,
-    this.hintText,
-    this.suffixIcon,
-    this.onSuffixTap,
-    this.validator,
-    this.inputFormatters,
-    this.controller,
-    this.style,
-    this.onChanged,
-    this.labelText,
-    this.labelStyle,
-    this.keyboardType,
-    this.decoration = const InputDecoration(),
-    this.fontSize,
-    this.leble,
-  });
-
-  final InputDecoration? decoration = const InputDecoration();
-  final double? fontSize;
-
 
   const AppTextFormField({super.key,
     this.suffixIcon,
@@ -99,56 +75,26 @@ class AppTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60.px,
-      padding: EdgeInsets.only(left: 12.px, right: 10.px),
-      decoration: BoxDecoration(
-        color: AppColorConstant.appTheme.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(10.px),
-        border: Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
-        border:
-        Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 5.px),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: AppText(
-                  leble!,
-                  lable!,
-                  color: AppColorConstant.appYellow,
-                  fontSize: 13.px,
-                )),
-          ),
-          Expanded(
-            child: TextFormField(
-              onChanged: onChanged,
-              controller: controller,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                hintText: hintText,
-                labelText: labelText,
-                labelStyle: labelStyle,
-              ),
-              decoration: decoration ??
-                  InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    hintText: hintText,
-                    labelText: labelText,
-                    labelStyle: labelStyle,
-                  ),
-              keyboardType: keyboardType,
-              validator: validator,
-              inputFormatters: inputFormatters,
-              style: TextStyle(
-                fontSize: fontSize,
+    return TextFormField(
+      onChanged: onChanged,
+      controller: controller,
+      decoration: decoration ??
+          InputDecoration(
+            enabledBorder: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(color: AppColorConstant.appYellowBorder),
+                borderRadius: BorderRadius.all(Radius.circular(11.px))),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(11.px)),
+              borderSide: const BorderSide(
+                color: AppColorConstant.appYellowBorder,
               ),
             ),
             contentPadding:
+                EdgeInsets.symmetric(vertical: 2.px, horizontal: 15.px),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(11.px)),
+              borderSide:
             EdgeInsets.symmetric(vertical: 2.px, horizontal: 15.px),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(11.px)),
@@ -158,6 +104,7 @@ class AppTextFormField extends StatelessWidget {
             hintText: hintText,
             labelText: labelText,
             labelStyle:
+                const TextStyle(color: AppColorConstant.appYellowBorder),
              const TextStyle(color: AppColorConstant.appTheme),
           ),
       keyboardType: keyboardType,

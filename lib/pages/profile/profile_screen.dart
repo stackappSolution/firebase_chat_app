@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -39,11 +41,10 @@ class ProfileScreen extends StatelessWidget {
   getBody(GetxController controller, BuildContext context) {
     return Stack(
       children: [
-        const SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child:
-                AppImageAsset(image: AppAsset.background, fit: BoxFit.cover)),
+        Container(height: double.infinity,width: double.infinity,decoration: const BoxDecoration( gradient: LinearGradient(
+            colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter)),),
         SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(left: 12.px, right: 12.px),
@@ -67,30 +68,59 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      profileViewModel!.profilePicTap(context);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 30.px, bottom: 30.px),
-                      alignment: Alignment.center,
-                      height: 120.px,
-                      decoration: BoxDecoration(
-                          color: AppColorConstant.appBlack.withOpacity(0.2),
-                          shape: BoxShape.circle),
-                      child:
-                          AppImageAsset(height: 60.px, image: AppAsset.profile),
+                  Container(
+                    alignment: Alignment.center,
+                    width: 150.px,
+                    height: 180.px,
+                    child: Stack(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          height: 110.px,
+                          decoration: BoxDecoration(
+                              color: AppColorConstant.appBlack.withOpacity(0.2),
+                              shape: BoxShape.circle),
+                          child: InkWell(
+                              onTap: () {
+                                profileViewModel!
+                                    .profilePicTap(context, controller);
+                              },
+                              child: (profileViewModel!.selectedImage != null)
+                                  ? CircleAvatar(
+                                      radius: 55,
+                                      backgroundImage: FileImage(File(
+                                          profileViewModel!
+                                              .selectedImage!.path)),
+                                    )
+                                  : AppImageAsset(
+                                      height: 50.px, image: AppAsset.profile)),
+                        ),
+                        Positioned(
+                            top: 80.px,
+                            left: 95.px,
+                            child: Container(
+                                alignment: Alignment.center,
+                                height: 27.px,
+                                padding: EdgeInsets.all(5.px),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColorConstant.appBlack,
+                                    border: Border.all(color:AppColorConstant.appWhite)),
+                                child: const Icon(
+                                  Icons.camera_alt_outlined,
+                                  color: AppColorConstant.appWhite,
+                                  size: 13,
+                                )))
+                      ],
                     ),
                   ),
                   AppTextFormField(
-                    label: "",
-                    controller:
-                    controller:
-                        profileViewModel!.firstNameController,
+                    controller: profileViewModel!.firstNameController,
                     labelText: StringConstant.firstName,
                     onChanged: (value) {
                       profileViewModel!.onChangedValue(value, controller);
-                    }, fontSize: null,
+                    },
+ 
                   ),
                   Align(
                       alignment: Alignment.centerLeft,
@@ -103,13 +133,15 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       )),
                   Padding(
+                    padding: EdgeInsets.only(top: 5.px),
+                    child: AppTextFormField(
                     padding: EdgeInsets.only(top: 10.px),n
                       label: "",
                       controller:
                           profileViewModel!.lastNameController,
                       labelText: StringConstant.lastName, fontSize: null,
                       controller: profileViewModel!.lastNameController,
-                      lable: StringConstant.lastName,
+                     
                     ),
                   ),
                   SizedBox(
@@ -130,9 +162,7 @@ class ProfileScreen extends StatelessWidget {
                           : AppColorConstant.appTheme.withOpacity(0.5),
                       onPressed: (profileViewModel!.isButtonActive)
                           ? () {
-                              profileViewModel!.onChangedValue(
-                                  profileViewModel!.firstNameController,
-                                  controller);
+                              profileViewModel!.onTapNext(context);
                             }
                           : null,
                     ),

@@ -8,10 +8,10 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
 
-import '../../app/app/utills/app_utills.dart';
 
 class AppearanceScreen extends StatelessWidget {
   AppearanceViewModel? appearanceViewModel;
+
   AppearanceScreen({super.key});
 
   @override
@@ -20,9 +20,7 @@ class AppearanceScreen extends StatelessWidget {
 
     return GetBuilder<AppearanceController>(
       init: AppearanceController(),
-      initState: (state) async {
-
-      },
+      initState: (state) async {},
       builder: (AppearanceController controller) {
         return SafeArea(
             child: Scaffold(
@@ -42,9 +40,16 @@ class AppearanceScreen extends StatelessWidget {
   }
 
   getBody(BuildContext context, AppearanceController controller) {
-    return Padding(
-      padding: EdgeInsets.only(top: 40.px),
-      child: SingleChildScrollView(
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter)),
+      child: Padding(
+        padding: EdgeInsets.only(top: 40.px),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           appearanceViewTile(1, context, StringConstant.language,
               StringConstant.systemDefault, controller),

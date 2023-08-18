@@ -42,7 +42,6 @@ class SignInPage extends StatelessWidget {
     String phoneNumber,
     BuildContext context,
     SignInController controller,
-  ) =>
       Container(
         height: double.infinity,
         width: double.infinity,
@@ -164,6 +163,12 @@ class SignInPage extends StatelessWidget {
                                 controller.update();
                               }
                             },
+                            labelStyle: TextStyle(
+                              height: 0.1,
+                              color: AppColorConstant.appTheme,
+                              fontSize: 20.px,
+                            ),
+                            label: "Phone Number",
                             keyboardType: TextInputType.number,
                             // decoration: const InputDecoration(
                             //     border: InputBorder.none,

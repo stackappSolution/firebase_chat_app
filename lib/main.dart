@@ -14,7 +14,6 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/route_helper.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
-import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'app/app/utills/theme_util.dart';
 
 Future<void> main() async {
@@ -41,23 +40,17 @@ class MyApp extends StatelessWidget {
           onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
           child: GetMaterialApp(
             title: 'Flutter matrimonial app',
-            theme: ThemeData(useMaterial3: true),
-            darkTheme: ThemeData.dark(),
+            //theme: ThemeUtil.getAppTheme(context, ThemeUtil.isDark),
+            //theme: ThemeData.light(),
+           // darkTheme: ThemeData.dark(),
             themeMode: ThemeUtil.selectedTheme,
+            theme: Themes.light,
+            darkTheme: Themes.dark,
             debugShowCheckedModeBanner: false,
-            home: IntroPage(),
-
-            home: ChatingPage(),
+            home: AppearanceScreen(),
             defaultTransition: Transition.fadeIn,
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,
-           // initialRoute: RouteHelper.getHomeScreen(),
-            // home: const LoginScreen(),
-            // initialRoute: RouteHelper.getHomeScreen(),
-            // getPages: RouteHelper.routes,
-            // getPages: RouteHelper.routes,
-            // initialRoute: RouteHelper.getSignInPage(),
-            //  home: SignInPage(),
             defaultTransition: Transition.fadeIn,
             initialRoute: RouteHelper.getIntroPage(),
             getPages: RouteHelper.routes,
