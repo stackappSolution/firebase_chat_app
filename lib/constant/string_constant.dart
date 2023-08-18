@@ -33,6 +33,14 @@ class StringConstant
   static const String welcomeToChat = ' Welcome To Chat ';
   static const String theBestMessengerAndChat = ' The best messenger and chat ';
   static const String toMakeYourDayGreat = ' to make your day great! ';
+  static const String signInDis='Enter Your Phone Number To Get Started';
+  static const String verifyOtp='Enter The Code We Sent To ';
+  static const String light ='Light';
+  static const String dark ='Dark';
+  static const String signIn ='Sign In';
+  static const String continueButton  ='Continue';
+  static const String verify='Verify OTP';
+  static const String verifyButton='Verify';
 static const String calls='Calls';
 static const String chats='Chats';
   static String yourProfile  = 'Your Profile';
@@ -43,7 +51,6 @@ static const String chats='Chats';
   static String enterValidName  = 'Enter Valid Name';
   static String choose  = 'choose';
   static String cansel  = 'Cansel';
-
 static const String signIndis='Enter Your Phone Number To Get Started';
 static const String verifyOtp='Emter The Code We Sent To';
 static const String signalMessage='Signal message';
@@ -58,6 +65,4 @@ static const String userName='User Name';
   static const String small ='Small';
   static const String large ='Large';
   static const String extraLarge ='Extra Large';
-
-
 }

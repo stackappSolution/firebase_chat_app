@@ -30,7 +30,6 @@ class ChatScreen extends StatelessWidget {
         return SafeArea(
             child: Scaffold(
           backgroundColor: AppColorConstant.appWhite,
-          appBar: getAppBar(),
           floatingActionButton: buildFloatingButton(),
           body: buildContactList(),
         ));
@@ -38,28 +37,7 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  getAppBar() {
-    return AppAppBar(
-      leading: Padding(
-        padding: EdgeInsets.all(16.px),
-        child: const AppImageAsset(
-          image: AppAsset.person,
-        ),
-      ),
-      title: AppText(StringConstant.chats,
-          color: AppColorConstant.appBlack, fontSize: 20.px),
-      actions: [
-        Padding(
-          padding: EdgeInsets.all(18.px),
-          child: const AppImageAsset(image: AppAsset.search),
-        ),
-        Padding(
-          padding: EdgeInsets.all(18.px),
-          child: const AppImageAsset(image: AppAsset.popup),
-        ),
-      ],
-    );
-  }
+
 
   buildFloatingButton() {
     return Column(
