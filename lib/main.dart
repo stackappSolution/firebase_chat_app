@@ -1,16 +1,12 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/generated/l10n.dart';
-
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:signal/routes/routes_helper.dart';
 import 'app/app/utills/theme_util.dart';
 
-import 'package:signal/pages/appearance/appearance_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,20 +30,10 @@ class MyApp extends StatelessWidget {
           child: GetMaterialApp(
             locale: locale,
             title: 'Flutter matrimonial app',
-            //theme: ThemeUtil.getAppTheme(context, ThemeUtil.isDark),
-            //theme: ThemeData.light(),
-
-            darkTheme: ThemeData.light(),
-
-            // darkTheme: ThemeData.dark(),
-
-            themeMode: ThemeUtil.selectedTheme,
+           // darkTheme: ThemeData.light(),
+          //  themeMode: ThemeUtil.selectedTheme,
             theme: Themes.light,
-
             debugShowCheckedModeBanner: false,
-
-            home: AppearanceScreen(),
-
             defaultTransition: Transition.fadeIn,
             initialRoute: RouteHelper.getHomeScreen(),
             getPages: RouteHelper.routes,

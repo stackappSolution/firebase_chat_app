@@ -21,10 +21,15 @@ class AppearanceViewModel {
   ThemeMode _selectedTheme = ThemeUtil.selectedTheme;
   String? selectedLanguage;
   String? selectedFontSize;
+  AppearanceController? controller;
 
   Locale? locale;
 
-  AppearanceViewModel(this.appearanceScreen);
+  AppearanceViewModel(this.appearanceScreen){
+    Future.delayed(Duration(milliseconds: 100),() {
+     controller= Get.find<AppearanceController>();
+    },);
+  }
 
   themeDialog(
     context,
@@ -135,7 +140,7 @@ class AppearanceViewModel {
                         S.load(const Locale('en_US'));
                         Get.updateLocale(locale!);
                         selectedLanguage = 'English';
-                        // setStringValue(language, selectedLanguage!);
+                        setStringValue(language, selectedLanguage!);
                       });
                     },
                   ),
@@ -148,13 +153,13 @@ class AppearanceViewModel {
                     groupValue: locale,
                     onChanged: (value) {
                       setState(() {
-                        logs('value  --> $value');
+
                         locale = value!;
                         S.load(const Locale('gu_IN'));
                         setStringValue(getLanguage, 'gu_IN');
                         Get.updateLocale(locale!);
-                        // selectedLanguage = 'Gujarati';
-                        // setStringValue(language, selectedLanguage!);
+                        selectedLanguage = 'Gujarati';
+                        setStringValue(language, selectedLanguage!);
                       });
                     },
                   ),
@@ -289,11 +294,5 @@ class AppearanceViewModel {
     prefs.setInt(StringConstant.theme, themeMode.index);
   }
 
-  getLocalizationKey() async {
-    String? localeKey = await getStringValue(getLanguage);
-    if (localeKey != null) {
-      S.load(Locale(localeKey));
-      logs('key---> $localeKey');
-    }
-  }
+
 }

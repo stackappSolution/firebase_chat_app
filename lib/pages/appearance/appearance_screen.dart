@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -12,6 +13,7 @@ import 'package:signal/pages/appearance/appearance_view_model.dart';
 
 class AppearanceScreen extends StatelessWidget {
   AppearanceViewModel? appearanceViewModel;
+  AppearanceController? controller;
 
   AppearanceScreen({super.key});
 
@@ -22,13 +24,25 @@ class AppearanceScreen extends StatelessWidget {
     return GetBuilder<AppearanceController>(
       init: AppearanceController(),
       initState: (state) async {
-        Future<String?> key = getStringValue(getLanguage);
-        String? result = await key;
-        appearanceViewModel!.locale = Locale(result!);
+        Future.delayed(
+          const Duration(milliseconds: 100),
+          () async {
+            controller = Get.find<AppearanceController>();
+            Future<String?> key = getStringValue(getLanguage);
+            String? result = await key;
+            appearanceViewModel!.locale = Locale(result!);
+
+            Future<String?> currentLanguage = getStringValue(language);
+            String? selectedLanguage = await currentLanguage;
+            logs("default--> $selectedLanguage");
+            appearanceViewModel!.selectedLanguage = selectedLanguage;
+            controller!.update();
+          },
+        );
       },
       builder: (AppearanceController controller) {
         return SafeArea(
-            child: Scaffold(
+            child: Scaffold(backgroundColor: AppColorConstant.appWhite,
           appBar: getAppBar(),
           body: getBody(context, controller),
         ));
@@ -48,11 +62,11 @@ class AppearanceScreen extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter)),
+      // decoration: const BoxDecoration(
+      //     gradient: LinearGradient(
+      //         colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
+      //         begin: Alignment.topCenter,
+      //         end: Alignment.bottomCenter)),
       child: Padding(
         padding: EdgeInsets.only(top: 40.px),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -61,8 +75,8 @@ class AppearanceScreen extends StatelessWidget {
               context,
               S.of(Get.context!).language,
               (appearanceViewModel!.selectedLanguage != null)
-                  ? appearanceViewModel?.selectedLanguage
-                  : StringConstant.systemDefault,
+                  ? appearanceViewModel!.selectedLanguage
+                  : "default",
               controller),
           appearanceViewTile(2, context, S.of(Get.context!).theme,
               StringConstant.systemDefault, controller),

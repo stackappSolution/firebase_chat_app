@@ -5,10 +5,12 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
+import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
+
 
 class SettingScreen extends StatelessWidget {
   SettingScreen({Key? key}) : super(key: key);
@@ -41,10 +43,10 @@ class SettingScreen extends StatelessWidget {
     );
   }
 
-
   getBody(SettingsController controller) {
     return Column(
       children: [
+        SizedBox(height: 10.px,),
         buildProfileView(),
         buildSettingsList(controller),
       ],
@@ -55,7 +57,8 @@ class SettingScreen extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: 30.px,
+          width: 20.px,
+          height: 20.px,
         ),
         CircleAvatar(
           maxRadius: 40.px,
@@ -65,6 +68,7 @@ class SettingScreen extends StatelessWidget {
         ),
         SizedBox(
           width: 30.px,
+          height: 20.px,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,33 +86,74 @@ class SettingScreen extends StatelessWidget {
   }
 
   buildSettingsList(SettingsController controller) {
-    return ListView.builder(
-      padding: EdgeInsets.all(12.px),
+    return ListView(
       shrinkWrap: true,
-      itemCount: controller.settingItems.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-              onTap: controller.settingItems[index].onTap,
-              leading: Container(
-                height: 50.px,
-                width: 50.px,
-                padding: EdgeInsets.all(12.px),
-                decoration: BoxDecoration(
-                    color: AppColorConstant.appTheme.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12.px),
-                    border: Border.all(color: AppColorConstant.appTheme)),
-                child: AppImageAsset(
-                  image:controller.settingItems[index].icon,
-                ),
-              ),
-              title: AppText(
-                fontSize: 15.px,
-                controller.settingItems[index].title,
-              )),
-        );
-      },
+      children: [
+        settingsView(
+          1,
+          AppAsset.account,
+          S.of(Get.context!).account,
+        ),
+        settingsView(
+          2,
+          AppAsset.appearance,
+          S.of(Get.context!).appearance,
+        ),
+        settingsView(
+          3,
+          AppAsset.linkedDevice,
+          S.of(Get.context!).linkedDevice,
+        ),
+        settingsView(
+          4,
+          AppAsset.donate,
+          S.of(Get.context!).donateToSignal,
+        ),
+        settingsView(
+          5,
+          AppAsset.chats,
+          S.of(Get.context!).chats,
+        ),
+        settingsView(
+          6,
+          AppAsset.privacyPolicy,
+          S.of(Get.context!).privacyPolicy,
+        ),
+        settingsView(
+          7,
+          AppAsset.invite,
+          S.of(Get.context!).inviteFriends,
+        ),
+      ],
+    );
+
+  }
+
+  settingsView(
+    index,
+    image,
+    tittle,
+  ) {
+    return Padding(
+      padding:  EdgeInsets.all(10.px),
+      child: ListTile(
+        onTap: () {
+          settingViewModel!.mainTap(index );
+        },
+        title: AppText( tittle,fontSize: 15.px,),
+        leading: Container(
+          height: 50.px,
+          width: 50.px,
+          padding: EdgeInsets.all(12.px),
+          decoration: BoxDecoration(
+              color: AppColorConstant.appTheme.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12.px),
+              border: Border.all(color: AppColorConstant.appTheme)),
+          child: AppImageAsset(
+            image: image,
+          ),
+        ),
+      ),
     );
   }
 }

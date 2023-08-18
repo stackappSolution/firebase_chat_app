@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/widget/app_app_bar.dart';
+
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
-import 'package:signal/generated/l10n.dart';
-import 'package:signal/routes/route_helper.dart';
+
+import 'package:signal/routes/routes_helper.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
@@ -37,33 +37,32 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-
-  getAppBar() {
-    return AppAppBar(
-      leading: Padding(
-        padding: EdgeInsets.all(16.px),
-        child: const AppImageAsset(
-          image: AppAsset.person,
-        ),
-      ),
-      title: AppText(S.of(Get.context!).chats,
-          color: AppColorConstant.appBlack, fontSize: 20.px),
-      actions: [
-        Padding(
-          padding: EdgeInsets.all(18.px),
-          child: const AppImageAsset(image: AppAsset.search),
-        ),
-        InkWell(onTap: () {
-          Get.toNamed(RouteHelper.getSettingScreen());
-        },
-          child: Padding(
-            padding: EdgeInsets.all(18.px),
-            child: const AppImageAsset(image: AppAsset.popup),
-          ),
-        ),
-      ],
-    );
-  }
+  // getAppBar() {
+  //   return AppAppBar(
+  //     leading: Padding(
+  //       padding: EdgeInsets.all(16.px),
+  //       child: const AppImageAsset(
+  //         image: AppAsset.person,
+  //       ),
+  //     ),
+  //     title: AppText(S.of(Get.context!).chats,
+  //         color: AppColorConstant.appBlack, fontSize: 20.px),
+  //     actions: [
+  //       Padding(
+  //         padding: EdgeInsets.all(18.px),
+  //         child: const AppImageAsset(image: AppAsset.search),
+  //       ),
+  //       InkWell(onTap: () {
+  //         Get.toNamed(RouteHelper.getSettingScreen());
+  //       },
+  //         child: Padding(
+  //           padding: EdgeInsets.all(18.px),
+  //           child: const AppImageAsset(image: AppAsset.popup),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   buildFloatingButton() {
     return Column(
@@ -71,7 +70,8 @@ class ChatScreen extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: 10.px),
-          child: FloatingActionButton(heroTag: 'camera',
+          child: FloatingActionButton(
+            heroTag: 'camera',
             elevation: 0.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
@@ -79,15 +79,14 @@ class ChatScreen extends StatelessWidget {
             child: AppImageAsset(
                 image: AppAsset.camera, height: 25.px, width: 25.px),
             onPressed: () {
-
               Get.toNamed(RouteHelper.getSettingsScreen());
-
             },
           ),
         ),
         Padding(
           padding: EdgeInsets.only(bottom: 10.px),
-          child: FloatingActionButton(heroTag: "chats",
+          child: FloatingActionButton(
+            heroTag: "chats",
             elevation: 0.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
@@ -113,8 +112,7 @@ class ChatScreen extends StatelessWidget {
 
         return Container(
             margin: EdgeInsets.all(10.px),
-            decoration: const BoxDecoration(
-              ),
+            decoration: const BoxDecoration(),
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: AppColorConstant.appTheme.withOpacity(0.8),

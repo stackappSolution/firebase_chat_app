@@ -7,14 +7,11 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/home_controller.dart';
 import 'package:signal/pages/calls/calls_screen.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/pages/home/home_view_model.dart';
-
 import 'package:signal/generated/l10n.dart';
-
 import 'package:signal/routes/routes_helper.dart';
 
 
@@ -22,6 +19,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   HomeViewModel? homeViewModel;
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +31,8 @@ class HomeScreen extends StatelessWidget {
       initState: (state) {
 
         homeViewModel!.getLocalizationKey();
+
+
       },
       builder: (controller) {
         return SafeArea(
@@ -50,28 +50,29 @@ getAppBar() {
   return AppAppBar(
     leading: Padding(
       padding: EdgeInsets.all(16.px),
-      child: GestureDetector(onTap: () {
-        Get.toNamed(RouteHelper.getSettingScreen());
-      },
-        child: const AppImageAsset(
-          image: AppAsset.person,
-        ),
+      child: const AppImageAsset(
+        image: AppAsset.person,
       ),
     ),
-    title: AppText(StringConstant.chats,
+    title: AppText(S.of(Get.context!).chats,
         color: AppColorConstant.appBlack, fontSize: 20.px),
     actions: [
       Padding(
         padding: EdgeInsets.all(18.px),
         child: const AppImageAsset(image: AppAsset.search),
       ),
-      Padding(
-        padding: EdgeInsets.all(18.px),
-        child: const AppImageAsset(image: AppAsset.popup),
+      InkWell(onTap: () {
+        Get.toNamed(RouteHelper.getSettingScreen());
+      },
+        child: Padding(
+          padding: EdgeInsets.all(18.px),
+          child: const AppImageAsset(image: AppAsset.popup),
+        ),
       ),
     ],
   );
 }
+
 getBody(HomeScreenController controller) {
   return IndexedStack(
     index: controller.tabIndex,
