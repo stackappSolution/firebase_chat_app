@@ -135,13 +135,10 @@ class ProfileScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(top: 5.px),
                     child: AppTextFormField(
-                    padding: EdgeInsets.only(top: 10.px),n
                       label: "",
                       controller:
                           profileViewModel!.lastNameController,
                       labelText: StringConstant.lastName, fontSize: null,
-                      controller: profileViewModel!.lastNameController,
-                     
                     ),
                   ),
                   SizedBox(

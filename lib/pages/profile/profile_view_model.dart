@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -12,6 +13,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
+import 'package:signal/routes/routes_helper.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/validation.dart';
@@ -42,7 +44,7 @@ class ProfileViewModel {
   }
 
   onTapNext(context) {
-
+   // Get.toNamed(RouteHelper.getIntroPage());
     logs("NextTapped");
   }
 
