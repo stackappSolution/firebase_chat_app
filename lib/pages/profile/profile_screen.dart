@@ -11,7 +11,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
-
 import '../../constant/app_asset.dart';
 
 
@@ -135,12 +134,12 @@ class ProfileScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(top: 5.px),
                     child: AppTextFormField(
-                    padding: EdgeInsets.only(top: 10.px),n
-                      label: "",
+
+
                       controller:
                           profileViewModel!.lastNameController,
                       labelText: StringConstant.lastName, fontSize: null,
-                      controller: profileViewModel!.lastNameController,
+
                      
                     ),
                   ),

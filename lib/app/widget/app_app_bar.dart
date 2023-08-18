@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:signal/constant/color_constant.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
@@ -9,6 +10,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final double? leadingWidth;
   final bool? centerTitle;
+
 
   const AppAppBar({
     Key? key,
@@ -25,14 +27,18 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return AppBar(forceMaterialTransparency: false,
       // ignore: deprecated_member_use
-      backgroundColor: context.theme.bottomAppBarColor,
+     // backgroundColor: context.theme.bottomAppBarColor,
 
+    elevation: 0.0,
       leading: leading,
       shape: shape,
       leadingWidth: leadingWidth,
-     // backgroundColor: AppColorConstant.appWhite,
+      backgroundColor: AppColorConstant.appWhite,
       title: title,
       centerTitle: centerTitle,
       actions: actions,

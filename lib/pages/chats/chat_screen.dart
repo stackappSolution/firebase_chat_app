@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/widget/app_app_bar.dart';
+
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
+
+import 'package:signal/routes/routes_helper.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
@@ -20,7 +21,6 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logs("Current Screen --> $runtimeType");
-
     chatViewModel ?? (chatViewModel = ChatViewModel(this));
     chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
@@ -37,7 +37,32 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-
+  // getAppBar() {
+  //   return AppAppBar(
+  //     leading: Padding(
+  //       padding: EdgeInsets.all(16.px),
+  //       child: const AppImageAsset(
+  //         image: AppAsset.person,
+  //       ),
+  //     ),
+  //     title: AppText(S.of(Get.context!).chats,
+  //         color: AppColorConstant.appBlack, fontSize: 20.px),
+  //     actions: [
+  //       Padding(
+  //         padding: EdgeInsets.all(18.px),
+  //         child: const AppImageAsset(image: AppAsset.search),
+  //       ),
+  //       InkWell(onTap: () {
+  //         Get.toNamed(RouteHelper.getSettingScreen());
+  //       },
+  //         child: Padding(
+  //           padding: EdgeInsets.all(18.px),
+  //           child: const AppImageAsset(image: AppAsset.popup),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   buildFloatingButton() {
     return Column(
@@ -46,18 +71,22 @@ class ChatScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(bottom: 10.px),
           child: FloatingActionButton(
+            heroTag: 'camera',
             elevation: 0.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
             backgroundColor: AppColorConstant.appTheme,
             child: AppImageAsset(
                 image: AppAsset.camera, height: 25.px, width: 25.px),
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed(RouteHelper.getSettingsScreen());
+            },
           ),
         ),
         Padding(
           padding: EdgeInsets.only(bottom: 10.px),
           child: FloatingActionButton(
+            heroTag: "chats",
             elevation: 0.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
@@ -78,23 +107,22 @@ class ChatScreen extends StatelessWidget {
         Contact contact = chatViewModel!.contacts[index];
         String? mobileNumber =
             contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
-        String firstLetter = contact.displayName!.substring(0, 1).toUpperCase();
+        String? displayName = contact.displayName ?? 'unknown';
+        String firstLetter = displayName.substring(0, 1).toUpperCase();
+
         return Container(
             margin: EdgeInsets.all(10.px),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.px),
-                border: Border.all(
-                    color: AppColorConstant.appTheme.withOpacity(0.4))),
+            decoration: const BoxDecoration(),
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: AppColorConstant.appTheme,
+                backgroundColor: AppColorConstant.appTheme.withOpacity(0.8),
                 child: AppText(
                   firstLetter,
                   color: AppColorConstant.appWhite,
                   fontSize: 22.px,
                 ),
               ),
-              title: AppText(contact.displayName!),
+              title: AppText(displayName),
               subtitle: AppText(mobileNumber!,
                   color: AppColorConstant.appBlack, fontSize: 12.px),
             ));
