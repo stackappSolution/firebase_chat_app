@@ -14,7 +14,7 @@ import 'package:signal/pages/profile/profile_view_model.dart';
 
 import '../../constant/app_asset.dart';
 
-// ignore: must_be_immutable
+
 class ProfileScreen extends StatelessWidget {
   ProfileViewModel? profileViewModel;
   ProfileController? profileController;
@@ -120,7 +120,7 @@ class ProfileScreen extends StatelessWidget {
                     onChanged: (value) {
                       profileViewModel!.onChangedValue(value, controller);
                     },
-                    fontSize: null,
+ 
                   ),
                   Align(
                       alignment: Alignment.centerLeft,
@@ -135,8 +135,13 @@ class ProfileScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(top: 5.px),
                     child: AppTextFormField(
+                    padding: EdgeInsets.only(top: 10.px),n
+                      label: "",
+                      controller:
+                          profileViewModel!.lastNameController,
+                      labelText: StringConstant.lastName, fontSize: null,
                       controller: profileViewModel!.lastNameController,
-                      labelText: StringConstant.lastName,
+                     
                     ),
                   ),
                   SizedBox(
@@ -153,8 +158,8 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       isBorderShape: true,
                       buttonColor: (profileViewModel!.isButtonActive)
-                          ? AppColorConstant.appYellow
-                          : AppColorConstant.appYellow.withOpacity(0.5),
+                          ? AppColorConstant.appTheme
+                          : AppColorConstant.appTheme.withOpacity(0.5),
                       onPressed: (profileViewModel!.isButtonActive)
                           ? () {
                               profileViewModel!.onTapNext(context);

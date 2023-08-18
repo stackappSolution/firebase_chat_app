@@ -2,6 +2,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/routes/routes_helper.dart';
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -28,22 +29,25 @@ class IntroPage extends StatelessWidget {
         builder: (IntroPageController controller) {
           return Scaffold(
               body: Container(
-                  padding: EdgeInsets.all(10.px),
+                  //padding: EdgeInsets.all(10.px),
+                height: double.infinity,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
                           colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter)),
-                  child: Column(children: [
-                    SizedBox(height: 80.px),
-                    Padding(padding: EdgeInsets.only(left: 8.px), child: image()),
-                    textWelcome(),
-                    termsPrivacyPolicy(),
-                    getStartedButton(
-                        controller.introPageViewModal.isConnected, context, controller),
-                    transferOrRestoreAccount()
-                  ])));
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      SizedBox(height: 80.px),
+                      Padding(padding: EdgeInsets.only(left: 8.px), child: image()),
+                      textWelcome(),
+                      termsPrivacyPolicy(),
+                      getStartedButton(
+                          controller.introPageViewModal.isConnected, context, controller),
+                      transferOrRestoreAccount()
+                    ]),
+                  )));
         });
   }
 
@@ -54,7 +58,9 @@ class IntroPage extends StatelessWidget {
 
   AppButton getStartedButton(bool isConnected, context, IntroPageController controller) {
     return AppButton(
-        onTap: () {},
+        onTap: () {
+          Get.toNamed(RouteHelper.getSignInPage());
+        },
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
         borderRadius: BorderRadius.circular(10.px),
@@ -83,7 +89,7 @@ class IntroPage extends StatelessWidget {
               fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 20.px)),
       AppText(StringConstant.toMakeYourDayGreat,
           fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 18.px),
-      SizedBox(height: 230.px)
+      SizedBox(height: 200.px)
     ]);
   }
 

@@ -20,6 +20,7 @@ dependencies:
 
   # Responsive UI :
   responsive_sizer: ^3.1.1
+  device_preview: ^1.1.0
 
   # Web module :
   url_launcher: ^6.1.7

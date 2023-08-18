@@ -1,4 +1,5 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,21 +12,21 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/sign_in_controller.dart';
 import 'package:signal/pages/signin_pages/sign_in_view_model.dart';
-import 'package:signal/routes/route_helper.dart';
+import 'package:signal/routes/routes_helper.dart';
 
+// ignore: must_be_immutable
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
 
   SignInViewModel? signInViewModel;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     signInViewModel ?? (signInViewModel = SignInViewModel(this));
     return GetBuilder(
       init: SignInController(),
-      initState: (state) {
-
-      },
+      initState: (state) {},
       builder: (SignInController controller) {
         return SafeArea(
           child: Scaffold(
@@ -36,26 +37,25 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  SingleChildScrollView buildSignInpage(
+  Container buildSignInpage(
     String countryCode,
     String phoneNumber,
     BuildContext context,
     SignInController controller,
-  ) =>
-      SingleChildScrollView(
-        child: Container(
-          height: Device.height,
-          width: Device.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppColorConstant.appWhite.withOpacity(0.1),
-                AppColorConstant.appTheme.withOpacity(0.1),
-              ],
-            ),
+      Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColorConstant.appWhite.withOpacity(0.1),
+              AppColorConstant.appTheme.withOpacity(0.1),
+            ],
           ),
+        ),
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,18 +77,15 @@ class SignInPage extends StatelessWidget {
                   margin: EdgeInsets.only(left: 20.px),
                   alignment: Alignment.centerLeft,
                   child: AppText(
-                    'Sign In',
+                    StringConstant.signIn,
                     fontSize: 30.px,
                     fontWeight: FontWeight.w600,
                   )),
-              SizedBox(
-                height: 5.px,
-              ),
               Container(
                 margin: EdgeInsets.only(left: 20.px),
                 child: AppText(
-                  StringConstant.signIndis,
-                  color: AppColorConstant.appLightBlack.withOpacity(0.3),
+                  StringConstant.signInDis,
+                  color: AppColorConstant.appLightBlack.withOpacity(0.4),
                   fontWeight: FontWeight.w400,
                   fontSize: 15.px,
                 ),
@@ -101,20 +98,22 @@ class SignInPage extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(left: 20.px),
-                    height: 60.px,
-                    width: 80.px,
+                    height: 50.px,
+                    width: 90.px,
                     decoration: BoxDecoration(
                         color: AppColorConstant.appTheme.withOpacity(0.1),
                         border: Border.all(color: AppColorConstant.appTheme),
                         borderRadius: BorderRadius.circular(13.px)),
                     child: CountryCodePicker(
                       showFlag: false,
+                      showFlagDialog: true,
                       onChanged: (country) {
                         signInViewModel!.selectedCountry = country;
                       },
                       initialSelection: 'IN',
-                      textStyle: TextStyle(
-                          fontSize: 20.px, color: AppColorConstant.appBlack),
+                      textStyle: const TextStyle(
+                          color: AppColorConstant.appBlack,
+                          fontWeight: FontWeight.w600,),
                       // Set initial country code
                       favorite: const ['IN'], // Specify favorite country codes
                     ),
@@ -124,14 +123,19 @@ class SignInPage extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.center,
-                          height: 60.px,
-                          margin: EdgeInsets.only(left: 10.px, right: 10.px),
                           decoration: BoxDecoration(
-                              color: AppColorConstant.appTheme.withOpacity(0.1),
-                              border:
-                                  Border.all(color: AppColorConstant.appTheme),
-                              borderRadius: BorderRadius.circular(13.px)),
+                              borderRadius: BorderRadius.circular(10.px),
+                              color:
+                                  AppColorConstant.appTheme.withOpacity(0.1)),
+                          height: 50.px,
+                          margin: EdgeInsets.only(left: 10.px, right: 10.px),
                           child: AppTextFormField(
+                            labelText: 'Phone Number',
+                            labelStyle: TextStyle(
+                                color: AppColorConstant.appTheme,
+                                fontSize: 20.px),
+                            controller: signInViewModel!.phoneNumber,
+                            style: const TextStyle(
                             controller: signInViewModel!.phoneNumber,
                             style: TextStyle(
                               fontSize: 22.px,
@@ -184,18 +188,16 @@ class SignInPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: ElevatedButton(
-                    onPressed: () {
-                      //Get.toNamed(RouteHelper.getVerifyOtpPage());
-                    },
+                    onPressed: () {},
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12))),
                         backgroundColor: MaterialStatePropertyAll(
-                            AppColorConstant.appTheme.withOpacity(0.1)),
+                            AppColorConstant.appTheme.withOpacity(0.5)),
                         fixedSize:
                             MaterialStatePropertyAll(Size(230.px, 50.px))),
                     child: AppText(
-                      'Continue',
+                      StringConstant.continueButton,
                       fontSize: 22.px,
                       color: AppColorConstant.appWhite,
                     ),
@@ -206,17 +208,20 @@ class SignInPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () async {
-                      Get.toNamed(RouteHelper.getVerifyOtpPage());
+                      Get.toNamed(RouteHelper.getVerifyOtpPage(),
+                          arguments: "${signInViewModel!.countryCode}${signInViewModel!.phoneNumber.text}");
                     },
                     style: ButtonStyle(
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
                         backgroundColor: const MaterialStatePropertyAll(
                             AppColorConstant.appTheme),
                         fixedSize:
                             MaterialStatePropertyAll(Size(230.px, 50.px))),
                     child: AppText(
-                      'Continue',
+                      StringConstant.continueButton,
                       fontSize: 22.px,
                       color: AppColorConstant.appWhite,
                     ),
