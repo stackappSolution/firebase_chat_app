@@ -6,4 +6,5 @@ class RouteConstant{
   static const String homeScreen = '/home';
   static const String profileScreen = '/profile';
   static const String settingScreen = '/SettingScreen';
+  static const String appearanceScreen = '/appearance';
 }

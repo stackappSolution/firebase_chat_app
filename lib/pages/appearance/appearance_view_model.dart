@@ -7,6 +7,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
+import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/shared_preferance.dart';
@@ -246,6 +247,11 @@ class AppearanceViewModel {
           );
         }
         break;
+      case 6 :{
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return EditProfileScreen();
+        },));
+      }
     }
   }
 

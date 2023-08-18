@@ -11,7 +11,6 @@ import 'package:signal/pages/appearance/appearance_view_model.dart';
 
 class AppearanceScreen extends StatelessWidget {
   AppearanceViewModel? appearanceViewModel;
-
   AppearanceScreen({super.key});
 
   @override
@@ -24,32 +23,27 @@ class AppearanceScreen extends StatelessWidget {
       builder: (AppearanceController controller) {
         return SafeArea(
             child: Scaffold(
-          appBar: getAppBar(),
+              backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: getAppBar(context),
           body: getBody(context, controller),
         ));
       },
     );
   }
 
-  getAppBar() {
+  getAppBar(context) {
     return AppAppBar(
         title: AppText(
       StringConstant.appearance,
       fontSize: 22.px,
+          color: Theme.of(context).colorScheme.primary,
     ));
   }
 
   getBody(BuildContext context, AppearanceController controller) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter)),
-      child: Padding(
-        padding: EdgeInsets.only(top: 40.px),
+    return Padding(
+      padding: EdgeInsets.only(top: 30.px),
+      child: SingleChildScrollView(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           appearanceViewTile(1, context, StringConstant.language,
               StringConstant.systemDefault, controller),
@@ -84,12 +78,14 @@ class AppearanceScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppText(title),
-            AppText(
-              subtitle,
-              color: AppColorConstant.appBlack.withOpacity(0.5),
-              fontSize: 13,
-            ),
+            AppText(title,color: Theme.of(context).colorScheme.primary,),
+        Padding(
+          padding:  EdgeInsets.only(top: 6.px),
+          child: AppText(
+            subtitle,
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: 13,
+          ),)
           ],
         ),
       ),

@@ -11,10 +11,13 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
+import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/validation.dart';
+import '../../app/widget/app_image_assets.dart';
+import '../../constant/app_asset.dart';
 
 class ProfileViewModel {
   ProfileScreen? profileScreen;
@@ -42,7 +45,9 @@ class ProfileViewModel {
   }
 
   onTapNext(context) {
-
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return AppearanceScreen();
+    },));
     logs("NextTapped");
   }
 
@@ -61,7 +66,8 @@ class ProfileViewModel {
               color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
           actions: [
             Padding(
-              padding: EdgeInsets.only(left: 80.px,top: 20.px,bottom: 10.px,right: 10.px),
+              padding: EdgeInsets.only(
+                  left: 80.px, top: 20.px, bottom: 10.px, right: 10.px),
               child: InkWell(
                 onTap: () {
                   Navigator.pop(context);
@@ -75,36 +81,57 @@ class ProfileViewModel {
               ),
             )
           ],
-          widget: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding:  EdgeInsets.only(right: 30.px),
-                child: IconButton(
-                    onPressed: () {
-                      pickImageCamera(controller);
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.camera_alt_rounded,
-                      color: AppColorConstant.appWhite,
-                      size: 70.px,
-                    )),
-              ),
-              Padding(
-                padding:   EdgeInsets.only(right: 30.px),
-                child: IconButton(
-                    onPressed: () {
-                      pickImageGallery(controller);
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.image,
-                      color: AppColorConstant.appWhite,
-                      size: 70.px,
-                    )),
-              ),
-            ],
+          widget: Container(
+            height: 100.px,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          pickImageCamera(controller);
+                          Navigator.pop(context);
+                        },
+                        child: AppImageAsset(
+                            height: 60.px,
+                            color: AppColorConstant.appWhite,
+                            image: AppAsset.camera)),
+                    Padding(
+                      padding: EdgeInsets.only(top: 9.px),
+                      child: AppText(
+                        StringConstant.camera,
+                        fontSize: 18.px,
+                        color: AppColorConstant.appWhite,
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          pickImageGallery(controller);
+                          Navigator.pop(context);
+                        },
+                        child: AppImageAsset(
+                            height: 60.px,
+                            color: AppColorConstant.appWhite,
+                            image: AppAsset.gallery)),
+                    Padding(
+                      padding: EdgeInsets.only(top: 9.px),
+                      child: const AppText(
+                        StringConstant.gallery,
+                        fontSize: 18,
+                        color: AppColorConstant.appWhite,
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },

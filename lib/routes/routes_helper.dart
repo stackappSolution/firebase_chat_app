@@ -6,6 +6,8 @@ import 'package:signal/pages/otp_pages/verify_otp_page.dart';
 import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/routes_constant.dart';
 
+import '../pages/appearance/appearance_screen.dart';
+
 class RouteHelper {
   static String getIntroPage() => RouteConstant.introPage;
   static String getSignInPage() => RouteConstant.signInPage;
@@ -13,6 +15,7 @@ class RouteHelper {
   static String getHomeScreen() => RouteConstant.homeScreen;
   static String getProfileScreen() => RouteConstant.profileScreen;
   static String getSettingScreen() => RouteConstant.settingScreen;
+  static String getAppearanceScreen() => RouteConstant.appearanceScreen;
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.introPage, page: () => IntroPage()),
@@ -22,6 +25,7 @@ class RouteHelper {
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.signInPage,page: () => SignInPage(),),
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage(),),
+    GetPage(name: RouteConstant.appearanceScreen, page: () => AppearanceScreen(),),
    // GetPage(name: RouteConstant.settingScreen, page: () => SettingScreen(),)
   ];
 }

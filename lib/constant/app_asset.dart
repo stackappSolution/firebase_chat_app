@@ -38,6 +38,8 @@ class AppAsset {
   static const String phonePlus='${iconPath}phone_plus.png';
   static const String popup='${iconPath}popup.png';
   static const String search='${iconPath}search.png';
+  static const String gallery='${iconPath}gallery.png';
+
 
 
 
