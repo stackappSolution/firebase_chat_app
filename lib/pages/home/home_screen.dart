@@ -9,8 +9,7 @@ import 'package:signal/controller/home_controller.dart';
 import 'package:signal/pages/calls/calls_screen.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/pages/home/home_view_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:signal/generated/l10n.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -25,6 +24,7 @@ class HomeScreen extends StatelessWidget {
     return GetBuilder<HomeScreenController>(
       init: HomeScreenController(),
       initState: (state) {
+
         homeViewModel!.getLocalizationKey();
       },
       builder: (controller) {
@@ -58,7 +58,7 @@ buildBottomBar(HomeScreenController controller) {
       currentIndex: controller.tabIndex,
       items: [
         BottomNavigationBarItem(
-            label: AppLocalizations.of(Get.context!)!.chats,
+            label: S.of(Get.context!).chats,
             icon: AppImageAsset(
                 height: 28.px,
                 width: 28.px,
@@ -66,7 +66,7 @@ buildBottomBar(HomeScreenController controller) {
                     ? AppAsset.chat
                     : AppAsset.chatOutline)),
         BottomNavigationBarItem(
-            label: AppLocalizations.of(Get.context!)!.calls,
+            label: S.of(Get.context!).calls,
             icon: AppImageAsset(
                 height: 28.px,
                 width: 28.px,

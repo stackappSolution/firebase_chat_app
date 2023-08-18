@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -50,7 +51,7 @@ class ProfileViewModel {
       context: context,
       builder: (context) {
         return AppAlertDialog(
-          title: AppText(StringConstant.choose),
+          title: AppText(StringConstant.choose,),
           actions: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.px),
@@ -61,7 +62,11 @@ class ProfileViewModel {
                 buttonColor: AppColorConstant.appWhite,
                 buttonHeight: 10,
                 widget: AppText(
+
                   StringConstant.cancel,
+
+
+
                   color: AppColorConstant.appYellow,
                   fontSize: 15.px,
                 ),

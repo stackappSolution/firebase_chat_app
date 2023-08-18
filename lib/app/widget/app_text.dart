@@ -21,7 +21,7 @@ class AppText extends StatelessWidget {
     Key? key,
     this.color,
     this.fontWeight,
-    this.fontFamily = AppAsset.defaultFont,
+    this.fontFamily,
     this.fontSize,
     this.textAlign,
     this.height,
@@ -41,7 +41,7 @@ class AppText extends StatelessWidget {
       maxLines: maxLines,
       style: TextStyle(
         color: color ?? Colors.black,
-        fontFamily: fontFamily,
+        fontFamily: fontFamily ?? 'poppins',
         fontWeight: fontWeight,
         fontSize: fontSize ?? 16,
         height: height,

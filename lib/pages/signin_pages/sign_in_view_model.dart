@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:signal/pages/signin_pages/sign_in_page.dart';
 
+
 class SignInViewModel {
 
   late SignInPage? signInPage;

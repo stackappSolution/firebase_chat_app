@@ -5,7 +5,6 @@ class AppAsset {
   static const String iconPath = 'assets/icons/';
 
 
-
   //     ======================= Sounds =======================     //
   /// static const String addToCartVoiceNote = '${soundPath}add_to_cart.wav';
 

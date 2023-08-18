@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 
 
+
 class NetworkConnectivity {
   NetworkConnectivity._();
   static final _instance = NetworkConnectivity._();

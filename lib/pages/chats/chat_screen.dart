@@ -8,11 +8,9 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/route_helper.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -23,7 +21,6 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logs("Current Screen --> $runtimeType");
-
     chatViewModel ?? (chatViewModel = ChatViewModel(this));
     chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
@@ -49,16 +46,20 @@ class ChatScreen extends StatelessWidget {
           image: AppAsset.person,
         ),
       ),
-      title: AppText(AppLocalizations.of(Get.context!)!.chats,
+      title: AppText(S.of(Get.context!).chats,
           color: AppColorConstant.appBlack, fontSize: 20.px),
       actions: [
         Padding(
           padding: EdgeInsets.all(18.px),
           child: const AppImageAsset(image: AppAsset.search),
         ),
-        Padding(
-          padding: EdgeInsets.all(18.px),
-          child: const AppImageAsset(image: AppAsset.popup),
+        InkWell(onTap: () {
+          Get.toNamed(RouteHelper.getSettingScreen());
+        },
+          child: Padding(
+            padding: EdgeInsets.all(18.px),
+            child: const AppImageAsset(image: AppAsset.popup),
+          ),
         ),
       ],
     );
@@ -70,7 +71,7 @@ class ChatScreen extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: 10.px),
-          child: FloatingActionButton(
+          child: FloatingActionButton(heroTag: 'camera',
             elevation: 0.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
@@ -78,13 +79,15 @@ class ChatScreen extends StatelessWidget {
             child: AppImageAsset(
                 image: AppAsset.camera, height: 25.px, width: 25.px),
             onPressed: () {
+
               Get.toNamed(RouteHelper.getSettingsScreen());
+
             },
           ),
         ),
         Padding(
           padding: EdgeInsets.only(bottom: 10.px),
-          child: FloatingActionButton(
+          child: FloatingActionButton(heroTag: "chats",
             elevation: 0.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
@@ -110,13 +113,11 @@ class ChatScreen extends StatelessWidget {
 
         return Container(
             margin: EdgeInsets.all(10.px),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.px),
-                border: Border.all(
-                    color: AppColorConstant.appTheme.withOpacity(0.4))),
+            decoration: const BoxDecoration(
+              ),
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: AppColorConstant.appTheme,
+                backgroundColor: AppColorConstant.appTheme.withOpacity(0.8),
                 child: AppText(
                   firstLetter,
                   color: AppColorConstant.appWhite,

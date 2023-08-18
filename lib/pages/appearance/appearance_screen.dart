@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
-
-import '../../app/app/utills/app_utills.dart';
 
 class AppearanceScreen extends StatelessWidget {
   AppearanceViewModel? appearanceViewModel;
+
   AppearanceScreen({super.key});
 
   @override
@@ -21,7 +22,9 @@ class AppearanceScreen extends StatelessWidget {
     return GetBuilder<AppearanceController>(
       init: AppearanceController(),
       initState: (state) async {
-
+        Future<String?> key = getStringValue(getLanguage);
+        String? result = await key;
+        appearanceViewModel!.locale = Locale(result!);
       },
       builder: (AppearanceController controller) {
         return SafeArea(
@@ -36,7 +39,7 @@ class AppearanceScreen extends StatelessWidget {
   getAppBar() {
     return AppAppBar(
         title: AppText(
-      StringConstant.appearance,
+      S.of(Get.context!).appearance,
       fontSize: 22.px,
     ));
   }
@@ -46,17 +49,23 @@ class AppearanceScreen extends StatelessWidget {
       padding: EdgeInsets.only(top: 40.px),
       child: SingleChildScrollView(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          appearanceViewTile(1, context, StringConstant.language,
-              StringConstant.systemDefault, controller),
-          appearanceViewTile(2, context, StringConstant.theme,
+          appearanceViewTile(
+              1,
+              context,
+              S.of(Get.context!).language,
+              (appearanceViewModel!.selectedLanguage != null)
+                  ? appearanceViewModel?.selectedLanguage
+                  : StringConstant.systemDefault,
+              controller),
+          appearanceViewTile(2, context, S.of(Get.context!).theme,
               StringConstant.systemDefault, controller),
           appearanceViewTile(
-              3, context, StringConstant.chatColor, "", controller),
+              3, context, S.of(Get.context!).chatColor, "", controller),
           appearanceViewTile(
-              4, context, StringConstant.appIcon, "", controller),
-          appearanceViewTile(5, context, StringConstant.messageFontSize,
+              4, context, S.of(Get.context!).appIcon, "", controller),
+          appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
               StringConstant.normal, controller),
-          appearanceViewTile(6, context, StringConstant.navigationBarSize,
+          appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
               StringConstant.normal, controller),
         ]),
       ),

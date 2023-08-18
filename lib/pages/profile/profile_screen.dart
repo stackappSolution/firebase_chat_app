@@ -9,7 +9,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
-
 import '../../constant/app_asset.dart';
 
 // ignore: must_be_immutable

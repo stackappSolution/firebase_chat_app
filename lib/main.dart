@@ -1,9 +1,10 @@
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/route_helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'app/app/utills/theme_util.dart';
@@ -20,12 +21,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale? locale;
     return ResponsiveSizer(
       builder: (BuildContext context, Orientation orientation, screenType) {
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
           child: GetMaterialApp(
-            locale: Get.deviceLocale,
+            locale: locale,
             title: 'Flutter matrimonial app',
             theme: ThemeData(useMaterial3: true),
             //theme: ThemeData.light(),
@@ -36,12 +38,13 @@ class MyApp extends StatelessWidget {
             initialRoute: RouteHelper.getHomeScreen(),
             getPages: RouteHelper.routes,
             localizationsDelegates: const [
-              AppLocalizations.delegate, // Add this line
+              S.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [Locale('en'), Locale('gu')],
+            supportedLocales: S.delegate.supportedLocales,
+
 
             // initialRoute: RouteHelper.getHomeScreen(),
 

@@ -11,6 +11,7 @@ class AppAlertDialog extends StatelessWidget {
   final TextStyle? titleTextStyle;
   final EdgeInsetsGeometry? actionsPadding;
 
+
   const AppAlertDialog(
       {super.key,
       this.shape,
@@ -22,6 +23,7 @@ class AppAlertDialog extends StatelessWidget {
       this.titleTextStyle,
       this.actionsPadding,
       this.widget});
+
 
 
   @override
