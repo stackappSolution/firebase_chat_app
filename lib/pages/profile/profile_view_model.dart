@@ -44,7 +44,7 @@ class ProfileViewModel {
   }
 
   onTapNext(context) {
-   // Get.toNamed(RouteHelper.getIntroPage());
+
     logs("NextTapped");
   }
 
@@ -63,25 +63,31 @@ class ProfileViewModel {
               color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
           actions: [
             Padding(
-              padding: EdgeInsets.only(left: 80.px,top: 20.px,bottom: 10.px,right: 10.px),
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: AppText(
-                  StringConstant.cansel,
-                  color: AppColorConstant.appTheme,
-                  fontSize: 15.px,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            )
+                padding: EdgeInsets.only(
+                    left: 80.px, top: 20.px, bottom: 10.px, right: 10.px),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  // buttonColor: AppColorConstant.appWhite,
+                  // buttonHeight: 10,
+                  // widget: AppText(
+                  //   StringConstant.cancel,
+                  //   color: AppColorConstant.appYellow,
+                  //   child: AppText(
+                  //     StringConstant.cansel,
+                  //     color: AppColorConstant.appTheme,
+                  //     fontSize: 15.px,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                ))
           ],
           widget: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
-                padding:  EdgeInsets.only(right: 30.px),
+                padding: EdgeInsets.only(right: 30.px),
                 child: IconButton(
                     onPressed: () {
                       pickImageCamera(controller);
@@ -94,7 +100,7 @@ class ProfileViewModel {
                     )),
               ),
               Padding(
-                padding:   EdgeInsets.only(right: 30.px),
+                padding: EdgeInsets.only(right: 30.px),
                 child: IconButton(
                     onPressed: () {
                       pickImageGallery(controller);

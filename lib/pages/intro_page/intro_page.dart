@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -12,6 +12,7 @@ import '../../constant/color_constant.dart';
 import '../../constant/string_constant.dart';
 import '../../controller/intro_page_controller.dart';
 import '../../service/network_connectivity.dart';
+import 'package:connectivity/connectivity.dart';
 
 class IntroPage extends StatelessWidget {
   Map _source = {ConnectivityResult.none: false};
@@ -61,6 +62,11 @@ class IntroPage extends StatelessWidget {
     return AppButton(
         onTap: () {
           goToSignInPage();
+
+          Get.toNamed(RouteHelper.getHomeScreen());
+
+          Get.toNamed(RouteHelper.getSignInPage());
+
         },
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
