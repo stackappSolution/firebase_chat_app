@@ -13,17 +13,18 @@ import 'package:signal/pages/appearance/appearance_screen.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/shared_preferance.dart';
+import '../../app/app/utills/theme_util.dart';
 
 class AppearanceViewModel {
   AppearanceScreen? appearanceScreen;
   bool isLightTheme = false;
-  ThemeMode _selectedTheme = ThemeMode.light;
+  ThemeMode _selectedTheme = ThemeUtil.selectedTheme;
   String? selectedLanguage;
   String? selectedFontSize;
-  Locale? locale ;
+
+  Locale? locale;
 
   AppearanceViewModel(this.appearanceScreen);
-
 
   themeDialog(
     context,
@@ -35,11 +36,14 @@ class AppearanceViewModel {
         return StatefulBuilder(
           builder: (context, setState) {
             return AppAlertDialog(
+              backgroundColor: AppColorConstant.blackOff,
               title: const AppText(StringConstant.theme),
               actions: [
                 Column(
                   children: [
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.systemDefault),
                       value: ThemeMode.system,
                       groupValue: _selectedTheme,
@@ -52,6 +56,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.light),
                       value: ThemeMode.light,
                       groupValue: _selectedTheme,
@@ -64,6 +70,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.dark),
                       value: ThemeMode.dark,
                       groupValue: _selectedTheme,
@@ -169,11 +177,14 @@ class AppearanceViewModel {
         return StatefulBuilder(
           builder: (context, setState) {
             return AppAlertDialog(
+              backgroundColor: AppColorConstant.blackOff,
               title: const AppText(StringConstant.language),
               actions: [
                 Column(
                   children: [
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.small),
                       value: StringConstant.small,
                       groupValue: selectedLanguage,
@@ -185,6 +196,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.normal),
                       value: StringConstant.normal,
                       groupValue: selectedLanguage,
@@ -196,6 +209,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.large),
                       value: StringConstant.large,
                       groupValue: selectedLanguage,
@@ -207,6 +222,8 @@ class AppearanceViewModel {
                       },
                     ),
                     RadioListTile(
+                      fillColor: MaterialStateColor.resolveWith(
+                          (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.extraLarge),
                       value: StringConstant.extraLarge,
                       groupValue: selectedLanguage,
@@ -279,5 +296,4 @@ class AppearanceViewModel {
       logs('key---> $localeKey');
     }
   }
-
 }

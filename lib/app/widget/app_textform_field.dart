@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:signal/app/widget/app_image_assets.dart';
-import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String? hintText;
-  final String? leble;
+  final String? label;
   final String? suffixIcon;
   final GestureTapCallback? onSuffixTap;
   final ValueChanged<String>? onChanged;
-  final String? lable;
-
   final FormFieldValidator<String>? validator;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
@@ -23,80 +20,58 @@ class AppTextFormField extends StatelessWidget {
   final InputDecoration? decoration;
   final double? fontSize;
 
-  const AppTextFormField({
-    super.key,
-
-    this.lable,
-    this.suffixIcon,
-    this.onSuffixTap,
-    this.validator,
-    this.inputFormatters,
-    this.controller,
-    this.style,
-    this.onChanged,
-    this.labelText,
-    this.labelStyle,
-    this.keyboardType,
-     this.fontSize,
-    this.hintText,
-    this.leble,
-    this.decoration,
-  });
-
-
+  const AppTextFormField(
+      {super.key,
+        this.hintText,
+        this.label,
+        this.suffixIcon,
+        this.onSuffixTap,
+        this.onChanged,
+        this.validator,
+        this.inputFormatters,
+        this.controller,
+        this.style,
+        this.labelText,
+        this.labelStyle,
+        this.keyboardType,
+        this.decoration,
+        this.fontSize});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60.px,
-      padding: EdgeInsets.only(left: 12.px, right: 10.px),
-      decoration: BoxDecoration(
-        color: AppColorConstant.appTheme.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(10.px),
-        border:
-            Border.all(color: AppColorConstant.appYellowBorder, width: 1.px),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 5.px),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: AppText(
-                  leble!,
-                  color: AppColorConstant.appYellow,
-                  fontSize: 13.px,
-                )),
-          ),
-          Expanded(
-            child: TextFormField(
-              onChanged: onChanged,
-              controller: controller,
-              decoration: decoration ??
-                  InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    hintText: hintText,
-                    labelText: labelText,
-                    labelStyle: labelStyle,
-                  ),
-              keyboardType: keyboardType,
-              validator: validator,
-              inputFormatters: inputFormatters,
-              style: TextStyle(
-                fontSize: fontSize,
+    return TextFormField(
+
+      onChanged: onChanged,
+      controller: controller,
+      decoration: decoration ??
+          InputDecoration(
+            enabledBorder: OutlineInputBorder(
+                borderSide:
+                const BorderSide(color: AppColorConstant.appYellowBorder),
+                borderRadius: BorderRadius.all(Radius.circular(11.px))),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(11.px)),
+              borderSide: const BorderSide(
+                color: AppColorConstant.appYellowBorder,
               ),
             ),
+            contentPadding:
+            EdgeInsets.symmetric(vertical: 2.px, horizontal: 15.px),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(11.px)),
+              borderSide:
+              const BorderSide(color: AppColorConstant.appYellowBorder),
+            ),
+            hintText: hintText,
+            labelText: labelText,
+            labelStyle:
+            const TextStyle(color: AppColorConstant.appYellowBorder),
           ),
-          if (suffixIcon != null && suffixIcon!.isNotEmpty) ...[
-            SizedBox(width: 12.px),
-            InkWell(
-                onTap: onSuffixTap,
-                child: AppImageAsset(
-                    image: suffixIcon, height: 22.px, width: 22.px)),
-            SizedBox(width: 12.px),
-          ]
-        ],
+      keyboardType: keyboardType,
+      validator: validator,
+      inputFormatters: inputFormatters,
+      style: TextStyle(
+        fontSize: fontSize,
       ),
     );
   }

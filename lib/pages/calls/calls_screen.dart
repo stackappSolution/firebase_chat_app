@@ -16,6 +16,7 @@ class CallsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logs("Current Screen --> $runtimeType");
+
     return GetBuilder<ContactController>(
       init: ContactController(),
       initState: (state) {},
@@ -24,11 +25,12 @@ class CallsScreen extends StatelessWidget {
             child: Scaffold(
           backgroundColor: AppColorConstant.appWhite,
           appBar: getAppBar(),
-          floatingActionButton: buildFloatingButton(),
-        ));
+            )
+        );
       },
     );
   }
+
 
   getAppBar() {
     return AppAppBar(
@@ -52,6 +54,7 @@ class CallsScreen extends StatelessWidget {
       ],
     );
   }
+
 
   buildFloatingButton() {
     return Column(

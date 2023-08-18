@@ -11,6 +11,7 @@ import 'package:signal/app/widget/app_elevated_button.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
+import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 
 import '../../app/app/utills/app_utills.dart';
@@ -22,7 +23,7 @@ class ProfileViewModel {
   final lastNameController = TextEditingController();
   String errorFirstName = "";
   bool isButtonActive = false;
-  List? multipleImages;
+  File? selectedImage;
 
   ProfileViewModel(this.profileScreen) {}
 
@@ -41,57 +42,74 @@ class ProfileViewModel {
     }
   }
 
-  profilePicTap(BuildContext context) async {
-    await getPermission(context);
+  onTapNext(context) {
+    logs("NextTapped");
+  }
+
+  profilePicTap(BuildContext context, GetxController controller) async {
+    await getPermission(context, controller);
     // ignore: use_build_context_synchronously
   }
 
-  showDialogs(context) {
+  showDialogs(context, GetxController controller) {
     showDialog(
       context: context,
       builder: (context) {
         return AppAlertDialog(
-          title: AppText(StringConstant.choose,),
+          backgroundColor: AppColorConstant.blackOff,
+          title: const AppText(StringConstant.choose,
+              color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
           actions: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.px),
-              child: AppElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                buttonColor: AppColorConstant.appWhite,
-                buttonHeight: 10,
-                widget: AppText(
-
-                  StringConstant.cancel,
-
-
-
-                  color: AppColorConstant.appYellow,
-                  fontSize: 15.px,
-                ),
-              ),
-            )
+                padding: EdgeInsets.only(
+                    left: 80.px, top: 20.px, bottom: 10.px, right: 10.px),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  // buttonColor: AppColorConstant.appWhite,
+                  // buttonHeight: 10,
+                  // widget: AppText(
+                  //   StringConstant.cancel,
+                  //   color: AppColorConstant.appYellow,
+                  //   child: AppText(
+                  //     StringConstant.cansel,
+                  //     color: AppColorConstant.appTheme,
+                  //     fontSize: 15.px,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                ))
           ],
           widget: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                  onPressed: () {
-                    pickImageCamera();
-                  },
-                  icon: Icon(
-                    Icons.camera_alt_rounded,
-                    size: 70.px,
-                  )),
-              IconButton(
-                  onPressed: () {
-                    pickImageGallery();
-                  },
-                  icon: Icon(
-                    Icons.image,
-                    size: 70.px,
-                  )),
+              Padding(
+                padding: EdgeInsets.only(right: 30.px),
+                child: IconButton(
+                    onPressed: () {
+                      pickImageCamera(controller);
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.camera_alt_rounded,
+                      color: AppColorConstant.appWhite,
+                      size: 70.px,
+                    )),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 30.px),
+                child: IconButton(
+                    onPressed: () {
+                      pickImageGallery(controller);
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.image,
+                      color: AppColorConstant.appWhite,
+                      size: 70.px,
+                    )),
+              ),
             ],
           ),
         );
@@ -99,43 +117,47 @@ class ProfileViewModel {
     );
   }
 
-  Future<void> getPermission(BuildContext context) async {
+  Future<void> getPermission(
+      BuildContext context, GetxController controller) async {
     final permissionStatus = await Permission.storage.status;
     final permissionStatus1 = await Permission.camera.status;
     if (permissionStatus.isDenied && permissionStatus1.isDenied) {
       await Permission.storage.request();
       await Permission.camera.request();
-
-      if(permissionStatus.isGranted && permissionStatus1.isGranted)
-        {
-          // ignore: use_build_context_synchronously
-          showDialogs(context);
-        }
-
+      if (permissionStatus.isGranted && permissionStatus1.isGranted) {
+        // ignore: use_build_context_synchronously
+        showDialogs(context, controller);
+      }
+      if (permissionStatus.isDenied && permissionStatus1.isDenied) {
+        await openAppSettings();
+      }
     } else if (permissionStatus.isPermanentlyDenied &&
         permissionStatus1.isPermanentlyDenied) {
       await openAppSettings();
     } else {
       // ignore: use_build_context_synchronously
-      showDialogs(context);
+      showDialogs(context, controller);
     }
   }
 
-  Future<void> pickImageGallery() async {
+  Future<void> pickImageGallery(GetxController controller) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      multipleImages!.add(File(pickedFile.path));
+      selectedImage = (File(pickedFile.path));
+      logs(selectedImage.toString());
+      controller.update();
     }
   }
 
-  Future<void> pickImageCamera() async {
+  Future<void> pickImageCamera(GetxController controller) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
-      multipleImages!.add(File(pickedFile.path));
+      selectedImage = (File(pickedFile.path));
+      controller.update();
     }
   }
 }

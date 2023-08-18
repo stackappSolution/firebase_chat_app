@@ -25,7 +25,6 @@ class AppAlertDialog extends StatelessWidget {
       this.widget});
 
 
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

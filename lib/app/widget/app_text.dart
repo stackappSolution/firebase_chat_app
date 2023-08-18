@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:signal/constant/app_asset.dart';
 
+
 class AppText extends StatelessWidget {
   final String title;
   final Color? color;
@@ -53,3 +54,5 @@ class AppText extends StatelessWidget {
     );
   }
 }
+
+

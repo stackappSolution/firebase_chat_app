@@ -30,13 +30,13 @@ class ChatScreen extends StatelessWidget {
         return SafeArea(
             child: Scaffold(
           backgroundColor: AppColorConstant.appWhite,
-          appBar: getAppBar(),
           floatingActionButton: buildFloatingButton(),
           body: buildContactList(),
         ));
       },
     );
   }
+
 
   getAppBar() {
     return AppAppBar(
