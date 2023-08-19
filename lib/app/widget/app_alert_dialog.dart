@@ -28,3 +28,4 @@ class AppAlertDialog extends StatelessWidget {
         alignment: alignment);
   }
 }
+

@@ -1,0 +1,14 @@
+{
+       "chats": "ચેટ્સ",
+       "calls": "કૉલ્સ",
+       "settings": "સેટિંગ્સ",
+        "appearance": "દેખાવ",
+        "account":"એકાઉન્ટ",
+        "linkedDevice": "લિંક કરેલ ઉપકરણ",
+        "donateToSignal": "સિગ્નલ માટે દાન કરો",
+        "notification" : "સૂચના",
+        "privacyPolicy": "ગોપનીયતા નીતિ",
+        "inviteFriends" : "િત્રોને આમંત્રિત કરો",
+        "gujarati" : "ગુજરાતી",
+        "english" : "અંગ્રેજી"
+ }

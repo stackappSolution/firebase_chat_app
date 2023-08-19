@@ -12,6 +12,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
 
   cupertino_icons: ^1.0.5
 
@@ -39,7 +42,8 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   sticky_headers: ^0.3.0+2
   grouped_list: ^5.1.2
-  intl:
+
+
 
   # Fetch server data & State management :
   get: ^4.6.5
@@ -60,6 +64,9 @@ dependencies:
   firebase_core: ^2.15.0
   cloud_firestore: ^4.8.4
 
+  # localization
+  intl: ^0.18.0
+  flutter_localization: ^0.1.13
 
 
 dev_dependencies:
@@ -67,9 +74,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.2
 
-flutter:
 
+flutter:
+  generate: true
   uses-material-design: true
+
 
   assets:
     - assets/fonts/
@@ -80,21 +89,25 @@ flutter:
   fonts:
     - family: poppins
       fonts:
-        - asset: assets/fonts/poppins/Poppins-Black.ttf
-        - asset: assets/fonts/poppins/Poppins-BlackItalic.ttf
-        - asset: assets/fonts/poppins/Poppins-Bold.ttf
-        - asset: assets/fonts/poppins/Poppins-BoldItalic.ttf
-        - asset: assets/fonts/poppins/Poppins-ExtraBold.ttf
-        - asset: assets/fonts/poppins/Poppins-ExtraBoldItalic.ttf
-        - asset: assets/fonts/poppins/Poppins-ExtraLight.ttf
-        - asset: assets/fonts/poppins/Poppins-ExtraLightItalic.ttf
-        - asset: assets/fonts/poppins/Poppins-Italic.ttf
-        - asset: assets/fonts/poppins/Poppins-Light.ttf
-        - asset: assets/fonts/poppins/Poppins-LightItalic.ttf
+#        - asset: assets/fonts/poppins/Poppins-Black.ttf
+#        - asset: assets/fonts/poppins/Poppins-BlackItalic.ttf
+#        - asset: assets/fonts/poppins/Poppins-Bold.ttf
+#        - asset: assets/fonts/poppins/Poppins-BoldItalic.ttf
+#        - asset: assets/fonts/poppins/Poppins-ExtraBold.ttf
+#        - asset: assets/fonts/poppins/Poppins-ExtraBoldItalic.ttf
+#        - asset: assets/fonts/poppins/Poppins-ExtraLight.ttf
+#        - asset: assets/fonts/poppins/Poppins-ExtraLightItalic.ttf
+#        - asset: assets/fonts/poppins/Poppins-Italic.ttf
+#        - asset: assets/fonts/poppins/Poppins-Light.ttf
+#        - asset: assets/fonts/poppins/Poppins-LightItalic.ttf
         - asset: assets/fonts/poppins/Poppins-Medium.ttf
-        - asset: assets/fonts/poppins/Poppins-MediumItalic.ttf
-        - asset: assets/fonts/poppins/Poppins-Regular.ttf
-        - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
-        - asset: assets/fonts/poppins/Poppins-SemiBoldItalic.ttf
-        - asset: assets/fonts/poppins/Poppins-Thin.ttf
-        - asset: assets/fonts/poppins/Poppins-ThinItalic.ttf
+#        - asset: assets/fonts/poppins/Poppins-MediumItalic.ttf
+#        - asset: assets/fonts/poppins/Poppins-Regular.ttf
+#        - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
+#        - asset: assets/fonts/poppins/Poppins-SemiBoldItalic.ttf
+#        - asset: assets/fonts/poppins/Poppins-Thin.ttf
+#        - asset: assets/fonts/poppins/Poppins-ThinItalic.ttf
+
+flutter_intl:
+  main_locale: en_US
+  enabled: true
