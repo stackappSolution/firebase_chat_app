@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:signal/app/app/utills/theme_util.dart';
 import 'package:signal/constant/color_constant.dart';
 
+import '../../constant/color_constant.dart';
+
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final Widget? title;
@@ -20,7 +22,8 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.shape,
     this.leading,
-    this.leadingWidth, this.centerTitle,
+    this.leadingWidth,
+    this.centerTitle,
   }) : super(key: key);
 
   @override
@@ -28,6 +31,9 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    return AppBar(
+      forceMaterialTransparency: false,
+      scrolledUnderElevation: 0,
 
 
 
