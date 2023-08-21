@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
             supportedLocales: S.delegate.supportedLocales,
 
             // initialRoute: RouteHelper.getHomeScreen(),
-
             // home: const LoginScreen(),
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,

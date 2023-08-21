@@ -2,9 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-
-
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
@@ -63,11 +61,7 @@ class IntroPage extends StatelessWidget {
   AppButton getStartedButton(bool isConnected, context, IntroPageController controller) {
     return AppButton(
         onTap: () {
-
-          Get.toNamed(RouteHelper.getHomeScreen());
-
           Get.toNamed(RouteHelper.getSignInPage());
-
         },
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
@@ -82,20 +76,20 @@ class IntroPage extends StatelessWidget {
   }
 
   AppText termsPrivacyPolicy() {
-    return AppText(StringConstant.termsPrivacyPolicy,
+    return AppText(S.of(Get.context!).termsPrivacyPolicy,
         color: AppColorConstant.appLightBlack, fontWeight: FontWeight.w500, fontSize: 12.px);
   }
 
   Column textWelcome() {
     return Column(children: [
-      AppText(StringConstant.welcomeToChat, fontSize: 30.px, fontWeight: FontWeight.w600),
+      AppText(S.of(Get.context!).welcomeToChat, fontSize: 30.px, fontWeight: FontWeight.w600),
       Padding(
           padding: EdgeInsets.only(
             top: 10.px,
           ),
-          child: AppText(StringConstant.theBestMessengerAndChat,
+          child: AppText(S.of(Get.context!).theBestMessengerAndChat,
               fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 20.px)),
-      AppText(StringConstant.toMakeYourDayGreat,
+      AppText(S.of(Get.context!).toMakeYourDayGreat,
           fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 18.px),
       SizedBox(height: 200.px)
     ]);

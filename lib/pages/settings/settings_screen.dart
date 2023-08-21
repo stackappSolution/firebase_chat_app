@@ -11,7 +11,7 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
 
-
+// ignore: must_be_immutable
 class SettingScreen extends StatelessWidget {
   SettingScreen({Key? key}) : super(key: key);
 
@@ -23,9 +23,7 @@ class SettingScreen extends StatelessWidget {
     logs('Current Screen---> $runtimeType');
 
     return GetBuilder<SettingsController>(
-      initState: (state) {
-        settingViewModel!.getLocalizationKey();
-      },
+      initState: (state) {},
       init: SettingsController(),
       builder: (controller) {
         return Scaffold(
@@ -44,9 +42,11 @@ class SettingScreen extends StatelessWidget {
   }
 
   getBody(SettingsController controller) {
-    return Column(
+    return ListView(
       children: [
-        SizedBox(height: 10.px,),
+        SizedBox(
+          height: 10.px,
+        ),
         buildProfileView(),
         buildSettingsList(controller),
       ],
@@ -86,7 +86,7 @@ class SettingScreen extends StatelessWidget {
   }
 
   buildSettingsList(SettingsController controller) {
-    return ListView(
+    return ListView(physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
         settingsView(
@@ -124,9 +124,13 @@ class SettingScreen extends StatelessWidget {
           AppAsset.invite,
           S.of(Get.context!).inviteFriends,
         ),
+        settingsView(
+          8,
+          AppAsset.help,
+          S.of(Get.context!).help,
+        ),
       ],
     );
-
   }
 
   settingsView(
@@ -135,12 +139,15 @@ class SettingScreen extends StatelessWidget {
     tittle,
   ) {
     return Padding(
-      padding:  EdgeInsets.all(10.px),
+      padding: EdgeInsets.all(10.px),
       child: ListTile(
         onTap: () {
-          settingViewModel!.mainTap(index );
+          settingViewModel!.mainTap(index);
         },
-        title: AppText( tittle,fontSize: 15.px,),
+        title: AppText(
+          tittle,
+          fontSize: 15.px,
+        ),
         leading: Container(
           height: 50.px,
           width: 50.px,

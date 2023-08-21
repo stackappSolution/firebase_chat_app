@@ -8,7 +8,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
-
+import 'package:signal/generated/l10n.dart';
 import '../../controller/chating_page_controller.dart';
 
 class ChatingPage extends StatelessWidget {
@@ -61,13 +61,13 @@ class ChatingPage extends StatelessWidget {
                                         Container(
                                             width: 65.px,
                                             height: 65.px,
-                                            child: AppText(StringConstant.oneTwoOne,
-                                                fontSize: 25.px,
-                                                color: AppColorConstant.appWhite),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
                                                 color: AppColorConstant.purple,
-                                                borderRadius: BorderRadius.circular(60.px)))
+                                                borderRadius: BorderRadius.circular(60.px)),
+                                            child: AppText(StringConstant.oneTwoOne,
+                                                fontSize: 25.px,
+                                                color: AppColorConstant.appWhite))
                                       ]),
                                   child: Container(
                                       margin:
@@ -102,25 +102,25 @@ class ChatingPage extends StatelessWidget {
                                                     : EdgeInsets.only(left: 10.px),
                                                 child: Text(formattedTime,
                                                     style:
-                                                        TextStyle(color: AppColorConstant.grey)))
+                                                        const TextStyle(color: AppColorConstant.grey)))
                                           ])));
                             } else {
                               slidable = Slidable(
                                   startActionPane: ActionPane(
                                       extentRatio: 0.2.px,
-                                      motion: ScrollMotion(),
+                                      motion: const ScrollMotion(),
                                       children: [
                                         SizedBox(width: 5.px),
                                         Container(
                                             width: 65.px,
                                             height: 65.px,
-                                            child: AppText(StringConstant.oneTwoOne,
-                                                fontSize: 25.px,
-                                                color: AppColorConstant.appWhite),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
                                                 color: AppColorConstant.purple,
-                                                borderRadius: BorderRadius.circular(60.px)))
+                                                borderRadius: BorderRadius.circular(60.px)),
+                                            child: AppText(StringConstant.oneTwoOne,
+                                                fontSize: 25.px,
+                                                color: AppColorConstant.appWhite))
                                       ]),
                                   child: Container(
                                       margin:
@@ -155,7 +155,7 @@ class ChatingPage extends StatelessWidget {
                                                     : EdgeInsets.only(left: 10.px),
                                                 child: Text(formattedTime,
                                                     style:
-                                                        TextStyle(color: AppColorConstant.grey)))
+                                                        const TextStyle(color: AppColorConstant.grey)))
                                           ])));
                             }
 
@@ -192,8 +192,8 @@ class ChatingPage extends StatelessWidget {
                             height: 30.px,
                             color: Colors.transparent,
                             stringChild: true,
-                            child: Icon(Icons.video_camera_back_outlined, size: 30.px),
-                            borderRadius: BorderRadius.circular(35.px)),
+                            borderRadius: BorderRadius.circular(35.px),
+                            child: Icon(Icons.video_camera_back_outlined, size: 30.px)),
                         AppButton(
                             margin: EdgeInsets.only(left: 10.px),
                             onTap: () {},
@@ -201,8 +201,8 @@ class ChatingPage extends StatelessWidget {
                             height: 30.px,
                             color: Colors.transparent,
                             stringChild: true,
-                            child: Icon(Icons.call_outlined, size: 30.px),
-                            borderRadius: BorderRadius.circular(35.px)),
+                            borderRadius: BorderRadius.circular(35.px),
+                            child: Icon(Icons.call_outlined, size: 30.px)),
                         PopupMenuButton(
                             onSelected: (value) {
                               print("Selected: $value");
@@ -218,9 +218,9 @@ class ChatingPage extends StatelessWidget {
   TextFormField textFormField(ChatingPageController controller) {
     return TextFormField(
         decoration: InputDecoration(
-            border: OutlineInputBorder(borderSide: BorderSide.none),
+            border: const OutlineInputBorder(borderSide: BorderSide.none),
             prefixIcon: emojiButton(),
-            hintText: StringConstant.signalMessage,
+            hintText: S.of(Get.context!).signalMessage,
             suffixIcon: Container(
                 height: 50.px,
                 width: 105.px,
@@ -238,8 +238,8 @@ class ChatingPage extends StatelessWidget {
         height: 35.px,
         color: Colors.transparent,
         stringChild: true,
-        child: Icon(Icons.mood, size: 35.px),
-        borderRadius: BorderRadius.circular(35.px));
+        borderRadius: BorderRadius.circular(35.px),
+        child: Icon(Icons.mood, size: 35.px));
   }
 
   AppButton cameraButton() {
@@ -250,8 +250,8 @@ class ChatingPage extends StatelessWidget {
         height: 35.px,
         color: Colors.transparent,
         stringChild: true,
-        child: Icon(Icons.camera_alt_outlined, size: 35.px),
-        borderRadius: BorderRadius.circular(35.px));
+        borderRadius: BorderRadius.circular(35.px),
+        child: Icon(Icons.camera_alt_outlined, size: 35.px));
   }
 
   AppButton micButton() {
@@ -262,8 +262,8 @@ class ChatingPage extends StatelessWidget {
         height: 35.px,
         color: Colors.transparent,
         stringChild: true,
-        child: Icon(Icons.mic_none_outlined, size: 35.px),
-        borderRadius: BorderRadius.circular(35.px));
+        borderRadius: BorderRadius.circular(35.px),
+        child: Icon(Icons.mic_none_outlined, size: 35.px));
   }
 
   AppButton addButton() {
@@ -274,7 +274,7 @@ class ChatingPage extends StatelessWidget {
         height: 50.px,
         color: AppColorConstant.blue,
         stringChild: true,
-        child: Icon(Icons.add, size: 40.px, color: AppColorConstant.appWhite),
-        borderRadius: BorderRadius.circular(60.px));
+        borderRadius: BorderRadius.circular(60.px),
+        child: Icon(Icons.add, size: 40.px, color: AppColorConstant.appWhite));
   }
 }

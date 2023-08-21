@@ -10,9 +10,7 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
-
 import '../../app/app/utills/app_utills.dart';
-import '../../app/app/utills/shared_preferance.dart';
 import '../../app/app/utills/theme_util.dart';
 
 class AppearanceViewModel {
@@ -25,10 +23,13 @@ class AppearanceViewModel {
 
   Locale? locale;
 
-  AppearanceViewModel(this.appearanceScreen){
-    Future.delayed(Duration(milliseconds: 100),() {
-     controller= Get.find<AppearanceController>();
-    },);
+  AppearanceViewModel(this.appearanceScreen) {
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        controller = Get.find<AppearanceController>();
+      },
+    );
   }
 
   themeDialog(
@@ -105,7 +106,9 @@ class AppearanceViewModel {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              titlePadding: EdgeInsets.only(left: 15.px, top: 10.px),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.px)),
+              titlePadding: EdgeInsets.only(left: 15.px, top: 8.px),
               backgroundColor: AppColorConstant.appWhite,
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
@@ -114,7 +117,7 @@ class AppearanceViewModel {
               title: Container(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.all(10.px),
-                  child: AppText(fontSize: 20.px, 'Language')),
+                  child: AppText(fontSize: 20.px, S.of(Get.context!).language)),
               content: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,9 +125,30 @@ class AppearanceViewModel {
                 children: [
                   Container(
                     padding: EdgeInsets.zero,
-                    height: 2.px,
+                    height: 1.px,
                     width: double.infinity,
                     color: AppColorConstant.grey.withOpacity(0.4),
+                  ),
+                  RadioListTile(
+                    contentPadding: EdgeInsets.only(left: 10.px),
+                    fillColor: const MaterialStatePropertyAll(
+                        AppColorConstant.appTheme),
+                    title: AppText(S.of(context).systemDefault),
+                    value: Locale(
+                      Get.deviceLocale!.languageCode,
+                    ),
+                    groupValue: locale,
+                    onChanged: (value) {
+                      setState(() {
+                        locale = value!;
+                        setStringValue(
+                            getLanguage, Get.deviceLocale!.languageCode);
+                        S.load((Locale(Get.deviceLocale!.languageCode)));
+                        Get.updateLocale(locale!);
+                        selectedLanguage = S.of(Get.context!).systemDefault;
+                        setStringValue(language, selectedLanguage!);
+                      });
+                    },
                   ),
                   RadioListTile(
                     contentPadding: EdgeInsets.only(left: 10.px),
@@ -139,7 +163,7 @@ class AppearanceViewModel {
                         setStringValue(getLanguage, 'en_US');
                         S.load(const Locale('en_US'));
                         Get.updateLocale(locale!);
-                        selectedLanguage = 'English';
+                        selectedLanguage = S.of(Get.context!).english;
                         setStringValue(language, selectedLanguage!);
                       });
                     },
@@ -153,16 +177,18 @@ class AppearanceViewModel {
                     groupValue: locale,
                     onChanged: (value) {
                       setState(() {
-
                         locale = value!;
                         S.load(const Locale('gu_IN'));
                         setStringValue(getLanguage, 'gu_IN');
                         Get.updateLocale(locale!);
-                        selectedLanguage = 'Gujarati';
+                        selectedLanguage = S.of(Get.context!).gujarati;
                         setStringValue(language, selectedLanguage!);
                       });
                     },
                   ),
+                  SizedBox(
+                    height: 10.px,
+                  )
                 ],
               ),
             );
@@ -250,7 +276,7 @@ class AppearanceViewModel {
   }
 
   saveSelectedFontSize(String fontSize) async {
-    setPrefStringValue(StringConstant.selectedFontSize, fontSize);
+    setStringValue(StringConstant.selectedFontSize, fontSize);
   }
 
   mainTap(index, context, AppearanceController controller) {
@@ -283,7 +309,7 @@ class AppearanceViewModel {
 
   loadSelectedFontSize() async {
     final fontSize =
-        await getPrefStringValue(StringConstant.selectedFontSize) ??
+        await getStringValue(StringConstant.selectedFontSize) ??
             StringConstant.normal;
     selectedFontSize = fontSize.toString();
     logs("selectedFontSize-----$selectedFontSize");
@@ -293,6 +319,4 @@ class AppearanceViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt(StringConstant.theme, themeMode.index);
   }
-
-
 }

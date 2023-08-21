@@ -12,14 +12,13 @@ import 'package:signal/pages/calls/calls_screen.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/pages/home/home_view_model.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/routes/app_navigation.dart';
 
-
+// ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   HomeViewModel? homeViewModel;
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +28,12 @@ class HomeScreen extends StatelessWidget {
     return GetBuilder<HomeScreenController>(
       init: HomeScreenController(),
       initState: (state) {
-
         homeViewModel!.getLocalizationKey();
-
-
       },
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
-              appBar: getAppBar(),
+          appBar: getAppBar(),
           backgroundColor: AppColorConstant.appWhite,
           bottomNavigationBar: buildBottomBar(controller),
           body: getBody(controller),
@@ -46,29 +42,27 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
 getAppBar() {
   return AppAppBar(
     leading: Padding(
-      padding: EdgeInsets.all(16.px),
-      child: const AppImageAsset(
-        image: AppAsset.person,
+      padding: EdgeInsets.only(left: 15.px),
+      child: CircleAvatar(
+        backgroundColor: AppColorConstant.appTheme.withOpacity(0.2),
+        child: AppText('S', fontSize: 20.px, color: AppColorConstant.appTheme),
       ),
     ),
-    title: AppText(S.of(Get.context!).chats,
-        color: AppColorConstant.appBlack, fontSize: 20.px),
+    title: Padding(
+      padding: EdgeInsets.only(left: 20.px),
+      child: AppText(S.of(Get.context!).signal,
+          color: AppColorConstant.appBlack, fontSize: 20.px),
+    ),
     actions: [
       Padding(
         padding: EdgeInsets.all(18.px),
         child: const AppImageAsset(image: AppAsset.search),
       ),
-      InkWell(onTap: () {
-        Get.toNamed(RouteHelper.getSettingScreen());
-      },
-        child: Padding(
-          padding: EdgeInsets.all(18.px),
-          child: const AppImageAsset(image: AppAsset.popup),
-        ),
-      ),
+      buildPopupMenu(),
     ],
   );
 }
@@ -108,4 +102,39 @@ buildBottomBar(HomeScreenController controller) {
                     ? AppAsset.phone
                     : AppAsset.phoneOutline))
       ]);
+}
+
+buildPopupMenu() {
+  return PopupMenuButton(
+    onSelected: (value) {
+      if (value == 2) {
+        goToSettingPage();
+      }
+    },
+    elevation: 0.5,
+    position: PopupMenuPosition.under,
+    color: AppColorConstant.appLightGrey,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
+    icon: Padding(
+      padding: EdgeInsets.all(10.px),
+      child: const AppImageAsset(image: AppAsset.popup),
+    ),
+    itemBuilder: (context) {
+      return [
+         PopupMenuItem(
+          value: 0,
+          child: AppText(S.of(Get.context!).newGroup),
+        ),
+        PopupMenuItem(
+            value: 1,
+            child: AppText(S.of(Get.context!).markAllRead)),
+        PopupMenuItem(
+            value: 2,
+            child: AppText(S.of(Get.context!).settings)),
+        PopupMenuItem(
+            value: 3,
+            child: AppText(S.of(Get.context!).inviteFriends)),
+      ];
+    },
+  );
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -7,13 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
-import 'package:signal/app/widget/app_elevated_button.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
-import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
-
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/validation.dart';
 
@@ -25,7 +21,7 @@ class ProfileViewModel {
   bool isButtonActive = false;
   File? selectedImage;
 
-  ProfileViewModel(this.profileScreen) {}
+  ProfileViewModel(this.profileScreen);
 
   onChangedValue(value, GetxController controller) {
     if (ValidationUtil.validateName(value)) {
@@ -67,18 +63,7 @@ class ProfileViewModel {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  // buttonColor: AppColorConstant.appWhite,
-                  // buttonHeight: 10,
-                  // widget: AppText(
-                  //   StringConstant.cancel,
-                  //   color: AppColorConstant.appYellow,
-                  //   child: AppText(
-                  //     StringConstant.cansel,
-                  //     color: AppColorConstant.appTheme,
-                  //     fontSize: 15.px,
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
+
                 ))
           ],
           widget: Row(

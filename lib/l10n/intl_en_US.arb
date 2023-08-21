@@ -36,10 +36,39 @@
         "toMakeYourDayGreat" : "to make your day great!",
         "signInDescription" : "Enter Your Phone Number To Get Started",
         "verifyOtp": "Enter The Code We Sent To",
+        "verifyButton": "Verify",
+        "verify": "Verify OTP",
         "signalMessage" : "Signal message",
         "oneTwoOne" : "121",
         "userName" : "User Name",
         "light": "Light",
-        "dark" : "Dark"
+        "dark" : "Dark",
+        "signal" : "Signal",
+        "search" : "Search..",
+        "yesterday" : "Yesterday",
+        "newGroup" : "New Group",
+        "help" : "Help",
+        "version" : "Version",
+        "licenses" : "Licenses",
+        "whatsThis" : "Whats this?",
+        "supportCenter" : "Support center",
+
+        "other" : "Other",
+        "somethingNotWorking" : "Somethings Not Working",
+        "featureRequest" : "Feature Request",
+        "question" : "Question",
+        "feedback" : "Feedback",
+        "debugLog" : "Debug log",
+        "includeDebug" : "Include Debug Log",
+        "readFaq" : "Have you read our FAQ yet?",
+        "tellUs" : "Tell us wht you are reaching out.",
+        "helpDescription" : "Copyright Signal Messenger \n Licensed under the GNU AGPlv3",
+        "debugLog" : "Debug log",
+        "terms" : "Terms & Privacy Policy",
+        "supportCenter" : "Support center",
+        "contactUs" : "Contact us",
+        "markAllRead" : "Mark all read"
+
+
 
 }
