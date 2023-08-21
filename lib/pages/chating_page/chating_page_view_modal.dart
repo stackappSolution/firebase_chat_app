@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../modal/message.dart';
+
 class ChatingPageViewModal {
   List<PopupMenuEntry<String>> popupMenu = [
     const PopupMenuItem<String>(value: 'option1', child: Text('Option 1')),
@@ -8,31 +10,24 @@ class ChatingPageViewModal {
   ];
   TextEditingController chatController = TextEditingController();
 
-  List<String> message = [
-    'Hyy',
-    'Hello',
-    'as',
-    'ghjm ',
-    'as',
-    'adsasdwe',
-    'aas',
-    'sdf',
-    'as',
-    'dfsx'
-  ];
-  List<bool> isSender = [true, true, false, true, true, false, false, false, true, false];
-  List<DateTime> messageTimestamps = [];
+  List<Message> chatting = [ Message(messages: 'Hello!', isSender: true, messageTimestamps: DateTime(2023, 8, 17, 10, 30)),
+    Message(messages: "Hello!", isSender: false, messageTimestamps: DateTime(2023, 8, 17, 12, 00)),
+    Message(messages: "Hithere!", isSender: false, messageTimestamps: DateTime(2023, 8, 17, 1, 1)),
+    Message(messages: "Howareyou?", isSender: true, messageTimestamps: DateTime(2023, 8, 18, 9, 45)),
+    Message(messages: "Howaxcvdfxcvreyou?", isSender: false, messageTimestamps: DateTime(2023, 8, 19, 10, 40)),
+    Message(messages: "Howareyou?", isSender: true, messageTimestamps: DateTime(2023, 8, 20, 9, 31)),
+    Message(messages: "Howarevxcadfxcvt?", isSender: true, messageTimestamps: DateTime(2023, 8, 21, 9, 54)),
+    Message(messages: "fhxgbcvrthcfgb ?", isSender: false, messageTimestamps: DateTime(2023, 8, 22, 9, 21)),
+    Message(messages: "thnxfgvbthgbdv?", isSender: true, messageTimestamps: DateTime(2023, 8, 23, 9, 12)),
+    Message(messages: "xfgvbrfgnxvb ?", isSender: false, messageTimestamps: DateTime(2023, 8, 24, 9, 45)),
+    Message(messages: "xnfvb ?", isSender: true, messageTimestamps: DateTime(2023, 8, 25, 9, 45)),
+    Message(messages: "jsdkxcnjkjksdnjnj ?", isSender: false, messageTimestamps: DateTime(2023, 8, 26, 9, 8)),
+    Message(messages: "tywefazcjhbxn b ui", isSender: false, messageTimestamps: DateTime(2023, 8, 26, 9, )),
+    Message(messages: "lsvkwropjsvpdiopjfvfvdfvxcc fdv c", isSender: true, messageTimestamps: DateTime(2023, 8, 27, 9, 7)),
+    Message(messages: "jjjasijjjkcjzxuihiowdcsmnjnoioeiccjweioji", isSender: false, messageTimestamps: DateTime(2023, 8, 28, 9, 2)),
+    Message(messages: "isdjcwekmniweimeimm", isSender: true, messageTimestamps: DateTime(2023, 8, 29, 9, 24)),
+    Message(messages: "irwjisdvjioijrijiosdioj", isSender: false, messageTimestamps: DateTime(2023, 8, 30, 9, 7)),
 
-  ChatingPageViewModal() {
-    messageTimestamps.add(DateTime(2023, 8, 16, 10, 30));
-    messageTimestamps.add(DateTime(2023, 8, 16, 11, 45));
-    messageTimestamps.add(DateTime(2023, 8, 16, 12, 30));
-    messageTimestamps.add(DateTime(2023, 8, 16, 1, 45));
-    messageTimestamps.add(DateTime(2023, 8, 16, 2, 30));
-    messageTimestamps.add(DateTime(2023, 8, 16, 3, 45));
-    messageTimestamps.add(DateTime(2023, 8, 16, 4, 30));
-    messageTimestamps.add(DateTime(2023, 8, 16, 5, 45));
-    messageTimestamps.add(DateTime(2023, 8, 16, 6, 30));
-    messageTimestamps.add(DateTime(2023, 8, 16, 7, 45));
-  }
+  ];
+  bool iconChange = false;
 }

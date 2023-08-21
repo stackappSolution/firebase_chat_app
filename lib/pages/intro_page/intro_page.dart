@@ -140,7 +140,7 @@ class IntroPage extends StatelessWidget {
               string: 'Back',
               fontSize: 20,
               borderRadius: BorderRadius.circular(15),
-              height: 45,
+              height: 40,
               color: AppColorConstant.orange,
               stringChild: false,
               width: 100,
