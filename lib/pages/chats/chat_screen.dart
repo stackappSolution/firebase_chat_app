@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
-
 import 'package:signal/routes/routes_helper.dart';
 
+// ignore: must_be_immutable
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
 
@@ -31,38 +31,19 @@ class ChatScreen extends StatelessWidget {
             child: Scaffold(
           backgroundColor: AppColorConstant.appWhite,
           floatingActionButton: buildFloatingButton(),
-          body: buildContactList(),
+          body: getBody(),
         ));
       },
     );
   }
 
-  // getAppBar() {
-  //   return AppAppBar(
-  //     leading: Padding(
-  //       padding: EdgeInsets.all(16.px),
-  //       child: const AppImageAsset(
-  //         image: AppAsset.person,
-  //       ),
-  //     ),
-  //     title: AppText(S.of(Get.context!).chats,
-  //         color: AppColorConstant.appBlack, fontSize: 20.px),
-  //     actions: [
-  //       Padding(
-  //         padding: EdgeInsets.all(18.px),
-  //         child: const AppImageAsset(image: AppAsset.search),
-  //       ),
-  //       InkWell(onTap: () {
-  //         Get.toNamed(RouteHelper.getSettingScreen());
-  //       },
-  //         child: Padding(
-  //           padding: EdgeInsets.all(18.px),
-  //           child: const AppImageAsset(image: AppAsset.popup),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
+  getBody() {
+    return ListView(
+      children: [
+        buildContactList(),
+      ],
+    );
+  }
 
   buildFloatingButton() {
     return Column(
@@ -78,9 +59,7 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: AppColorConstant.appTheme,
             child: AppImageAsset(
                 image: AppAsset.camera, height: 25.px, width: 25.px),
-            onPressed: () {
-              Get.toNamed(RouteHelper.getSettingsScreen());
-            },
+            onPressed: () {},
           ),
         ),
         Padding(
@@ -100,8 +79,13 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
+
+
+
   buildContactList() {
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
       itemCount: chatViewModel!.contacts.length,
       itemBuilder: (context, index) {
         Contact contact = chatViewModel!.contacts[index];
@@ -112,19 +96,26 @@ class ChatScreen extends StatelessWidget {
 
         return Container(
             margin: EdgeInsets.all(10.px),
-            decoration: const BoxDecoration(),
             child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: AppColorConstant.appTheme.withOpacity(0.8),
-                child: AppText(
-                  firstLetter,
-                  color: AppColorConstant.appWhite,
-                  fontSize: 22.px,
+              trailing: AppText(
+                  fontSize: 10.px,
+                  S.of(Get.context!).yesterday,
+                  color: AppColorConstant.appBlack),
+              leading: InkWell(onTap: () {
+                  Get.toNamed(RouteHelper.getChatProfileScreen());
+              },
+                child: CircleAvatar(maxRadius: 30.px,
+                  backgroundColor: AppColorConstant.appTheme.withOpacity(0.8),
+                  child: AppText(
+                    firstLetter,
+                    color: AppColorConstant.appWhite,
+                    fontSize: 22.px,
+                  ),
                 ),
               ),
-              title: AppText(displayName),
+              title: AppText(displayName,fontSize: 15.px,),
               subtitle: AppText(mobileNumber!,
-                  color: AppColorConstant.appBlack, fontSize: 12.px),
+                  color: AppColorConstant.grey, fontSize: 12.px),
             ));
       },
     );

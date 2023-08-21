@@ -11,6 +11,7 @@ import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
 
+// ignore: must_be_immutable
 class AppearanceScreen extends StatelessWidget {
   AppearanceViewModel? appearanceViewModel;
   AppearanceController? controller;
@@ -42,7 +43,8 @@ class AppearanceScreen extends StatelessWidget {
       },
       builder: (AppearanceController controller) {
         return SafeArea(
-            child: Scaffold(backgroundColor: AppColorConstant.appWhite,
+            child: Scaffold(
+          backgroundColor: AppColorConstant.appWhite,
           appBar: getAppBar(),
           body: getBody(context, controller),
         ));
@@ -59,14 +61,9 @@ class AppearanceScreen extends StatelessWidget {
   }
 
   getBody(BuildContext context, AppearanceController controller) {
-    return Container(
+    return SizedBox(
       height: double.infinity,
       width: double.infinity,
-      // decoration: const BoxDecoration(
-      //     gradient: LinearGradient(
-      //         colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
-      //         begin: Alignment.topCenter,
-      //         end: Alignment.bottomCenter)),
       child: Padding(
         padding: EdgeInsets.only(top: 40.px),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -70,7 +70,6 @@ class MyApp extends StatelessWidget {
             ],
 
             // initialRoute: RouteHelper.getHomeScreen(),
-
             // home: const LoginScreen(),
             // initialRoute: RouteHelper.getHomeScreen(),
             // getPages: RouteHelper.routes,

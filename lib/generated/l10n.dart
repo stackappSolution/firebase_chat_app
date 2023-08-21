@@ -410,6 +410,26 @@ class S {
     );
   }
 
+  /// `Verify`
+  String get verifyButton {
+    return Intl.message(
+      'Verify',
+      name: 'verifyButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify OTP`
+  String get verify {
+    return Intl.message(
+      'Verify OTP',
+      name: 'verify',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Signal message`
   String get signalMessage {
     return Intl.message(
@@ -455,6 +475,226 @@ class S {
     return Intl.message(
       'Dark',
       name: 'dark',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Signal`
+  String get signal {
+    return Intl.message(
+      'Signal',
+      name: 'signal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search..`
+  String get search {
+    return Intl.message(
+      'Search..',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yesterday`
+  String get yesterday {
+    return Intl.message(
+      'Yesterday',
+      name: 'yesterday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Group`
+  String get newGroup {
+    return Intl.message(
+      'New Group',
+      name: 'newGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Help`
+  String get help {
+    return Intl.message(
+      'Help',
+      name: 'help',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Version`
+  String get version {
+    return Intl.message(
+      'Version',
+      name: 'version',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Licenses`
+  String get licenses {
+    return Intl.message(
+      'Licenses',
+      name: 'licenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whats this?`
+  String get whatsThis {
+    return Intl.message(
+      'Whats this?',
+      name: 'whatsThis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support center`
+  String get supportCenter {
+    return Intl.message(
+      'Support center',
+      name: 'supportCenter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get other {
+    return Intl.message(
+      'Other',
+      name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Somethings Not Working`
+  String get somethingNotWorking {
+    return Intl.message(
+      'Somethings Not Working',
+      name: 'somethingNotWorking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feature Request`
+  String get featureRequest {
+    return Intl.message(
+      'Feature Request',
+      name: 'featureRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question`
+  String get question {
+    return Intl.message(
+      'Question',
+      name: 'question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feedback`
+  String get feedback {
+    return Intl.message(
+      'Feedback',
+      name: 'feedback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Debug log`
+  String get debugLog {
+    return Intl.message(
+      'Debug log',
+      name: 'debugLog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Include Debug Log`
+  String get includeDebug {
+    return Intl.message(
+      'Include Debug Log',
+      name: 'includeDebug',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Have you read our FAQ yet?`
+  String get readFaq {
+    return Intl.message(
+      'Have you read our FAQ yet?',
+      name: 'readFaq',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tell us wht you are reaching out.`
+  String get tellUs {
+    return Intl.message(
+      'Tell us wht you are reaching out.',
+      name: 'tellUs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copyright Signal Messenger \n Licensed under the GNU AGPlv3`
+  String get helpDescription {
+    return Intl.message(
+      'Copyright Signal Messenger \n Licensed under the GNU AGPlv3',
+      name: 'helpDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms & Privacy Policy`
+  String get terms {
+    return Intl.message(
+      'Terms & Privacy Policy',
+      name: 'terms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact us`
+  String get contactUs {
+    return Intl.message(
+      'Contact us',
+      name: 'contactUs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mark all read`
+  String get markAllRead {
+    return Intl.message(
+      'Mark all read',
+      name: 'markAllRead',
       desc: '',
       args: [],
     );

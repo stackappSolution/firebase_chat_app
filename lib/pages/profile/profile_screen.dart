@@ -13,7 +13,7 @@ import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
 import '../../constant/app_asset.dart';
 
-
+// ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
   ProfileViewModel? profileViewModel;
   ProfileController? profileController;
@@ -40,10 +40,15 @@ class ProfileScreen extends StatelessWidget {
   getBody(GetxController controller, BuildContext context) {
     return Stack(
       children: [
-        Container(height: double.infinity,width: double.infinity,decoration: const BoxDecoration( gradient: LinearGradient(
-            colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter)),),
+        Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(colors: [
+            AppColorConstant.appWhite,
+            AppColorConstant.lightOrange
+          ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        ),
         SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(left: 12.px, right: 12.px),
@@ -104,7 +109,8 @@ class ProfileScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppColorConstant.appBlack,
-                                    border: Border.all(color:AppColorConstant.appWhite)),
+                                    border: Border.all(
+                                        color: AppColorConstant.appWhite)),
                                 child: const Icon(
                                   Icons.camera_alt_outlined,
                                   color: AppColorConstant.appWhite,
@@ -120,7 +126,6 @@ class ProfileScreen extends StatelessWidget {
                     onChanged: (value) {
                       profileViewModel!.onChangedValue(value, controller);
                     },
- 
                   ),
                   Align(
                       alignment: Alignment.centerLeft,
@@ -136,9 +141,12 @@ class ProfileScreen extends StatelessWidget {
                     padding: EdgeInsets.only(top: 5.px),
                     child: AppTextFormField(
 
-                      controller:
-                          profileViewModel!.lastNameController,
-                      labelText: StringConstant.lastName, fontSize: null,
+                      controller: profileViewModel!.lastNameController,
+                      labelText: StringConstant.lastName,
+                      fontSize: null,
+
+
+
 
                     ),
                   ),

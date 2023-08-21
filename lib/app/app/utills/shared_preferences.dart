@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String getLanguage = 'language';
 const String language = 'selectedLanguage';
+const String emoji = 'emoji';
 
  setStringValue(String key, String value) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
