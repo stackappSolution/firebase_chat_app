@@ -68,6 +68,7 @@ class StringConstant {
   static const String badges = 'Badges';
   static const String yourProfileAndChanges =
       'Your Profile And Changes To It Will Be Visible To People You Message, Contacts, And Groups.';
+
   static const String signInDis = 'Enter Your Phone Number To Get Started';
 
   static const String signIn = 'Sign In';
