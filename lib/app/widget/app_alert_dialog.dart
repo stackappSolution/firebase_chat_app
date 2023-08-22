@@ -3,16 +3,30 @@ import 'package:flutter/material.dart';
 class AppAlertDialog extends StatelessWidget {
   final ShapeBorder? shape;
   final AlignmentGeometry? alignment;
-  final Widget title;
+  final Widget? title;
   final Widget? widget;
   final List<Widget>? actions;
   final Color? backgroundColor;
   final EdgeInsetsGeometry? titlePadding;
   final TextStyle? titleTextStyle;
   final EdgeInsetsGeometry? actionsPadding;
+  final double? elevation;
+  final EdgeInsetsGeometry? contentPadding;
+  final EdgeInsets insetPadding;
 
-  const AppAlertDialog({super.key, this.shape, this.alignment, required this.title, this.widget, this.actions, this.backgroundColor, this.titlePadding, this.titleTextStyle, this.actionsPadding});
-
+  const AppAlertDialog({
+      this.shape,
+      this.alignment,
+      this.title,
+      this.widget,
+      this.actions,
+      this.backgroundColor,
+      this.titlePadding,
+      this.titleTextStyle,
+      this.actionsPadding,
+      this.elevation,
+      this.contentPadding,
+      required this.insetPadding, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +39,9 @@ class AppAlertDialog extends StatelessWidget {
         shape: shape,
         actions: actions,
         title: title,
-        alignment: alignment);
+        alignment: alignment,
+        elevation: elevation,
+        contentPadding: contentPadding,
+        insetPadding: insetPadding);
   }
 }
-

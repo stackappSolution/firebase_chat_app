@@ -1,5 +1,5 @@
 class AppAsset {
-  static const String defaultFont = 'Montserrat';
+  static const String defaultFont = 'poppins';
 
   static const String imagePath = 'assets/images/';
   static const String iconPath = 'assets/icons/';
@@ -48,5 +48,6 @@ class AppAsset {
   static const String linkedDevice='${iconPath}linked_device.png';
   static const String notification='${iconPath}notification.png';
   static const String privacyPolicy='${iconPath}privacy_policy.png';
+  static const String phoneIcon='${iconPath}phoneIcon.png';
 
 }

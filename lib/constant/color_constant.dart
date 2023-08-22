@@ -24,13 +24,13 @@ class AppColorConstant {
   static const Color darkPrimary = Color(0xFF242424);
   static const Color darkSecondary = Color(0xFF949494);
   static const Color yellowAppBar = Color(0xFFf69533);
+  static const Color yellowLight = Color(0xFFfce9d4);
   static const Color grey = Colors.grey;
   static const Color blue = Colors.blue;
-  static const Color blackOff = Color(0xFF696969);
   static const Color lightPurple = Color(0xFFEFE3F1);
-  static const Color grey = Color(0xFF9E9E9E);
+ // static const Color grey = Color(0xFF9E9E9E);
   static const Color lightGrey = Color(0xFFC2C2C2);
-  static const Color blue = Color(0xFF2196F3);
+ // static const Color blue = Color(0xFF2196F3);
 
   static Color hex(String hexString) {
     final buffer = StringBuffer();

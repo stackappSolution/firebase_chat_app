@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
+import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/edit_profile_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_view_model.dart';
@@ -41,44 +42,53 @@ class EditProfileScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                CircleAvatar(
-                  radius: 40.px,
+                Padding(
+                  padding:  EdgeInsets.only(bottom: 10.px),
+                  child: CircleAvatar(
+                    radius: 40.px,backgroundColor: AppColorConstant.yellowLight,
+                  ),
                 ),
-                Container(
-                  width: 100.px,
-                  height: 33.px,
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(top: 10.px, bottom: 37.px),
-                  decoration: BoxDecoration(
-                      color: secondaryTheme,
-                      borderRadius: BorderRadius.all(Radius.circular(30.px)),
-                      ),
-                  child: AppText(
-                    StringConstant.editPhoto,
-                    fontSize: 12.px,
-                    fontWeight: FontWeight.bold,
-                    color: primaryTheme,
+                InkWell(onTap: () {
+                  editProfileViewModel!.editPhotoTap();
+                },
+                  child: Container(
+                    width: 100.px,
+                    height: 33.px,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: AppColorConstant.yellowLight,
+                        borderRadius: BorderRadius.all(Radius.circular(30.px)),
+                        ),
+                    child: AppText(
+                      StringConstant.editPhoto,
+                      fontSize: 12.px,
+                      fontWeight: FontWeight.bold,
+                      color: primaryTheme,
+                    ),
                   ),
                 ),
               ],
             )
           ],
         ),
-        Row(
-          children: [
-            const Icon(Icons.account_circle),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.px),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText(StringConstant.profile, color: primaryTheme),
-                  AppText(StringConstant.yourProfile,
-                      color: secondaryTheme, fontSize: 14.px),
-                ],
-              ),
-            )
-          ],
+        Padding(
+          padding:  EdgeInsets.only(top: 33.px),
+          child: Row(
+            children: [
+              const Icon(Icons.account_circle),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.px),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppText(StringConstant.profile, color: primaryTheme),
+                    AppText(StringConstant.yourProfile,
+                        color: secondaryTheme, fontSize: 14.px),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         Row(
           children: [

@@ -151,7 +151,7 @@ class IntroPage extends StatelessWidget {
               stringChild: false,
               width: 100,
             )
-          ],
+          ], insetPadding: EdgeInsets.zero,
         );
       },
     ) : null;
