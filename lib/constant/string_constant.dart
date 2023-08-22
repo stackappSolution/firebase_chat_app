@@ -11,6 +11,9 @@ class StringConstant {
   static const String inviteFriends = 'inviteFriends';
   static const String gujarati = 'gujarati';
   static const String english = 'english';
+  static const String signal = 'Signal';
+  static const String search = 'Search';
+  static const String yesterday = 'Yesterday';
 
   //=====================shared pref keys=======================//
 
@@ -29,6 +32,7 @@ class StringConstant {
   static const String enterValidName = 'Enter Valid Name';
   static const String choose = 'Choose';
   static const String cancel = 'Cancel';
+  static const String conversa = 'Conversations';
 
   static const String cansel = 'Cancel';
 
@@ -54,18 +58,45 @@ class StringConstant {
   static const String signIndis = 'Enter Your Phone Number To Get Started';
 
   static const String signalMessage = 'Signal message';
+
+
+
+  static const String tellUs = 'Tell us what you are reaching out.';
   static const String oneTwoOne = '121';
   static const String userName = 'User Name';
+  static const String whatsThis = 'Whats this?';
+  static const String supportCenter = 'Support center';
+  static const String other = 'Other';
+  static const String somethingNotWorking = 'Somethings Not Working';
+  static const String featureRequest = 'Feature Request';
+  static const String question = 'Question';
+  static const String feedback = 'Feedback';
+  static const String licenses = 'Licenses';
+  static const String debugLog = 'Debug log';
+  static const String includeDebug = 'Include Debug Log';
+  static const String readFaq = 'Have you read our FAQ yet?';
+
 
   static const String light = 'Light';
+  static const String version = 'Version';
+
+
+  static const String helpDescription =  'Copyright Signal Messenger \n Licensed under the GNU AGPlv3';
+  static const String terms = 'Terms & Privacy Policy';
+  static const String contactUs = 'Contact us';
   static const String dark = 'Dark';
   static const String small = 'Small';
+
   static const String large = 'Large';
+  static const String help = 'Help';
   static const String extraLarge = 'Extra Large';
+
 
   static const String profile = 'Profile';
   static const String editPhoto = 'Edit Photo';
   static const String yourName = 'Your Name';
+  static const String newGroup = 'New Group';
+  static const String markAllRead = 'Mark all read';
   static const String about = 'About';
   static const String badges = 'Badges';
   static const String yourProfileAndChanges =

@@ -77,6 +77,20 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
+
+            // initialRoute: RouteHelper.getHomeScreen(),
+            // home: const LoginScreen(),
+            // initialRoute: RouteHelper.getHomeScreen(),
+            // getPages: RouteHelper.routes,
+            // getPages: RouteHelper.routes,
+            // initialRoute: RouteHelper.getSignInPage(),
+            //  home: SignInPage(),
+
+            // initialRoute: RouteHelper.getHomeScreen(),
+            // getPages: RouteHelper.routes,
+            // initialRoute: RouteHelper.getSignInPage(),
+
+            // getPages: RouteHelper.routes,
           ),
         );
       },

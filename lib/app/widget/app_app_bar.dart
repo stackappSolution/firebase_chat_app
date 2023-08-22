@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:signal/constant/color_constant.dart';
 
 import '../../constant/color_constant.dart';
 
@@ -32,6 +33,12 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       // ignore: deprecated_member_use
       backgroundColor: Theme.of(context).colorScheme.background,
       elevation: 0.0,
+      scrolledUnderElevation: 0,
+
+
+
+    return AppBar(forceMaterialTransparency: false,
+    elevation: 0.0,
       leading: leading,
       shape: shape,
       leadingWidth: leadingWidth,

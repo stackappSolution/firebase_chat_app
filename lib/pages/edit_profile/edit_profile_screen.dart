@@ -8,6 +8,7 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/edit_profile_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_view_model.dart';
 
+
 // ignore: must_be_immutable
 class EditProfileScreen extends StatelessWidget {
   EditProfileViewModel? editProfileViewModel;
@@ -103,6 +104,9 @@ class EditProfileScreen extends StatelessWidget {
                       },
                       child:
                           AppText(StringConstant.about, color: primaryTheme)),
+                  InkWell(onTap: () {
+                    editProfileViewModel!.aboutTap(context);
+                  },child: const AppText(StringConstant.about)),
                   AppText(StringConstant.profile,
                       color: secondaryTheme, fontSize: 14.px),
                 ],

@@ -28,6 +28,7 @@ class AppearanceViewModel {
   AppearanceViewModel(this.appearanceScreen) {
     Future.delayed(
       Duration(milliseconds: 100),
+      const Duration(milliseconds: 100),
       () {
         controller = Get.find<AppearanceController>();
       },
@@ -132,6 +133,10 @@ class AppearanceViewModel {
           builder: (context, setState) {
             return AppAlertDialog(
               titlePadding: EdgeInsets.only(left: 15.px, top: 10.px),
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.px)),
+              titlePadding: EdgeInsets.only(left: 15.px, top: 8.px),
               backgroundColor: AppColorConstant.appWhite,
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
@@ -142,15 +147,38 @@ class AppearanceViewModel {
                   margin: EdgeInsets.all(10.px),
                   child: AppText(fontSize: 20.px, 'Language')),
               widget: Column(
+                  child: AppText(fontSize: 20.px, S.of(Get.context!).language)),
+              content: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     padding: EdgeInsets.zero,
-                    height: 2.px,
+                    height: 1.px,
                     width: double.infinity,
                     color: AppColorConstant.grey.withOpacity(0.4),
+                  ),
+                  RadioListTile(
+                    contentPadding: EdgeInsets.only(left: 10.px),
+                    fillColor: const MaterialStatePropertyAll(
+                        AppColorConstant.appTheme),
+                    title: AppText(S.of(context).systemDefault),
+                    value: Locale(
+                      Get.deviceLocale!.languageCode,
+                    ),
+                    groupValue: locale,
+                    onChanged: (value) {
+                      setState(() {
+                        locale = value!;
+                        setStringValue(
+                            getLanguage, Get.deviceLocale!.languageCode);
+                        S.load((Locale(Get.deviceLocale!.languageCode)));
+                        Get.updateLocale(locale!);
+                        selectedLanguage = S.of(Get.context!).systemDefault;
+                        setStringValue(language, selectedLanguage!);
+                      });
+                    },
                   ),
                   RadioListTile(
                     contentPadding: EdgeInsets.only(left: 10.px),
@@ -165,7 +193,7 @@ class AppearanceViewModel {
                         setStringValue(getLanguage, 'en_US');
                         S.load(const Locale('en_US'));
                         Get.updateLocale(locale!);
-                        selectedLanguage = 'English';
+                        selectedLanguage = S.of(Get.context!).english;
                         setStringValue(language, selectedLanguage!);
                       });
                     },
@@ -183,11 +211,14 @@ class AppearanceViewModel {
                         S.load(const Locale('gu_IN'));
                         setStringValue(getLanguage, 'gu_IN');
                         Get.updateLocale(locale!);
-                        selectedLanguage = 'Gujarati';
+                        selectedLanguage = S.of(Get.context!).gujarati;
                         setStringValue(language, selectedLanguage!);
                       });
                     },
                   ),
+                  SizedBox(
+                    height: 10.px,
+                  )
                 ],
               ),
             );
@@ -334,6 +365,9 @@ class AppearanceViewModel {
   loadSelectedFontSize() async {
     final fontSize = await getStringValue(StringConstant.selectedFontSize) ??
         StringConstant.normal;
+    final fontSize =
+        await getStringValue(StringConstant.selectedFontSize) ??
+            StringConstant.normal;
     selectedFontSize = fontSize.toString();
     logs("selectedFontSize-----$selectedFontSize");
   }

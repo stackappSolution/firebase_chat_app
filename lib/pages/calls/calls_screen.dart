@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
-import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
-import 'package:signal/generated/l10n.dart';
 
 class CallsScreen extends StatelessWidget {
   const CallsScreen({Key? key}) : super(key: key);
@@ -21,18 +18,13 @@ class CallsScreen extends StatelessWidget {
       init: ContactController(),
       initState: (state) {},
       builder: (controller) {
-        return SafeArea(
+        return const SafeArea(
             child: Scaffold(
           backgroundColor: AppColorConstant.appWhite,
-
-            )
-        );
+        ));
       },
     );
   }
-
-
-
 
   buildFloatingButton() {
     return Column(

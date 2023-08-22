@@ -9,6 +9,7 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/vreify_otp_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/otp_pages/verify_otp_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
@@ -73,14 +74,14 @@ class VerifyOtpPage extends StatelessWidget {
               margin: EdgeInsets.only(left: 20.px),
               alignment: Alignment.centerLeft,
               child: AppText(
-               StringConstant.verify,
+               S.of(Get.context!).verify,
                 fontSize: 30.px,
                 fontWeight: FontWeight.w600,
               )),
           Container(
             margin: EdgeInsets.only(left: 20.px),
             child: AppText(
-              '${StringConstant.verifyOtp}${Get.arguments}',
+              '${S.of(Get.context!).verifyOtp}${Get.arguments}',
               color: AppColorConstant.appLightBlack.withOpacity(0.4),
               fontWeight: FontWeight.w400,
               fontSize: 15.px,

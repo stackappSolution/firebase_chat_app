@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -10,7 +9,6 @@ import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
-import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 
@@ -27,7 +25,7 @@ class ProfileViewModel {
   bool isButtonActive = false;
   File? selectedImage;
 
-  ProfileViewModel(this.profileScreen) {}
+  ProfileViewModel(this.profileScreen);
 
   onChangedValue(value, GetxController controller) {
     if (ValidationUtil.validateName(value)) {
@@ -78,6 +76,38 @@ class ProfileViewModel {
                   ),
                 ),
               )
+
+                ))
+          ],
+          widget: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 30.px),
+                child: IconButton(
+                    onPressed: () {
+                      pickImageCamera(controller);
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.camera_alt_rounded,
+                      color: AppColorConstant.appWhite,
+                      size: 70.px,
+                    )),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 30.px),
+                child: IconButton(
+                    onPressed: () {
+                      pickImageGallery(controller);
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.image,
+                      color: AppColorConstant.appWhite,
+                      size: 70.px,
+                    )),
+              ),
             ],
             widget: SizedBox(
               height: 100.px,

@@ -10,7 +10,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
-
+// ignore: must_be_immutable
 class SettingScreen extends StatelessWidget {
   SettingScreen({Key? key}) : super(key: key);
 
@@ -22,9 +22,7 @@ class SettingScreen extends StatelessWidget {
     logs('Current Screen---> $runtimeType');
 
     return GetBuilder<SettingsController>(
-      initState: (state) {
-        settingViewModel!.getLocalizationKey();
-      },
+      initState: (state) {},
       init: SettingsController(),
       builder: (controller) {
         return Scaffold(
@@ -48,12 +46,16 @@ class SettingScreen extends StatelessWidget {
 
   getBody(context, SettingsController controller) {
     return Column(
+  getBody(SettingsController controller) {
+    return ListView(
       children: [
         SizedBox(
           height: 10.px,
         ),
         buildProfileView(context),
         buildSettingsList(context, controller),
+        buildProfileView(),
+        buildSettingsList(controller),
       ],
     );
   }
@@ -93,6 +95,8 @@ class SettingScreen extends StatelessWidget {
 
   buildSettingsList(context, SettingsController controller) {
     return ListView(
+  buildSettingsList(SettingsController controller) {
+    return ListView(physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
         settingsView(
@@ -136,6 +140,11 @@ class SettingScreen extends StatelessWidget {
           7,
           AppAsset.invite,
           S.of(Get.context!).inviteFriends,
+        ),
+        settingsView(
+          8,
+          AppAsset.help,
+          S.of(Get.context!).help,
         ),
       ],
     );

@@ -11,6 +11,7 @@ import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
 
+// ignore: must_be_immutable
 class AppearanceScreen extends StatelessWidget {
   AppearanceViewModel? appearanceViewModel;
   AppearanceController? controller;
@@ -46,6 +47,9 @@ class AppearanceScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppBar(context),
           body: getBody(context, controller, appearanceViewModel!),
+          backgroundColor: AppColorConstant.appWhite,
+          appBar: getAppBar(),
+          body: getBody(context, controller),
         ));
       },
     );
@@ -91,6 +95,33 @@ class AppearanceScreen extends StatelessWidget {
         appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
             StringConstant.normal, controller),
       ]),
+  getBody(BuildContext context, AppearanceController controller) {
+    return SizedBox(
+      height: double.infinity,
+      width: double.infinity,
+      child: Padding(
+        padding: EdgeInsets.only(top: 40.px),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          appearanceViewTile(
+              1,
+              context,
+              S.of(Get.context!).language,
+              (appearanceViewModel!.selectedLanguage != null)
+                  ? appearanceViewModel!.selectedLanguage
+                  : "default",
+              controller),
+          appearanceViewTile(2, context, S.of(Get.context!).theme,
+              StringConstant.systemDefault, controller),
+          appearanceViewTile(
+              3, context, S.of(Get.context!).chatColor, "", controller),
+          appearanceViewTile(
+              4, context, S.of(Get.context!).appIcon, "", controller),
+          appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
+              StringConstant.normal, controller),
+          appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
+              StringConstant.normal, controller),
+        ]),
+      ),
     );
   }
 
