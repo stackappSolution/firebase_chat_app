@@ -1,6 +1,6 @@
 class RouteConstant{
   static const String initial = '/';
-  static const String introPage = '/intro';
+  static const String introScreen = '/intro';
   static const String signInPage = '/SignInPage';
   static const String verifyOtpScreen = '/VerifyOtpPage';
   static const String settingsScreen = '/settings';
@@ -8,8 +8,14 @@ class RouteConstant{
   static const String chattingScreen = '/chatting';
   static const String settingScreen = '/settings';
   static const String profileScreen = '/profile';
-  static const String chatScreen = '/chat';
   static const String appearanceScreen = '/appearance';
+  static const String chatScreen = '/chat';
+  static const String chatingScreen = '/chat';
+  static const String addPhotoScreen = '/addPhoto';
+  static const String accountScreen = '/account';
+  static const String changePinScreen = '/changePin';
+  static const String advancePinSetting = '/advancePinSetting';
+  static const String changePhoneScreen = '/changePhoneScreen';
   static const String helpSettingsScreen = '/help';
   static const String contactUsScreen = '/contact_us';
   static const String licensesScreen = '/licenses';

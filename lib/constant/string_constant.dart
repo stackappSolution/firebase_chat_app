@@ -1,9 +1,9 @@
 class StringConstant {
   static const String calls = 'calls';
   static const String chats = 'chats';
-  static const String settings = 'settings';
+  static const String settings = 'Settings';
   static const String appearance = 'appearance';
-  static const String account = 'account';
+  static const String account = 'Account';
   static const String linkedDevice = 'linkedDevice';
   static const String donateToSignal = 'donateToSignal';
   static const String notification = 'notification';
@@ -17,18 +17,20 @@ class StringConstant {
 
   //=====================shared pref keys=======================//
 
+  static const String blankText = '';
+
   static const String selectedFontSize = 'SelectedFontSize';
   static const String theme = 'Theme';
 
   static const String yourProfile = 'Your Profile';
   static const String profileAreVisible =
-      'Profiles Are Visible To People You Message,Contacts, and Groups.';
+      'Profiles Are Visible To People, Your Message,Contacts and Groups.';
   static const String firstName = 'First Name ( Required )';
 
   static const String lastName = 'Last Name ( Required )';
   static const String next = 'Next';
   static const String enterValidName = 'Enter Valid Name';
-  static const String choose = 'choose';
+  static const String choose = 'Choose';
   static const String cancel = 'Cancel';
   static const String conversa = 'Conversations';
 
@@ -98,7 +100,7 @@ class StringConstant {
   static const String about = 'About';
   static const String badges = 'Badges';
   static const String yourProfileAndChanges =
-      'Your Profile And Changes To It Will Be Visible To People You Message, Contacts, And Groups.';
+      'Your Profile And Changes It Will Be Visible To People Your Message, Contacts, And Groups.';
 
   static const String signInDis = 'Enter Your Phone Number To Get Started';
 
@@ -106,4 +108,58 @@ class StringConstant {
   static const String continueButton = 'Continue';
   static const String verify = 'Verify OTP';
   static const String verifyButton = 'Verify';
+  static const String camera = 'Camera';
+  static const String gallery = 'Gallery';
+
+  static const String chaAppPin = 'Chat App PIN';
+  static const String changeYourPin = 'Change Your PIN';
+  static const String pinReminders = 'PIN Reminders';
+  static const String youWillBeAsked =
+      'You Will Be Asked Less Frequently over Time';
+  static const String registrationLock = 'Registration Lock';
+  static const String requireYourChatApp =
+      'Require Your Chat App PIN To Register Your Phone Number With ChatApp Again';
+  static const String advancePinSetting = 'Advance PIN Setting';
+  static const String changePhoneNumber = 'Change Phone number';
+  static const String changeNumber = 'Change Number';
+  static const String transferAccount = 'Transfer account';
+  static const String transferAccountTo =
+      'Transfer account To A New Android Device';
+  static const String yourAccountData = 'Your Account Data';
+  static const String deleteAccount = 'Delete Account';
+  static const String createYourPIN = 'Create Your PIN';
+  static const String pinMustBeGigit = 'PIN Must Be At Least 4 Digits';
+  static const String pinMustBeChar = 'PIN Must Be At Least 4 Characters';
+  static const String pinCanHelp =
+      'PIN can help you restore your account and keep info encrypted with chatApp.';
+  static const String createAlphaNumericPin = 'Create Alphanumeric PIN';
+  static const String createNumericPin = 'Create Numeric PIN';
+  static const String conformYourChatAppPIN = 'Conform Your ChatApp PIN';
+  static const String makeSureYou = 'Make Sure You memorize your PIN';
+  static const String switchKeyboard = 'Switch KeyBoard';
+  static const String turnOff = 'Turn Off';
+  static const String turnOn = 'Turn On';
+  static const String turnOnRegistration = 'Turn On Registration Lock?';
+  static const String ifYouForgetYourPIN =
+      'If You Forget Yor Pin When Registering with Signal Again, You Will be Locked Out Your AccountFor 7 days.';
+  static const String disablePIN = 'Disable PIN';
+  static const String ifYouDisable =
+      'If You Disable PIN, you will lose all data.';
+  static const String warning = 'Warning';
+  static const String continues = 'Continue';
+  static const String conformYourPin = 'Confirm Your PIN';
+  static const String reEnterThePin = 'Re-Enter The PIN You Just Entered.';
+  static const String incorrectPinTryAgain = 'Incorrect PIN. Try Again..';
+  static const String turnOffRegistration = 'Turn Off Registration Lock?';
+  static const String beforeContinuing =
+      'Before Continuing, Make sure your new number can receive SMS or Calls.';
+  static const String useThisToChange =
+      "Use this to change your current phone number to new phone number, you can't undo this change.";
+  static const String yourOldNumber = 'Your Old Number';
+  static const String phoneNumber = 'Phone Number';
+  static const String yourNewNumber = 'Your New Number';
+  static const String phoneNumberDoesNot = 'Phone Number Does Not Match';
+  static const String checkAgainYourNumber = 'Check Again Your Number';
+  static const String ok = 'Ok';
+
 }

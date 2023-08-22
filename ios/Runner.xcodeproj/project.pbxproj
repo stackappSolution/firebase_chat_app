@@ -15,6 +15,42 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 /* End PBXBuildFile section */
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>160955253212-q1d5udkuppgjv98ndb3hjulp32nhisbh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.160955253212-q1d5udkuppgjv98ndb3hjulp32nhisbh</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>160955253212-vc4pmn383cg1kdm4qtdlnoidklrmbi6t.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCEjQRdYiLU5w7g8Tw746lg8uxE8siGHHY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>160955253212</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.js.signal</string>
+	<key>PROJECT_ID</key>
+	<string>chatapp-400f9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>chatapp-400f9.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:160955253212:ios:58148ee503f418a98acf19</string>
+</dict>
+</plist>
 
 /* Begin PBXContainerItemProxy section */
 		331C8085294A63A400263BE5 /* PBXContainerItemProxy */ = {
@@ -57,6 +93,43 @@
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>160955253212-q1d5udkuppgjv98ndb3hjulp32nhisbh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.160955253212-q1d5udkuppgjv98ndb3hjulp32nhisbh</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>160955253212-vc4pmn383cg1kdm4qtdlnoidklrmbi6t.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCEjQRdYiLU5w7g8Tw746lg8uxE8siGHHY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>160955253212</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.js.signal</string>
+	<key>PROJECT_ID</key>
+	<string>chatapp-400f9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>chatapp-400f9.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:160955253212:ios:58148ee503f418a98acf19</string>
+</dict>
+</plist>
+
 /* Begin PBXFrameworksBuildPhase section */
 		97C146EB1CF9000F007C117D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -79,6 +152,44 @@
 			name = Flutter;
 			sourceTree = "<group>";
 		};
+
+		<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+        	<key>CLIENT_ID</key>
+        	<string>160955253212-q1d5udkuppgjv98ndb3hjulp32nhisbh.apps.googleusercontent.com</string>
+        	<key>REVERSED_CLIENT_ID</key>
+        	<string>com.googleusercontent.apps.160955253212-q1d5udkuppgjv98ndb3hjulp32nhisbh</string>
+        	<key>ANDROID_CLIENT_ID</key>
+        	<string>160955253212-vc4pmn383cg1kdm4qtdlnoidklrmbi6t.apps.googleusercontent.com</string>
+        	<key>API_KEY</key>
+        	<string>AIzaSyCEjQRdYiLU5w7g8Tw746lg8uxE8siGHHY</string>
+        	<key>GCM_SENDER_ID</key>
+        	<string>160955253212</string>
+        	<key>PLIST_VERSION</key>
+        	<string>1</string>
+        	<key>BUNDLE_ID</key>
+        	<string>com.js.signal</string>
+        	<key>PROJECT_ID</key>
+        	<string>chatapp-400f9</string>
+        	<key>STORAGE_BUCKET</key>
+        	<string>chatapp-400f9.appspot.com</string>
+        	<key>IS_ADS_ENABLED</key>
+        	<false></false>
+        	<key>IS_ANALYTICS_ENABLED</key>
+        	<false></false>
+        	<key>IS_APPINVITE_ENABLED</key>
+        	<true></true>
+        	<key>IS_GCM_ENABLED</key>
+        	<true></true>
+        	<key>IS_SIGNIN_ENABLED</key>
+        	<true></true>
+        	<key>GOOGLE_APP_ID</key>
+        	<string>1:160955253212:ios:58148ee503f418a98acf19</string>
+        </dict>
+        </plist>
+
 		331C8082294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (

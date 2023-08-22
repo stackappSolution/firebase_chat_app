@@ -10,8 +10,12 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
+import 'package:signal/routes/app_navigation.dart';
+
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/validation.dart';
+import '../../app/widget/app_image_assets.dart';
+import '../../constant/app_asset.dart';
 
 class ProfileViewModel {
   ProfileScreen? profileScreen;
@@ -39,10 +43,11 @@ class ProfileViewModel {
   }
 
   onTapNext(context) {
+    goToHomeScreen();
     logs("NextTapped");
   }
 
-  profilePicTap(BuildContext context, GetxController controller) async {
+  addProfileTap(BuildContext context, GetxController controller) async {
     await getPermission(context, controller);
     // ignore: use_build_context_synchronously
   }
@@ -52,17 +57,25 @@ class ProfileViewModel {
       context: context,
       builder: (context) {
         return AppAlertDialog(
-          backgroundColor: AppColorConstant.blackOff,
-          title: const AppText(StringConstant.choose,
-              color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
-          actions: [
-            Padding(
+            backgroundColor: AppColorConstant.blackOff,
+            title: const AppText(StringConstant.choose,
+                color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
+            actions: [
+              Padding(
                 padding: EdgeInsets.only(
                     left: 80.px, top: 20.px, bottom: 10.px, right: 10.px),
                 child: InkWell(
                   onTap: () {
                     Navigator.pop(context);
                   },
+                  child: AppText(
+                    StringConstant.cansel,
+                    color: AppColorConstant.appTheme,
+                    fontSize: 15.px,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
 
                 ))
           ],
@@ -96,32 +109,76 @@ class ProfileViewModel {
                     )),
               ),
             ],
-          ),
-        );
+            widget: SizedBox(
+              height: 100.px,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            pickImageCamera(controller);
+                            Navigator.pop(context);
+                          },
+                          child: AppImageAsset(
+                              height: 60.px,
+                              color: AppColorConstant.appWhite,
+                              image: AppAsset.camera)),
+                      Padding(
+                        padding: EdgeInsets.only(top: 9.px),
+                        child: AppText(
+                          StringConstant.camera,
+                          fontSize: 15.px,
+                          color: AppColorConstant.appWhite,
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            pickImageGallery(controller);
+                            Navigator.pop(context);
+                          },
+                          child: AppImageAsset(
+                              height: 60.px,
+                              color: AppColorConstant.appWhite,
+                              image: AppAsset.gallery)),
+                      Padding(
+                        padding: EdgeInsets.only(top: 9.px),
+                        child: const AppText(
+                          StringConstant.gallery,
+                          fontSize: 15,
+                          color: AppColorConstant.appWhite,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ), insetPadding: EdgeInsets.zero,);
       },
     );
   }
 
   Future<void> getPermission(
       BuildContext context, GetxController controller) async {
-    final permissionStatus = await Permission.storage.status;
-    final permissionStatus1 = await Permission.camera.status;
-    if (permissionStatus.isDenied && permissionStatus1.isDenied) {
+    // final permissionStatus = await Permission.storage.status;
+    // final permissionStatus1 = await Permission.camera.status;
+
+    await Permission.camera.request();
+    await Permission.storage.request();
+    logs("permissionStorage ---- >${await Permission.storage.status.isGranted}");
+    logs("permissionCamera ---- >${await Permission.camera.status.isGranted}");
+    if (await Permission.camera.status.isGranted ||await Permission.storage.status.isGranted  ) {
+      showDialogs(context, controller);
+    } else {
       await Permission.storage.request();
       await Permission.camera.request();
-      if (permissionStatus.isGranted && permissionStatus1.isGranted) {
-        // ignore: use_build_context_synchronously
-        showDialogs(context, controller);
-      }
-      if (permissionStatus.isDenied && permissionStatus1.isDenied) {
-        await openAppSettings();
-      }
-    } else if (permissionStatus.isPermanentlyDenied &&
-        permissionStatus1.isPermanentlyDenied) {
-      await openAppSettings();
-    } else {
-      // ignore: use_build_context_synchronously
-      showDialogs(context, controller);
     }
   }
 

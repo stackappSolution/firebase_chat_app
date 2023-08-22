@@ -12,7 +12,6 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? leadingWidth;
   final bool? centerTitle;
 
-
   const AppAppBar({
     Key? key,
     this.backgroundColor,
@@ -31,6 +30,9 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       forceMaterialTransparency: false,
+      // ignore: deprecated_member_use
+      backgroundColor: Theme.of(context).colorScheme.background,
+      elevation: 0.0,
       scrolledUnderElevation: 0,
 
 
@@ -40,7 +42,6 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: leading,
       shape: shape,
       leadingWidth: leadingWidth,
-      backgroundColor: AppColorConstant.appWhite,
       title: title,
       centerTitle: centerTitle,
       actions: actions,

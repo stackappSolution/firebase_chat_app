@@ -14,4 +14,7 @@ const String emoji = 'emoji';
 Future<String?> getStringValue(String key) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString(key);
+
 }
+
+

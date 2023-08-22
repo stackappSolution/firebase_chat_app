@@ -10,7 +10,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
-
 // ignore: must_be_immutable
 class SettingScreen extends StatelessWidget {
   SettingScreen({Key? key}) : super(key: key);
@@ -27,33 +26,43 @@ class SettingScreen extends StatelessWidget {
       init: SettingsController(),
       builder: (controller) {
         return Scaffold(
-          backgroundColor: AppColorConstant.appWhite,
-          appBar: getAppbar(),
-          body: getBody(controller),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: getAppbar(context),
+          body: getBody(context, controller),
         );
       },
     );
   }
 
-  getAppbar() {
+  getAppbar(context) {
     return AppAppBar(
-      title: AppText(S.of(Get.context!).settings, fontSize: 20.px),
+      title: AppText(
+        S.of(Get.context!).settings,
+        fontSize: 20.px,
+        color: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 
+  getBody(context, SettingsController controller) {
+    return Column(
   getBody(SettingsController controller) {
     return ListView(
       children: [
         SizedBox(
           height: 10.px,
         ),
+        buildProfileView(context),
+        buildSettingsList(context, controller),
         buildProfileView(),
         buildSettingsList(controller),
       ],
     );
   }
 
-  buildProfileView() {
+  buildProfileView(context) {
+    Color primaryTheme = Theme.of(context).colorScheme.primary;
+    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
     return Row(
       children: [
         SizedBox(
@@ -63,8 +72,7 @@ class SettingScreen extends StatelessWidget {
         CircleAvatar(
           maxRadius: 40.px,
           backgroundColor: AppColorConstant.appTheme.withOpacity(0.2),
-          child:
-              AppText('JB', fontSize: 25.px, color: AppColorConstant.appBlack),
+          child: AppText('JB', fontSize: 25.px, color: primaryTheme),
         ),
         SizedBox(
           width: 30.px,
@@ -76,50 +84,59 @@ class SettingScreen extends StatelessWidget {
             AppText(
               S.of(Get.context!).userName,
               fontSize: 20.px,
+              color: primaryTheme,
             ),
-            AppText('9904780294',
-                color: AppColorConstant.appLightBlack, fontSize: 12.px),
+            AppText('9904780294', color: secondaryTheme, fontSize: 12.px),
           ],
         )
       ],
     );
   }
 
+  buildSettingsList(context, SettingsController controller) {
+    return ListView(
   buildSettingsList(SettingsController controller) {
     return ListView(physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
         settingsView(
+          context,
           1,
           AppAsset.account,
           S.of(Get.context!).account,
         ),
         settingsView(
+          context,
           2,
           AppAsset.appearance,
           S.of(Get.context!).appearance,
         ),
         settingsView(
+          context,
           3,
           AppAsset.linkedDevice,
           S.of(Get.context!).linkedDevice,
         ),
         settingsView(
+          context,
           4,
           AppAsset.donate,
           S.of(Get.context!).donateToSignal,
         ),
         settingsView(
+          context,
           5,
           AppAsset.chats,
           S.of(Get.context!).chats,
         ),
         settingsView(
+          context,
           6,
           AppAsset.privacyPolicy,
           S.of(Get.context!).privacyPolicy,
         ),
         settingsView(
+          context,
           7,
           AppAsset.invite,
           S.of(Get.context!).inviteFriends,
@@ -134,6 +151,7 @@ class SettingScreen extends StatelessWidget {
   }
 
   settingsView(
+    context,
     index,
     image,
     tittle,
@@ -147,6 +165,7 @@ class SettingScreen extends StatelessWidget {
         title: AppText(
           tittle,
           fontSize: 15.px,
+          color: Theme.of(context).colorScheme.primary,
         ),
         leading: Container(
           height: 50.px,

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
+import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 class SettingViewModel {
@@ -9,8 +10,12 @@ class SettingViewModel {
 
   mainTap(index) {
     switch (index) {
+
       case 1:
-        {}
+        {
+          logs("goto  $index");
+          Get.toNamed(RouteHelper.getAccountScreen());
+        }
         break;
       case 2:
         {
