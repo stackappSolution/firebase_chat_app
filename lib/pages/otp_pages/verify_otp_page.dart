@@ -8,9 +8,11 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
+import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/vreify_otp_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/otp_pages/verify_otp_view_model.dart';
+import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
@@ -74,6 +76,8 @@ class VerifyOtpPage extends StatelessWidget {
               margin: EdgeInsets.only(left: 20.px),
               alignment: Alignment.centerLeft,
               child: AppText(
+                'Verify',
+              // StringConstant.verify,
                S.of(Get.context!).verify,
                 fontSize: 30.px,
                 fontWeight: FontWeight.w600,
@@ -150,10 +154,11 @@ class VerifyOtpPage extends StatelessWidget {
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
                     backgroundColor:  MaterialStatePropertyAll(
-                        AppColorConstant.appTheme.withOpacity(0.1)),
+                        AppColorConstant.appTheme.withOpacity(0.5)),
                     fixedSize: MaterialStatePropertyAll(Size(230.px, 50.px))),
                 child: AppText(
-                  StringConstant.verifyButton,
+                  'Verify',
+                  //StringConstant.verifyButton,
                   fontSize: 22.px,
                   color: AppColorConstant.appWhite,
                 ),
@@ -164,7 +169,7 @@ class VerifyOtpPage extends StatelessWidget {
               alignment: Alignment.center,
               child: ElevatedButton(
                 onPressed: () {
-                  Get.toNamed(RouteHelper.getProfileScreen());
+                  goToProfilePage();
                  // verifyOtpViewModel!.verifyOTPAndNavigate;
                 },
                 style: ButtonStyle(
@@ -174,7 +179,8 @@ class VerifyOtpPage extends StatelessWidget {
                         AppColorConstant.appTheme),
                     fixedSize: MaterialStatePropertyAll(Size(230.px, 50.px))),
                 child: AppText(
-                  StringConstant.verifyButton,
+                  'Verify',
+                  //StringConstant.verifyButton,
                   fontSize: 22.px,
                   color: AppColorConstant.appWhite,
                 ),

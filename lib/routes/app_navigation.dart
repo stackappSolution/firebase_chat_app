@@ -1,6 +1,10 @@
 import 'package:get/get.dart';
 import 'package:signal/routes/routes_helper.dart';
 
+goToIntroPage(){
+  Get.toNamed(RouteHelper.getIntroPage());
+}
+
 goToIntroPage() {
   Get.toNamed(RouteHelper.getIntroScreen());
 }
@@ -57,6 +61,7 @@ goToSignInPage(){
 }
 
 goToVerifyPage({required String arguments}){
+  Get.toNamed(RouteHelper.getVerifyOtpPage());
   Get.toNamed(RouteHelper.getVerifyOtpPage(),arguments: arguments);
 }
 
@@ -66,6 +71,7 @@ goToProfilePage(){
 
 goToSettingPage(){
   Get.toNamed(RouteHelper.getSettingScreen());
+}
 }
 
 goToHomeScreen(){

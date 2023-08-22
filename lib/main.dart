@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/pages/intro_page/intro_page.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
@@ -32,6 +33,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
+  runApp(DevicePreview(
+      enabled: true,
+      tools: const [
+        ...DevicePreview.defaultTools,
+      ],
+      builder: (context) => const MyApp()
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
@@ -63,6 +70,17 @@ class MyApp extends StatelessWidget {
           child: GetMaterialApp(
             locale: locale,
             title: 'Flutter matrimonial app',
+            // themeMode: ThemeUtil.selectedTheme,
+            // theme: Themes.light,
+            // darkTheme: Themes.dark,
+            debugShowCheckedModeBanner: false,
+            home: IntroPage(),
+            defaultTransition: Transition.fadeIn,
+            initialRoute: RouteHelper.getIntroPage(),
+            getPages: RouteHelper.routes,
+           // darkTheme: ThemeData.light(),
+          //  themeMode: ThemeUtil.selectedTheme,
+            theme: Themes.light,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
             debugShowCheckedModeBanner: false,

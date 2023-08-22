@@ -21,7 +21,6 @@ class StringConstant {
 
   static const String selectedFontSize = 'SelectedFontSize';
   static const String theme = 'Theme';
-
   static const String yourProfile = 'Your Profile';
   static const String profileAreVisible =
       'Profiles Are Visible To People, Your Message,Contacts and Groups.';
@@ -50,13 +49,12 @@ class StringConstant {
   static const String welcomeToChat = ' Welcome To Chat ';
   static const String theBestMessengerAndChat = ' The best messenger and chat ';
   static const String toMakeYourDayGreat = ' to make your day great! ';
-
+  static const String signIndis = 'Enter Your Phone Number To Get Started';
+  static const String verifyOtp = 'Enter The Code We Sent To ';
   static const String signInDescription =
       'Enter Your Phone Number To Get Started';
   static const String verifyOtp = 'Enter The Code We Sent To';
-
   static const String signIndis = 'Enter Your Phone Number To Get Started';
-
   static const String signalMessage = 'Signal message';
 
 
@@ -75,23 +73,16 @@ class StringConstant {
   static const String debugLog = 'Debug log';
   static const String includeDebug = 'Include Debug Log';
   static const String readFaq = 'Have you read our FAQ yet?';
-
-
   static const String light = 'Light';
   static const String version = 'Version';
-
-
   static const String helpDescription =  'Copyright Signal Messenger \n Licensed under the GNU AGPlv3';
   static const String terms = 'Terms & Privacy Policy';
   static const String contactUs = 'Contact us';
   static const String dark = 'Dark';
   static const String small = 'Small';
-
   static const String large = 'Large';
   static const String help = 'Help';
   static const String extraLarge = 'Extra Large';
-
-
   static const String profile = 'Profile';
   static const String editPhoto = 'Edit Photo';
   static const String yourName = 'Your Name';
@@ -101,9 +92,7 @@ class StringConstant {
   static const String badges = 'Badges';
   static const String yourProfileAndChanges =
       'Your Profile And Changes It Will Be Visible To People Your Message, Contacts, And Groups.';
-
   static const String signInDis = 'Enter Your Phone Number To Get Started';
-
   static const String signIn = 'Sign In';
   static const String continueButton = 'Continue';
   static const String verify = 'Verify OTP';

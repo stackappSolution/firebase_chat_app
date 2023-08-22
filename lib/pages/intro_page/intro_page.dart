@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
 import '../../app/widget/app_alert_dialog.dart';
@@ -61,6 +62,10 @@ class IntroPage extends StatelessWidget {
   AppButton getStartedButton(bool isConnected, context, IntroPageController controller) {
     return AppButton(
         onTap: () {
+          goToSignInPage();
+
+          Get.toNamed(RouteHelper.getHomeScreen());
+
           Get.toNamed(RouteHelper.getSignInPage());
         },
         fontWeight: FontWeight.w500,
