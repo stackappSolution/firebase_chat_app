@@ -10,25 +10,29 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
+import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
 
 import '../../app/app/utills/app_utills.dart';
-import '../../app/app/utills/shared_preferance.dart';
 import '../../app/app/utills/theme_util.dart';
 
 class AppearanceViewModel {
   AppearanceScreen? appearanceScreen;
   bool isLightTheme = false;
-  ThemeMode _selectedTheme = ThemeUtil.selectedTheme;
+  ThemeMode selectedTheme = ThemeUtil.selectedTheme;
   String? selectedLanguage;
   String? selectedFontSize;
   AppearanceController? controller;
 
   Locale? locale;
 
-  AppearanceViewModel(this.appearanceScreen){
-    Future.delayed(Duration(milliseconds: 100),() {
-     controller= Get.find<AppearanceController>();
-    },);
+  AppearanceViewModel(this.appearanceScreen) {
+    Future.delayed(
+      Duration(milliseconds: 100),
+      const Duration(milliseconds: 100),
+      () {
+        controller = Get.find<AppearanceController>();
+      },
+    );
   }
 
   themeDialog(
@@ -41,50 +45,73 @@ class AppearanceViewModel {
         return StatefulBuilder(
           builder: (context, setState) {
             return AppAlertDialog(
+              titlePadding:
+                  EdgeInsets.only(top: 18.px, left: 35.px, bottom: 5.px),
               backgroundColor: AppColorConstant.blackOff,
-              title: const AppText(StringConstant.theme),
+              elevation: 0.0,
+              contentPadding: EdgeInsets.zero,
+              insetPadding:
+                  const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              title: const AppText(
+                StringConstant.theme,
+                color: AppColorConstant.appWhite,
+              ),
               actions: [
                 Column(
                   children: [
+                    Container(
+                      padding: EdgeInsets.zero,
+                      height: 2.px,
+                      width: double.infinity,
+                      color: AppColorConstant.grey.withOpacity(0.4),
+                    ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.systemDefault),
+                      title: const AppText(
+                        StringConstant.systemDefault,
+                        color: AppColorConstant.appWhite,
+                      ),
                       value: ThemeMode.system,
-                      groupValue: _selectedTheme,
+                      groupValue: selectedTheme,
                       onChanged: (value) {
                         setState(() {
-                          _selectedTheme = value as ThemeMode;
-                          Get.changeThemeMode(ThemeMode.light);
-                          saveThemeMode(_selectedTheme);
+                          selectedTheme = value as ThemeMode;
+                          Get.changeThemeMode(ThemeMode.system);
+                          saveThemeMode(selectedTheme);
+                          ThemeUtil.loadThemeMode();
                         });
                       },
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.light),
+                      title: const AppText(StringConstant.light,
+                          color: AppColorConstant.appWhite),
                       value: ThemeMode.light,
-                      groupValue: _selectedTheme,
+                      groupValue: selectedTheme,
                       onChanged: (value) {
                         setState(() {
-                          _selectedTheme = value as ThemeMode;
+                          selectedTheme = value as ThemeMode;
                           Get.changeThemeMode(ThemeMode.light);
-                          saveThemeMode(_selectedTheme);
+                          saveThemeMode(selectedTheme);
+                          ThemeUtil.loadThemeMode();
                         });
                       },
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.dark),
+                      title: const AppText(StringConstant.dark,
+                          color: AppColorConstant.appWhite),
                       value: ThemeMode.dark,
-                      groupValue: _selectedTheme,
+                      groupValue: selectedTheme,
                       onChanged: (value) {
                         setState(() {
-                          _selectedTheme = value as ThemeMode;
+                          selectedTheme = value as ThemeMode;
                           Get.changeThemeMode(ThemeMode.dark);
-                          saveThemeMode(_selectedTheme);
+                          saveThemeMode(selectedTheme);
+                          ThemeUtil.loadThemeMode();
                         });
                       },
                     )
@@ -104,8 +131,12 @@ class AppearanceViewModel {
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
+            return AppAlertDialog(
               titlePadding: EdgeInsets.only(left: 15.px, top: 10.px),
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.px)),
+              titlePadding: EdgeInsets.only(left: 15.px, top: 8.px),
               backgroundColor: AppColorConstant.appWhite,
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
@@ -115,6 +146,8 @@ class AppearanceViewModel {
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.all(10.px),
                   child: AppText(fontSize: 20.px, 'Language')),
+              widget: Column(
+                  child: AppText(fontSize: 20.px, S.of(Get.context!).language)),
               content: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,9 +155,30 @@ class AppearanceViewModel {
                 children: [
                   Container(
                     padding: EdgeInsets.zero,
-                    height: 2.px,
+                    height: 1.px,
                     width: double.infinity,
                     color: AppColorConstant.grey.withOpacity(0.4),
+                  ),
+                  RadioListTile(
+                    contentPadding: EdgeInsets.only(left: 10.px),
+                    fillColor: const MaterialStatePropertyAll(
+                        AppColorConstant.appTheme),
+                    title: AppText(S.of(context).systemDefault),
+                    value: Locale(
+                      Get.deviceLocale!.languageCode,
+                    ),
+                    groupValue: locale,
+                    onChanged: (value) {
+                      setState(() {
+                        locale = value!;
+                        setStringValue(
+                            getLanguage, Get.deviceLocale!.languageCode);
+                        S.load((Locale(Get.deviceLocale!.languageCode)));
+                        Get.updateLocale(locale!);
+                        selectedLanguage = S.of(Get.context!).systemDefault;
+                        setStringValue(language, selectedLanguage!);
+                      });
+                    },
                   ),
                   RadioListTile(
                     contentPadding: EdgeInsets.only(left: 10.px),
@@ -139,7 +193,7 @@ class AppearanceViewModel {
                         setStringValue(getLanguage, 'en_US');
                         S.load(const Locale('en_US'));
                         Get.updateLocale(locale!);
-                        selectedLanguage = 'English';
+                        selectedLanguage = S.of(Get.context!).english;
                         setStringValue(language, selectedLanguage!);
                       });
                     },
@@ -153,16 +207,18 @@ class AppearanceViewModel {
                     groupValue: locale,
                     onChanged: (value) {
                       setState(() {
-
                         locale = value!;
                         S.load(const Locale('gu_IN'));
                         setStringValue(getLanguage, 'gu_IN');
                         Get.updateLocale(locale!);
-                        selectedLanguage = 'Gujarati';
+                        selectedLanguage = S.of(Get.context!).gujarati;
                         setStringValue(language, selectedLanguage!);
                       });
                     },
                   ),
+                  SizedBox(
+                    height: 10.px,
+                  )
                 ],
               ),
             );
@@ -182,15 +238,29 @@ class AppearanceViewModel {
         return StatefulBuilder(
           builder: (context, setState) {
             return AppAlertDialog(
+              titlePadding:
+                  EdgeInsets.only(top: 18.px, left: 35.px, bottom: 5.px),
               backgroundColor: AppColorConstant.blackOff,
-              title: const AppText(StringConstant.language),
+              elevation: 0.0,
+              contentPadding: EdgeInsets.zero,
+              insetPadding:
+                  const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              title: const AppText(StringConstant.language,
+                  color: AppColorConstant.appWhite),
               actions: [
                 Column(
                   children: [
+                    Container(
+                      padding: EdgeInsets.zero,
+                      height: 2.px,
+                      width: double.infinity,
+                      color: AppColorConstant.grey.withOpacity(0.4),
+                    ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.small),
+                      title: const AppText(StringConstant.small,
+                          color: AppColorConstant.appWhite),
                       value: StringConstant.small,
                       groupValue: selectedLanguage,
                       onChanged: (value) {
@@ -203,7 +273,8 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.normal),
+                      title: const AppText(StringConstant.normal,
+                          color: AppColorConstant.appWhite),
                       value: StringConstant.normal,
                       groupValue: selectedLanguage,
                       onChanged: (value) {
@@ -216,7 +287,8 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.large),
+                      title: const AppText(StringConstant.large,
+                          color: AppColorConstant.appWhite),
                       value: StringConstant.large,
                       groupValue: selectedLanguage,
                       onChanged: (value) {
@@ -229,7 +301,8 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.extraLarge),
+                      title: const AppText(StringConstant.extraLarge,
+                          color: AppColorConstant.appWhite),
                       value: StringConstant.extraLarge,
                       groupValue: selectedLanguage,
                       onChanged: (value) {
@@ -250,7 +323,7 @@ class AppearanceViewModel {
   }
 
   saveSelectedFontSize(String fontSize) async {
-    setPrefStringValue(StringConstant.selectedFontSize, fontSize);
+    setStringValue(StringConstant.selectedFontSize, fontSize);
   }
 
   mainTap(index, context, AppearanceController controller) {
@@ -278,12 +351,22 @@ class AppearanceViewModel {
           );
         }
         break;
+      case 6:
+        {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return EditProfileScreen();
+            },
+          ));
+        }
     }
   }
 
   loadSelectedFontSize() async {
+    final fontSize = await getStringValue(StringConstant.selectedFontSize) ??
+        StringConstant.normal;
     final fontSize =
-        await getPrefStringValue(StringConstant.selectedFontSize) ??
+        await getStringValue(StringConstant.selectedFontSize) ??
             StringConstant.normal;
     selectedFontSize = fontSize.toString();
     logs("selectedFontSize-----$selectedFontSize");
@@ -293,6 +376,4 @@ class AppearanceViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt(StringConstant.theme, themeMode.index);
   }
-
-
 }

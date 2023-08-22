@@ -1,5 +1,5 @@
 class AppAsset {
-  static const String defaultFont = 'Montserrat';
+  static const String defaultFont = 'poppins';
 
   static const String imagePath = 'assets/images/';
   static const String iconPath = 'assets/icons/';
@@ -37,18 +37,24 @@ class AppAsset {
   static const String phoneOutline='${iconPath}phone_outline.png';
   static const String phonePlus='${iconPath}phone_plus.png';
   static const String popup='${iconPath}popup.png';
+  static const String e1='${iconPath}e1.jpg';
+  static const String e2='${iconPath}e2.jpg';
+  static const String e3='${iconPath}e3.jpg';
+  static const String e4='${iconPath}e4.jpg';
+  static const String e5='${iconPath}e5.jpg';
   static const String search='${iconPath}search.png';
+  static const String gallery='${iconPath}gallery.png';
+
   static const String appearance='${iconPath}appearance.png';
   static const String chats='${iconPath}chats.png';
   static const String donate='${iconPath}donate.png';
+  static const String arrowSend='${iconPath}arrow_send.png';
+  static const String help='${iconPath}help.png';
   static const String invite='${iconPath}invite.png';
   static const String account='${iconPath}account.png';
   static const String linkedDevice='${iconPath}linked_device.png';
   static const String notification='${iconPath}notification.png';
   static const String privacyPolicy='${iconPath}privacy_policy.png';
-
-
-
-
+  static const String phoneIcon='${iconPath}phoneIcon.png';
 
 }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/constant/string_constant.dart';
+import 'package:signal/controller/appearance_controller.dart';
 
+import '../../../constant/color_constant.dart';
 import 'app_utills.dart';
 
 class ThemeUtil {
@@ -9,37 +13,20 @@ class ThemeUtil {
   static bool isDark = false;
 
   static Future loadThemeMode() async {
+    final controller = Get.put(AppearanceController());
+
     return await ThemeUtil.getThemeMode().then((value) {
       selectedTheme = value;
-      logs("loadThemeMode----> ${value}");
+      logs("loadThemeMode----> $value");
       if (selectedTheme == ThemeMode.dark) {
-        ThemeUtil.isDark = true;
+        isDark = true;
+        controller.update();
       } else {
         isDark = false;
+        controller.update();
       }
+      logs("loadThemeMode Is Dark----> $isDark");
     });
-  }
-
-  static ThemeData getAppTheme(BuildContext context, bool isDarkTheme) {
-    return ThemeData(
-      scaffoldBackgroundColor: isDarkTheme ? Colors.black : Colors.white,
-      textTheme: Theme.of(context)
-          .textTheme
-          .copyWith(
-            titleSmall:
-                Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 11),
-          )
-          .apply(
-            bodyColor: isDarkTheme ? Colors.white : Colors.black,
-            displayColor: Colors.grey,
-          ),
-      listTileTheme: ListTileThemeData(
-          iconColor: isDarkTheme ? Colors.orange : Colors.purple),
-      appBarTheme: AppBarTheme(
-          backgroundColor: isDarkTheme ? Colors.black : Colors.white,
-          iconTheme: IconThemeData(
-              color: isDarkTheme ? Colors.white : Colors.black54)),
-    );
   }
 
   static Future<ThemeMode> getThemeMode() async {
@@ -50,31 +37,24 @@ class ThemeUtil {
 }
 
 class Themes {
-  static final light = ThemeData.light().copyWith(
-    backgroundColor: Colors.white,
-    bottomAppBarColor: Colors.cyan,
-    buttonTheme: const ButtonThemeData(
-      buttonColor: Colors.cyan,
-      textTheme: ButtonTextTheme.primary,
-    ),
-    textTheme: TextTheme(
-      bodyText2: TextStyle(
-        //color: Colors.black, // Set the body text color for light theme
-      ),
-    ),
-  );
+  static ThemeData darkTheme = ThemeData(
+      appBarTheme:
+          const AppBarTheme(backgroundColor: AppColorConstant.appBlack),
+      brightness: Brightness.dark,
+      colorScheme: const ColorScheme.dark(
+        background: AppColorConstant.darkPrimary,
+        primary: AppColorConstant.appWhite,
+        secondary: AppColorConstant.darkSecondary,
+      ));
 
-  static final dark = ThemeData.dark().copyWith(
-   // backgroundColor: Colors.black,
-    bottomAppBarColor: Colors.deepPurple,
-    buttonTheme: const ButtonThemeData(
-      buttonColor: Colors.deepPurple,
-      textTheme: ButtonTextTheme.primary,
-    ),
-    textTheme: TextTheme(
-      bodyText2: TextStyle(
-        color: Colors.white, // Set the body text color for dark theme
-      ),
-    ),
-  );
+  static ThemeData lightTheme = ThemeData(
+      brightness: Brightness.light,
+      appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: AppColorConstant.appBlack),
+          titleTextStyle: TextStyle(color: AppColorConstant.appBlack)),
+      colorScheme: const ColorScheme.light(
+        background: AppColorConstant.appWhite,
+        primary: AppColorConstant.appBlack,
+        secondary: AppColorConstant.darkSecondary,
+      ));
 }
