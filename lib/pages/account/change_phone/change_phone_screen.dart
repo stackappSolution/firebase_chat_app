@@ -136,8 +136,8 @@ class ChangePhoneScreen extends StatelessWidget {
                     height: 47.px,
                     width: 90.px,
                     decoration: BoxDecoration(
-                        color: AppColorConstant.appTheme.withOpacity(0.1),
-                        border: Border.all(color: AppColorConstant.appTheme),
+                        color: AppColorConstant.appYellow.withOpacity(0.1),
+                        border: Border.all(color: AppColorConstant.appYellow),
                         borderRadius: BorderRadius.circular(13.px)),
                     child: CountryCodePicker(
                       showFlag: false,
@@ -182,8 +182,8 @@ class ChangePhoneScreen extends StatelessWidget {
                     height: 47.px,
                     width: 90.px,
                     decoration: BoxDecoration(
-                        color: AppColorConstant.appTheme.withOpacity(0.1),
-                        border: Border.all(color: AppColorConstant.appTheme),
+                        color: AppColorConstant.appYellow.withOpacity(0.1),
+                        border: Border.all(color: AppColorConstant.appYellow),
                         borderRadius: BorderRadius.circular(13.px)),
                     child: CountryCodePicker(
                       showFlag: false,

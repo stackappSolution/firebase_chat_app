@@ -49,7 +49,7 @@ class ChatingPage extends StatelessWidget {
                                       padding: EdgeInsets.all(5.px),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5.px),
-                                        color: AppColorConstant.orange,
+                                        color: AppColorConstant.appYellow,
                                       ),
                                       alignment: Alignment.center,
                                       height: 25.px,
@@ -135,7 +135,7 @@ class ChatingPage extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 10.px),
-                        child: const CircleAvatar(backgroundColor: AppColorConstant.orange),
+                        child: const CircleAvatar(backgroundColor: AppColorConstant.appYellow),
                       ))
                 ]),
                 child: Container(
@@ -166,7 +166,7 @@ class ChatingPage extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 10.px),
-                        child: const CircleAvatar(backgroundColor: AppColorConstant.orange),
+                        child: const CircleAvatar(backgroundColor: AppColorConstant.appYellow),
                       ))
                 ]),
                 child: Container(
@@ -199,7 +199,7 @@ class ChatingPage extends StatelessWidget {
           IconButton(
               icon: Icon(Icons.arrow_back_rounded, size: 30.px, color: AppColorConstant.offBlack),
               onPressed: () {}),
-          CircleAvatar(maxRadius: 20.px, backgroundColor: AppColorConstant.orange)
+          CircleAvatar(maxRadius: 20.px, backgroundColor: AppColorConstant.appYellow)
         ]),
         title: AppText(StringConstant.userName, fontSize: 20.px, overflow: TextOverflow.ellipsis),
         actions: [

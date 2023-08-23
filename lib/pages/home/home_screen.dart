@@ -48,8 +48,8 @@ getAppBar() {
     leading: Padding(
       padding: EdgeInsets.only(left: 15.px),
       child: CircleAvatar(
-        backgroundColor: AppColorConstant.appTheme.withOpacity(0.2),
-        child: AppText('S', fontSize: 20.px, color: AppColorConstant.appTheme),
+        backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
+        child: AppText('S', fontSize: 20.px, color: AppColorConstant.appYellow),
       ),
     ),
     title: Padding(
@@ -81,7 +81,7 @@ buildBottomBar(HomeScreenController controller) {
   return BottomNavigationBar(
       elevation: 0.0,
       backgroundColor: AppColorConstant.appWhite,
-      selectedItemColor: AppColorConstant.appTheme,
+      selectedItemColor: AppColorConstant.appYellow,
       onTap: controller.changeTabIndex,
       currentIndex: controller.tabIndex,
       items: [

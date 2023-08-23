@@ -167,7 +167,7 @@ class ContactUsScreen extends StatelessWidget {
           margin: EdgeInsets.all(12.px),
           borderRadius: BorderRadius.circular(20.px),
           height: 45.px,
-          color: AppColorConstant.appTheme.withOpacity(0.8),
+          color: AppColorConstant.appYellow.withOpacity(0.8),
           stringChild: true,
           width: 80.px,
           child: AppText(S.of(Get.context!).next,

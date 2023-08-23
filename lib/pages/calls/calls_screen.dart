@@ -37,7 +37,7 @@ class CallsScreen extends StatelessWidget {
             heroTag: 'calls',
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
-            backgroundColor: AppColorConstant.appTheme,
+            backgroundColor: AppColorConstant.appYellow,
             child: AppImageAsset(
                 image: AppAsset.phonePlus, height: 25.px, width: 25.px),
             onPressed: () {},
