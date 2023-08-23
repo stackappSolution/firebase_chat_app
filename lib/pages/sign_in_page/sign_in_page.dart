@@ -1,4 +1,5 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -8,14 +9,15 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/sign_in_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/sign_in_page/sign_in_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 class SignInPage extends StatelessWidget {
     SignInPage({super.key});
-
+FirebaseAuth auth = FirebaseAuth.instance;
+String v_id ='';
   SignInViewModel? signInViewModel;
 
   @override
@@ -75,14 +77,14 @@ class SignInPage extends StatelessWidget {
                     margin: EdgeInsets.only(left: 20.px),
                     alignment: Alignment.centerLeft,
                     child: AppText(
-                      StringConstant.signIn,
+                      S.of(Get.context!).signIn,
                       fontSize: 30.px,
                       fontWeight: FontWeight.w600,
                     )),
                 Container(
                   margin: EdgeInsets.only(left: 20.px),
                   child: AppText(
-                    StringConstant.signInDis,
+                    S.of(Get.context!).signInDescription,
                     color: AppColorConstant.appLightBlack.withOpacity(0.4),
                     fontWeight: FontWeight.w400,
                     fontSize: 15.px,
@@ -128,7 +130,7 @@ class SignInPage extends StatelessWidget {
                             height: 50.px,
                             margin: EdgeInsets.only(left: 10.px, right: 10.px),
                             child: AppTextFormField(
-                              labelText: 'Phone Number',
+                              labelText: S.of(context).phoneNumber,
                               labelStyle: TextStyle(
                                   color: AppColorConstant.appYellow,
                                   fontSize: 20.px),
@@ -184,7 +186,7 @@ class SignInPage extends StatelessWidget {
                           fixedSize:
                           MaterialStatePropertyAll(Size(230.px, 50.px))),
                       child: AppText(
-                        StringConstant.continueButton,
+                        S.of(context).continues,
                         fontSize: 22.px,
                         color: AppColorConstant.appWhite,
                       ),
@@ -195,7 +197,21 @@ class SignInPage extends StatelessWidget {
                     alignment: Alignment.center,
                     child: ElevatedButton(
                       onPressed: () async {
-                        //AuthService.sendOTP(phoneNumber,countryCode);
+                        await FirebaseAuth.instance.verifyPhoneNumber(
+                          phoneNumber: phoneNumber,
+                          verificationCompleted: (PhoneAuthCredential credential) async {
+                            await auth.signInWithCredential(credential);
+                          },
+                          verificationFailed: (FirebaseAuthException e) {
+                            if (e.code == 'invalid-phone-number') {
+                              print('The provided phone number is not valid.');
+                            }
+                          },
+                          codeSent: (String verificationId, int? resendToken) {
+                            v_id=verificationId;
+                          },
+                          codeAutoRetrievalTimeout: (String verificationId) {},
+                        );
                         Get.toNamed(RouteHelper.getVerifyOtpPage(),
                             arguments: "${signInViewModel!.selectedCountry}${signInViewModel!.phoneNumber.text}");
                       },
@@ -209,7 +225,7 @@ class SignInPage extends StatelessWidget {
                           fixedSize:
                           MaterialStatePropertyAll(Size(230.px, 50.px))),
                       child: AppText(
-                        StringConstant.continueButton,
+                        S.of(context).continues,
                         fontSize: 22.px,
                         color: AppColorConstant.appWhite,
                       ),
