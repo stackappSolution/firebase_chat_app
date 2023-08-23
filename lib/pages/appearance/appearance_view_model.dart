@@ -155,7 +155,7 @@ class AppearanceViewModel {
                   RadioListTile(
                     contentPadding: EdgeInsets.only(left: 10.px),
                     fillColor: const MaterialStatePropertyAll(
-                        AppColorConstant.appTheme),
+                        AppColorConstant.appYellow),
                     title: AppText(S.of(context).systemDefault),
                     value: Locale(
                       Get.deviceLocale!.languageCode,
@@ -176,7 +176,7 @@ class AppearanceViewModel {
                   RadioListTile(
                     contentPadding: EdgeInsets.only(left: 10.px),
                     fillColor: const MaterialStatePropertyAll(
-                        AppColorConstant.appTheme),
+                        AppColorConstant.appYellow),
                     title: AppText(S.of(context).english),
                     value: const Locale('en_US'),
                     groupValue: locale,
@@ -194,7 +194,7 @@ class AppearanceViewModel {
                   RadioListTile(
                     contentPadding: EdgeInsets.only(left: 10.px),
                     fillColor: const MaterialStatePropertyAll(
-                        AppColorConstant.appTheme),
+                        AppColorConstant.appYellow),
                     title: AppText(S.of(context).gujarati),
                     value: const Locale('gu_IN'),
                     groupValue: locale,

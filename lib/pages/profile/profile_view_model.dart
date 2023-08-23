@@ -71,7 +71,7 @@ class ProfileViewModel {
                   },
                   child: AppText(
                     StringConstant.cansel,
-                    color: AppColorConstant.appTheme,
+                    color: AppColorConstant.appYellow,
                     fontSize: 15.px,
                     fontWeight: FontWeight.bold,
                   ),

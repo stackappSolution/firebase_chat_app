@@ -13,7 +13,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/modal/message.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
-import '../../app/app/utills/shared_preferences.dart';
 import '../../controller/chating_page_controller.dart';
 
 class ChatingPage extends StatelessWidget {
@@ -63,8 +62,12 @@ class ChatingPage extends StatelessWidget {
                                   child: Container(
                                       padding: EdgeInsets.all(5.px),
                                       decoration: BoxDecoration(
+
                                           borderRadius: BorderRadius.circular(5.px),
                                           color: AppColorConstant.offBlack),
+
+
+
                                       alignment: Alignment.center,
                                       height: fontSize == StringConstant.small
                                           ? 21.px
@@ -173,7 +176,7 @@ class ChatingPage extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 10.px),
-                        child: const CircleAvatar(backgroundColor: AppColorConstant.orange),
+                        child: const CircleAvatar(backgroundColor: AppColorConstant.appYellow),
                       ))
                 ]),
                 child: Container(
@@ -217,8 +220,12 @@ class ChatingPage extends StatelessWidget {
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
+
                           padding: EdgeInsets.only(bottom: 10.px),
-                          child: const CircleAvatar(backgroundColor: AppColorConstant.orange)))
+                          child:  const CircleAvatar(backgroundColor: AppColorConstant.appYellow)))
+
+
+
                 ]),
                 child: Container(
                     margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
@@ -263,10 +270,10 @@ class ChatingPage extends StatelessWidget {
           SizedBox(width: 2.px),
           IconButton(
               icon: Icon(Icons.arrow_back_rounded, size: 30.px, color: AppColorConstant.offBlack),
-              onPressed: () {
-                // Get.toNamed('/appearance');
-              }),
-          CircleAvatar(maxRadius: 20.px, backgroundColor: AppColorConstant.orange)
+
+              onPressed: () {}),
+          CircleAvatar(maxRadius: 20.px, backgroundColor: AppColorConstant.appYellow)
+
         ]),
         title: AppText(StringConstant.userName, fontSize: 20.px, overflow: TextOverflow.ellipsis),
         actions: [

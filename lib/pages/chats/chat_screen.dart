@@ -56,7 +56,7 @@ class ChatScreen extends StatelessWidget {
             elevation: 0.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
-            backgroundColor: AppColorConstant.appTheme,
+            backgroundColor: AppColorConstant.appYellow,
             child: AppImageAsset(
                 image: AppAsset.camera, height: 25.px, width: 25.px),
             onPressed: () {},
@@ -69,7 +69,7 @@ class ChatScreen extends StatelessWidget {
             elevation: 0.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
-            backgroundColor: AppColorConstant.appTheme,
+            backgroundColor: AppColorConstant.appYellow,
             child: AppImageAsset(
                 image: AppAsset.edit, height: 25.px, width: 25.px),
             onPressed: () {},
@@ -105,7 +105,7 @@ class ChatScreen extends StatelessWidget {
                   Get.toNamed(RouteHelper.getChatProfileScreen());
               },
                 child: CircleAvatar(maxRadius: 30.px,
-                  backgroundColor: AppColorConstant.appTheme.withOpacity(0.8),
+                  backgroundColor: AppColorConstant.appYellow.withOpacity(0.8),
                   child: AppText(
                     firstLetter,
                     color: AppColorConstant.appWhite,
