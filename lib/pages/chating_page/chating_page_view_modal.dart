@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../modal/message.dart';
 

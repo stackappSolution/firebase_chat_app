@@ -100,7 +100,7 @@ class EditProfileScreen extends StatelessWidget {
                 children: [
 
                   InkWell(onTap: () {
-                    editProfileViewModel!.AboutTap(context);
+                    editProfileViewModel!.aboutTap(context);
                   },child: const AppText(StringConstant.about)),
                   AppText(StringConstant.profile,
                       color: secondaryTheme, fontSize: 14.px),

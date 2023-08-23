@@ -31,6 +31,30 @@ class AppColorConstant {
   static const Color lightGrey = Color(0xFFC2C2C2);
  // static const Color blue = Color(0xFF2196F3);
 
+  static const Color darkBlue = Color(0xFF2e5ef5);
+  static const Color darkPink = Color(0xFFd4153e);
+  static const Color darkOrange = Color(0xFFcb3f0e);
+  static const Color yellowGrey = Color(0xFF706858);
+  static const Color darkGreen = Color(0xFF377747);
+  static const Color lightGreen = Color(0xFF098664);
+  static const Color teal = Color(0xFF007c93 );
+  static const Color lightSky = Color(0xFF2f6ba4 );
+  static const Color appPurple = Color(0xFF6158cb);
+  static const Color pinkPurple = Color(0xFF9d30cb);
+  static const Color greyPink = Color(0xFF92606b);
+  static const Color appGrey = Color(0xFF71707f);
+  static const Color extraDarkOrange = Color(0xFF8d2402);
+  static const Color extraLight = Color(0xFFc25702);
+  static const Color darkGrey = Color(0xFF464458);
+  static const Color darkPurple = Color(0xFF7335c1);
+  static const Color pink = Color(0xFFbe478d);
+  static const Color green = Color(0xFF026d4b);
+  static const Color extraLightGreen = Color(0xFF169b73);
+  static const Color extraLightPurple = Color(0xFF6966a2);
+  static const Color extraDarkSky = Color(0xFF0d65b7);
+  static const Color extraLightSky = Color(0xFF3d7eba);
+
+
   static Color hex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
