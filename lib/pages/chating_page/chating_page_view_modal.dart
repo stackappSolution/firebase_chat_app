@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/controller/chating_page_controller.dart';
-import 'package:signal/pages/appearance/appearance_view_model.dart';
 
 import '../../app/app/utills/app_utills.dart';
+import '../../app/app/utills/shared_preferences.dart';
 import '../../constant/string_constant.dart';
 import '../../modal/message.dart';
 import 'chating_page.dart';
@@ -15,18 +15,16 @@ class ChatingPageViewModal {
 
 
   ChatingPageViewModal([this.chatingPage]) {
-    Future.delayed(const Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () async {
       controller = Get.find<ChatingPageController>();
-      logs('**********ChatingPageViewModal**********');
+      ChatingPage.fontSize = await getStringValue(StringConstant.setFontSize);
+      controller!.update();
     });
   }
  Future<String?> fontSizeInitState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-   ChatingPage.fontSize = prefs.getString(StringConstant.selectedFontSize);
-    logs('fontSize : ${ChatingPage.fontSize}');
 
-    // ChatingPage.fontSize = '${getPrefStringValue(StringConstant.selectedFontSize)}';
-    // controller!.update();
+   ChatingPage.fontSize   = await getStringValue(StringConstant.setFontSize);
+   logs('getStringValue(StringConstant.selectedFontSize) : ${ChatingPage.fontSize}');
     return ChatingPage.fontSize;
   }
 
@@ -67,7 +65,8 @@ class ChatingPageViewModal {
     Message(
         messages: "jsdkxcnjkjksdnjnj ?",
         isSender: false,
-        messageTimestamps: DateTime(2023, 8, 26, 9, 8)),
+        messageTimestamps: DateTime(2023, 8, 26, 9, 8)
+    ),
     Message(
         messages: "tywefazcjhbxn b ui",
         isSender: false,
@@ -80,15 +79,12 @@ class ChatingPageViewModal {
         messages: "jjjasijjjkcjzxuihiowdcsmnjnoioeiccjweioji",
         isSender: false,
         messageTimestamps: DateTime(2023, 8, 28, 9, 2)),
-    Message(
-        messages: "isdjcwekmniweimeimm",
-        isSender: true,
+    Message(        messages: "isdjcwekmniweimeimm",        isSender: true,
         messageTimestamps: DateTime(2023, 8, 29, 9, 24)),
     Message(
         messages: "irwjisdvjioijrijiosdioj",
         isSender: false,
         messageTimestamps: DateTime(2023, 8, 30, 9, 7)),
   ];
-
   bool iconChange = false;
 }

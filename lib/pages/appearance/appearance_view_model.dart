@@ -14,6 +14,7 @@ import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/theme_util.dart';
+import '../chating_page/chating_page.dart';
 
 class AppearanceViewModel {
   AppearanceScreen? appearanceScreen;
@@ -22,7 +23,7 @@ class AppearanceViewModel {
   String? selectedLanguage;
   String? selectedFontSize;
   AppearanceController? controller;
-
+  String? saveFontSize;
   Locale? locale;
 
   AppearanceViewModel(this.appearanceScreen) {
@@ -238,7 +239,7 @@ class AppearanceViewModel {
               contentPadding: EdgeInsets.zero,
               insetPadding:
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              title: const AppText(StringConstant.language,
+              title: const AppText(StringConstant.selectFontSize,
                   color: AppColorConstant.appWhite),
               actions: [
                 Column(
@@ -255,26 +256,30 @@ class AppearanceViewModel {
                       title: const AppText(StringConstant.small,
                           color: AppColorConstant.appWhite),
                       value: StringConstant.small,
-                      groupValue: selectedLanguage,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedLanguage = value;
-                          saveSelectedFontSize(value!);
+                      groupValue: saveFontSize,
+                      onChanged: (value) async {
+                        setState(()  {
+                          saveFontSize = value;
                         });
+                        await   saveSelectedFontSize(value!);
+                        controller.update();
                       },
                     ),
+
+
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
                       title: const AppText(StringConstant.normal,
                           color: AppColorConstant.appWhite),
                       value: StringConstant.normal,
-                      groupValue: selectedLanguage,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedLanguage = value;
-                          saveSelectedFontSize(value!);
+                      groupValue: saveFontSize,
+                      onChanged: (value) async {
+                        setState(()  {
+                          saveFontSize = value;
                         });
+                        await   saveSelectedFontSize(value!);
+                        controller.update();
                       },
                     ),
                     RadioListTile(
@@ -283,12 +288,13 @@ class AppearanceViewModel {
                       title: const AppText(StringConstant.large,
                           color: AppColorConstant.appWhite),
                       value: StringConstant.large,
-                      groupValue: selectedLanguage,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedLanguage = value;
-                          saveSelectedFontSize(value!);
+                      groupValue: saveFontSize,
+                      onChanged: (value) async {
+                        setState(()  {
+                          saveFontSize = value;
                         });
+                        await  saveSelectedFontSize(value!);
+                        controller.update();
                       },
                     ),
                     RadioListTile(
@@ -297,12 +303,13 @@ class AppearanceViewModel {
                       title: const AppText(StringConstant.extraLarge,
                           color: AppColorConstant.appWhite),
                       value: StringConstant.extraLarge,
-                      groupValue: selectedLanguage,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedLanguage = value;
-                          saveSelectedFontSize(value!);
+                      groupValue: saveFontSize,
+                      onChanged: (value) async {
+                        setState(()  {
+                          saveFontSize = value;
                         });
+                        await  saveSelectedFontSize(value!);
+                        controller.update();
                       },
                     ),
                   ],
@@ -316,7 +323,11 @@ class AppearanceViewModel {
   }
 
   saveSelectedFontSize(String fontSize) async {
-    setStringValue(StringConstant.selectedFontSize, fontSize);
+    setStringValue(StringConstant.setFontSize, fontSize);
+    logs('setStringValue(StringConstant.selectedFontSize) : ${StringConstant.setFontSize} - $fontSize');
+
+saveFontSize = await getStringValue(StringConstant.setFontSize);
+    logs('getStringValue(StringConstant.selectedFontSize) : $saveFontSize');
   }
 
   mainTap(index, context, AppearanceController controller) {
@@ -334,6 +345,11 @@ class AppearanceViewModel {
             context,
             controller,
           );
+        }
+        break;
+      case 3:
+        {
+          Get.to(ChatingPage());
         }
         break;
       case 5:

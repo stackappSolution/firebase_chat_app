@@ -24,12 +24,14 @@ class ChatingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
     fontSize =  '${chatingPageViewModal!.fontSizeInitState()}' ;
 
-
     return GetBuilder(
         init: ChatingPageController(),
+
+
         builder: (ChatingPageController controller) {
           return Scaffold(
               appBar: appBar(controller, context),
@@ -164,8 +166,8 @@ class ChatingPage extends StatelessWidget {
         '$formattedMonth ${messageTime.day.toString().padLeft(2, '0')}, ${messageTime.year}';
     date = formattedDate;
     logs('small   : ${fontSize == StringConstant.small}');
-    logs('large    : ${fontSize == StringConstant.large}');
-    logs('normal    : ${fontSize == StringConstant.normal}');
+    logs('normal   : ${fontSize == StringConstant.normal}');
+    logs('large     : ${fontSize == StringConstant.large}');
     logs('extraLarge : ${fontSize == StringConstant.extraLarge}');
     return Slidable(
         child: (message.isSender)

@@ -20,6 +20,8 @@ class StringConstant {
   static const String blankText = '';
 
   static const String selectedFontSize = 'SelectedFontSize';
+  static const String setFontSize = 'setFontSize';
+  static const String selectFontSize = 'Select Fontsize';
   static const String theme = 'Theme';
   static const String yourProfile = 'Your Profile';
   static const String profileAreVisible =

@@ -176,7 +176,7 @@ class AccountScreen extends StatelessWidget {
                   child: AppText(StringConstant.yourAccountData,
                       color: primaryTheme),
                 ),
-                AppText(
+                const AppText(
                   StringConstant.deleteAccount,
                   color: AppColorConstant.red,
                 ),

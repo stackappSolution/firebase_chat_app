@@ -3,7 +3,6 @@ import 'package:signal/pages/account/change_phone/change_phone_screen.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/pages/edit_profile/add_photo_screen.dart';
 
-import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
@@ -19,6 +18,7 @@ import 'package:signal/routes/routes_constant.dart';
 import '../pages/account/account/account_screen.dart';
 import '../pages/account/addvance_pin_setting/advance_pin_setting.dart';
 import '../pages/account/pin_setting/pin_setting_screen.dart';
+import '../pages/splash/splash_screen.dart';
 
 class RouteHelper {
   static String getSignInPage() => RouteConstant.signInPage;
@@ -32,6 +32,7 @@ class RouteHelper {
   static String getProfileScreen() => RouteConstant.profileScreen;
 
   static String getIntroScreen() => RouteConstant.introScreen;
+  static String getSplashScreen() => RouteConstant.introScreen;
 
   static String getChattingScreen() => RouteConstant.chatingScreen;
 
@@ -54,66 +55,62 @@ class RouteHelper {
     GetPage(name: RouteConstant.settingsScreen, page: () => SettingScreen()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
+    GetPage(name: RouteConstant.splashScreen, page: () => SplashScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
-    GetPage(name: RouteConstant.initial, page: () =>  ChatingPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
-    GetPage(
-      name: RouteConstant.verifyOtpScreen,
-      page: () => VerifyOtpPage(),
-    ),
+    GetPage(      name: RouteConstant.verifyOtpScreen,      page: () => VerifyOtpPage()    ),
     GetPage(
       name: RouteConstant.appearanceScreen,
-      page: () => AppearanceScreen(),
+      page: () => AppearanceScreen()
     ),
     GetPage(
         name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
     GetPage(
       name: RouteConstant.verifyOtpScreen,
-      page: () => VerifyOtpPage(),
+      page: () => VerifyOtpPage()
     ),
     GetPage(
       name: RouteConstant.homeScreen,
-      page: () => HomeScreen(),
+      page: () => HomeScreen()
     ),
     GetPage(
       name: RouteConstant.settingScreen,
-      page: () => SettingScreen(),
+      page: () => SettingScreen()
     ),
     GetPage(
       name: RouteConstant.introScreen,
-      page: () => IntroPage(),
+      page: () => IntroPage()
     ),
     GetPage(
       name: RouteConstant.chatingScreen,
-      page: () => ChatingPage(),
+      page: () => ChatingPage()
     ),
     GetPage(
       name: RouteConstant.addPhotoScreen,
-      page: () => AddPhotoScreen(),
+      page: () => AddPhotoScreen()
     ),
     GetPage(
       name: RouteConstant.accountScreen,
-      page: () => AccountScreen(),
+      page: () => AccountScreen()
     ),
     GetPage(
       name: RouteConstant.changePinScreen,
-      page: () => PinSettingScreen(),
+      page: () => PinSettingScreen()
     ),
-    GetPage(
-      name: RouteConstant.advancePinSetting,
-      page: () => AdvancePinSettingScreen(),
+    GetPage(      name: RouteConstant.advancePinSetting,
+      page: () => AdvancePinSettingScreen()
     ),
     GetPage(
       name: RouteConstant.changePhoneScreen,
-      page: () => ChangePhoneScreen(),
-    ),
+      page: () => ChangePhoneScreen()    ),
     GetPage(name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
-    GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage(),),
-    GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen(),),
-    GetPage(name: RouteConstant.settingScreen, page: () => SettingScreen(),),
-    GetPage(name: RouteConstant.helpSettingsScreen, page: () =>  HelpSettingsScreen(),),
-    GetPage(name: RouteConstant.contactUsScreen, page: () =>  ContactUsScreen(),),
-    GetPage(name: RouteConstant.licensesScreen, page: () =>  const LicensesScreen(),),
-    GetPage(name: RouteConstant.chatProfileScreen, page: () =>  const ChatProfileScreen(),),
+    GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
+
+    GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
+    GetPage(name: RouteConstant.settingScreen, page: () => SettingScreen()),
+    GetPage(name: RouteConstant.helpSettingsScreen, page: () =>  HelpSettingsScreen()),
+    GetPage(name: RouteConstant.contactUsScreen, page: () =>  ContactUsScreen()),
+    GetPage(name: RouteConstant.licensesScreen, page: () =>  const LicensesScreen()),
+    GetPage(name: RouteConstant.chatProfileScreen, page: () =>  const ChatProfileScreen()),
   ];
 }
