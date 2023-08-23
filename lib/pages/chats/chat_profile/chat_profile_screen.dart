@@ -77,7 +77,7 @@ class ChatProfileScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
             maxRadius: 40.px,
-            backgroundColor: AppColorConstant.appTheme.withOpacity(0.2),
+            backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
             child: AppText('SJ', fontSize: 30.px),
           ),
         ),
@@ -99,7 +99,7 @@ class ChatProfileScreen extends StatelessWidget {
                 width: 50.px,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.px),
-                    color: AppColorConstant.appTheme.withOpacity(0.2)),
+                    color: AppColorConstant.appYellow.withOpacity(0.2)),
                 child: const Padding(
                   padding: EdgeInsets.all(12.0),
                   child: AppImageAsset(
@@ -124,7 +124,7 @@ class ChatProfileScreen extends StatelessWidget {
                   width: 50.px,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.px),
-                      color: AppColorConstant.appTheme.withOpacity(0.2)),
+                      color: AppColorConstant.appYellow.withOpacity(0.2)),
                   child: const Padding(
                     padding: EdgeInsets.all(12.0),
                     child: AppImageAsset(
@@ -145,7 +145,7 @@ class ChatProfileScreen extends StatelessWidget {
                 width: 50.px,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.px),
-                    color: AppColorConstant.appTheme.withOpacity(0.2)),
+                    color: AppColorConstant.appYellow.withOpacity(0.2)),
                 child: const Padding(
                   padding: EdgeInsets.all(12.0),
                   child: AppImageAsset(
@@ -165,7 +165,7 @@ class ChatProfileScreen extends StatelessWidget {
                 width: 50.px,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.px),
-                    color: AppColorConstant.appTheme.withOpacity(0.2)),
+                    color: AppColorConstant.appYellow.withOpacity(0.2)),
                 child: const Padding(
                   padding: EdgeInsets.all(12.0),
                   child: AppImageAsset(

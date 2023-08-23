@@ -79,9 +79,13 @@ class ChatingPage extends StatelessWidget {
                                   child: Container(
                                       padding: EdgeInsets.all(5.px),
                                       decoration: BoxDecoration(
+
                                         borderRadius:
                                             BorderRadius.circular(5.px),
-                                        color: AppColorConstant.orange,
+
+
+                                        color: AppColorConstant.appYellow,
+
                                       ),
                                       alignment: Alignment.center,
                                       height: 25.px,
@@ -172,18 +176,19 @@ class ChatingPage extends StatelessWidget {
     return Slidable(
         child: (message.isSender)
             ? (Slidable(
-                endActionPane: ActionPane(
-                    extentRatio: 0.15.px,
-                    motion: const ScrollMotion(),
-                    children: [
-                      Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 10.px),
-                            child: const CircleAvatar(
-                                backgroundColor: AppColorConstant.orange),
-                          ))
-                    ]),
+
+
+
+                endActionPane:
+                    ActionPane(extentRatio: 0.15.px, motion: const ScrollMotion(), children: [
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 10.px),
+                        child: const CircleAvatar(backgroundColor: AppColorConstant.appYellow),
+                      ))
+                ]),
+
                 child: Container(
                     margin:
                         EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
@@ -213,19 +218,20 @@ class ChatingPage extends StatelessWidget {
                                   fontSize: 12.px))
                         ]))))
             : (Slidable(
-                startActionPane: ActionPane(
-                    extentRatio: 0.139.px,
-                    motion: const ScrollMotion(),
-                    children: [
-                      SizedBox(width: 10.px),
-                      Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 10.px),
-                            child: const CircleAvatar(
-                                backgroundColor: AppColorConstant.orange),
-                          ))
-                    ]),
+
+
+
+                startActionPane:
+                    ActionPane(extentRatio: 0.139.px, motion: const ScrollMotion(), children: [
+                  SizedBox(width: 10.px),
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 10.px),
+                        child: const CircleAvatar(backgroundColor: AppColorConstant.appYellow),
+                      ))
+                ]),
+
                 child: Container(
                     margin:
                         EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
@@ -261,8 +267,11 @@ class ChatingPage extends StatelessWidget {
               icon: Icon(Icons.arrow_back_rounded,
                   size: 30.px, color: AppColorConstant.offBlack),
               onPressed: () {}),
+
           CircleAvatar(
-              maxRadius: 20.px, backgroundColor: AppColorConstant.orange)
+              maxRadius: 20.px, backgroundColor: AppColorConstant.darkOrange)
+
+
         ]),
         title: InkWell(
           onTap: () {

@@ -59,7 +59,7 @@ class IntroPage extends StatelessWidget {
   AppText transferOrRestoreAccount() {
     return AppText(StringConstant.transferOrRestoreAccount,
         fontWeight: FontWeight.w500,
-        color: AppColorConstant.orange,
+        color: AppColorConstant.appYellow,
         fontSize: 12.px);
   }
 
@@ -77,7 +77,7 @@ class IntroPage extends StatelessWidget {
         fontSize: 20.px,
         width: 230.px,
         height: 50.px,
-        color: AppColorConstant.orange,
+        color: AppColorConstant.appYellow,
         stringChild: false);
   }
 
@@ -154,12 +154,12 @@ class IntroPage extends StatelessWidget {
                       onTap: () {
                         Get.back();
                       },
-                      fontColor: AppColorConstant.appScaffold,
+                      fontColor: AppColorConstant.appWhite,
                       string: 'Back',
                       fontSize: 20,
                       borderRadius: BorderRadius.circular(15),
                       height: 40,
-                      color: AppColorConstant.orange,
+                      color: AppColorConstant.appYellow,
                       stringChild: false,
                       width: 100,
                     )

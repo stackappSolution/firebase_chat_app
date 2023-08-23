@@ -83,7 +83,7 @@ class SettingScreen extends StatelessWidget {
         ),
         CircleAvatar(
           maxRadius: 40.px,
-          backgroundColor: AppColorConstant.appTheme.withOpacity(0.2),
+          backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
           child: AppText('JB', fontSize: 25.px, color: primaryTheme),
         ),
         SizedBox(
@@ -202,9 +202,9 @@ class SettingScreen extends StatelessWidget {
           width: 50.px,
           padding: EdgeInsets.all(12.px),
           decoration: BoxDecoration(
-              color: AppColorConstant.appTheme.withOpacity(0.2),
+              color: AppColorConstant.appYellow.withOpacity(0.2),
               borderRadius: BorderRadius.circular(12.px),
-              border: Border.all(color: AppColorConstant.appTheme)),
+              border: Border.all(color: AppColorConstant.appYellow)),
           child: AppImageAsset(
             image: image,
           ),

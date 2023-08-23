@@ -50,7 +50,7 @@ class VerifyOtpPage extends StatelessWidget {
         end: Alignment.bottomCenter,
         colors: [
           AppColorConstant.appWhite.withOpacity(0.1),
-          AppColorConstant.appTheme.withOpacity(0.1),
+          AppColorConstant.appYellow.withOpacity(0.1),
         ],
       ),
     ),
@@ -100,8 +100,8 @@ class VerifyOtpPage extends StatelessWidget {
                   height: 50.px,
                   //width: 80.px,
                   decoration: BoxDecoration(
-                      color: AppColorConstant.appTheme.withOpacity(0.1),
-                      border: Border.all(color: AppColorConstant.appTheme),
+                      color: AppColorConstant.appYellow.withOpacity(0.1),
+                      border: Border.all(color: AppColorConstant.appYellow),
                       borderRadius: BorderRadius.circular(13.px)),
                   child: Padding(
                     padding: const EdgeInsets.all(8),
@@ -110,7 +110,7 @@ class VerifyOtpPage extends StatelessWidget {
                           height: 30.px,
                           textStyle: const TextStyle(fontSize: 20,color: AppColorConstant.appBlack,fontWeight: FontWeight.w600),
                           decoration: BoxDecoration(
-                              color: AppColorConstant.appTheme
+                              color: AppColorConstant.appYellow
                                   .withOpacity(0.0))),
                       validator: (value) {
                         if (value == null && value!.isEmpty) {
@@ -152,7 +152,7 @@ class VerifyOtpPage extends StatelessWidget {
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
                     backgroundColor:  MaterialStatePropertyAll(
-                        AppColorConstant.appTheme.withOpacity(0.5)),
+                        AppColorConstant.appYellow.withOpacity(0.5)),
                     fixedSize: MaterialStatePropertyAll(Size(230.px, 50.px))),
                 child: AppText(
                   'Verify',
@@ -174,7 +174,7 @@ class VerifyOtpPage extends StatelessWidget {
                     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
                     backgroundColor: const MaterialStatePropertyAll(
-                        AppColorConstant.appTheme),
+                        AppColorConstant.appYellow),
                     fixedSize: MaterialStatePropertyAll(Size(230.px, 50.px))),
                 child: AppText(
                   'Verify',
