@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/routes/routes_helper.dart';
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -31,28 +31,27 @@ class IntroPage extends StatelessWidget {
         builder: (IntroPageController controller) {
           return Scaffold(
               body: Container(
-                  //padding: EdgeInsets.all(10.px),
                   height: double.infinity,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
+                  decoration:  const BoxDecoration(
                       gradient: LinearGradient(colors: [
                     AppColorConstant.appWhite,
                     AppColorConstant.lightOrange
                   ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      SizedBox(height: 80.px),
-                      Padding(
-                          padding: EdgeInsets.only(left: 8.px), child: image()),
-                      textWelcome(),
-                      termsPrivacyPolicy(),
-                      getStartedButton(
-                          controller.introPageViewModal.isConnected,
-                          context,
-                          controller),
-                      transferOrRestoreAccount()
-                    ]),
-                  )));
+                  child: Column(children: [
+                    SizedBox(height: 80.px),
+                    Padding(
+                        padding: EdgeInsets.only(left: 8.px), child: image()),
+                    textWelcome(),
+                    const Spacer(),
+                    termsPrivacyPolicy(),
+                    getStartedButton(
+                        controller.introPageViewModal.isConnected,
+                        context,
+                        controller),
+                    transferOrRestoreAccount(),
+                    SizedBox(height:15.px)
+                  ])));
         });
   }
 
@@ -104,7 +103,6 @@ class IntroPage extends StatelessWidget {
           fontWeight: FontWeight.w400,
           color: AppColorConstant.appLightBlack,
           fontSize: 18.px),
-      SizedBox(height: 200.px)
     ]);
   }
 
@@ -115,7 +113,7 @@ class IntroPage extends StatelessWidget {
     _networkConnectivity.initialise();
     _networkConnectivity.myStream.listen((source) {
       _source = source;
-      print('source $_source');
+      logs('source $_source');
       switch (_source.keys.toList()[0]) {
         case ConnectivityResult.mobile:
           controller.introPageViewModal.string =

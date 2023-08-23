@@ -1,5 +1,6 @@
 class RouteConstant{
   static const String initial = '/';
+  static const String splashScreen = '/splash';
   static const String introScreen = '/intro';
   static const String signInPage = '/SignInPage';
   static const String verifyOtpScreen = '/VerifyOtpPage';

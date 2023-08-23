@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/pages/chating_page/chating_page.dart';
 import 'app/app/utills/theme_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
-            initialRoute: RouteHelper.getIntroScreen(),
+            initialRoute: RouteHelper.getChattingScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
