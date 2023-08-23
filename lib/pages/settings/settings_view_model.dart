@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';

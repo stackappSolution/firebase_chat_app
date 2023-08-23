@@ -53,8 +53,6 @@ class StringConstant {
   static const String verifyOtp = 'Enter The Code We Sent To ';
   static const String signInDescription =
       'Enter Your Phone Number To Get Started';
-  static const String verifyOtp = 'Enter The Code We Sent To';
-  static const String signIndis = 'Enter Your Phone Number To Get Started';
   static const String signalMessage = 'Signal message';
 
 

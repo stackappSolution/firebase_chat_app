@@ -14,7 +14,6 @@ import 'package:signal/pages/settings/contact_us/contact_us_screen.dart';
 import 'package:signal/pages/settings/help/help_settings_screen.dart';
 import 'package:signal/pages/settings/licenses/licenses_screen.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
-import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/routes_constant.dart';
 
 import '../pages/account/account/account_screen.dart';
@@ -45,17 +44,12 @@ class RouteHelper {
   static String getAdvancePinSettingScreen() => RouteConstant.advancePinSetting;
 
   static String getChangePhoneScreen() => RouteConstant.changePhoneScreen;
-  static String getProfileScreen() => RouteConstant.profileScreen;
-  static String getAppearanceScreen() => RouteConstant.appearanceScreen;
-  static String getIntroScreen() => RouteConstant.introPage;
-  static String getChattingScreen() => RouteConstant.chattingScreen;
   static String getHelpSettingsScreen() => RouteConstant.helpSettingsScreen;
   static String getContactUsScreen() => RouteConstant.contactUsScreen;
   static String getLicensesScreen() => RouteConstant.licensesScreen;
   static String getChatProfileScreen() => RouteConstant.chatProfileScreen;
 
   static List<GetPage> routes = [
-    GetPage(name: RouteConstant.signInPage, page: () => SignInPage()),
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
     GetPage(name: RouteConstant.settingsScreen, page: () => SettingScreen()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
@@ -63,10 +57,6 @@ class RouteHelper {
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
     GetPage(name: RouteConstant.initial, page: () => const ChatingPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
-    GetPage(
-      name: RouteConstant.signInPage,
-      page: () => SignInPage(),
-    ),
     GetPage(
       name: RouteConstant.verifyOtpScreen,
       page: () => VerifyOtpPage(),
@@ -77,10 +67,6 @@ class RouteHelper {
     ),
     GetPage(
         name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
-    GetPage(
-      name: RouteConstant.signInPage,
-      page: () => SignInPage(),
-    ),
     GetPage(
       name: RouteConstant.verifyOtpScreen,
       page: () => VerifyOtpPage(),
@@ -122,7 +108,6 @@ class RouteHelper {
       page: () => ChangePhoneScreen(),
     ),
     GetPage(name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
-    GetPage(name: RouteConstant.signInPage, page: () => SignInPage(),),
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage(),),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen(),),
     GetPage(name: RouteConstant.settingScreen, page: () => SettingScreen(),),

@@ -98,12 +98,7 @@ class EditProfileScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 27),
               child: Column(
                 children: [
-                  InkWell(
-                      onTap: () {
-                        editProfileViewModel!.AboutTap(context);
-                      },
-                      child:
-                          AppText(StringConstant.about, color: primaryTheme)),
+
                   InkWell(onTap: () {
                     editProfileViewModel!.aboutTap(context);
                   },child: const AppText(StringConstant.about)),

@@ -15,10 +15,8 @@ class AppColorConstant {
   static const Color appYellowBorder = Color(0xFFFE9532);
   static const Color orange = Colors.orange;
   static const Color lightOrange = Color(0xFFF6EDE1);
-  static const Color orange = Color(0xFFFF9800);
   static const Color chatOrange =  Color(0xFFFCD5A5);
   static const Color iconOrange =  Color(0xFFF6BE78);
-  static const Color lightOrange = Color(0xFFFDC16E);
   static const Color purple = Color(0xFFAF57BE);
   static const Color lightpurple = Color(0xFFEFE3F1);
   static const Color blackOff = Color(0xFF4B4B4B);

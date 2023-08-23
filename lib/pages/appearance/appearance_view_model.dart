@@ -27,11 +27,8 @@ class AppearanceViewModel {
 
   AppearanceViewModel(this.appearanceScreen) {
     Future.delayed(
-      Duration(milliseconds: 100),
       const Duration(milliseconds: 100),
-      () {
-        controller = Get.find<AppearanceController>();
-      },
+      () => controller = Get.find<AppearanceController>(),
     );
   }
 
@@ -131,8 +128,6 @@ class AppearanceViewModel {
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AppAlertDialog(
-              titlePadding: EdgeInsets.only(left: 15.px, top: 10.px),
             return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.px)),
@@ -141,13 +136,11 @@ class AppearanceViewModel {
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
               insetPadding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               title: Container(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.all(10.px),
                   child: AppText(fontSize: 20.px, 'Language')),
-              widget: Column(
-                  child: AppText(fontSize: 20.px, S.of(Get.context!).language)),
               content: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,9 +358,6 @@ class AppearanceViewModel {
   loadSelectedFontSize() async {
     final fontSize = await getStringValue(StringConstant.selectedFontSize) ??
         StringConstant.normal;
-    final fontSize =
-        await getStringValue(StringConstant.selectedFontSize) ??
-            StringConstant.normal;
     selectedFontSize = fontSize.toString();
     logs("selectedFontSize-----$selectedFontSize");
   }

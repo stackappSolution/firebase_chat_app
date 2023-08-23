@@ -10,7 +10,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
-// ignore: must_be_immutable
+
 class SettingScreen extends StatelessWidget {
   SettingScreen({Key? key}) : super(key: key);
 
@@ -26,7 +26,10 @@ class SettingScreen extends StatelessWidget {
       init: SettingsController(),
       builder: (controller) {
         return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .background,
           appBar: getAppbar(context),
           body: getBody(context, controller),
         );
@@ -37,16 +40,19 @@ class SettingScreen extends StatelessWidget {
   getAppbar(context) {
     return AppAppBar(
       title: AppText(
-        S.of(Get.context!).settings,
+        S
+            .of(Get.context!)
+            .settings,
         fontSize: 20.px,
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme
+            .of(context)
+            .colorScheme
+            .primary,
       ),
     );
   }
 
-  getBody(context, SettingsController controller) {
-    return Column(
-  getBody(SettingsController controller) {
+  getBody(BuildContext context, SettingsController controller) {
     return ListView(
       children: [
         SizedBox(
@@ -54,15 +60,21 @@ class SettingScreen extends StatelessWidget {
         ),
         buildProfileView(context),
         buildSettingsList(context, controller),
-        buildProfileView(),
-        buildSettingsList(controller),
+        buildProfileView(context),
+        buildSettingsList(context, controller),
       ],
     );
   }
 
   buildProfileView(context) {
-    Color primaryTheme = Theme.of(context).colorScheme.primary;
-    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
+    Color primaryTheme = Theme
+        .of(context)
+        .colorScheme
+        .primary;
+    Color secondaryTheme = Theme
+        .of(context)
+        .colorScheme
+        .secondary;
     return Row(
       children: [
         SizedBox(
@@ -82,7 +94,9 @@ class SettingScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppText(
-              S.of(Get.context!).userName,
+              S
+                  .of(Get.context!)
+                  .userName,
               fontSize: 20.px,
               color: primaryTheme,
             ),
@@ -93,9 +107,7 @@ class SettingScreen extends StatelessWidget {
     );
   }
 
-  buildSettingsList(context, SettingsController controller) {
-    return ListView(
-  buildSettingsList(SettingsController controller) {
+  buildSettingsList(BuildContext context, SettingsController controller) {
     return ListView(physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
@@ -103,59 +115,74 @@ class SettingScreen extends StatelessWidget {
           context,
           1,
           AppAsset.account,
-          S.of(Get.context!).account,
+          S
+              .of(Get.context!)
+              .account,
         ),
         settingsView(
           context,
           2,
           AppAsset.appearance,
-          S.of(Get.context!).appearance,
+          S
+              .of(Get.context!)
+              .appearance,
         ),
         settingsView(
           context,
           3,
           AppAsset.linkedDevice,
-          S.of(Get.context!).linkedDevice,
+          S
+              .of(Get.context!)
+              .linkedDevice,
         ),
         settingsView(
           context,
           4,
           AppAsset.donate,
-          S.of(Get.context!).donateToSignal,
+          S
+              .of(Get.context!)
+              .donateToSignal,
         ),
         settingsView(
           context,
           5,
           AppAsset.chats,
-          S.of(Get.context!).chats,
+          S
+              .of(Get.context!)
+              .chats,
         ),
         settingsView(
           context,
           6,
           AppAsset.privacyPolicy,
-          S.of(Get.context!).privacyPolicy,
+          S
+              .of(Get.context!)
+              .privacyPolicy,
         ),
         settingsView(
           context,
           7,
           AppAsset.invite,
-          S.of(Get.context!).inviteFriends,
+          S
+              .of(Get.context!)
+              .inviteFriends,
         ),
         settingsView(
+          context,
           8,
           AppAsset.help,
-          S.of(Get.context!).help,
+          S
+              .of(Get.context!)
+              .help,
         ),
       ],
     );
   }
 
-  settingsView(
-    context,
-    index,
-    image,
-    tittle,
-  ) {
+  settingsView(context,
+      index,
+      image,
+      tittle) {
     return Padding(
       padding: EdgeInsets.all(10.px),
       child: ListTile(
@@ -165,7 +192,10 @@ class SettingScreen extends StatelessWidget {
         title: AppText(
           tittle,
           fontSize: 15.px,
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .primary,
         ),
         leading: Container(
           height: 50.px,

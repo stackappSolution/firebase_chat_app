@@ -44,7 +44,6 @@ class ProfileViewModel {
   }
 
   onTapNext(context) {
-
     goToHomeScreen();
     logs("NextTapped");
   }
@@ -78,39 +77,8 @@ class ProfileViewModel {
                   ),
                 ),
               )
-
-                ))
-          ],
-          widget: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 30.px),
-                child: IconButton(
-                    onPressed: () {
-                      pickImageCamera(controller);
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.camera_alt_rounded,
-                      color: AppColorConstant.appWhite,
-                      size: 70.px,
-                    )),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 30.px),
-                child: IconButton(
-                    onPressed: () {
-                      pickImageGallery(controller);
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.image,
-                      color: AppColorConstant.appWhite,
-                      size: 70.px,
-                    )),
-              ),
             ],
+            insetPadding: EdgeInsets.zero,
             widget: SizedBox(
               height: 100.px,
               child: Row(
@@ -162,7 +130,7 @@ class ProfileViewModel {
                   ),
                 ],
               ),
-            ), insetPadding: EdgeInsets.zero,);
+            ));
       },
     );
   }
@@ -174,9 +142,11 @@ class ProfileViewModel {
 
     await Permission.camera.request();
     await Permission.storage.request();
-    logs("permissionStorage ---- >${await Permission.storage.status.isGranted}");
+    logs(
+        "permissionStorage ---- >${await Permission.storage.status.isGranted}");
     logs("permissionCamera ---- >${await Permission.camera.status.isGranted}");
-    if (await Permission.camera.status.isGranted ||await Permission.storage.status.isGranted  ) {
+    if (await Permission.camera.status.isGranted ||
+        await Permission.storage.status.isGranted) {
       showDialogs(context, controller);
     } else {
       await Permission.storage.request();
