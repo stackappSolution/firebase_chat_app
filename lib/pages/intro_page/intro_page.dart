@@ -1,11 +1,9 @@
-
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-
-
 import 'package:signal/routes/routes_helper.dart';
+
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -14,7 +12,6 @@ import '../../constant/color_constant.dart';
 import '../../constant/string_constant.dart';
 import '../../controller/intro_page_controller.dart';
 import '../../service/network_connectivity.dart';
-import 'package:connectivity/connectivity.dart';
 
 class IntroPage extends StatelessWidget {
   Map _source = {ConnectivityResult.none: false};
@@ -34,7 +31,7 @@ class IntroPage extends StatelessWidget {
           return Scaffold(
               body: Container(
                   //padding: EdgeInsets.all(10.px),
-                height: double.infinity,
+                  height: double.infinity,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -63,11 +60,9 @@ class IntroPage extends StatelessWidget {
   AppButton getStartedButton(bool isConnected, context, IntroPageController controller) {
     return AppButton(
         onTap: () {
-
           Get.toNamed(RouteHelper.getHomeScreen());
 
           Get.toNamed(RouteHelper.getSignInPage());
-
         },
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
@@ -101,60 +96,64 @@ class IntroPage extends StatelessWidget {
     ]);
   }
 
-  AppImageAsset image() => AppImageAsset(height: 200.px, width: 200.px, image: 'assets/images/intro_page.png');
-  void introPageInitState(context){ _networkConnectivity.initialise();
-  _networkConnectivity.myStream.listen((source) {
-    _source = source;
-    print('source $_source');
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.mobile:
-        controller.introPageViewModal.string =
-        _source.values.toList()[0] ? 'Mobile: Online' : 'Mobile: Offline';
-        controller.introPageViewModal.isConnected = true;
-        break;
-      case ConnectivityResult.wifi:
-        controller.introPageViewModal.string =
-        _source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
-        controller.introPageViewModal.isConnected = true;
-        break;
-      case ConnectivityResult.none:
-      default:
-        controller.introPageViewModal.isConnected = false;
-        controller.introPageViewModal.string = 'Offline';
-    }
-    (controller.introPageViewModal.isConnected == false)
-        ? showDialog(
-      context: context,
-      builder: (context) {return
-        AppAlertDialog(
-          title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const AppText(
-              'Network error : \n',
-              fontWeight: FontWeight.bold,
-            ),
-            AppText(
-              'Please check your internet connection or try again later.',
-              fontSize: 15.px,
-            )
-          ]),
-          actions: [
-            AppButton(
-              onTap: () {
-                Get.back();
-              },
-              fontColor: AppColorConstant.appScaffold,
-              string: 'Back',
-              fontSize: 20,
-              borderRadius: BorderRadius.circular(15),
-              height: 40,
-              color: AppColorConstant.orange,
-              stringChild: false,
-              width: 100,
-            )
-          ],
-        );
-      },
-    ) : null;
-  });}
-}
+  AppImageAsset image() =>
+      AppImageAsset(height: 200.px, width: 200.px, image: 'assets/images/intro_page.png');
 
+  void introPageInitState(context) {
+    _networkConnectivity.initialise();
+    _networkConnectivity.myStream.listen((source) {
+      _source = source;
+      print('source $_source');
+      switch (_source.keys.toList()[0]) {
+        case ConnectivityResult.mobile:
+          controller.introPageViewModal.string =
+              _source.values.toList()[0] ? 'Mobile: Online' : 'Mobile: Offline';
+          controller.introPageViewModal.isConnected = true;
+          break;
+        case ConnectivityResult.wifi:
+          controller.introPageViewModal.string =
+              _source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
+          controller.introPageViewModal.isConnected = true;
+          break;
+        case ConnectivityResult.none:
+        default:
+          controller.introPageViewModal.isConnected = false;
+          controller.introPageViewModal.string = 'Offline';
+      }
+      (controller.introPageViewModal.isConnected == false)
+          ? showDialog(
+              context: context,
+              builder: (context) {
+                return AppAlertDialog(
+                  title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const AppText(
+                      'Network error : \n',
+                      fontWeight: FontWeight.bold,
+                    ),
+                    AppText(
+                      'Please check your internet connection or try again later.',
+                      fontSize: 15.px,
+                    )
+                  ]),
+                  actions: [
+                    AppButton(
+                      onTap: () {
+                        Get.back();
+                      },
+                      fontColor: AppColorConstant.appScaffold,
+                      string: 'Back',
+                      fontSize: 20,
+                      borderRadius: BorderRadius.circular(15),
+                      height: 40,
+                      color: AppColorConstant.orange,
+                      stringChild: false,
+                      width: 100,
+                    )
+                  ],
+                );
+              },
+            )
+          : null;
+    });
+  }
+}

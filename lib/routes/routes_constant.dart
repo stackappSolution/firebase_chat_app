@@ -13,6 +13,7 @@ class RouteConstant{
 
   static const String profileScreen = '/profile';
   static const String chatScreen = '/chat';
+  static const String chattingScreen = '/chatting';
   static const String appearanceScreen = '/appearance';
 
 

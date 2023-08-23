@@ -13,7 +13,8 @@ class AppColorConstant {
   static const Color appTheme= Color(0xFFFE9532);
   static const Color appYellow = Color(0xFFFE9532);
   static const Color appYellowBorder = Color(0xFFFE9532);
-
+  static const Color darkPrimary = Color(0xFF242424);
+  static const Color darkSecondary = Color(0xFF949494);
   static const Color orange = Color(0xFFFF9800);
   static const Color chatOrange =  Color(0xFFFCD5A5);
   static const Color iconOrange =  Color(0xFFF6BE78);

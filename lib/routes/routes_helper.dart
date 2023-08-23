@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:signal/pages/chating_page/chating_page.dart';
 
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
@@ -15,6 +16,8 @@ import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/routes_constant.dart';
 
 class RouteHelper {
+  static String getIntroPage() => RouteConstant.introPage;
+
   static String getSignInPage() => RouteConstant.signInPage;
 
   static String getVerifyOtpPage() => RouteConstant.verifyOtpScreen;
@@ -29,6 +32,8 @@ class RouteHelper {
 
   static String getAppearanceScreen() => RouteConstant.appearanceScreen;
 
+  static String getChattingScreen() => RouteConstant.chattingScreen;
+
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.signInPage, page: () => SignInPage()),
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
@@ -37,8 +42,8 @@ class RouteHelper {
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
-    GetPage(
-        name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
+    GetPage(name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
+    GetPage(name: RouteConstant.chattingScreen, page: () => ChatingPage()),
     GetPage(
       name: RouteConstant.signInPage,
       page: () => SignInPage(),
