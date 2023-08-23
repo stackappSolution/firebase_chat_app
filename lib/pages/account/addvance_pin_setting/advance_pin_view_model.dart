@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -25,15 +27,16 @@ class AdvancePinViewModel {
             StringConstant.warning,
             fontSize: 18.px,
           ),
-          widget: AppText(
-            StringConstant.ifYouDisable,
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 13.px,
+          widget: SizedBox(width: 100.px,height: 70.px,
+            child: AppText(
+              StringConstant.ifYouDisable,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
           ),
           actions: [
             InkWell(
                 onTap: () {
-                  Navigator.pop(context);
+                      Get.back();
                 },
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 15.px),

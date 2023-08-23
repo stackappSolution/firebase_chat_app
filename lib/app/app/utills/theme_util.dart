@@ -56,5 +56,6 @@ class Themes {
         background: AppColorConstant.appWhite,
         primary: AppColorConstant.appBlack,
         secondary: AppColorConstant.darkSecondary,
-      ));
+      ),
+  );
 }

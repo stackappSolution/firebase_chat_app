@@ -9,6 +9,7 @@ import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
+import 'package:signal/pages/pin_enter/pin_enter_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/pages/settings/contact_us/contact_us_screen.dart';
 import 'package:signal/pages/settings/help/help_settings_screen.dart';
@@ -48,6 +49,7 @@ class RouteHelper {
   static String getContactUsScreen() => RouteConstant.contactUsScreen;
   static String getLicensesScreen() => RouteConstant.licensesScreen;
   static String getChatProfileScreen() => RouteConstant.chatProfileScreen;
+  static String getPinEnterScreen() => RouteConstant.pinEnterScreen;
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
@@ -115,5 +117,6 @@ class RouteHelper {
     GetPage(name: RouteConstant.contactUsScreen, page: () =>  ContactUsScreen(),),
     GetPage(name: RouteConstant.licensesScreen, page: () =>  const LicensesScreen(),),
     GetPage(name: RouteConstant.chatProfileScreen, page: () =>  const ChatProfileScreen(),),
+    GetPage(name: RouteConstant.pinEnterScreen, page: () =>   PinEnterScreen(),),
   ];
 }

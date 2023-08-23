@@ -67,7 +67,7 @@ class ProfileViewModel {
                     left: 80.px, top: 20.px, bottom: 10.px, right: 10.px),
                 child: InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   child: AppText(
                     StringConstant.cansel,
@@ -90,7 +90,7 @@ class ProfileViewModel {
                       InkWell(
                           onTap: () {
                             pickImageCamera(controller);
-                            Navigator.pop(context);
+                                Get.back();
                           },
                           child: AppImageAsset(
                               height: 60.px,
@@ -112,7 +112,7 @@ class ProfileViewModel {
                       InkWell(
                           onTap: () {
                             pickImageGallery(controller);
-                            Navigator.pop(context);
+                                Get.back();
                           },
                           child: AppImageAsset(
                               height: 60.px,

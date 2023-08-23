@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -17,6 +18,7 @@ class ChangePhoneViewModel {
   String fireBaseStoredAccountNumber = "";
   String oldNumCountryCode = "+91";
   String newNumCountryCode = "+91";
+  bool isButtonActive = false;
 
   ChangePhoneViewModel(this.changePhoneNumberScreen) {}
 
@@ -25,29 +27,37 @@ class ChangePhoneViewModel {
     controller.update();
   }
 
+  onFinalChange(value,ChangePhoneController controller) {
+    if (value.length == 10) {
+      isButtonActive = true;
+      controller.update();
+    } else {
+      isButtonActive = false;
+      controller.update();
+    }
+    logs("isButtonActive-----?$isButtonActive");
+  }
+
   finalContinueTap(ChangePhoneController controller, BuildContext context) {
     // if ("$oldNumCountryCode${oldNumberController.text}" ==
     //     fireBaseStoredAccountNumber) {
-    if (true) {
-
+    if (isButtonActive) {
       showDialog(
         context: context,
         builder: (context) {
           return AppAlertDialog(
             insetPadding: EdgeInsets.zero,
-            title: AppText("${newNumCountryCode}${newNumberController.text}",fontSize: 25.px),
+            title: AppText("${newNumCountryCode}${newNumberController.text}",
+                fontSize: 25.px),
             widget: AppText(
               StringConstant.checkAgainYourNumber,
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .secondary,
+              color: Theme.of(context).colorScheme.secondary,
               fontSize: 12.px,
             ),
             actions: [
               InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                        Get.back();
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.px, bottom: 10.px),
@@ -55,7 +65,7 @@ class ChangePhoneViewModel {
                   )),
               InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                        Get.back();
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.px, bottom: 10.px),
@@ -73,16 +83,13 @@ class ChangePhoneViewModel {
             insetPadding: EdgeInsets.zero,
             widget: AppText(
               StringConstant.phoneNumberDoesNot,
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .secondary,
+              color: Theme.of(context).colorScheme.secondary,
               fontSize: 12.px,
             ),
             actions: [
               InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                        Get.back();
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.px, bottom: 10.px),

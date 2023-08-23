@@ -108,13 +108,14 @@ class PinSettingScreen extends StatelessWidget {
                 ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 70.px, right: 50.px, top: 30.px),
+          padding: EdgeInsets.only(top: 30.px),
           child: InkWell(
             onTap: () {
               pinSettingViewModel!.onKeyBoardChangeTap(controller);
             },
             child: (pinSettingViewModel!.changeKeyBoard)
                 ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(
                         Icons.keyboard_alt_outlined,
@@ -128,6 +129,7 @@ class PinSettingScreen extends StatelessWidget {
                     ],
                   )
                 : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(
                         Icons.keyboard_alt,
@@ -210,8 +212,8 @@ class PinSettingScreen extends StatelessWidget {
                 width: 110.px,
                 decoration: BoxDecoration(
                     color: (!pinSettingViewModel!.isButtonActive)
-                        ? Theme.of(context).colorScheme.secondary
-                        : AppColorConstant.yellowLight,
+                        ? AppColorConstant.blackOff.withOpacity(0.2)
+                        : AppColorConstant.appYellow,
                     borderRadius: BorderRadius.all(Radius.circular(30.px))),
                 child: AppText(
                   StringConstant.next,
@@ -232,8 +234,8 @@ class PinSettingScreen extends StatelessWidget {
                 width: 110.px,
                 decoration: BoxDecoration(
                     color: (!pinSettingViewModel!.isButtonActive)
-                        ? Theme.of(context).colorScheme.secondary
-                        : AppColorConstant.yellowLight,
+                        ? AppColorConstant.blackOff.withOpacity(0.2)
+                        : AppColorConstant.appYellow,
                     borderRadius: BorderRadius.all(Radius.circular(30.px))),
                 child: AppText(
                   StringConstant.next,

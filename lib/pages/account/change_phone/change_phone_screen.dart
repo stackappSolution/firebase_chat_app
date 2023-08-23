@@ -57,69 +57,72 @@ class ChangePhoneScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 30.px, left: 25.px, right: 25.px),
       child: (!changePhoneViewModel!.isPhoneNumberChange)
-          ? Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Container(
-                height: 110.px,
-                width: 110.px,
-                padding: EdgeInsets.all(20.px),
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColorConstant.yellowLight),
-                child: const AppImageAsset(
-                  image: AppAsset.phoneIcon,
-                  fit: BoxFit.contain,
+          ? SingleChildScrollView(
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  height: 110.px,
+                  width: 110.px,
+                  padding: EdgeInsets.all(20.px),
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColorConstant.yellowLight),
+                  child: const AppImageAsset(
+                    image: AppAsset.phoneIcon,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 25.px, bottom: 20.px),
-                child: AppText(
-                  StringConstant.changePhoneNumber,
-                  color: primaryTheme,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25.px,
+                Padding(
+                  padding: EdgeInsets.only(top: 25.px, bottom: 20.px),
+                  child: AppText(
+                    StringConstant.changePhoneNumber,
+                    color: primaryTheme,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25.px,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 15.px,
-                  right: 15.px,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppText(
-                      StringConstant.useThisToChange,
-                      color: secondaryTheme,
-                      fontSize: 14.px,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.px),
-                      child: AppText(
-                        StringConstant.beforeContinuing,
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 15.px,
+                    right: 15.px,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppText(
+                        StringConstant.useThisToChange,
                         color: secondaryTheme,
                         fontSize: 14.px,
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 120.px),
-                      child: AppElevatedButton(
-                          buttonRadius: 30.px,
-                          buttonColor: AppColorConstant.appYellow,
-                          buttonHeight: 42.px,
-                          onPressed: () {
-                            changePhoneViewModel!.continueTap(controller);
-                          },
-                          widget: AppText(
-                            StringConstant.continues,
-                            fontSize: 13.px,
-                            color: primaryTheme,
-                          )),
-                    )
-                  ],
-                ),
-              )
-            ])
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.px),
+                        child: AppText(
+                          StringConstant.beforeContinuing,
+                          color: secondaryTheme,
+                          fontSize: 14.px,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 120.px),
+                        child: AppElevatedButton(
+                            buttonRadius: 30.px,
+                            buttonColor: AppColorConstant.appYellow,
+                            buttonHeight: 42.px,
+                            onPressed: () {
+                              changePhoneViewModel!.continueTap(controller);
+                            },
+                            widget: AppText(
+                              StringConstant.continues,
+                              fontSize: 13.px,
+                              color: primaryTheme,
+                            )),
+                      )
+                    ],
+                  ),
+                )
+              ]),
+            )
           : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                 padding: EdgeInsets.only(bottom: 5.px),
@@ -161,7 +164,7 @@ class ChangePhoneScreen extends StatelessWidget {
                       controller: changePhoneViewModel!.oldNumberController,
                       labelText: StringConstant.phoneNumber,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]{1,10}$')),
                       ],
                     ),
                   ),
@@ -207,22 +210,31 @@ class ChangePhoneScreen extends StatelessWidget {
                       controller: changePhoneViewModel!.newNumberController,
                       labelText: StringConstant.phoneNumber,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]{1,10}$')),
                       ],
+                      onChanged:(value) {
+                        changePhoneViewModel!.onFinalChange(value,controller);
+                      },
+
                     ),
                   ),
                 ],
               ),
+              const Spacer(),
               Padding(
-                padding: EdgeInsets.only(top: 120.px),
+                padding: EdgeInsets.symmetric(vertical: 40.px),
                 child: AppElevatedButton(
                     buttonRadius: 30.px,
-                    buttonColor: AppColorConstant.appYellow,
+                    buttonColor: (changePhoneViewModel!.isButtonActive)
+                        ? AppColorConstant.appYellow
+                        : AppColorConstant.blackOff.withOpacity(0.2),
                     buttonHeight: 42.px,
-                    onPressed: () {
-                      changePhoneViewModel!
-                          .finalContinueTap(controller, context);
-                    },
+                    onPressed: (changePhoneViewModel!.isButtonActive)
+                        ? () {
+                            changePhoneViewModel!
+                                .finalContinueTap(controller, context);
+                          }
+                        : null,
                     widget: AppText(
                       StringConstant.continues,
                       fontSize: 13.px,

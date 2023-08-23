@@ -23,7 +23,7 @@ class StringConstant {
   static const String theme = 'Theme';
   static const String yourProfile = 'Your Profile';
   static const String profileAreVisible =
-      'Profiles Are Visible To People, Your Message,Contacts and Groups.';
+      'Profiles Are Visible To People, Your Message, Contacts and Groups.';
   static const String firstName = 'First Name ( Required )';
 
   static const String lastName = 'Last Name ( Required )';
@@ -148,5 +148,8 @@ class StringConstant {
   static const String phoneNumberDoesNot = 'Phone Number Does Not Match';
   static const String checkAgainYourNumber = 'Check Again Your Number';
   static const String ok = 'Ok';
+
+  static const String enterYourPin = 'Enter Your PIN';
+  static const String enterThePIN  = 'Enter The PIN you Created For Your Account. This is Different From Your SMS Verification Code.';
 
 }
