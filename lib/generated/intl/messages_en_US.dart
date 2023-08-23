@@ -25,15 +25,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "account": MessageLookupByLibrary.simpleMessage("Account"),
         "appIcon": MessageLookupByLibrary.simpleMessage("App Icon"),
         "appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
+        "audio": MessageLookupByLibrary.simpleMessage("Audio"),
         "calls": MessageLookupByLibrary.simpleMessage("Calls"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-        "chatColor":
-            MessageLookupByLibrary.simpleMessage("Chat Color & wallpaper"),
+        "chatColor": MessageLookupByLibrary.simpleMessage("Chat color"),
+        "chatColorAndWallpaper":
+            MessageLookupByLibrary.simpleMessage("Chat color & Wallpaper"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "choose": MessageLookupByLibrary.simpleMessage("choose"),
+        "colorIsOnlyVisibleYou":
+            MessageLookupByLibrary.simpleMessage("Color is only visible you"),
+        "contactDetails":
+            MessageLookupByLibrary.simpleMessage("Contact details"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
+        "darkModeWallpaper":
+            MessageLookupByLibrary.simpleMessage("Dark mode dims wallpaper"),
         "debugLog": MessageLookupByLibrary.simpleMessage("Debug log"),
+        "disappearingMessages":
+            MessageLookupByLibrary.simpleMessage("Disappearing Messages"),
         "donateToSignal":
             MessageLookupByLibrary.simpleMessage("Donate To Signal"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
@@ -61,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
         "messageFontSize":
             MessageLookupByLibrary.simpleMessage("Message Font Size"),
+        "mute": MessageLookupByLibrary.simpleMessage("Mute"),
         "navigationBarSize":
             MessageLookupByLibrary.simpleMessage("Navigation Bar Size"),
         "newGroup": MessageLookupByLibrary.simpleMessage("New Group"),
@@ -75,7 +86,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "question": MessageLookupByLibrary.simpleMessage("Question"),
         "readFaq":
             MessageLookupByLibrary.simpleMessage("Have you read our FAQ yet?"),
+        "resetChatColor":
+            MessageLookupByLibrary.simpleMessage("Reset chat color"),
+        "resetWallpaper":
+            MessageLookupByLibrary.simpleMessage("Reset Wallpaper"),
         "search": MessageLookupByLibrary.simpleMessage("Search.."),
+        "setWallpaper": MessageLookupByLibrary.simpleMessage("Set Wallpaper"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
             "Enter Your Phone Number To Get Started"),
@@ -83,6 +99,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "signalMessage": MessageLookupByLibrary.simpleMessage("Signal message"),
         "somethingNotWorking":
             MessageLookupByLibrary.simpleMessage("Somethings Not Working"),
+        "soundAndNotification":
+            MessageLookupByLibrary.simpleMessage("Sound & Notification"),
         "supportCenter": MessageLookupByLibrary.simpleMessage("Support center"),
         "systemDefault": MessageLookupByLibrary.simpleMessage("System Default"),
         "tellUs": MessageLookupByLibrary.simpleMessage(
@@ -103,6 +121,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyOtp":
             MessageLookupByLibrary.simpleMessage("Enter The Code We Sent To"),
         "version": MessageLookupByLibrary.simpleMessage("Version"),
+        "video": MessageLookupByLibrary.simpleMessage("Video"),
+        "viewSafetyNumbers":
+            MessageLookupByLibrary.simpleMessage("View safety numbers"),
         "welcomeToChat":
             MessageLookupByLibrary.simpleMessage(" Welcome To Chat"),
         "whatsThis": MessageLookupByLibrary.simpleMessage("Whats this?"),

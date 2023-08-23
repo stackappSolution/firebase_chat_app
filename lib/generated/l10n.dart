@@ -280,10 +280,10 @@ class S {
     );
   }
 
-  /// `Chat Color & wallpaper`
+  /// `Chat color`
   String get chatColor {
     return Intl.message(
-      'Chat Color & wallpaper',
+      'Chat color',
       name: 'chatColor',
       desc: '',
       args: [],
@@ -565,6 +565,136 @@ class S {
     return Intl.message(
       'Support center',
       name: 'supportCenter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disappearing Messages`
+  String get disappearingMessages {
+    return Intl.message(
+      'Disappearing Messages',
+      name: 'disappearingMessages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat color & Wallpaper`
+  String get chatColorAndWallpaper {
+    return Intl.message(
+      'Chat color & Wallpaper',
+      name: 'chatColorAndWallpaper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sound & Notification`
+  String get soundAndNotification {
+    return Intl.message(
+      'Sound & Notification',
+      name: 'soundAndNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact details`
+  String get contactDetails {
+    return Intl.message(
+      'Contact details',
+      name: 'contactDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View safety numbers`
+  String get viewSafetyNumbers {
+    return Intl.message(
+      'View safety numbers',
+      name: 'viewSafetyNumbers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mute`
+  String get mute {
+    return Intl.message(
+      'Mute',
+      name: 'mute',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video`
+  String get video {
+    return Intl.message(
+      'Video',
+      name: 'video',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio`
+  String get audio {
+    return Intl.message(
+      'Audio',
+      name: 'audio',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset chat color`
+  String get resetChatColor {
+    return Intl.message(
+      'Reset chat color',
+      name: 'resetChatColor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set Wallpaper`
+  String get setWallpaper {
+    return Intl.message(
+      'Set Wallpaper',
+      name: 'setWallpaper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark mode dims wallpaper`
+  String get darkModeWallpaper {
+    return Intl.message(
+      'Dark mode dims wallpaper',
+      name: 'darkModeWallpaper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset Wallpaper`
+  String get resetWallpaper {
+    return Intl.message(
+      'Reset Wallpaper',
+      name: 'resetWallpaper',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Color is only visible you`
+  String get colorIsOnlyVisibleYou {
+    return Intl.message(
+      'Color is only visible you',
+      name: 'colorIsOnlyVisibleYou',
       desc: '',
       args: [],
     );

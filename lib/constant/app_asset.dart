@@ -37,11 +37,15 @@ class AppAsset {
   static const String phoneOutline='${iconPath}phone_outline.png';
   static const String phonePlus='${iconPath}phone_plus.png';
   static const String popup='${iconPath}popup.png';
-  static const String e1='${iconPath}e1.jpg';
-  static const String e2='${iconPath}e2.jpg';
-  static const String e3='${iconPath}e3.jpg';
-  static const String e4='${iconPath}e4.jpg';
-  static const String e5='${iconPath}e5.jpg';
+  static const String video='${iconPath}video.png';
+  static const String mute='${iconPath}mute.png';
+  static const String audio='${iconPath}audio.png';
+  static const String view='${iconPath}view.png';
+  static const String messenger='${iconPath}messenger.png';
+  static const String details='${iconPath}details.png';
+  static const String color='${iconPath}color.png';
+  static const String sound='${iconPath}sound.png';
+
   static const String search='${iconPath}search.png';
   static const String gallery='${iconPath}gallery.png';
 
@@ -56,5 +60,9 @@ class AppAsset {
   static const String notification='${iconPath}notification.png';
   static const String privacyPolicy='${iconPath}privacy_policy.png';
   static const String phoneIcon='${iconPath}phoneIcon.png';
+
+
+
+
 
 }

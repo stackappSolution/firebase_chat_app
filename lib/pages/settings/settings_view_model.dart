@@ -13,7 +13,7 @@ class SettingViewModel {
 
       case 1:
         {
-          logs("goto  $index");
+
           Get.toNamed(RouteHelper.getAccountScreen());
         }
         break;

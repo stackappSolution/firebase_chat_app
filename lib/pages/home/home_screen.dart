@@ -33,8 +33,8 @@ class HomeScreen extends StatelessWidget {
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
-          appBar: getAppBar(),
-          backgroundColor: AppColorConstant.appWhite,
+          appBar: getAppBar(context),
+          backgroundColor: Theme.of(context).colorScheme.background,
           bottomNavigationBar: buildBottomBar(controller),
           body: getBody(controller),
         ));
@@ -43,19 +43,19 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-getAppBar() {
-  return AppAppBar(
+getAppBar(BuildContext context) {
+  return AppAppBar(backgroundColor: Theme.of(context).colorScheme.background,
     leading: Padding(
       padding: EdgeInsets.only(left: 15.px),
       child: CircleAvatar(
-        backgroundColor: AppColorConstant.appTheme.withOpacity(0.2),
+        backgroundColor:AppColorConstant.appTheme.withOpacity(0.2),
         child: AppText('S', fontSize: 20.px, color: AppColorConstant.appTheme),
       ),
     ),
     title: Padding(
       padding: EdgeInsets.only(left: 20.px),
       child: AppText(S.of(Get.context!).signal,
-          color: AppColorConstant.appBlack, fontSize: 20.px),
+          color: Theme.of(Get.context!).colorScheme.primary, fontSize: 20.px),
     ),
     actions: [
       Padding(

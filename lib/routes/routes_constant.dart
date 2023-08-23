@@ -20,6 +20,10 @@ class RouteConstant{
   static const String contactUsScreen = '/contact_us';
   static const String licensesScreen = '/licenses';
   static const String chatProfileScreen = '/chat_profile';
+  static const String chatColorWallpaperScreen = '/chat_theme';
+  static const String chatColorScreen = '/chat';
+  static const String chatWallpaperScreen = '/chat_wallpaper';
+  static const String wallpaperPreviewScreen = '/preview';
 
 
 }

@@ -1,13 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/pages/home/home_screen.dart';
 import 'app/app/utills/theme_util.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
@@ -26,21 +25,23 @@ import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'app/app/utills/theme_util.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:signal/constant/color_constant.dart';
 import 'package:signal/routes/routes_helper.dart';
-import 'app/app/utills/theme_util.dart';
+import 'package:signal/generated/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
-  runApp(DevicePreview(
-      enabled: true,
-      tools: const [
-        ...DevicePreview.defaultTools,
-      ],
-      builder: (context) => const MyApp()
-  SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  // runApp(
+  //     DevicePreview(
+  //     enabled: true,
+  //     tools: const [
+  //       ...DevicePreview.defaultTools,
+  //     ],
+  //     builder: (context) => const MyApp()
+  // SystemChrome.setSystemUIOverlayStyle(
+  //     const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
   runApp(const MyApp());
 
@@ -70,21 +71,12 @@ class MyApp extends StatelessWidget {
           child: GetMaterialApp(
             locale: locale,
             title: 'Flutter matrimonial app',
-            // themeMode: ThemeUtil.selectedTheme,
-            // theme: Themes.light,
-            // darkTheme: Themes.dark,
-            debugShowCheckedModeBanner: false,
-            home: IntroPage(),
-            defaultTransition: Transition.fadeIn,
-            initialRoute: RouteHelper.getIntroPage(),
-            getPages: RouteHelper.routes,
-           // darkTheme: ThemeData.light(),
-          //  themeMode: ThemeUtil.selectedTheme,
-            theme: Themes.light,
+
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
             debugShowCheckedModeBanner: false,
-            home: IntroPage(),
+            home: HomeScreen(),
+
             themeMode: ThemeUtil.selectedTheme,
             defaultTransition: Transition.fadeIn,
             getPages: RouteHelper.routes,

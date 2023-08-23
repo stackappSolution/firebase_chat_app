@@ -28,10 +28,10 @@ class AppearanceViewModel {
   AppearanceViewModel(this.appearanceScreen) {
     Future.delayed(
       Duration(milliseconds: 100),
-      const Duration(milliseconds: 100),
-      () {
-        controller = Get.find<AppearanceController>();
-      },
+      // const Duration(milliseconds: 100),
+      // () {
+      //   controller = Get.find<AppearanceController>();
+      // },
     );
   }
 
@@ -133,11 +133,9 @@ class AppearanceViewModel {
           builder: (context, setState) {
             return AppAlertDialog(
               titlePadding: EdgeInsets.only(left: 15.px, top: 10.px),
-            return AlertDialog(
+
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.px)),
-              titlePadding: EdgeInsets.only(left: 15.px, top: 8.px),
-              backgroundColor: AppColorConstant.appWhite,
+                  borderRadius: BorderRadius.circular(20.px)),              backgroundColor: AppColorConstant.appWhite,
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
               insetPadding:

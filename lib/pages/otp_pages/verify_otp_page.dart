@@ -76,7 +76,7 @@ class VerifyOtpPage extends StatelessWidget {
               margin: EdgeInsets.only(left: 20.px),
               alignment: Alignment.centerLeft,
               child: AppText(
-                'Verify',
+
               // StringConstant.verify,
                S.of(Get.context!).verify,
                 fontSize: 30.px,

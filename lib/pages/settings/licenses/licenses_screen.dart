@@ -31,10 +31,10 @@ class LicensesScreen extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       children: [
         SizedBox(height: 20.px,),
-         AppText('https://support.signal.org/hc/en-us',fontSize: 12.px),
-         AppText('https://signal.org/legal/',fontSize: 12.px),
-         AppText('https://support.signal.org/hc/en-us/articles/360007318591',fontSize: 12.px),
-         AppText('https://support.signal.org/hc/en-us',fontSize: 12.px),
+         // AppText('https://support.signal.org/hc/en-us',fontSize: 12.px),
+         // AppText('https://signal.org/legal/',fontSize: 12.px),
+         // AppText('https://support.signal.org/hc/en-us/articles/360007318591',fontSize: 12.px),
+         // AppText('https://support.signal.org/hc/en-us',fontSize: 12.px),
         Padding(
             padding: EdgeInsets.all(20.px),
             child: AppText(

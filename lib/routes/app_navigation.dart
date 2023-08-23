@@ -1,13 +1,9 @@
 import 'package:get/get.dart';
 import 'package:signal/routes/routes_helper.dart';
 
-goToIntroPage(){
-  Get.toNamed(RouteHelper.getIntroPage());
-}
 
-goToIntroPage() {
-  Get.toNamed(RouteHelper.getIntroScreen());
-}
+
+
 
 goToSignInPage() {
   Get.toNamed(RouteHelper.getSignInPage());
@@ -45,9 +41,6 @@ goToPinSettingScreen() {
   Get.toNamed(RouteHelper.getChangePinScreen());
 }
 
-goToAppearanceScreen() {
-  Get.toNamed(RouteHelper.getAppearanceScreen());
-}
 
 goToAdvancePinSettingScreen() {
   Get.toNamed(RouteHelper.getAdvancePinSettingScreen());
@@ -74,9 +67,7 @@ goToSettingPage(){
 }
 }
 
-goToHomeScreen(){
-  Get.toNamed(RouteHelper.getHomeScreen());
-}
+
 
 goToIntroScreen(){
   Get.toNamed(RouteHelper.getIntroScreen());

@@ -45,8 +45,6 @@ class SettingScreen extends StatelessWidget {
   }
 
   getBody(context, SettingsController controller) {
-    return Column(
-  getBody(SettingsController controller) {
     return ListView(
       children: [
         SizedBox(
@@ -54,8 +52,8 @@ class SettingScreen extends StatelessWidget {
         ),
         buildProfileView(context),
         buildSettingsList(context, controller),
-        buildProfileView(),
-        buildSettingsList(controller),
+        buildProfileView(controller),
+        buildSettingsList(controller,context),
       ],
     );
   }
@@ -94,8 +92,7 @@ class SettingScreen extends StatelessWidget {
   }
 
   buildSettingsList(context, SettingsController controller) {
-    return ListView(
-  buildSettingsList(SettingsController controller) {
+
     return ListView(physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
@@ -142,6 +139,7 @@ class SettingScreen extends StatelessWidget {
           S.of(Get.context!).inviteFriends,
         ),
         settingsView(
+          context,
           8,
           AppAsset.help,
           S.of(Get.context!).help,

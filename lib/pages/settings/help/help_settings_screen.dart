@@ -38,21 +38,21 @@ class HelpSettingsScreen extends StatelessWidget {
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
-          backgroundColor: AppColorConstant.appWhite,
-          appBar: getAppBar(),
-          body: getBody(),
+          backgroundColor:Theme.of(context).colorScheme.background,
+          appBar: getAppBar(context),
+          body: getBody(context),
         ));
       },
     );
   }
 
-  getAppBar() {
-    return AppAppBar(
-      title: AppText(S.of(Get.context!).help, fontSize: 20.px),
+  getAppBar(BuildContext context) {
+    return AppAppBar(backgroundColor: Theme.of(context).colorScheme.background,
+      title: AppText(S.of(Get.context!).help, fontSize: 20.px,color: Theme.of(context).colorScheme.primary,),
     );
   }
 
-  getBody() {
+  getBody(BuildContext context) {
     return ListView(
       children: [
         ListTile(
@@ -61,32 +61,32 @@ class HelpSettingsScreen extends StatelessWidget {
           },
           trailing: AppImageAsset(
               image: AppAsset.arrowSend, height: 20.px, width: 20.px),
-          title: AppText(S.of(Get.context!).supportCenter),
+          title: AppText(S.of(Get.context!).supportCenter,color: Theme.of(context).colorScheme.primary,),
         ),
         ListTile(
           onTap: () {
             Get.toNamed(RouteHelper.getContactUsScreen());
           },
-          title: AppText(S.of(Get.context!).contactUs),
+          title: AppText(S.of(Get.context!).contactUs,color: Theme.of(context).colorScheme.primary,),
         ),
         Divider(
           height: 2.px,
-          color: AppColorConstant.grey,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         ListTile(
           onTap: () {},
           title: AppText(S.of(Get.context!).version),
           subtitle: AppText(helpSettingViewModel!.localVersion!,
-              fontSize: 12.px, color: AppColorConstant.grey),
+              fontSize: 12.px, color:Theme.of(context).colorScheme.secondary,),
         ),
         ListTile(
           onTap: () {
             Get.toNamed(RouteHelper.getLicensesScreen());
           },
-          title: AppText(S.of(Get.context!).licenses),
+          title: AppText(S.of(Get.context!).licenses,color: Theme.of(context).colorScheme.primary,),
         ),
         ListTile(
-          title: AppText(S.of(Get.context!).debugLog),
+          title: AppText(S.of(Get.context!).debugLog,color: Theme.of(context).colorScheme.primary,),
         ),
         ListTile(
           onTap: () {
@@ -94,12 +94,12 @@ class HelpSettingsScreen extends StatelessWidget {
           },
           trailing: AppImageAsset(
               image: AppAsset.arrowSend, height: 20.px, width: 20.px),
-          title: AppText(S.of(Get.context!).terms),
+          title: AppText(S.of(Get.context!).terms,color: Theme.of(context).colorScheme.primary,),
         ),
         ListTile(
           title: AppText(
             S.of(Get.context!).helpDescription,
-            color: AppColorConstant.grey,
+            color: Theme.of(context).colorScheme.secondary,
             fontSize: 12.px,
           ),
         )

@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:signal/app/app/utills/shared_preferences.dart';
+import 'package:signal/constant/color_constant.dart';
+import 'package:signal/pages/chating_page/chating_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../modal/message.dart';
 
 class ChatingPageViewModal {
+  ChatingPage? chatingPage;
+
+  Color? chatBubbleColor;
+  Color? wallpaperColor;
+  Map<String,dynamic> parameter= {};
+
+  ChatingPageViewModal(this.chatingPage);
+
   List<PopupMenuEntry<String>> popupMenu = [
     const PopupMenuItem<String>(value: 'option1', child: Text('Option 1')),
     const PopupMenuItem<String>(value: 'option2', child: Text('Option 2')),
@@ -30,4 +43,28 @@ class ChatingPageViewModal {
 
   ];
   bool iconChange = false;
+  Future<Color> getColorFromPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final colorCode = prefs.getString(wallPaperColor);
+    if (colorCode != null) {
+      return Color(int.parse(colorCode, radix: 16));
+    } else {
+      return Colors.white;
+    }
+  }
+
+  Future<Color> getChatBubbleColor() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final colorCode = prefs.getString(chatColor);
+    if (colorCode != null) {
+      return Color(int.parse(colorCode, radix: 16));
+    } else {
+      return AppColorConstant.darkBlue;
+    }
+  }
+
+
+
+
+
 }

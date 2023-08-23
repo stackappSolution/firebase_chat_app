@@ -96,7 +96,9 @@ class ChatScreen extends StatelessWidget {
 
         return Container(
             margin: EdgeInsets.all(10.px),
-            child: ListTile(
+            child: ListTile(onTap: () {
+              Get.toNamed(RouteHelper.getChattingScreen(),parameters: {'phoneNo': mobileNumber});
+            },
               trailing: AppText(
                   fontSize: 10.px,
                   S.of(Get.context!).yesterday,

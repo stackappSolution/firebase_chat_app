@@ -25,15 +25,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "account": MessageLookupByLibrary.simpleMessage("એકાઉન્ટ"),
         "appIcon": MessageLookupByLibrary.simpleMessage("એપ્લિકેશન આયકન"),
         "appearance": MessageLookupByLibrary.simpleMessage("દેખાવ"),
+        "audio": MessageLookupByLibrary.simpleMessage("ઓડિયો"),
         "calls": MessageLookupByLibrary.simpleMessage("કૉલ્સ"),
         "cancel": MessageLookupByLibrary.simpleMessage("રદ કરો"),
-        "chatColor":
-            MessageLookupByLibrary.simpleMessage("ચેટ કલર અને વોલપેપર"),
+        "chatColor": MessageLookupByLibrary.simpleMessage("ચેટ રંગ"),
+        "chatColorAndWallpaper":
+            MessageLookupByLibrary.simpleMessage("ચેટ રંગ અને વોલપેપર"),
         "chats": MessageLookupByLibrary.simpleMessage("ચેટ્સ"),
         "choose": MessageLookupByLibrary.simpleMessage("પસંદ કરો"),
+        "colorIsOnlyVisibleYou":
+            MessageLookupByLibrary.simpleMessage("રંગ ફક્ત તમને જ દેખાય છે"),
+        "contactDetails": MessageLookupByLibrary.simpleMessage("સંપર્ક વિગતો"),
         "contactUs": MessageLookupByLibrary.simpleMessage("અમારો સંપર્ક કરો"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
+        "darkModeWallpaper": MessageLookupByLibrary.simpleMessage(
+            "ડાર્ક મોડ વૉલપેપરને ડિમ કરે છે"),
         "debugLog": MessageLookupByLibrary.simpleMessage("ડીબગ લોગ"),
+        "disappearingMessages":
+            MessageLookupByLibrary.simpleMessage("અદ્રશ્ય થઈ રહેલા સંદેશાઓ"),
         "donateToSignal":
             MessageLookupByLibrary.simpleMessage("સિગ્નલ માટે દાન કરો"),
         "english": MessageLookupByLibrary.simpleMessage("અંગ્રેજી"),
@@ -60,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("બધા વાંચેલા ચિહ્નિત કરો"),
         "messageFontSize":
             MessageLookupByLibrary.simpleMessage("સંદેશ ફોન્ટ માપ"),
+        "mute": MessageLookupByLibrary.simpleMessage("ચૂપ"),
         "navigationBarSize":
             MessageLookupByLibrary.simpleMessage("નેવિગેશન બારનું કદ"),
         "newGroup": MessageLookupByLibrary.simpleMessage("નવું જૂથ"),
@@ -74,7 +84,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "question": MessageLookupByLibrary.simpleMessage("પ્રશ્ન"),
         "readFaq": MessageLookupByLibrary.simpleMessage(
             "શું તમે હજુ સુધી અમારા FAQ વાંચ્યા છે?"),
+        "resetChatColor":
+            MessageLookupByLibrary.simpleMessage("ચેટ રંગ રીસેટ કરો"),
+        "resetWallpaper":
+            MessageLookupByLibrary.simpleMessage("વૉલપેપર રીસેટ કરો"),
         "search": MessageLookupByLibrary.simpleMessage("શોધો.."),
+        "setWallpaper": MessageLookupByLibrary.simpleMessage("વૉલપેપર સેટ કરો"),
         "settings": MessageLookupByLibrary.simpleMessage("સેટિંગ્સ"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
             "પ્રારંભ કરવા માટે તમારો ફોન નંબર દાખલ કરો"),
@@ -82,6 +97,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "signalMessage": MessageLookupByLibrary.simpleMessage("સંકેત સંદેશ"),
         "somethingNotWorking":
             MessageLookupByLibrary.simpleMessage("કૈક ચલતુ નાથી"),
+        "soundAndNotification":
+            MessageLookupByLibrary.simpleMessage("ધ્વનિ અને સૂચના"),
         "supportCenter": MessageLookupByLibrary.simpleMessage("આધાર કેન્દ્ર"),
         "systemDefault": MessageLookupByLibrary.simpleMessage("સિસ્ટમ ડિફોલ્ટ"),
         "tellUs": MessageLookupByLibrary.simpleMessage(
@@ -102,6 +119,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "verifyOtp":
             MessageLookupByLibrary.simpleMessage("અમે મોકલેલ કોડ દાખલ કરો"),
         "version": MessageLookupByLibrary.simpleMessage("આવૃત્તિ"),
+        "video": MessageLookupByLibrary.simpleMessage("વિડિયો"),
+        "viewSafetyNumbers":
+            MessageLookupByLibrary.simpleMessage("સુરક્ષા નંબરો જુઓ"),
         "welcomeToChat":
             MessageLookupByLibrary.simpleMessage(" ચેટમાં આપનું સ્વાગત છે"),
         "whatsThis": MessageLookupByLibrary.simpleMessage("આ શું છે?"),
