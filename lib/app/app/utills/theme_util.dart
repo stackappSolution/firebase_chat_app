@@ -38,22 +38,23 @@ class ThemeUtil {
 
 class Themes {
   static ThemeData darkTheme = ThemeData(
-      appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
+      appBarTheme:
+          const AppBarTheme(backgroundColor: AppColorConstant.appBlack),
       brightness: Brightness.dark,
-      colorScheme:  ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         background: AppColorConstant.darkPrimary,
-        primary: Colors.white,
+        primary: AppColorConstant.appWhite,
         secondary: AppColorConstant.darkSecondary,
       ));
 
   static ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
       appBarTheme: const AppBarTheme(
-          iconTheme: IconThemeData(color: Colors.black),
-          titleTextStyle: TextStyle(color: Colors.black)),
-      colorScheme:  ColorScheme.light(
-        background: Colors.white,
-        primary: Colors.black,
+          iconTheme: IconThemeData(color: AppColorConstant.appBlack),
+          titleTextStyle: TextStyle(color: AppColorConstant.appBlack)),
+      colorScheme: const ColorScheme.light(
+        background: AppColorConstant.appWhite,
+        primary: AppColorConstant.appBlack,
         secondary: AppColorConstant.darkSecondary,
       ));
 }

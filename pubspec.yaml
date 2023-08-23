@@ -18,6 +18,8 @@ dependencies:
 
   cupertino_icons: ^1.0.5
 
+
+
   # Local Database :
   shared_preferences: ^2.2.0
 
@@ -67,6 +69,12 @@ dependencies:
   # localization
   intl: ^0.18.0
   flutter_localization: ^0.1.13
+
+  # text
+  lorem_gen: ^2.0.1
+
+  # version
+  package_info_plus: ^4.1.0
 
 
 dev_dependencies:

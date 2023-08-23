@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -7,12 +5,12 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
-import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
 
+// ignore: must_be_immutable
 class AppearanceScreen extends StatelessWidget {
   AppearanceViewModel? appearanceViewModel;
   AppearanceController? controller;
@@ -37,13 +35,7 @@ class AppearanceScreen extends StatelessWidget {
             Future<String?> currentLanguage = getStringValue(language);
             String? selectedLanguage = await currentLanguage;
             logs("default--> $selectedLanguage");
-            appearanceViewModel!.selectedLanguage = selectedLanguage!;
-
-            Future<String?> currentFonatSize = getStringValue(fontSizes);
-            String? selectedFontSize = await currentFonatSize;
-            logs("currentFonatSize --> $selectedFontSize");
-            appearanceViewModel!.selectedFontSize = selectedFontSize!;
-
+            appearanceViewModel!.selectedLanguage = selectedLanguage;
             controller!.update();
           },
         );
@@ -51,73 +43,84 @@ class AppearanceScreen extends StatelessWidget {
       builder: (AppearanceController controller) {
         return SafeArea(
             child: Scaffold(
-          backgroundColor: AppColorConstant.appWhite,
-          appBar: getAppBar(),
-          body: getBody(context, controller),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: getAppBar(context),
+          body: getBody(context, controller, appearanceViewModel!),
         ));
       },
     );
   }
 
-  getAppBar() {
+  getAppBar(context) {
     return AppAppBar(
-        leading: IconButton(
-            onPressed: () {
-              // Navigator.pop(Get.context!,appearanceViewModel!.selectedFontSize);
-              Get.back();
-              // Get.toNamed('/appearance');
-            },
-            icon: const Icon(Icons.arrow_back_rounded)),
-        title: AppText(S.of(Get.context!).appearance, fontSize: 22.px));
+        title: AppText(
+      S.of(Get.context!).appearance,
+      fontSize: 22.px,
+      color: Theme.of(context).colorScheme.primary,
+    ));
   }
 
-  getBody(BuildContext context, AppearanceController controller) {
-    return SizedBox(
-        height: double.infinity,
-        width: double.infinity,
-        // decoration: const BoxDecoration(
-        //     gradient: LinearGradient(
-        //         colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
-        //         begin: Alignment.topCenter,
-        //         end: Alignment.bottomCenter)),
-        child: Padding(
-            padding: EdgeInsets.only(top: 40.px),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              appearanceViewTile(
-                  1,
-                  context,
-                  S.of(Get.context!).language,
-                  (appearanceViewModel!.selectedLanguage != null)
-                      ? appearanceViewModel!.selectedLanguage
-                      : "default",
-                  controller),
-              appearanceViewTile(
-                  2, context, S.of(Get.context!).theme, StringConstant.systemDefault, controller),
-              appearanceViewTile(3, context, S.of(Get.context!).chatColor, "", controller),
-              appearanceViewTile(4, context, S.of(Get.context!).appIcon, "", controller),
-              appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
-                  appearanceViewModel!.selectedFontSize, controller),
-              appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
-                  StringConstant.normal, controller)
-            ])));
-  }
+  getBody(BuildContext context, AppearanceController controller,
+      AppearanceViewModel appearanceViewModel) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(top: 30.px),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        appearanceViewTile(
+            1,
+            context,
+            S.of(Get.context!).language,
+            (appearanceViewModel!.selectedLanguage != null)
+                ? appearanceViewModel!.selectedLanguage
+                : "default",
+            controller),
+        appearanceViewTile(
+            2,
+            context,
+            S.of(Get.context!).theme,
+            appearanceViewModel.selectedTheme
+                .toString()
+                .substring(10)
+                .capitalizeFirst,
+            controller),
+        appearanceViewTile(
+            3, context, S.of(Get.context!).chatColor, "", controller),
+        appearanceViewTile(
+            4, context, S.of(Get.context!).appIcon, "", controller),
+        appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
+            StringConstant.normal, controller),
+        appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
+            StringConstant.normal, controller),
+      ]),);}
 
-  appearanceViewTile(index, context, title, subtitle, AppearanceController controller) {
+
+  appearanceViewTile(
+    index,
+    context,
+    title,
+    subtitle,
+    AppearanceController controller,
+  ) {
     return InkWell(
       onTap: () {
         appearanceViewModel!.mainTap(index, context, controller);
       },
-      child: Container(
+      child: Container(width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 25.px, vertical: 13.px),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppText(title),
             AppText(
-              subtitle,
-              color: AppColorConstant.appBlack.withOpacity(0.5),
-              fontSize: 13,
+              title,
+              color: Theme.of(context).colorScheme.primary,
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 6.px),
+              child: AppText(
+                subtitle,
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 13,
+              ),
+            )
           ],
         ),
       ),

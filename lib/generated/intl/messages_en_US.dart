@@ -31,38 +31,63 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Chat Color & wallpaper"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "choose": MessageLookupByLibrary.simpleMessage("choose"),
+        "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
+        "debugLog": MessageLookupByLibrary.simpleMessage("Debug log"),
         "donateToSignal":
             MessageLookupByLibrary.simpleMessage("Donate To Signal"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "enterValidName":
             MessageLookupByLibrary.simpleMessage("Enter Valid Name"),
+        "featureRequest":
+            MessageLookupByLibrary.simpleMessage("Feature Request"),
+        "feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
         "firstName":
             MessageLookupByLibrary.simpleMessage("First Name ( Required )"),
         "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
         "gujarati": MessageLookupByLibrary.simpleMessage("Gujarati"),
+        "help": MessageLookupByLibrary.simpleMessage("Help"),
+        "helpDescription": MessageLookupByLibrary.simpleMessage(
+            "Copyright Signal Messenger \n Licensed under the GNU AGPlv3"),
+        "includeDebug":
+            MessageLookupByLibrary.simpleMessage("Include Debug Log"),
         "inviteFriends": MessageLookupByLibrary.simpleMessage("Invite Friends"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "lastName":
             MessageLookupByLibrary.simpleMessage("Last Name ( Required )"),
+        "licenses": MessageLookupByLibrary.simpleMessage("Licenses"),
         "light": MessageLookupByLibrary.simpleMessage("Light"),
         "linkedDevice": MessageLookupByLibrary.simpleMessage("Linked Devices"),
+        "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
         "messageFontSize":
             MessageLookupByLibrary.simpleMessage("Message Font Size"),
         "navigationBarSize":
             MessageLookupByLibrary.simpleMessage("Navigation Bar Size"),
+        "newGroup": MessageLookupByLibrary.simpleMessage("New Group"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "normal": MessageLookupByLibrary.simpleMessage("Normal"),
         "notification": MessageLookupByLibrary.simpleMessage("Notification"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
+        "other": MessageLookupByLibrary.simpleMessage("Other"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
             "Profiles Are Visible To People You Message,Contacts, and Groups."),
+        "question": MessageLookupByLibrary.simpleMessage("Question"),
+        "readFaq":
+            MessageLookupByLibrary.simpleMessage("Have you read our FAQ yet?"),
+        "search": MessageLookupByLibrary.simpleMessage("Search.."),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
             "Enter Your Phone Number To Get Started"),
+        "signal": MessageLookupByLibrary.simpleMessage("Signal"),
         "signalMessage": MessageLookupByLibrary.simpleMessage("Signal message"),
+        "somethingNotWorking":
+            MessageLookupByLibrary.simpleMessage("Somethings Not Working"),
+        "supportCenter": MessageLookupByLibrary.simpleMessage("Support center"),
         "systemDefault": MessageLookupByLibrary.simpleMessage("System Default"),
+        "tellUs": MessageLookupByLibrary.simpleMessage(
+            "Tell us wht you are reaching out."),
+        "terms": MessageLookupByLibrary.simpleMessage("Terms & Privacy Policy"),
         "termsPrivacyPolicy":
             MessageLookupByLibrary.simpleMessage("Terms & Privacy Policy"),
         "theBestMessengerAndChat":
@@ -73,10 +98,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "transferOrRestoreAccount":
             MessageLookupByLibrary.simpleMessage("Transfer or Restore Account"),
         "userName": MessageLookupByLibrary.simpleMessage("User Name"),
+        "verify": MessageLookupByLibrary.simpleMessage("Verify OTP"),
+        "verifyButton": MessageLookupByLibrary.simpleMessage("Verify"),
         "verifyOtp":
             MessageLookupByLibrary.simpleMessage("Enter The Code We Sent To"),
+        "version": MessageLookupByLibrary.simpleMessage("Version"),
         "welcomeToChat":
             MessageLookupByLibrary.simpleMessage(" Welcome To Chat"),
+        "whatsThis": MessageLookupByLibrary.simpleMessage("Whats this?"),
+        "yesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
         "yourProfile": MessageLookupByLibrary.simpleMessage("Your Profile")
       };
 }

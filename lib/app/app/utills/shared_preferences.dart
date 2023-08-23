@@ -7,6 +7,7 @@ const String getLanguage = 'language';
 const String getFontSize = 'fontSize';
 const String fontSizes = 'selectedFontSize';
 const String language = 'selectedLanguage';
+const String emoji = 'emoji';
 
  setStringValue(String key, String value) async {
    logs('setStringValue');
@@ -18,4 +19,7 @@ Future<String?> getStringValue(String key) async {
    logs('getStringValue');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString(key);
+
 }
+
+

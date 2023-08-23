@@ -1,9 +1,9 @@
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/routes/app_navigation.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
-
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -12,6 +12,7 @@ import '../../constant/color_constant.dart';
 import '../../constant/string_constant.dart';
 import '../../controller/intro_page_controller.dart';
 import '../../service/network_connectivity.dart';
+import 'package:connectivity/connectivity.dart';
 
 class IntroPage extends StatelessWidget {
   Map _source = {ConnectivityResult.none: false};
@@ -34,18 +35,21 @@ class IntroPage extends StatelessWidget {
                   height: double.infinity,
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter)),
+                      gradient: LinearGradient(colors: [
+                    AppColorConstant.appWhite,
+                    AppColorConstant.lightOrange
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
                   child: SingleChildScrollView(
                     child: Column(children: [
                       SizedBox(height: 80.px),
-                      Padding(padding: EdgeInsets.only(left: 8.px), child: image()),
+                      Padding(
+                          padding: EdgeInsets.only(left: 8.px), child: image()),
                       textWelcome(),
                       termsPrivacyPolicy(),
                       getStartedButton(
-                          controller.introPageViewModal.isConnected, context, controller),
+                          controller.introPageViewModal.isConnected,
+                          context,
+                          controller),
                       transferOrRestoreAccount()
                     ]),
                   )));
@@ -54,15 +58,16 @@ class IntroPage extends StatelessWidget {
 
   AppText transferOrRestoreAccount() {
     return AppText(StringConstant.transferOrRestoreAccount,
-        fontWeight: FontWeight.w500, color: AppColorConstant.orange, fontSize: 12.px);
+        fontWeight: FontWeight.w500,
+        color: AppColorConstant.orange,
+        fontSize: 12.px);
   }
 
-  AppButton getStartedButton(bool isConnected, context, IntroPageController controller) {
+  AppButton getStartedButton(
+      bool isConnected, context, IntroPageController controller) {
     return AppButton(
         onTap: () {
-          Get.toNamed(RouteHelper.getHomeScreen());
-
-          Get.toNamed(RouteHelper.getSignInPage());
+          goToProfilePage();
         },
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
@@ -77,27 +82,34 @@ class IntroPage extends StatelessWidget {
   }
 
   AppText termsPrivacyPolicy() {
-    return AppText(StringConstant.termsPrivacyPolicy,
-        color: AppColorConstant.appLightBlack, fontWeight: FontWeight.w500, fontSize: 12.px);
+    return AppText(S.of(Get.context!).termsPrivacyPolicy,
+        color: AppColorConstant.appLightBlack,
+        fontWeight: FontWeight.w500,
+        fontSize: 12.px);
   }
 
   Column textWelcome() {
     return Column(children: [
-      AppText(StringConstant.welcomeToChat, fontSize: 30.px, fontWeight: FontWeight.w600),
+      AppText(S.of(Get.context!).welcomeToChat,
+          fontSize: 30.px, fontWeight: FontWeight.w600),
       Padding(
           padding: EdgeInsets.only(
             top: 10.px,
           ),
-          child: AppText(StringConstant.theBestMessengerAndChat,
-              fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 20.px)),
-      AppText(StringConstant.toMakeYourDayGreat,
-          fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 18.px),
+          child: AppText(S.of(Get.context!).theBestMessengerAndChat,
+              fontWeight: FontWeight.w400,
+              color: AppColorConstant.appLightBlack,
+              fontSize: 20.px)),
+      AppText(S.of(Get.context!).toMakeYourDayGreat,
+          fontWeight: FontWeight.w400,
+          color: AppColorConstant.appLightBlack,
+          fontSize: 18.px),
       SizedBox(height: 200.px)
     ]);
   }
 
-  AppImageAsset image() =>
-      AppImageAsset(height: 200.px, width: 200.px, image: 'assets/images/intro_page.png');
+  AppImageAsset image() => AppImageAsset(
+      height: 200.px, width: 200.px, image: 'assets/images/intro_page.png');
 
   void introPageInitState(context) {
     _networkConnectivity.initialise();
@@ -125,16 +137,18 @@ class IntroPage extends StatelessWidget {
               context: context,
               builder: (context) {
                 return AppAlertDialog(
-                  title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const AppText(
-                      'Network error : \n',
-                      fontWeight: FontWeight.bold,
-                    ),
-                    AppText(
-                      'Please check your internet connection or try again later.',
-                      fontSize: 15.px,
-                    )
-                  ]),
+                  title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AppText(
+                          'Network error : \n',
+                          fontWeight: FontWeight.bold,
+                        ),
+                        AppText(
+                          'Please check your internet connection or try again later.',
+                          fontSize: 15.px,
+                        )
+                      ]),
                   actions: [
                     AppButton(
                       onTap: () {
@@ -150,6 +164,7 @@ class IntroPage extends StatelessWidget {
                       width: 100,
                     )
                   ],
+                  insetPadding: EdgeInsets.zero,
                 );
               },
             )
