@@ -55,7 +55,7 @@ class RouteHelper {
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
-    GetPage(name: RouteConstant.initial, page: () => const ChatingPage()),
+    GetPage(name: RouteConstant.initial, page: () =>  ChatingPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(
       name: RouteConstant.verifyOtpScreen,

@@ -5,7 +5,6 @@ import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
 
 import '../../app/app/utills/app_utills.dart';
-import '../../app/app/utills/shared_preferance.dart';
 import '../../constant/string_constant.dart';
 import '../../modal/message.dart';
 import 'chating_page.dart';
