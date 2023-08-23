@@ -37,7 +37,7 @@ class StringConstant {
 
   static const String language = 'Language';
   static const String systemDefault = 'System Default';
-  static const String chatColorAndWallpaper = 'Chat Color & wallpaper';
+  static const String chatColor = 'Chat Color & wallpaper';
   static const String appIcon = 'App Icon';
   static const String messageFontSize = 'Message Font Size';
   static const String normal = 'Normal';
@@ -53,7 +53,6 @@ class StringConstant {
   static const String verifyOtp = 'Enter The Code We Sent To ';
   static const String signInDescription =
       'Enter Your Phone Number To Get Started';
-
   static const String signalMessage = 'Signal message';
 
 
@@ -69,34 +68,11 @@ class StringConstant {
   static const String question = 'Question';
   static const String feedback = 'Feedback';
   static const String licenses = 'Licenses';
-  static const String mute = 'Mute';
-  static const String video = 'Video';
-  static const String audio = 'Audio';
   static const String debugLog = 'Debug log';
   static const String includeDebug = 'Include Debug Log';
   static const String readFaq = 'Have you read our FAQ yet?';
-
   static const String light = 'Light';
   static const String version = 'Version';
-
-  static const String disappearingMessages = 'Disappearing Messages';
-  static const String soundAndNotification = 'Sounds & Notification';
-  static const String contactDetails = 'Contact details';
-  static const String viewSafetyNumbers = 'View safety numbers';
-
-
-
-
-  static const String resetChatColor = 'Reset chat color';
-  static const String chatColor = ' Chat color';
-  static const String setWallpaper = 'Set Wallpaper';
-  static const String darkModeWallpaper = 'Dark mode dims wallpaper';
-  static const String resetWallpaper = 'Reset Wallpaper';
-  static const String colorIsOnlyVisibleYou = 'Color is only visible you';
-
-
-
-
   static const String helpDescription =  'Copyright Signal Messenger \n Licensed under the GNU AGPlv3';
   static const String terms = 'Terms & Privacy Policy';
   static const String contactUs = 'Contact us';

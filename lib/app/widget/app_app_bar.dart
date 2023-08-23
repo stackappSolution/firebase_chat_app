@@ -34,11 +34,6 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       elevation: 0.0,
       scrolledUnderElevation: 0,
-
-
-
-    return AppBar(forceMaterialTransparency: false,
-    elevation: 0.0,
       leading: leading,
       shape: shape,
       leadingWidth: leadingWidth,

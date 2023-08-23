@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -33,21 +32,24 @@ class IntroPage extends StatelessWidget {
           return Scaffold(
               body: Container(
                   //padding: EdgeInsets.all(10.px),
-                height: double.infinity,
+                  height: double.infinity,
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [AppColorConstant.appWhite, AppColorConstant.lightOrange],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter)),
+                      gradient: LinearGradient(colors: [
+                    AppColorConstant.appWhite,
+                    AppColorConstant.lightOrange
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
                   child: SingleChildScrollView(
                     child: Column(children: [
                       SizedBox(height: 80.px),
-                      Padding(padding: EdgeInsets.only(left: 8.px), child: image()),
+                      Padding(
+                          padding: EdgeInsets.only(left: 8.px), child: image()),
                       textWelcome(),
                       termsPrivacyPolicy(),
                       getStartedButton(
-                          controller.introPageViewModal.isConnected, context, controller),
+                          controller.introPageViewModal.isConnected,
+                          context,
+                          controller),
                       transferOrRestoreAccount()
                     ]),
                   )));
@@ -56,17 +58,16 @@ class IntroPage extends StatelessWidget {
 
   AppText transferOrRestoreAccount() {
     return AppText(StringConstant.transferOrRestoreAccount,
-        fontWeight: FontWeight.w500, color: AppColorConstant.orange, fontSize: 12.px);
+        fontWeight: FontWeight.w500,
+        color: AppColorConstant.orange,
+        fontSize: 12.px);
   }
 
-  AppButton getStartedButton(bool isConnected, context, IntroPageController controller) {
+  AppButton getStartedButton(
+      bool isConnected, context, IntroPageController controller) {
     return AppButton(
         onTap: () {
-          goToSignInPage();
-
-          Get.toNamed(RouteHelper.getHomeScreen());
-
-          Get.toNamed(RouteHelper.getSignInPage());
+          goToProfilePage();
         },
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
@@ -82,78 +83,92 @@ class IntroPage extends StatelessWidget {
 
   AppText termsPrivacyPolicy() {
     return AppText(S.of(Get.context!).termsPrivacyPolicy,
-        color: AppColorConstant.appLightBlack, fontWeight: FontWeight.w500, fontSize: 12.px);
+        color: AppColorConstant.appLightBlack,
+        fontWeight: FontWeight.w500,
+        fontSize: 12.px);
   }
 
   Column textWelcome() {
     return Column(children: [
-      AppText(S.of(Get.context!).welcomeToChat, fontSize: 30.px, fontWeight: FontWeight.w600),
+      AppText(S.of(Get.context!).welcomeToChat,
+          fontSize: 30.px, fontWeight: FontWeight.w600),
       Padding(
           padding: EdgeInsets.only(
             top: 10.px,
           ),
           child: AppText(S.of(Get.context!).theBestMessengerAndChat,
-              fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 20.px)),
+              fontWeight: FontWeight.w400,
+              color: AppColorConstant.appLightBlack,
+              fontSize: 20.px)),
       AppText(S.of(Get.context!).toMakeYourDayGreat,
-          fontWeight: FontWeight.w400, color: AppColorConstant.appLightBlack, fontSize: 18.px),
+          fontWeight: FontWeight.w400,
+          color: AppColorConstant.appLightBlack,
+          fontSize: 18.px),
       SizedBox(height: 200.px)
     ]);
   }
 
-  AppImageAsset image() => AppImageAsset(height: 200.px, width: 200.px, image: 'assets/images/intro_page.png');
-  void introPageInitState(context){ _networkConnectivity.initialise();
-  _networkConnectivity.myStream.listen((source) {
-    _source = source;
-    print('source $_source');
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.mobile:
-        controller.introPageViewModal.string =
-        _source.values.toList()[0] ? 'Mobile: Online' : 'Mobile: Offline';
-        controller.introPageViewModal.isConnected = true;
-        break;
-      case ConnectivityResult.wifi:
-        controller.introPageViewModal.string =
-        _source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
-        controller.introPageViewModal.isConnected = true;
-        break;
-      case ConnectivityResult.none:
-      default:
-        controller.introPageViewModal.isConnected = false;
-        controller.introPageViewModal.string = 'Offline';
-    }
-    (controller.introPageViewModal.isConnected == false)
-        ? showDialog(
-      context: context,
-      builder: (context) {return
-        AppAlertDialog(
-          title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const AppText(
-              'Network error : \n',
-              fontWeight: FontWeight.bold,
-            ),
-            AppText(
-              'Please check your internet connection or try again later.',
-              fontSize: 15.px,
-            )
-          ]),
-          actions: [
-            AppButton(
-              onTap: () {
-                Get.back();
-              },
-              fontColor: AppColorConstant.appScaffold,
-              string: 'Back',
-              fontSize: 20,
-              borderRadius: BorderRadius.circular(15),
-              height: 40,
-              color: AppColorConstant.orange,
-              stringChild: false,
-              width: 100,
-            )
-          ], insetPadding: EdgeInsets.zero,
-        );
-      },
-    ) : null;
-  });}
-}
+  AppImageAsset image() => AppImageAsset(
+      height: 200.px, width: 200.px, image: 'assets/images/intro_page.png');
 
+  void introPageInitState(context) {
+    _networkConnectivity.initialise();
+    _networkConnectivity.myStream.listen((source) {
+      _source = source;
+      print('source $_source');
+      switch (_source.keys.toList()[0]) {
+        case ConnectivityResult.mobile:
+          controller.introPageViewModal.string =
+              _source.values.toList()[0] ? 'Mobile: Online' : 'Mobile: Offline';
+          controller.introPageViewModal.isConnected = true;
+          break;
+        case ConnectivityResult.wifi:
+          controller.introPageViewModal.string =
+              _source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
+          controller.introPageViewModal.isConnected = true;
+          break;
+        case ConnectivityResult.none:
+        default:
+          controller.introPageViewModal.isConnected = false;
+          controller.introPageViewModal.string = 'Offline';
+      }
+      (controller.introPageViewModal.isConnected == false)
+          ? showDialog(
+              context: context,
+              builder: (context) {
+                return AppAlertDialog(
+                  title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AppText(
+                          'Network error : \n',
+                          fontWeight: FontWeight.bold,
+                        ),
+                        AppText(
+                          'Please check your internet connection or try again later.',
+                          fontSize: 15.px,
+                        )
+                      ]),
+                  actions: [
+                    AppButton(
+                      onTap: () {
+                        Get.back();
+                      },
+                      fontColor: AppColorConstant.appScaffold,
+                      string: 'Back',
+                      fontSize: 20,
+                      borderRadius: BorderRadius.circular(15),
+                      height: 40,
+                      color: AppColorConstant.orange,
+                      stringChild: false,
+                      width: 100,
+                    )
+                  ],
+                  insetPadding: EdgeInsets.zero,
+                );
+              },
+            )
+          : null;
+    });
+  }
+}

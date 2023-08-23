@@ -5,7 +5,6 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
-import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
@@ -46,8 +45,7 @@ class AppearanceScreen extends StatelessWidget {
             child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppBar(context),
-          body: getBody(context, controller,),
-
+          body: getBody(context, controller, appearanceViewModel!),
         ));
       },
     );
@@ -62,67 +60,38 @@ class AppearanceScreen extends StatelessWidget {
     ));
   }
 
-  // getBody(BuildContext context, AppearanceController controller,
-  //     AppearanceViewModel appearanceViewModel) {
-  //   return SingleChildScrollView(
-  //     padding: EdgeInsets.only(top: 30.px),
-  //     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-  //       appearanceViewTile(
-  //           1,
-  //           context,
-  //           S.of(Get.context!).language,
-  //           (appearanceViewModel!.selectedLanguage != null)
-  //               ? appearanceViewModel!.selectedLanguage
-  //               : "default",
-  //           controller),
-  //       appearanceViewTile(
-  //           2,
-  //           context,
-  //           S.of(Get.context!).theme,
-  //           appearanceViewModel.selectedTheme
-  //               .toString()
-  //               .substring(10)
-  //               .capitalizeFirst,
-  //           controller),
-  //       appearanceViewTile(
-  //           3, context, S.of(Get.context!).chatColor, "", controller),
-  //       appearanceViewTile(
-  //           4, context, S.of(Get.context!).appIcon, "", controller),
-  //       appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
-  //           StringConstant.normal, controller),
-  //       appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
-  //           StringConstant.normal, controller),
-  //     ]),
+  getBody(BuildContext context, AppearanceController controller,
+      AppearanceViewModel appearanceViewModel) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(top: 30.px),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        appearanceViewTile(
+            1,
+            context,
+            S.of(Get.context!).language,
+            (appearanceViewModel!.selectedLanguage != null)
+                ? appearanceViewModel!.selectedLanguage
+                : "default",
+            controller),
+        appearanceViewTile(
+            2,
+            context,
+            S.of(Get.context!).theme,
+            appearanceViewModel.selectedTheme
+                .toString()
+                .substring(10)
+                .capitalizeFirst,
+            controller),
+        appearanceViewTile(
+            3, context, S.of(Get.context!).chatColor, "", controller),
+        appearanceViewTile(
+            4, context, S.of(Get.context!).appIcon, "", controller),
+        appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
+            StringConstant.normal, controller),
+        appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
+            StringConstant.normal, controller),
+      ]),);}
 
-  getBody(BuildContext context, AppearanceController controller) {
-    return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: Padding(
-        padding: EdgeInsets.only(top: 40.px),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          appearanceViewTile(
-              1,
-              context,
-              S.of(Get.context!).language,
-              (appearanceViewModel!.selectedLanguage != null)
-                  ? appearanceViewModel!.selectedLanguage
-                  : "default",
-              controller),
-          appearanceViewTile(2, context, S.of(Get.context!).theme,
-              StringConstant.systemDefault, controller),
-          appearanceViewTile(
-              3, context, S.of(Get.context!).chatColor, "", controller),
-          appearanceViewTile(
-              4, context, S.of(Get.context!).appIcon, "", controller),
-          appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
-              StringConstant.normal, controller),
-          appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
-              StringConstant.normal, controller),
-        ]),
-      ),
-    );
-  }
 
   appearanceViewTile(
     index,
@@ -157,5 +126,4 @@ class AppearanceScreen extends StatelessWidget {
       ),
     );
   }
-
 }

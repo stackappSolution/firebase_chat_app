@@ -5,10 +5,6 @@ import 'package:signal/pages/edit_profile/add_photo_screen.dart';
 
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
-import 'package:signal/pages/chats/chat_theme/chat_color.dart';
-import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
-import 'package:signal/pages/chats/chat_theme/chat_wallpaper.dart';
-import 'package:signal/pages/chats/chat_theme/wallpaper_preview_screen.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
@@ -18,7 +14,6 @@ import 'package:signal/pages/settings/contact_us/contact_us_screen.dart';
 import 'package:signal/pages/settings/help/help_settings_screen.dart';
 import 'package:signal/pages/settings/licenses/licenses_screen.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
-import 'package:signal/pages/signin_pages/sign_in_page.dart';
 import 'package:signal/routes/routes_constant.dart';
 
 import '../pages/account/account/account_screen.dart';
@@ -27,13 +22,9 @@ import '../pages/account/pin_setting/pin_setting_screen.dart';
 
 class RouteHelper {
   static String getSignInPage() => RouteConstant.signInPage;
-
   static String getVerifyOtpPage() => RouteConstant.verifyOtpScreen;
-
   static String getSettingsScreen() => RouteConstant.settingsScreen;
-
   static String getHomeScreen() => RouteConstant.homeScreen;
-
   static String getSettingScreen() => RouteConstant.settingScreen;
 
   static String getAppearanceScreen() => RouteConstant.appearanceScreen;
@@ -53,39 +44,19 @@ class RouteHelper {
   static String getAdvancePinSettingScreen() => RouteConstant.advancePinSetting;
 
   static String getChangePhoneScreen() => RouteConstant.changePhoneScreen;
-
   static String getHelpSettingsScreen() => RouteConstant.helpSettingsScreen;
-
   static String getContactUsScreen() => RouteConstant.contactUsScreen;
-
   static String getLicensesScreen() => RouteConstant.licensesScreen;
-
   static String getChatProfileScreen() => RouteConstant.chatProfileScreen;
 
-  static String getWallpaperPreviewScreen() =>
-      RouteConstant.wallpaperPreviewScreen;
-
-  static String getChatColorWallpaperScreen() =>
-      RouteConstant.chatColorWallpaperScreen;
-
-  static String getChatColorScreen() => RouteConstant.chatColorScreen;
-
-  static String getChatWallpaperScreen() => RouteConstant.chatWallpaperScreen;
-
   static List<GetPage> routes = [
-    GetPage(name: RouteConstant.signInPage, page: () => SignInPage()),
-    GetPage(name: RouteConstant.chattingScreen, page: () => ChatingPage()),
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
     GetPage(name: RouteConstant.settingsScreen, page: () => SettingScreen()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
-    GetPage(name: RouteConstant.initial, page: () => ChatingPage()),
+    GetPage(name: RouteConstant.initial, page: () => const ChatingPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
-    GetPage(
-      name: RouteConstant.signInPage,
-      page: () => SignInPage(),
-    ),
     GetPage(
       name: RouteConstant.verifyOtpScreen,
       page: () => VerifyOtpPage(),
@@ -95,17 +66,7 @@ class RouteHelper {
       page: () => AppearanceScreen(),
     ),
     GetPage(
-        name: RouteConstant.chatWallpaperScreen,
-        page: () => ChatWallpaperScreen()),
-    GetPage(
-        name: RouteConstant.wallpaperPreviewScreen,
-        page: () => WallpaperPreviewScreen()),
-    GetPage(
         name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
-    GetPage(
-      name: RouteConstant.signInPage,
-      page: () => SignInPage(),
-    ),
     GetPage(
       name: RouteConstant.verifyOtpScreen,
       page: () => VerifyOtpPage(),
@@ -146,63 +107,13 @@ class RouteHelper {
       name: RouteConstant.changePhoneScreen,
       page: () => ChangePhoneScreen(),
     ),
-    GetPage(
-        name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
-    GetPage(
-      name: RouteConstant.signInPage,
-      page: () => SignInPage(),
-    ),
-    GetPage(
-      name: RouteConstant.verifyOtpScreen,
-      page: () => VerifyOtpPage(),
-    ),
-    GetPage(
-      name: RouteConstant.homeScreen,
-      page: () => HomeScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.settingScreen,
-      page: () => SettingScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.helpSettingsScreen,
-      page: () => HelpSettingsScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.contactUsScreen,
-      page: () => ContactUsScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.licensesScreen,
-      page: () => const LicensesScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.chatProfileScreen,
-      page: () => ChatProfileScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.helpSettingsScreen,
-      page: () => HelpSettingsScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.contactUsScreen,
-      page: () => ContactUsScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.licensesScreen,
-      page: () => const LicensesScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.chatProfileScreen,
-      page: () => ChatProfileScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.chatColorWallpaperScreen,
-      page: () => ChatColorWallpaperScreen(),
-    ),
-    GetPage(
-      name: RouteConstant.chatColorScreen,
-      page: () => ChatColorScreen(),
-    ),
+    GetPage(name: RouteConstant.appearanceScreen, page: () => AppearanceScreen()),
+    GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage(),),
+    GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen(),),
+    GetPage(name: RouteConstant.settingScreen, page: () => SettingScreen(),),
+    GetPage(name: RouteConstant.helpSettingsScreen, page: () =>  HelpSettingsScreen(),),
+    GetPage(name: RouteConstant.contactUsScreen, page: () =>  ContactUsScreen(),),
+    GetPage(name: RouteConstant.licensesScreen, page: () =>  const LicensesScreen(),),
+    GetPage(name: RouteConstant.chatProfileScreen, page: () =>  const ChatProfileScreen(),),
   ];
 }
