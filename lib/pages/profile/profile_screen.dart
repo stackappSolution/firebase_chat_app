@@ -38,109 +38,104 @@ class ProfileScreen extends StatelessWidget {
 
   getBody(GetxController controller, BuildContext context) {
     return Stack(
-      children: [
-        const SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child:
-                AppImageAsset(image: AppAsset.background, fit: BoxFit.cover)),
-        SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(left: 12.px, right: 12.px),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 30.px),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child:
+              AppImageAsset(image: AppAsset.background, fit: BoxFit.cover)),
+          SingleChildScrollView(
+              child: Padding(
+                  padding: EdgeInsets.only(left: 12.px, right: 12.px),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        AppText(StringConstant.yourProfile,
-                            fontSize: 40.px, fontWeight: FontWeight.bold),
                         Padding(
-                          padding: EdgeInsets.only(top: 5.px),
-                          child: AppText(StringConstant.profileAreVisible,
-                              fontSize: 15.px,
-                              color:
-                                  AppColorConstant.appBlack.withOpacity(0.5)),
+                          padding: EdgeInsets.only(top: 30.px),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(StringConstant.yourProfile,
+                                  fontSize: 40.px, fontWeight: FontWeight.bold),
+                              Padding(
+                                padding: EdgeInsets.only(top: 5.px),
+                                child: AppText(StringConstant.profileAreVisible,
+                                    fontSize: 15.px,
+                                    color:
+                                    AppColorConstant.appBlack.withOpacity(0.5)),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      profileViewModel!.profilePicTap(context);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 30.px, bottom: 30.px),
-                      alignment: Alignment.center,
-                      height: 120.px,
-                      decoration: BoxDecoration(
-                          color: AppColorConstant.appBlack.withOpacity(0.2),
-                          shape: BoxShape.circle),
-                      child:
-                          AppImageAsset(height: 60.px, image: AppAsset.profile),
-                    ),
-                  ),
-                  AppTextFormField(
-                    label: "",
-                    controller:
-                    controller:
-                        profileViewModel!.firstNameController,
-                    labelText: StringConstant.firstName,
-                    onChanged: (value) {
-                      profileViewModel!.onChangedValue(value, controller);
-                    }, fontSize: null,
-                  ),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 5.px),
-                        child: AppText(
-                          profileViewModel!.errorFirstName,
-                          color: AppColorConstant.red,
-                          fontSize: 10.px,
+                        InkWell(
+                          onTap: () {
+                            profileViewModel!.addProfileTap(context,controller);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: 30.px, bottom: 30.px),
+                            alignment: Alignment.center,
+                            height: 120.px,
+                            decoration: BoxDecoration(
+                                color: AppColorConstant.appBlack.withOpacity(
+                                    0.2),
+                                shape: BoxShape.circle),
+                            child:
+                            AppImageAsset(
+                                height: 60.px, image: AppAsset.profile),
+                          ),
                         ),
-                      )),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10.px),n
-                      label: "",
-                      controller:
-                          profileViewModel!.lastNameController,
-                      labelText: StringConstant.lastName, fontSize: null,
-                      controller: profileViewModel!.lastNameController,
-                      lable: StringConstant.lastName,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 120.px,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 45.px),
-                    child: AppElevatedButton(
-                      buttonHeight: 50.px,
-                      widget: AppText(
-                        StringConstant.next,
-                        color: AppColorConstant.appWhite,
-                        fontSize: 20.px,
-                      ),
-                      isBorderShape: true,
-                      buttonColor: (profileViewModel!.isButtonActive)
-                          ? AppColorConstant.appTheme
-                          : AppColorConstant.appTheme.withOpacity(0.5),
-                      onPressed: (profileViewModel!.isButtonActive)
-                          ? () {
+                        AppTextFormField(
+                          label: "",
+
+                          controller:
+                          profileViewModel!.firstNameController,
+                          labelText: StringConstant.firstName,
+                          onChanged: (value) {
+                            profileViewModel!.onChangedValue(value, controller);
+                          },
+                          fontSize: null,
+                        ),
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 5.px),
+                              child: AppText(
+                                profileViewModel!.errorFirstName,
+                                color: AppColorConstant.red,
+                                fontSize: 10.px,
+                              ),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.px),
+                        ),
+                        SizedBox(
+                          height: 120.px,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 45.px),
+                          child: AppElevatedButton(
+                            buttonHeight: 50.px,
+                            widget: AppText(
+                              StringConstant.next,
+                              color: AppColorConstant.appWhite,
+                              fontSize: 20.px,
+                            ),
+                            isBorderShape: true,
+                            buttonColor: (profileViewModel!.isButtonActive)
+                                ? AppColorConstant.appTheme
+                                : AppColorConstant.appTheme.withOpacity(0.5),
+                            onPressed: (profileViewModel!.isButtonActive)
+                                ? () {
                               profileViewModel!.onChangedValue(
                                   profileViewModel!.firstNameController,
                                   controller);
                             }
-                          : null,
-                    ),
-                  )
-                ]),
+                                : null,
+                          ),
+                        ),
+                      ]),
+              ),
           ),
-        ),
-      ],
-    );
+        ]);
   }
 }

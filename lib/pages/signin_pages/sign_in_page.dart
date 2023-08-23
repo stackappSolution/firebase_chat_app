@@ -13,6 +13,7 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/sign_in_controller.dart';
 import 'package:signal/pages/signin_pages/sign_in_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/auth_service.dart';
 
 // ignore: must_be_immutable
 class SignInPage extends StatelessWidget {
@@ -20,6 +21,7 @@ class SignInPage extends StatelessWidget {
 
   SignInViewModel? signInViewModel;
   FirebaseAuth auth = FirebaseAuth.instance;
+  String v_id='';
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,7 @@ class SignInPage extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(left: 20.px),
-                    height: 50.px,
+                    height: 60.px,
                     width: 90.px,
                     decoration: BoxDecoration(
                         color: AppColorConstant.appTheme.withOpacity(0.1),
@@ -128,15 +130,13 @@ class SignInPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.px),
                               color:
                                   AppColorConstant.appTheme.withOpacity(0.1)),
-                          height: 50.px,
+                          height: 60.px,
                           margin: EdgeInsets.only(left: 10.px, right: 10.px),
                           child: AppTextFormField(
                             labelText: 'Phone Number',
                             labelStyle: TextStyle(
                                 color: AppColorConstant.appTheme,
                                 fontSize: 20.px),
-                            controller: signInViewModel!.phoneNumber,
-                            style: const TextStyle(
                             controller: signInViewModel!.phoneNumber,
                             style: TextStyle(
                               fontSize: 22.px,
@@ -165,9 +165,6 @@ class SignInPage extends StatelessWidget {
                               }
                             },
                             keyboardType: TextInputType.number,
-                            // decoration: const InputDecoration(
-                            //     border: InputBorder.none,
-                            //     focusedBorder: InputBorder.none),
                             fontSize: 20.px,
                           ),
                         ),
@@ -203,8 +200,9 @@ class SignInPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () async {
+                      //AuthService.sendOTP(phoneNumber,countryCode);
                       Get.toNamed(RouteHelper.getVerifyOtpPage(),
-                          arguments: "${signInViewModel!.countryCode}${signInViewModel!.phoneNumber.text}");
+                          arguments: "${signInViewModel!.selectedCountry}${signInViewModel!.phoneNumber.text}");
                     },
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(
@@ -226,4 +224,5 @@ class SignInPage extends StatelessWidget {
           ),
         ),
       );
-}
+  }
+

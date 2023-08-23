@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:signal/constant/app_asset.dart';
 
 class AppText extends StatelessWidget {
   final String title;
@@ -21,7 +20,7 @@ class AppText extends StatelessWidget {
     Key? key,
     this.color,
     this.fontWeight,
-    this.fontFamily = AppAsset.defaultFont,
+    this.fontFamily,
     this.fontSize,
     this.textAlign,
     this.height,

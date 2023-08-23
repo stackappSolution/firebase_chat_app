@@ -4,9 +4,6 @@ class AppAsset {
   static const String imagePath = 'assets/images/';
   static const String iconPath = 'assets/icons/';
 
-  static const String defaultFont = 'poppins';
-  static const String imagePath = 'assets/images/';
-  static const String iconPath = 'assets/icons/';
 
   //     ======================= Sounds =======================     //
   /// static const String addToCartVoiceNote = '${soundPath}add_to_cart.wav';
@@ -40,7 +37,29 @@ class AppAsset {
   static const String phoneOutline='${iconPath}phone_outline.png';
   static const String phonePlus='${iconPath}phone_plus.png';
   static const String popup='${iconPath}popup.png';
+
   static const String search='${iconPath}search.png';
+  static const String appearance='${iconPath}appearance.png';
+  static const String chats='${iconPath}chats.png';
+  static const String donate='${iconPath}donate.png';
+  static const String arrowSend='${iconPath}arrow_send.png';
+  static const String help='${iconPath}help.png';
+  static const String invite='${iconPath}invite.png';
+  static const String account='${iconPath}account.png';
+  static const String linkedDevice='${iconPath}linked_device.png';
+  static const String notification='${iconPath}notification.png';
+  static const String privacyPolicy='${iconPath}privacy_policy.png';
+
+
+
+  static const String video='${iconPath}video.png';
+  static const String mute='${iconPath}mute.png';
+  static const String audio='${iconPath}audio.png';
+  static const String view='${iconPath}view.png';
+  static const String messenger='${iconPath}messenger.png';
+  static const String details='${iconPath}details.png';
+  static const String color='${iconPath}color.png';
+  static const String sound='${iconPath}sound.png';
 
 
 

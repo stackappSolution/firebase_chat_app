@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
+import 'package:signal/routes/app_navigation.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
@@ -36,7 +35,6 @@ class ChatScreen extends StatelessWidget {
       },
     );
   }
-
 
 
   buildFloatingButton() {
@@ -85,7 +83,10 @@ class ChatScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.px),
                 border: Border.all(
                     color: AppColorConstant.appTheme.withOpacity(0.4))),
-            child: ListTile(
+            child: ListTile(onTap: () {
+              goToChatingPage();
+
+            },
               leading: CircleAvatar(
                 backgroundColor: AppColorConstant.appTheme,
                 child: AppText(

@@ -71,7 +71,7 @@ class AppearanceViewModel {
                     )
                   ],
                 ),
-              ],
+              ], insetPadding: EdgeInsets.zero,
             );
           },
         );
@@ -115,7 +115,7 @@ class AppearanceViewModel {
                     ),
                   ],
                 ),
-              ],
+              ], insetPadding: EdgeInsets.zero ,
             );
           },
         );
@@ -183,7 +183,7 @@ class AppearanceViewModel {
                     ),
                   ],
                 ),
-              ],
+              ], insetPadding: EdgeInsets.zero,
             );
           },
         );

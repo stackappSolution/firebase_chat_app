@@ -13,6 +13,8 @@ class SignInViewModel {
   String countryCode = '';
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   bool isValidNumber = false;
+
+  var temp;
   var data;
 
 
