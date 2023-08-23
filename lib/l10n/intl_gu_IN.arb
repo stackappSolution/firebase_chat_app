@@ -67,6 +67,8 @@
         "licenses": "લાઇસન્સ",
         "supportCenter": "આધાર કેન્દ્ર",
         "contactUs": "અમારો સંપર્ક કરો",
-        "markAllRead" : "બધા વાંચેલા ચિહ્નિત કરો"
+        "markAllRead" : "બધા વાંચેલા ચિહ્નિત કરો",
+  "continues": "ચાલુ રાખો",
+  "phoneNumber":"મોબાઇલ નંબર"
 
  }

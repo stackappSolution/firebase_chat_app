@@ -10,6 +10,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
+import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
@@ -72,14 +73,14 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: AppColorConstant.appYellow,
             child: AppImageAsset(
                 image: AppAsset.edit, height: 25.px, width: 25.px),
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed(RouteHelper.getNewMessageScreen());
+            },
           ),
         )
       ],
     );
   }
-
-
 
 
   buildContactList() {
@@ -93,7 +94,6 @@ class ChatScreen extends StatelessWidget {
             contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
-
         return Container(
             margin: EdgeInsets.all(10.px),
             child: ListTile(

@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "choose": MessageLookupByLibrary.simpleMessage("choose"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
+        "continues": MessageLookupByLibrary.simpleMessage("Contiue"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "debugLog": MessageLookupByLibrary.simpleMessage("Debug log"),
         "donateToSignal":
@@ -69,6 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notification": MessageLookupByLibrary.simpleMessage("Notification"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
             "Profiles Are Visible To People You Message,Contacts, and Groups."),

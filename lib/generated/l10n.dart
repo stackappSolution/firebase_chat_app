@@ -699,6 +699,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Contiue`
+  String get continues {
+    return Intl.message(
+      'Contiue',
+      name: 'continues',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get phoneNumber {
+    return Intl.message(
+      'Phone Number',
+      name: 'phoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

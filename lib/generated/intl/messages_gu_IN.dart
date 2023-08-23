@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chats": MessageLookupByLibrary.simpleMessage("ચેટ્સ"),
         "choose": MessageLookupByLibrary.simpleMessage("પસંદ કરો"),
         "contactUs": MessageLookupByLibrary.simpleMessage("અમારો સંપર્ક કરો"),
+        "continues": MessageLookupByLibrary.simpleMessage("ચાલુ રાખો"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "debugLog": MessageLookupByLibrary.simpleMessage("ડીબગ લોગ"),
         "donateToSignal":
@@ -68,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notification": MessageLookupByLibrary.simpleMessage("સૂચના"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
         "other": MessageLookupByLibrary.simpleMessage("અન્ય"),
+        "phoneNumber": MessageLookupByLibrary.simpleMessage("મોબાઇલ નંબર"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("ગોપનીયતા નીતિ"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
             "તમે જે લોકોને સંદેશો મોકલો છો, સંપર્કો અને જૂથોને પ્રોફાઇલ્સ દૃશ્યક્ષમ છે."),
