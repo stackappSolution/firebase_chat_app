@@ -18,8 +18,9 @@ class AppTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final InputDecoration? decoration;
   final double? fontSize;
-  final bool? isborderRadius;
+  final BorderRadius? isborderRadius;
   final Widget? suffixIcon;
+  final FocusNode? focusNode;
 
   const AppTextFormField(
       {super.key,
@@ -37,7 +38,8 @@ class AppTextFormField extends StatelessWidget {
         this.keyboardType,
         this.decoration,
         this.fontSize,
-        this.isborderRadius = true,
+        this.isborderRadius,
+        this.focusNode,
       });
 
   @override
@@ -45,11 +47,13 @@ class AppTextFormField extends StatelessWidget {
     return TextFormField(
       onChanged: onChanged,
       controller: controller,
+      focusNode:focusNode ,
       decoration: decoration ??
           InputDecoration(
             enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColorConstant.appYellowBorder),
-                borderRadius: BorderRadius.all(Radius.circular(11.px))),
+                borderSide:  BorderSide(color: AppColorConstant.appYellowBorder),
+                borderRadius: isborderRadius ?? BorderRadius.all(Radius.circular(11.px))
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(11.px)),
               borderSide: const BorderSide(
@@ -67,7 +71,7 @@ class AppTextFormField extends StatelessWidget {
             labelText: labelText,
             labelStyle:
             const TextStyle(color: AppColorConstant.appYellowBorder),
-            suffixIcon: suffixIcon
+            suffixIcon: suffixIcon,
           ),
       keyboardType: keyboardType,
       validator: validator,

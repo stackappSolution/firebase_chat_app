@@ -6,10 +6,8 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/new_message_controller.dart';
-import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/new_message_page/new_message_view_model.dart';
-
-import '../../routes/routes_helper.dart';
+import 'package:signal/routes/routes_helper.dart';
 
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
@@ -20,16 +18,15 @@ class NewMessagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     newMessageViewModel ?? (newMessageViewModel = NewMessageViewModel(this));
     newMessageViewModel!.getPermission();
-    return GetBuilder(
+    return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {},
       builder: (NewMessageController controller) {
         return SafeArea(
             child: Scaffold(
-          backgroundColor: AppColorConstant.appWhite,
-          appBar: buildAppBar(),
-          body: buildSearchBar(),
-        ));
+                backgroundColor: AppColorConstant.appWhite,
+                appBar: buildAppBar(),
+                body: buildSearchBar()));
       },
     );
   }
@@ -44,14 +41,26 @@ class NewMessagePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding:  EdgeInsets.all(20.px),
+              padding: EdgeInsets.all(20.px),
               child: Container(
                 height: 50.px,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),),
                 child: AppTextFormField(
-                  suffixIcon: const Icon(Icons.keyboard),
-                 hintText: 'Search',
+                  onChanged: (value) {
+                    newMessageViewModel!.newMessageController!
+                        .setFilterText(value);
+                  },
+                  controller: newMessageViewModel!.textController,
+                  suffixIcon: InkWell(
+                    onTap: () {
+                      newMessageViewModel!.toggleIcon();
+                      newMessageViewModel!.newMessageController!.update();
+                    },
+                    child: (newMessageViewModel!.isIcon)
+                        ? const Icon(Icons.dialpad)
+                        : const Icon(Icons.keyboard),
+                  ),
+                  keyboardType: newMessageViewModel!.getKeyboardType(),
+                  hintText: 'Search',
                   style: TextStyle(
                     fontSize: 22.px,
                     fontWeight: FontWeight.w400,
@@ -76,49 +85,56 @@ class NewMessagePage extends StatelessWidget {
               padding: EdgeInsets.all(20.px),
               child: AppText('Contacts', fontSize: 22.px),
             ),
-            ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: newMessageViewModel!.contacts.length,
-              itemBuilder: (context, index) {
-                Contact contact = newMessageViewModel!.contacts[index];
-                String? mobileNumber = contact.phones!.isNotEmpty
-                    ? contact.phones!.first.value
-                    : 'N/A';
-                String? displayName = contact.displayName ?? 'unknown';
-                String firstLetter = displayName.substring(0, 1).toUpperCase();
-                return Container(
-                    margin: EdgeInsets.only(top: 5.px),
-                    child: ListTile(
-                      trailing: AppText(
-                          fontSize: 10.px,
-                          S.of(Get.context!).yesterday,
-                          color: AppColorConstant.appBlack),
-                      leading: InkWell(
-                        onTap: () {
-                          Get.toNamed(RouteHelper.getChatProfileScreen());
-                        },
-                        child: CircleAvatar(
-                          maxRadius: 30.px,
-                          backgroundColor:
-                              AppColorConstant.appYellow.withOpacity(0.8),
-                          child: AppText(
-                            firstLetter,
-                            color: AppColorConstant.appWhite,
-                            fontSize: 22.px,
-                          ),
-                        ),
-                      ),
-                      title: AppText(
-                        displayName,
-                        fontSize: 15.px,
-                      ),
-                      subtitle: AppText(mobileNumber!,
-                          color: AppColorConstant.grey, fontSize: 12.px),
-                    ));
-              },
-            ),
+            buildContactList(),
           ],
         ),
       );
+
+  buildContactList() {
+    onSearchContacts();
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: newMessageViewModel!.filterContacts.length,
+      itemBuilder: (context, index) {
+        Contact contact = newMessageViewModel!.filterContacts[index];
+        String? mobileNumber =
+            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        String? displayName = contact.displayName ?? 'unknown';
+        String firstLetter = displayName.substring(0, 1).toUpperCase();
+        return Container(
+            margin: EdgeInsets.only(top: 5.px),
+            child: ListTile(
+              leading: InkWell(
+                onTap: () {
+                  Get.toNamed(RouteHelper.getChatProfileScreen());
+                },
+                child: CircleAvatar(
+                  maxRadius: 30.px,
+                  backgroundColor: AppColorConstant.appYellow.withOpacity(0.8),
+                  child: AppText(
+                    firstLetter,
+                    color: AppColorConstant.appWhite,
+                    fontSize: 22.px,
+                  ),
+                ),
+              ),
+              title: AppText(
+                displayName,
+                fontSize: 15.px,
+              ),
+              subtitle: AppText(mobileNumber!,
+                  color: AppColorConstant.grey, fontSize: 12.px),
+            ));
+      },
+    );
+  }
+  onSearchContacts() {
+    newMessageViewModel!.filterContacts =
+        newMessageViewModel!.contacts.where((contact) {
+      return contact.displayName.toString().toLowerCase().contains(
+              newMessageViewModel!.newMessageController!.filteredValue
+                  .toLowerCase());
+    }).toList();
+  }
 }
