@@ -68,9 +68,12 @@
         "supportCenter" : "Support center",
         "contactUs" : "Contact us",
         "markAllRead" : "Mark all read",
+         "signIn" : "Sign In",
+         "phoneNumber" : "Phone Number",
+         "continues" : "Continue"
+
+
+
  "continues": "Contiue",
  "phoneNumber" : "Phone Number"
-
-
-
 }

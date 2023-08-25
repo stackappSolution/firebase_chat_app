@@ -123,7 +123,6 @@ String v_id ='';
                         children: [
                           Container(
                             alignment: Alignment.center,
-
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.px),
                                 color:

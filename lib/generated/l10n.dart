@@ -700,6 +700,11 @@ class S {
     );
   }
 
+  /// `Sign In`
+  String get signIn {
+    return Intl.message(
+      'Sign In',
+      name: 'signIn',
   /// `Contiue`
   String get continues {
     return Intl.message(
@@ -715,6 +720,16 @@ class S {
     return Intl.message(
       'Phone Number',
       name: 'phoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continues {
+    return Intl.message(
+      'Continue',
+      name: 'continues',
       desc: '',
       args: [],
     );
