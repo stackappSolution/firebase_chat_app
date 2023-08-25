@@ -6,7 +6,6 @@ import 'package:signal/constant/color_constant.dart';
 class AppTextFormField extends StatelessWidget {
   final String? hintText;
   final String? label;
-  final String? suffixIcon;
   final GestureTapCallback? onSuffixTap;
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
@@ -18,6 +17,9 @@ class AppTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final InputDecoration? decoration;
   final double? fontSize;
+  final BorderRadius? isborderRadius;
+  final Widget? suffixIcon;
+  final FocusNode? focusNode;
 
   const AppTextFormField(
       {super.key,
@@ -34,20 +36,23 @@ class AppTextFormField extends StatelessWidget {
         this.labelStyle,
         this.keyboardType,
         this.decoration,
-        this.fontSize});
+        this.fontSize,
+        this.isborderRadius,
+        this.focusNode,
+      });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       onChanged: onChanged,
       controller: controller,
+      focusNode:focusNode ,
       decoration: decoration ??
           InputDecoration(
             enabledBorder: OutlineInputBorder(
-                borderSide:
-                const BorderSide(color: AppColorConstant.appYellowBorder),
-                borderRadius: BorderRadius.all(Radius.circular(11.px))),
+                borderSide:  BorderSide(color: AppColorConstant.appYellowBorder),
+                borderRadius: isborderRadius ?? BorderRadius.all(Radius.circular(11.px))
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(11.px)),
               borderSide: const BorderSide(
@@ -65,6 +70,7 @@ class AppTextFormField extends StatelessWidget {
             labelText: labelText,
             labelStyle:
             const TextStyle(color: AppColorConstant.appYellowBorder),
+            suffixIcon: suffixIcon,
           ),
       keyboardType: keyboardType,
       validator: validator,

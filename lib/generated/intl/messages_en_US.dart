@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "choose": MessageLookupByLibrary.simpleMessage("choose"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
         "continues": MessageLookupByLibrary.simpleMessage("Continue"),
+        "continues": MessageLookupByLibrary.simpleMessage("Contiue"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "debugLog": MessageLookupByLibrary.simpleMessage("Debug log"),
         "donateToSignal":

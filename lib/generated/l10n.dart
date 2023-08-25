@@ -705,6 +705,11 @@ class S {
     return Intl.message(
       'Sign In',
       name: 'signIn',
+  /// `Contiue`
+  String get continues {
+    return Intl.message(
+      'Contiue',
+      name: 'continues',
       desc: '',
       args: [],
     );

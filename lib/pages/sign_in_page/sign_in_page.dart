@@ -18,7 +18,7 @@ class SignInPage extends StatelessWidget {
     SignInPage({super.key});
 FirebaseAuth auth = FirebaseAuth.instance;
 String v_id ='';
-  SignInViewModel? signInViewModel;
+    SignInViewModel? signInViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ String v_id ='';
     return GetBuilder(
       init: SignInController(),
       initState: (state) {},
-      builder: (controller) {
+      builder: (SignInController controller) {
         return  SafeArea(
           child: Scaffold(
               body: buildsignInPage(signInViewModel!.countryCode,
@@ -77,7 +77,7 @@ String v_id ='';
                     margin: EdgeInsets.only(left: 20.px),
                     alignment: Alignment.centerLeft,
                     child: AppText(
-                      S.of(Get.context!).signIn,
+                      S.of(Get.context!).signal,
                       fontSize: 30.px,
                       fontWeight: FontWeight.w600,
                     )),
