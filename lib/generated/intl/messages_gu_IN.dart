@@ -47,7 +47,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("રંગ ફક્ત તમને જ દેખાય છે"),
         "contactDetails": MessageLookupByLibrary.simpleMessage("સંપર્ક વિગતો"),
         "contactUs": MessageLookupByLibrary.simpleMessage("અમારો સંપર્ક કરો"),
+
         "contacts": MessageLookupByLibrary.simpleMessage("સંપર્કો"),
+
+        "continues": MessageLookupByLibrary.simpleMessage("ચાલુ રાખો"),
+
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "darkModeWallpaper": MessageLookupByLibrary.simpleMessage(
             "ડાર્ક મોડ વૉલપેપરને ડિમ કરે છે"),
@@ -101,11 +105,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "off": MessageLookupByLibrary.simpleMessage("બંધ"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
         "other": MessageLookupByLibrary.simpleMessage("અન્ય"),
+
         "paymentLock": MessageLookupByLibrary.simpleMessage("ચુકવણી લોક"),
         "payments": MessageLookupByLibrary.simpleMessage("ચુકવણીઓ"),
         "presets": MessageLookupByLibrary.simpleMessage("પ્રીસેટ્સ"),
         "preview": MessageLookupByLibrary.simpleMessage("પૂર્વાવલોકન"),
         "privacy": MessageLookupByLibrary.simpleMessage("ગોપનીયતા"),
+
+        "phoneNumber": MessageLookupByLibrary.simpleMessage("મોબાઇલ નંબર"),
+
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("ગોપનીયતા નીતિ"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
             "તમે જે લોકોને સંદેશો મોકલો છો, સંપર્કો અને જૂથોને પ્રોફાઇલ્સ દૃશ્યક્ષમ છે."),
@@ -132,6 +140,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingGuarantee": MessageLookupByLibrary.simpleMessage(
             "આ સેટિંગ ગેરેંટી નથી, અને તમારું કીબોર્ડ તેને અવગણી શકે છે.."),
         "settings": MessageLookupByLibrary.simpleMessage("સેટિંગ્સ"),
+        "signIn": MessageLookupByLibrary.simpleMessage("સાઇન ઇન"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
             "પ્રારંભ કરવા માટે તમારો ફોન નંબર દાખલ કરો"),
         "signal": MessageLookupByLibrary.simpleMessage("સિગ્નલ"),
@@ -158,7 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "typingIndicators":
             MessageLookupByLibrary.simpleMessage("ટાઈપિંગ સૂચકાંકો"),
         "userName": MessageLookupByLibrary.simpleMessage("વપરાશકર્તા નામ"),
-        "verify": MessageLookupByLibrary.simpleMessage("ઓટીપી ચકાસો"),
+        "verify": MessageLookupByLibrary.simpleMessage("OTP દાખલ કરો"),
         "verifyButton": MessageLookupByLibrary.simpleMessage("ચકાસો"),
         "verifyOtp":
             MessageLookupByLibrary.simpleMessage("અમે મોકલેલ કોડ દાખલ કરો"),

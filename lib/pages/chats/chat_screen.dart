@@ -78,7 +78,9 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: AppColorConstant.appYellow,
             child: AppImageAsset(
                 image: AppAsset.edit, height: 25.px, width: 25.px),
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed(RouteHelper.getNewMessageScreen());
+            },
           ),
         )
       ],
@@ -138,6 +140,7 @@ class ChatScreen extends StatelessWidget {
                   chatViewModel!.controller!.setFilterText('');
 
 
+
                 },
                 child: Padding(
                     padding: EdgeInsets.all(18.px),
@@ -147,6 +150,7 @@ class ChatScreen extends StatelessWidget {
             ],
           );
   }
+
 
   buildContactList() {
     onSearchContacts();
@@ -161,7 +165,6 @@ class ChatScreen extends StatelessWidget {
             contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
-
         return Container(
             margin: EdgeInsets.all(10.px),
             child: ListTile(

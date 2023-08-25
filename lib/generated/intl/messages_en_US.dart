@@ -47,7 +47,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "contactDetails":
             MessageLookupByLibrary.simpleMessage("Contact details"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
+
         "contacts": MessageLookupByLibrary.simpleMessage("contacts"),
+
+        "continues": MessageLookupByLibrary.simpleMessage("Continue"),
+        "continues": MessageLookupByLibrary.simpleMessage("Contiue"),
+
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "darkModeWallpaper":
             MessageLookupByLibrary.simpleMessage("Dark mode dims wallpaper"),
@@ -104,11 +109,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "off": MessageLookupByLibrary.simpleMessage("off"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+
         "paymentLock": MessageLookupByLibrary.simpleMessage("Payment lock"),
         "payments": MessageLookupByLibrary.simpleMessage("Payments"),
         "presets": MessageLookupByLibrary.simpleMessage("Presets"),
         "preview": MessageLookupByLibrary.simpleMessage("Preview"),
         "privacy": MessageLookupByLibrary.simpleMessage("Privacy"),
+
+
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
             "Profiles Are Visible To People You Message,Contacts, and Groups."),
@@ -135,6 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settingGuarantee": MessageLookupByLibrary.simpleMessage(
             "This setting is not a guarantee, and your keyboard may ignore it.."),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
             "Enter Your Phone Number To Get Started"),
         "signal": MessageLookupByLibrary.simpleMessage("Signal"),

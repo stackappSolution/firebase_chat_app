@@ -46,7 +46,7 @@
         "search" : "શોધો..",
         "yesterday" : "ગઇકાલે",
         "verifyButton": "ચકાસો",
-        "verify": "ઓટીપી ચકાસો",
+        "verify": "OTP દાખલ કરો",
         "newGroup": "નવું જૂથ",
         "whatsThis" : "આ શું છે?",
         "supportCenter" : "આધાર કેન્દ્ર",
@@ -68,6 +68,7 @@
         "supportCenter": "આધાર કેન્દ્ર",
         "contactUs": "અમારો સંપર્ક કરો",
         "markAllRead" : "બધા વાંચેલા ચિહ્નિત કરો",
+
         "disappearingMessages" : "અદ્રશ્ય થઈ રહેલા સંદેશાઓ",
         "chatColorAndWallpaper" : "ચેટ રંગ અને વોલપેપર",
         "soundAndNotification" : "ધ્વનિ અને સૂચના",
@@ -115,5 +116,13 @@
         "advanceDescription" : "સિગ્નલ સંદેશાઓ અને કોલ્સ, હંમેશા રિલે કોલ્સ અને સીલ કરેલ પ્રેષક",
         "fingerprintTransfer" : "ફંડ ટ્રાન્સફર કરવા માટે Android સ્ક્રીન લૉક અથવા ફિંગરપ્રિન્ટની જરૂર છે",
         "settingGuarantee" : "આ સેટિંગ ગેરેંટી નથી, અને તમારું કીબોર્ડ તેને અવગણી શકે છે.."
+
+          "signIn" : "સાઇન ઇન",
+        "phoneNumber":"મોબાઇલ નંબર",
+        "continues" : "ચાલુ રાખો"
+
+  "continues": "ચાલુ રાખો",
+  "phoneNumber":"મોબાઇલ નંબર"
+
 
  }
