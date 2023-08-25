@@ -9,6 +9,7 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
+import 'package:signal/pages/chating_page/chating_page.dart';
 
 // ignore: must_be_immutable
 class AppearanceScreen extends StatelessWidget {
@@ -34,8 +35,13 @@ class AppearanceScreen extends StatelessWidget {
 
             Future<String?> currentLanguage = getStringValue(language);
             String? selectedLanguage = await currentLanguage;
-            logs("default--> $selectedLanguage");
+            logs("default Language--> $selectedLanguage");
             appearanceViewModel!.selectedLanguage = selectedLanguage;
+
+            String? currentFontSize =await getStringValue(fontSizes);
+            String? selectedFontSize = currentFontSize;
+            logs("default FontSize--> $selectedFontSize");
+            appearanceViewModel!.saveFontSize = selectedFontSize;
             controller!.update();
           },
         );
@@ -52,7 +58,8 @@ class AppearanceScreen extends StatelessWidget {
   }
 
   getAppBar(context) {
-    return AppAppBar(
+
+    return AppAppBar(leading: IconButton(icon:Icon(Icons.arrow_back_sharp), onPressed: () {   Get.to(ChatingPage()); },),
         title: AppText(
       S.of(Get.context!).appearance,
       fontSize: 22.px,
@@ -82,12 +89,14 @@ class AppearanceScreen extends StatelessWidget {
                 .substring(10)
                 .capitalizeFirst,
             controller),
-        appearanceViewTile(
-            3, context, S.of(Get.context!).chatColor, "", controller),
+       appearanceViewTile(
+           3, context, S.of(Get.context!).chatColor, "", controller),
         appearanceViewTile(
             4, context, S.of(Get.context!).appIcon, "", controller),
         appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
-            StringConstant.normal, controller),
+            (appearanceViewModel.saveFontSize != null)
+                ? appearanceViewModel.saveFontSize
+                : "default", controller),
         appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
             StringConstant.normal, controller),
       ]),);}
@@ -102,7 +111,7 @@ class AppearanceScreen extends StatelessWidget {
   ) {
     return InkWell(
       onTap: () {
-        appearanceViewModel!.mainTap(index, context, controller);
+       appearanceViewModel!.mainTap(index, context, controller);
       },
       child: Container(width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 25.px, vertical: 13.px),

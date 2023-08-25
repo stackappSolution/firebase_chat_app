@@ -15,7 +15,7 @@ class PinSettingViewModel {
   bool isConformPage = false;
   String newPin = "";
 
-  PinSettingViewModel(this.pinSettingScreen) {}
+  PinSettingViewModel(this.pinSettingScreen);
 
   onPinChanged(newValue, PinSettingController controller) {
     if (newValue.toString().length >= 4) {

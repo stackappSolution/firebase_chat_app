@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:signal/controller/edit_profile_controller.dart';
+
 import 'edit_profile_screen.dart';
 
 class EditProfileViewModel {

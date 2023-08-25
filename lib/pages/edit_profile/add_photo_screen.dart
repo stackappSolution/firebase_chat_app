@@ -25,8 +25,8 @@ class AddPhotoScreen extends StatelessWidget {
         return SafeArea(
           child: Scaffold(
             body: Column(children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.close)),
-              CircleAvatar(
+              IconButton(onPressed: () {}, icon: const Icon(Icons.close)),
+              const CircleAvatar(
                 radius: 100,
               ),
               Row(
@@ -39,7 +39,7 @@ class AddPhotoScreen extends StatelessWidget {
                         decoration: BoxDecoration(color: AppColorConstant.yellowLight,
                             borderRadius: BorderRadius.all(
                           Radius.circular(15.px),
-                        )),child: AppImageAsset(image: AppAsset.camera,),
+                        )),child: const AppImageAsset(image: AppAsset.camera,),
                       ),
                       Padding(
                         padding:  EdgeInsets.only(top: 12.px),

@@ -20,8 +20,9 @@ class AppAsset {
   static const String appBar = '${imagePath}appbar.png';
 
   static const String introPage = '${imagePath}intro_page.png';
-  static const String signIn='${imagePath}signin.png';
-  static const String verifyOtp='${imagePath}verifyotp.png';
+  static const String signIn='${imagePath}signIn.png';
+  static const String verifyOtp='${imagePath}verifyOtp.png';
+  static const String splash='${imagePath}splash.png';
 
   //     ======================= Icons =======================     //
   static const String drawerIcon = '${iconPath}drawer.svg';
