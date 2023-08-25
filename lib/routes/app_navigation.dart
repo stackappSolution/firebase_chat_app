@@ -60,3 +60,7 @@ goToIntroScreen(){
 goToChatingScreen(){
   Get.toNamed(RouteHelper.getChattingScreen());
 }
+
+goToNewMessageScreen(){
+  Get.toNamed(RouteHelper.getNewMessageScreen());
+}

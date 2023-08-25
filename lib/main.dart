@@ -6,7 +6,6 @@ import 'package:signal/pages/chating_page/chating_page.dart';
 import 'app/app/utills/theme_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:signal/pages/intro_page/intro_page.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/generated/l10n.dart';

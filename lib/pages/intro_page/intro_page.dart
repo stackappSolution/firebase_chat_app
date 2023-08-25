@@ -66,7 +66,7 @@ class IntroPage extends StatelessWidget {
       bool isConnected, context, IntroPageController controller) {
     return AppButton(
         onTap: () {
-          goToProfilePage();
+          goToSignInPage();
         },
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
