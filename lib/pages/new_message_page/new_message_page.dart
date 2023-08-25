@@ -2,6 +2,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -42,7 +43,7 @@ class NewMessagePage extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(20.px),
-              child: Container(
+              child: SizedBox(
                 height: 50.px,
                 child: AppTextFormField(
                   onChanged: (value) {
@@ -99,7 +100,7 @@ class NewMessagePage extends StatelessWidget {
       itemBuilder: (context, index) {
         Contact contact = newMessageViewModel!.filterContacts[index];
         String? mobileNumber =
-            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
         return Container(
@@ -129,12 +130,16 @@ class NewMessagePage extends StatelessWidget {
       },
     );
   }
+
   onSearchContacts() {
     newMessageViewModel!.filterContacts =
         newMessageViewModel!.contacts.where((contact) {
-      return contact.displayName.toString().toLowerCase().contains(
-              newMessageViewModel!.newMessageController!.filteredValue
-                  .toLowerCase());
+      final lowerCaseQuery = newMessageViewModel!
+          .newMessageController!.filteredValue
+          .toLowerCase();
+      return contact.displayName!.toLowerCase().contains(lowerCaseQuery) ||
+          contact.phones!.any(
+              (phone) => phone.value!.toLowerCase().contains(lowerCaseQuery));
     }).toList();
   }
 }
