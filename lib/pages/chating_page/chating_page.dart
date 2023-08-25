@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -6,6 +7,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_button.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -16,6 +18,7 @@ import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
 import 'package:signal/routes/routes_helper.dart';
 import '../../controller/chating_page_controller.dart';
 
+// ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
   ChatingPage({super.key});
 
@@ -26,16 +29,21 @@ class ChatingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
+
     return GetBuilder(
-        initState: (state) {
+        initState: (state) async {
           chatingPageViewModal!.parameter = Get.parameters;
+          logs('parameter---> ${chatingPageViewModal!.parameter}');
           logs('number---> ${chatingPageViewModal!.parameter['phoneNo']}');
-          logs('image---> ${chatingPageViewModal!.parameter['image']}');
 
           Future.delayed(
             const Duration(milliseconds: 100),
             () async {
               controller = Get.find<ChatingPageController>();
+
+              Future<String?> key = getStringValue('wallpaper');
+              chatingPageViewModal!.wallpaperPath = await key;
+              logs("wall--> ${chatingPageViewModal!.wallpaperPath}");
               chatingPageViewModal!.chatBubbleColor =
                   await chatingPageViewModal!.getChatBubbleColor();
               logs('chatBubble: ${chatingPageViewModal!.chatBubbleColor}');
@@ -54,7 +62,14 @@ class ChatingPage extends StatelessWidget {
               appBar: appBar(controller),
               body: Container(
                   decoration: BoxDecoration(
-                      color: chatingPageViewModal!.wallpaperColor),
+                      image: (chatingPageViewModal!.wallpaperPath != null)
+                          ? DecorationImage(
+                              image: FileImage(
+                                  File(chatingPageViewModal!.wallpaperPath!)))
+                          : null,
+                      color: (chatingPageViewModal!.wallpaperPath != null)
+                          ? chatingPageViewModal!.wallpaperColor
+                          : Colors.transparent),
                   child: Column(children: [
                     Expanded(
                         child: GroupedListView(
@@ -79,13 +94,10 @@ class ChatingPage extends StatelessWidget {
                                   child: Container(
                                       padding: EdgeInsets.all(5.px),
                                       decoration: BoxDecoration(
-
                                         borderRadius:
                                             BorderRadius.circular(5.px),
-
-
-                                        color: AppColorConstant.appYellow,
-
+                                        color: AppColorConstant.appWhite
+                                            .withOpacity(0.5),
                                       ),
                                       alignment: Alignment.center,
                                       height: 25.px,
@@ -94,7 +106,7 @@ class ChatingPage extends StatelessWidget {
                                           '$formattedMonth ${dateTime.messageTimestamps.day}, ${dateTime.messageTimestamps.year}',
                                           style: const TextStyle(
                                               color:
-                                                  AppColorConstant.appWhite))));
+                                                  AppColorConstant.appBlack))));
                             },
                             itemBuilder: (context, element) {
                               return buildMessage(element, context);
@@ -115,7 +127,7 @@ class ChatingPage extends StatelessWidget {
                       AppButton(
                           margin: EdgeInsets.only(right: 15.px),
                           height: 40.px,
-                          color: AppColorConstant.iconOrange,
+                          color: AppColorConstant.appWhite,
                           stringChild: true,
                           width: 40.px,
                           borderRadius: BorderRadius.circular(40.px),
@@ -176,19 +188,18 @@ class ChatingPage extends StatelessWidget {
     return Slidable(
         child: (message.isSender)
             ? (Slidable(
-
-
-
-                endActionPane:
-                    ActionPane(extentRatio: 0.15.px, motion: const ScrollMotion(), children: [
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 10.px),
-                        child: const CircleAvatar(backgroundColor: AppColorConstant.appYellow),
-                      ))
-                ]),
-
+                endActionPane: ActionPane(
+                    extentRatio: 0.15.px,
+                    motion: const ScrollMotion(),
+                    children: [
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 10.px),
+                            child: const CircleAvatar(
+                                backgroundColor: AppColorConstant.appYellow),
+                          ))
+                    ]),
                 child: Container(
                     margin:
                         EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
@@ -218,20 +229,19 @@ class ChatingPage extends StatelessWidget {
                                   fontSize: 12.px))
                         ]))))
             : (Slidable(
-
-
-
-                startActionPane:
-                    ActionPane(extentRatio: 0.139.px, motion: const ScrollMotion(), children: [
-                  SizedBox(width: 10.px),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 10.px),
-                        child: const CircleAvatar(backgroundColor: AppColorConstant.appYellow),
-                      ))
-                ]),
-
+                startActionPane: ActionPane(
+                    extentRatio: 0.139.px,
+                    motion: const ScrollMotion(),
+                    children: [
+                      SizedBox(width: 10.px),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 10.px),
+                            child: const CircleAvatar(
+                                backgroundColor: AppColorConstant.appYellow),
+                          ))
+                    ]),
                 child: Container(
                     margin:
                         EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
@@ -266,18 +276,22 @@ class ChatingPage extends StatelessWidget {
           IconButton(
               icon: Icon(Icons.arrow_back_rounded,
                   size: 30.px, color: AppColorConstant.offBlack),
-              onPressed: () {}),
-
+              onPressed: () {
+                Get.toNamed(RouteHelper.getHomeScreen());
+              }),
           CircleAvatar(
               maxRadius: 20.px, backgroundColor: AppColorConstant.darkOrange)
-
-
         ]),
         title: InkWell(
           onTap: () {
-            Get.toNamed(RouteHelper.getChatProfileScreen(), parameters: {
-              'phoneNo': chatingPageViewModal!.parameter['phoneNo']
-            });
+            logs("profile");
+            if (chatingPageViewModal!.parameter['phoneNo'] != null) {
+              Get.toNamed(RouteHelper.getChatProfileScreen(), parameters: {
+                'phoneNo': chatingPageViewModal!.parameter['phoneNo']
+              });
+            } else {
+              Get.toNamed(RouteHelper.getChatProfileScreen());
+            }
           },
           child: AppText(StringConstant.userName,
               fontSize: 20.px, overflow: TextOverflow.ellipsis),

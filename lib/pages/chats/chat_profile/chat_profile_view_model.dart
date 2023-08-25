@@ -1,3 +1,5 @@
+
+
 import 'package:get/get.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
@@ -48,6 +50,7 @@ class ChatProfileViewModel{
         break;
     }
   }
+
 
 
 }

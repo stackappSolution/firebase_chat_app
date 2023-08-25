@@ -1,6 +1,10 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:signal/pages/account/change_phone/change_phone_screen.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
+import 'package:signal/pages/chats/chat_theme/chat_color.dart';
+import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
+import 'package:signal/pages/chats/chat_theme/chat_wallpaper.dart';
+import 'package:signal/pages/chats/chat_theme/wallpaper_preview_screen.dart';
 import 'package:signal/pages/edit_profile/add_photo_screen.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/pages/home/home_screen.dart';
@@ -11,6 +15,9 @@ import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/pages/settings/contact_us/contact_us_screen.dart';
 import 'package:signal/pages/settings/help/help_settings_screen.dart';
 import 'package:signal/pages/settings/licenses/licenses_screen.dart';
+import 'package:signal/pages/settings/privacy/blocked/blocked_users_screen.dart';
+import 'package:signal/pages/settings/privacy/disappear/disappear_screen.dart';
+import 'package:signal/pages/settings/privacy/privacy_screen.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/routes/routes_constant.dart';
 import '../pages/account/account/account_screen.dart';
@@ -38,7 +45,7 @@ class RouteHelper {
       RouteConstant.chatColorWallpaperScreen;
 
   static String getWallpaperPreviewScreen() =>
-      RouteConstant.chatWallpaperScreen;
+      RouteConstant.wallpaperPreviewScreen;
 
   static String getChattingScreen() => RouteConstant.chatingScreen;
 
@@ -63,6 +70,10 @@ class RouteHelper {
   static String getLicensesScreen() => RouteConstant.licensesScreen;
 
   static String getChatProfileScreen() => RouteConstant.chatProfileScreen;
+  static String getPrivacyScreen() => RouteConstant.privacyScreen;
+  static String getBlockedUsersScreen() => RouteConstant.blockedUsersScreen;
+  static String getDisappearingScreen() => RouteConstant.disappearingScreen;
+
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
@@ -70,8 +81,15 @@ class RouteHelper {
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
-    GetPage(name: RouteConstant.initial, page: () => ChatingPage()),
+    GetPage(name: RouteConstant.chatingScreen, page: () => ChatingPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
+    GetPage(name: RouteConstant.chatColorWallpaperScreen, page: () => ChatColorWallpaperScreen()),
+    GetPage(name: RouteConstant.chatColorScreen, page: () => ChatColorScreen()),
+    GetPage(name: RouteConstant.chatWallpaperScreen, page: () => ChatWallpaperScreen()),
+    GetPage(name: RouteConstant.wallpaperPreviewScreen, page: () => WallpaperPreviewScreen()),
+    GetPage(name: RouteConstant.privacyScreen, page: () => const PrivacyScreen()),
+    GetPage(name: RouteConstant.blockedUsersScreen, page: () => const BlockedUsersScreen()),
+    GetPage(name: RouteConstant.disappearingScreen, page: () =>  DisappearScreen()),
     GetPage(
       name: RouteConstant.verifyOtpScreen,
       page: () => VerifyOtpPage(),

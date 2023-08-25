@@ -650,10 +650,10 @@ class S {
     );
   }
 
-  /// `Reset chat color`
+  /// `Reset chat color?`
   String get resetChatColor {
     return Intl.message(
-      'Reset chat color',
+      'Reset chat color?',
       name: 'resetChatColor',
       desc: '',
       args: [],
@@ -690,6 +690,16 @@ class S {
     );
   }
 
+  /// `Incognito Keyboard`
+  String get incognitoKeyboard {
+    return Intl.message(
+      'Incognito Keyboard',
+      name: 'incognitoKeyboard',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Color is only visible you`
   String get colorIsOnlyVisibleYou {
     return Intl.message(
@@ -700,11 +710,291 @@ class S {
     );
   }
 
+  /// `Privacy`
+  String get privacy {
+    return Intl.message(
+      'Privacy',
+      name: 'privacy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payments`
+  String get payments {
+    return Intl.message(
+      'Payments',
+      name: 'payments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Advance`
+  String get advance {
+    return Intl.message(
+      'Advance',
+      name: 'advance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment lock`
+  String get paymentLock {
+    return Intl.message(
+      'Payment lock',
+      name: 'paymentLock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `App security`
+  String get appSecurity {
+    return Intl.message(
+      'App security',
+      name: 'appSecurity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `set a default disappearing message timer for all new chats started to you`
+  String get disappearingDescription {
+    return Intl.message(
+      'set a default disappearing message timer for all new chats started to you',
+      name: 'disappearingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Default timer for new chats`
+  String get defaultTimerForNewChats {
+    return Intl.message(
+      'Default timer for new chats',
+      name: 'defaultTimerForNewChats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lock signal access with android screen lock for fingerprint`
+  String get screenLockDescription {
+    return Intl.message(
+      'Lock signal access with android screen lock for fingerprint',
+      name: 'screenLockDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Screen lock`
+  String get screenLock {
+    return Intl.message(
+      'Screen lock',
+      name: 'screenLock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Screen lock inactivity timeout`
+  String get screenLockTimeout {
+    return Intl.message(
+      'Screen lock inactivity timeout',
+      name: 'screenLockTimeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block screenshots in the recents list and inside the app`
+  String get blockScreenshots {
+    return Intl.message(
+      'Block screenshots in the recents list and inside the app',
+      name: 'blockScreenshots',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Screen Security`
+  String get screenSecurity {
+    return Intl.message(
+      'Screen Security',
+      name: 'screenSecurity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request keyboard to disable personalized learning.`
+  String get keyboardDisable {
+    return Intl.message(
+      'Request keyboard to disable personalized learning.',
+      name: 'keyboardDisable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Signal messages and calls, always relay calls, and sealed sender`
+  String get advanceDescription {
+    return Intl.message(
+      'Signal messages and calls, always relay calls, and sealed sender',
+      name: 'advanceDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Require Android screen lock or fingerprint to transfer funds`
+  String get fingerprintTransfer {
+    return Intl.message(
+      'Require Android screen lock or fingerprint to transfer funds',
+      name: 'fingerprintTransfer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This setting is not a guarantee, and your keyboard may ignore it..`
+  String get settingGuarantee {
+    return Intl.message(
+      'This setting is not a guarantee, and your keyboard may ignore it..',
+      name: 'settingGuarantee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blocked`
+  String get blocked {
+    return Intl.message(
+      'Blocked',
+      name: 'blocked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `contacts`
+  String get contacts {
+    return Intl.message(
+      'contacts',
+      name: 'contacts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Messaging`
+  String get messaging {
+    return Intl.message(
+      'Messaging',
+      name: 'messaging',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read Receipts`
+  String get readReceipts {
+    return Intl.message(
+      'Read Receipts',
+      name: 'readReceipts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Typing indicators`
+  String get typingIndicators {
+    return Intl.message(
+      'Typing indicators',
+      name: 'typingIndicators',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `if typing indicators are disabled, you wont be able to see typing indicators from others`
+  String get indicatorsDescription {
+    return Intl.message(
+      'if typing indicators are disabled, you wont be able to see typing indicators from others',
+      name: 'indicatorsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `if read receipts are disabled, you wont be able to see read receipts from others`
+  String get receiptsDescription {
+    return Intl.message(
+      'if read receipts are disabled, you wont be able to see read receipts from others',
+      name: 'receiptsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Other`
   String get other {
     return Intl.message(
       'Other',
       name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `off`
+  String get off {
+    return Intl.message(
+      'off',
+      name: 'off',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Presets`
+  String get presets {
+    return Intl.message(
+      'Presets',
+      name: 'presets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset`
+  String get reset {
+    return Intl.message(
+      'Reset',
+      name: 'reset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message(
+      'Today',
+      name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose from photos`
+  String get chooseFromPhotos {
+    return Intl.message(
+      'Choose from photos',
+      name: 'chooseFromPhotos',
       desc: '',
       args: [],
     );
@@ -735,6 +1025,16 @@ class S {
     return Intl.message(
       'Question',
       name: 'question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preview`
+  String get preview {
+    return Intl.message(
+      'Preview',
+      name: 'preview',
       desc: '',
       args: [],
     );

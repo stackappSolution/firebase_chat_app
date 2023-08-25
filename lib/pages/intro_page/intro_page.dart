@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/routes/routes_helper.dart';
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -14,6 +13,7 @@ import '../../controller/intro_page_controller.dart';
 import '../../service/network_connectivity.dart';
 import 'package:connectivity/connectivity.dart';
 
+// ignore: must_be_immutable
 class IntroPage extends StatelessWidget {
   Map _source = {ConnectivityResult.none: false};
   final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;

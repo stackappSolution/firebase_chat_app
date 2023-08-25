@@ -13,6 +13,7 @@ import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
 import '../../constant/app_asset.dart';
 
+// ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
   ProfileViewModel? profileViewModel;
   ProfileController? profileController;

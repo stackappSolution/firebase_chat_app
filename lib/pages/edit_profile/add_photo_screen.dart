@@ -9,6 +9,7 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/add_photo_controller.dart';
 import 'package:signal/pages/edit_profile/add_photo_view_model.dart';
 
+// ignore: must_be_immutable
 class AddPhotoScreen extends StatelessWidget {
   AddPhotoViewModel? addPhotoViewModel;
 

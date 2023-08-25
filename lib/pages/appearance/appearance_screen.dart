@@ -69,8 +69,8 @@ class AppearanceScreen extends StatelessWidget {
             1,
             context,
             S.of(Get.context!).language,
-            (appearanceViewModel!.selectedLanguage != null)
-                ? appearanceViewModel!.selectedLanguage
+            (appearanceViewModel.selectedLanguage != null)
+                ? appearanceViewModel.selectedLanguage
                 : "default",
             controller),
         appearanceViewTile(

@@ -33,7 +33,6 @@ class HomeScreen extends StatelessWidget {
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
-          appBar: getAppBar(context),
           backgroundColor: Theme.of(context).colorScheme.background,
           bottomNavigationBar: buildBottomBar(controller),
           body: getBody(controller),
@@ -43,31 +42,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-getAppBar(BuildContext context) {
-  return AppAppBar(backgroundColor: Theme.of(context).colorScheme.background,
-    leading: Padding(
-      padding: EdgeInsets.only(left: 15.px),
-      child: CircleAvatar(
 
-        backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-        child: AppText('S', fontSize: 20.px, color: AppColorConstant.appYellow),
-
-      ),
-    ),
-    title: Padding(
-      padding: EdgeInsets.only(left: 20.px),
-      child: AppText(S.of(Get.context!).signal,
-          color: Theme.of(Get.context!).colorScheme.primary, fontSize: 20.px),
-    ),
-    actions: [
-      Padding(
-        padding: EdgeInsets.all(18.px),
-        child: const AppImageAsset(image: AppAsset.search),
-      ),
-      buildPopupMenu(),
-    ],
-  );
-}
 
 getBody(HomeScreenController controller) {
   return IndexedStack(
@@ -106,37 +81,4 @@ buildBottomBar(HomeScreenController controller) {
       ]);
 }
 
-buildPopupMenu() {
-  return PopupMenuButton(
-    onSelected: (value) {
-      if (value == 2) {
-        goToSettingPage();
-      }
-    },
-    elevation: 0.5,
-    position: PopupMenuPosition.under,
-    color: AppColorConstant.appLightGrey,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
-    icon: Padding(
-      padding: EdgeInsets.all(10.px),
-      child: const AppImageAsset(image: AppAsset.popup),
-    ),
-    itemBuilder: (context) {
-      return [
-         PopupMenuItem(
-          value: 0,
-          child: AppText(S.of(Get.context!).newGroup),
-        ),
-        PopupMenuItem(
-            value: 1,
-            child: AppText(S.of(Get.context!).markAllRead)),
-        PopupMenuItem(
-            value: 2,
-            child: AppText(S.of(Get.context!).settings)),
-        PopupMenuItem(
-            value: 3,
-            child: AppText(S.of(Get.context!).inviteFriends)),
-      ];
-    },
-  );
-}
+

@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
-import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
-import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 class SettingViewModel {
@@ -21,6 +19,11 @@ class SettingViewModel {
       case 2:
         {
           Get.toNamed(RouteHelper.getAppearanceScreen());
+        }
+        break;
+      case 6:
+        {
+          Get.toNamed(RouteHelper.getPrivacyScreen());
         }
         break;
       case 8:

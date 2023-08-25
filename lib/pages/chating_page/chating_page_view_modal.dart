@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
@@ -12,6 +11,9 @@ class ChatingPageViewModal {
   Color? chatBubbleColor;
   Color? wallpaperColor;
   Map<String,dynamic> parameter= {};
+
+  String? wallpaperPath;
+
 
   ChatingPageViewModal(this.chatingPage);
 
@@ -39,12 +41,10 @@ class ChatingPageViewModal {
     Message(messages: "jjjasijjjkcjzxuihiowdcsmnjnoioeiccjweioji", isSender: false, messageTimestamps: DateTime(2023, 8, 28, 9, 2)),
     Message(messages: "isdjcwekmniweimeimm", isSender: true, messageTimestamps: DateTime(2023, 8, 29, 9, 24)),
     Message(messages: "irwjisdvjioijrijiosdioj", isSender: false, messageTimestamps: DateTime(2023, 8, 30, 9, 7)),
-
   ];
   bool iconChange = false;
   Future<Color> getColorFromPreferences() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final colorCode = prefs.getString(wallPaperColor);
+    final colorCode = await getStringValue(wallPaperColor);
     if (colorCode != null) {
       return Color(int.parse(colorCode, radix: 16));
     } else {
@@ -53,12 +53,11 @@ class ChatingPageViewModal {
   }
 
   Future<Color> getChatBubbleColor() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final colorCode = prefs.getString(chatColor);
+    final colorCode = await getStringValue(chatColor);
     if (colorCode != null) {
       return Color(int.parse(colorCode, radix: 16));
     } else {
-      return AppColorConstant.darkBlue;
+      return AppColorConstant.appYellow;
     }
   }
 

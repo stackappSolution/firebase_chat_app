@@ -8,10 +8,11 @@ import 'package:signal/pages/chats/chat_screen.dart';
 class ChatViewModel {
   ChatScreen? chatScreen;
   List<Contact> contacts = [];
+  List<Contact> filterContacts = [];
   ContactController? controller;
 
   ChatViewModel(this.chatScreen){
-   Future.delayed( const Duration(milliseconds: 100), () {
+   Future.delayed( const Duration(milliseconds: 300), () {
      controller= Get.find<ContactController>();
     },);
   }
@@ -38,4 +39,7 @@ class ChatViewModel {
     controller!.update();
     logs("contacts --> ${contacts.length}");
   }
+
+
+
 }

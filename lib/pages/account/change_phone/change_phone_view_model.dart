@@ -65,7 +65,8 @@ class ChangePhoneViewModel {
           );
         },
       );
-    } else {
+    } else
+    { {
       showDialog(
         context: context,
         builder: (context) {
@@ -96,4 +97,5 @@ class ChangePhoneViewModel {
     }
     controller.update();
   }
+}
 }

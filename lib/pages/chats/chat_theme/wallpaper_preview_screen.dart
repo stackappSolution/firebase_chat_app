@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -12,6 +11,7 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
 
+// ignore: must_be_immutable
 class WallpaperPreviewScreen extends StatelessWidget {
   WallpaperPreviewScreen({Key? key}) : super(key: key);
 
@@ -31,30 +31,30 @@ class WallpaperPreviewScreen extends StatelessWidget {
           () async {
             controller = Get.find<SettingsController>();
             wallColor = await getColorFromPreferences();
-            //image = File(parameter['image']);
+
             controller!.update();
           },
         );
       },
       builder: (controller) {
         return Scaffold(
-          appBar: getAppBar(),
-          body: getBody(),
+          appBar: getAppBar(context),
+          body: getBody(context),
         );
       },
     );
   }
 
-  getAppBar() {
+  getAppBar(BuildContext context) {
     return AppAppBar(
-      title: AppText('Preview', fontSize: 20.px),
+      title: AppText(S.of(context).preview, fontSize: 20.px),
     );
   }
 
-  getBody() {
+  getBody(BuildContext context) {
     return Column(
       children: [
-        buildPreview(),
+        buildPreview(context),
         Container(
           margin: EdgeInsets.all(12.px),
           alignment: Alignment.center,
@@ -65,24 +65,17 @@ class WallpaperPreviewScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.px),
               border: Border.all(color: AppColorConstant.grey, width: 2.px)),
           child: InkWell(
-              onTap: () {
-                if (parameter['image'] != null) {
-                  setStringValue('image', parameter['image']);
-                  Get.offAndToNamed(RouteHelper.getChattingScreen(),parameters: {'image': parameter['image']});
-                }
-
-                Get.offAndToNamed(RouteHelper.getChattingScreen());
-              },
-              child: const AppText('Set Wallpaper')),
+              onTap: () => onSetWallpaper(),
+              child: AppText(S.of(context).setWallpaper)),
         ),
       ],
     );
   }
 
-  buildPreview() {
+  buildPreview(BuildContext context) {
     return (parameter['image'] != null)
         ? Container(
-            height: 600.px,
+            height: Device.height * 0.75,
             width: double.infinity,
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -98,7 +91,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
                     color: AppColorConstant.grey.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12.px),
                   ),
-                  child: const AppText('Today'),
+                  child: AppText(S.of(context).today),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
@@ -110,7 +103,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: AppColorConstant.appWhite,
                           borderRadius: BorderRadius.circular(12.px)),
-                      child: AppText(S.of(Get.context!).colorIsOnlyVisibleYou)),
+                      child: AppText(S.of(context).colorIsOnlyVisibleYou)),
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
@@ -123,7 +116,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
                           color: AppColorConstant.grey,
                           borderRadius: BorderRadius.circular(12.px)),
                       child: AppText(
-                        S.of(Get.context!).colorIsOnlyVisibleYou,
+                        S.of(context).colorIsOnlyVisibleYou,
                         color: AppColorConstant.appWhite,
                       )),
                 )
@@ -131,7 +124,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
             ),
           )
         : Container(
-            height: 600.px,
+            height: Device.height * 0.75,
             width: double.infinity,
             color: wallColor,
             child: Column(
@@ -145,7 +138,10 @@ class WallpaperPreviewScreen extends StatelessWidget {
                     color: AppColorConstant.grey.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12.px),
                   ),
-                  child: const AppText('Today'),
+                  child: AppText(
+                    S.of(context).today,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
@@ -157,7 +153,10 @@ class WallpaperPreviewScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: AppColorConstant.appWhite,
                           borderRadius: BorderRadius.circular(12.px)),
-                      child: AppText(S.of(Get.context!).colorIsOnlyVisibleYou)),
+                      child: AppText(
+                        S.of(context).colorIsOnlyVisibleYou,
+                        color: Theme.of(context).colorScheme.primary,
+                      )),
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
@@ -170,8 +169,8 @@ class WallpaperPreviewScreen extends StatelessWidget {
                           color: AppColorConstant.grey,
                           borderRadius: BorderRadius.circular(12.px)),
                       child: AppText(
-                        S.of(Get.context!).colorIsOnlyVisibleYou,
-                        color: AppColorConstant.appWhite,
+                        S.of(context).colorIsOnlyVisibleYou,
+                        color: Theme.of(context).colorScheme.primary,
                       )),
                 )
               ],
@@ -180,12 +179,25 @@ class WallpaperPreviewScreen extends StatelessWidget {
   }
 
   Future<Color> getColorFromPreferences() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final colorCode = prefs.getString(wallPaperColor);
+    final colorCode = await getStringValue(wallPaperColor);
     if (colorCode != null) {
       return Color(int.parse(colorCode, radix: 16));
     } else {
       return Colors.black;
+    }
+  }
+
+  onSetWallpaper() {
+    if (parameter['image'] != null) {
+      setStringValue(wallpaper, parameter['image']);
+      Get.offNamedUntil(RouteHelper.getChattingScreen(),
+          ModalRoute.withName(RouteHelper.getHomeScreen()));
+      setStringValue(
+          wallPaperColor, const Color(0xFFFFFFFF).value.toRadixString(16));
+    } else {
+      Get.offNamedUntil(RouteHelper.getChattingScreen(),
+          ModalRoute.withName(RouteHelper.getHomeScreen()));
+      setStringValue(wallpaper, '');
     }
   }
 }

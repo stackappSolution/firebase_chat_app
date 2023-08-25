@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
@@ -10,6 +9,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 
+// ignore: must_be_immutable
 class ChatColorScreen extends StatelessWidget {
   ChatColorScreen({Key? key}) : super(key: key);
 
@@ -25,43 +25,45 @@ class ChatColorScreen extends StatelessWidget {
           const Duration(milliseconds: 100),
           () async {
             controller = Get.find<SettingsController>();
-
             selectedColor = await getChatBubbleColor();
-
-
             controller!.update();
           },
         );
       },
       builder: (controller) {
         return Scaffold(
-          appBar: getAppBar(),
-          body: getBody(),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: getAppBar(context),
+          body: getBody(context),
         );
       },
     );
   }
 
-  getAppBar() {
+  getAppBar(BuildContext context) {
     return AppAppBar(
-      title: AppText(S.of(Get.context!).chatColor),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      title: AppText(
+        S.of(context).chatColor,
+        color: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 
-  getBody() {
+  getBody(BuildContext context) {
     return ListView(
       children: [
-        buildDemoChatView(),
+        buildDemoChatView(context),
         buildColorsGridView(),
       ],
     );
   }
 
-  buildDemoChatView() {
+  buildDemoChatView(BuildContext context) {
     return Container(
       height: 170.px,
       width: double.infinity,
-      color: Colors.grey,
+      color:AppColorConstant.grey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -73,9 +75,9 @@ class ChatColorScreen extends StatelessWidget {
                 height: 40.px,
                 width: 230.px,
                 decoration: BoxDecoration(
-                    color: AppColorConstant.appWhite,
+                    color:  Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.circular(12.px)),
-                child: AppText(S.of(Get.context!).colorIsOnlyVisibleYou)),
+                child: AppText(S.of(context).colorIsOnlyVisibleYou)),
           ),
           Align(
             alignment: Alignment.bottomRight,
@@ -88,7 +90,7 @@ class ChatColorScreen extends StatelessWidget {
                     color: selectedColor,
                     borderRadius: BorderRadius.circular(12.px)),
                 child: AppText(
-                  S.of(Get.context!).colorIsOnlyVisibleYou,
+                  S.of(context).colorIsOnlyVisibleYou,
                   color: AppColorConstant.appWhite,
                 )),
           )
@@ -113,7 +115,6 @@ class ChatColorScreen extends StatelessWidget {
       AppColorConstant.pink,
       AppColorConstant.lightSky,
       AppColorConstant.purple,
-      //AppColorConstant.lightGrey,
       AppColorConstant.darkPink,
       AppColorConstant.darkGreen,
       AppColorConstant.red,
@@ -129,9 +130,7 @@ class ChatColorScreen extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             selectedColor = chatColors[index];
-            setStringValue(
-                chatColor, selectedColor.value.toRadixString(16));
-
+            setStringValue(chatColor, selectedColor.value.toRadixString(16));
             logs("selected Color--> $selectedColor");
             controller!.update();
           },
@@ -155,9 +154,9 @@ class ChatColorScreen extends StatelessWidget {
       },
     );
   }
+
   Future<Color> getChatBubbleColor() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final colorCode = prefs.getString(chatColor);
+    final colorCode = await getStringValue(chatColor);
     if (colorCode != null) {
       return Color(int.parse(colorCode, radix: 16));
     } else {

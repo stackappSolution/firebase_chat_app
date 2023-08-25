@@ -1,4 +1,5 @@
 class RouteConstant{
+
   static const String initial = '/';
   static const String introScreen = '/intro';
   static const String signInPage = '/SignInPage';
@@ -10,7 +11,7 @@ class RouteConstant{
   static const String profileScreen = '/profile';
   static const String appearanceScreen = '/appearance';
   static const String chatScreen = '/chat';
-  static const String chatingScreen = '/chat';
+  static const String chatingScreen = '/chatting';
   static const String addPhotoScreen = '/addPhoto';
   static const String accountScreen = '/account';
   static const String changePinScreen = '/changePin';
@@ -22,8 +23,10 @@ class RouteConstant{
   static const String chatProfileScreen = '/chat_profile';
   static const String chatColorWallpaperScreen = '/chat_theme';
   static const String chatColorScreen = '/chat';
-  static const String chatWallpaperScreen = '/chat_wallpaper';
+  static const String chatWallpaperScreen = '/wallpaper';
   static const String wallpaperPreviewScreen = '/preview';
-
+  static const String privacyScreen = '/privacy';
+  static const String blockedUsersScreen = '/blocked';
+  static const String disappearingScreen = '/disappear';
 
 }

@@ -66,12 +66,56 @@
         "setWallpaper" : "Set Wallpaper",
         "darkModeWallpaper" : "Dark mode dims wallpaper",
         "resetWallpaper" : "Reset Wallpaper",
+        "incognitoKeyboard" : "Incognito Keyboard",
         "colorIsOnlyVisibleYou" : "Color is only visible you",
 
+
+
+        "privacy" : "Privacy",
+        "payments" : "Payments",
+        "advance" : "Advance",
+        "paymentLock" : "Payment lock",
+        "appSecurity" : "App security",
+        "disappearingDescription" : "set a default disappearing message timer for all new chats started to you",
+        "defaultTimerForNewChats" : "Default timer for new chats",
+        "screenLockDescription" : "Lock signal access with android screen lock for fingerprint",
+        "screenLock" : "Screen lock",
+        "screenLockTimeout" : "Screen lock inactivity timeout",
+        "blockScreenshots" : "Block screenshots in the recents list and inside the app",
+        "screenSecurity" : "Screen Security",
+        "keyboardDisable" : "Request keyboard to disable personalized learning.",
+        "advanceDescription" : "Signal messages and calls, always relay calls, and sealed sender",
+        "fingerprintTransfer" : "Require Android screen lock or fingerprint to transfer funds",
+        "settingGuarantee" : "This setting is not a guarantee, and your keyboard may ignore it..",
+
+
+
+
+
+
+
+
+
+        "blocked" : "Blocked",
+        "contacts" : "contacts",
+        "messaging" : "Messaging",
+        "readReceipts" : "Read Receipts",
+        "typingIndicators" : "Typing indicators",
+        "disappearingMessages" : "Disappearing Messages",
+        "indicatorsDescription" : "if typing indicators are disabled, you wont be able to see typing indicators from others",
+        "receiptsDescription" : "if read receipts are disabled, you wont be able to see read receipts from others",
+
         "other" : "Other",
+        "off" : "off",
+        "presets" : "Presets",
+        "reset" : "Reset",
+        "today" : "Today",
+        "chooseFromPhotos" : "Choose from photos",
+        "resetChatColor" : "Reset chat color?",
         "somethingNotWorking" : "Somethings Not Working",
         "featureRequest" : "Feature Request",
         "question" : "Question",
+        "preview" : "Preview",
         "feedback" : "Feedback",
         "debugLog" : "Debug log",
         "includeDebug" : "Include Debug Log",

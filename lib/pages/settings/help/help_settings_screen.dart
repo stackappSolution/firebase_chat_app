@@ -6,13 +6,13 @@ import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
-import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/help_setting_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/help/help_setting_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ignore: must_be_immutable
 class HelpSettingsScreen extends StatelessWidget {
   HelpSettingsScreen({Key? key}) : super(key: key);
 
@@ -27,7 +27,7 @@ class HelpSettingsScreen extends StatelessWidget {
       init: HelpSettingController(),
       initState: (state) {
         Future.delayed(
-          const Duration(milliseconds: 0),
+          const Duration(milliseconds: 200),
           () {
             controller = Get.find<HelpSettingController>();
             helpSettingViewModel!.getVersionStatus();

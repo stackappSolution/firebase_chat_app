@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signal/constant/color_constant.dart';
 
-import '../../constant/color_constant.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;

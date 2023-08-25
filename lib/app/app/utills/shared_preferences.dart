@@ -6,6 +6,7 @@ const String getLanguage = 'language';
 const String language = 'selectedLanguage';
 const String emoji = 'emoji';
 const String chatColor = 'chatColor';
+const String wallpaper = 'wallpaper';
 const String wallPaperColor = 'wallpaperColor';
 
  setStringValue(String key, String value) async {

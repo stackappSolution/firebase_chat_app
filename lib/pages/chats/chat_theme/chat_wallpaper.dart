@@ -15,6 +15,7 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
 
+// ignore: must_be_immutable
 class ChatWallpaperScreen extends StatelessWidget {
   ChatWallpaperScreen({Key? key}) : super(key: key);
 
@@ -29,49 +30,49 @@ class ChatWallpaperScreen extends StatelessWidget {
       initState: (state) {},
       builder: (controller) {
         return Scaffold(
-          backgroundColor: Theme.of(Get.context!).colorScheme.background,
-          appBar: getAppbar(),
-          body: getBody(),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: getAppbar(context),
+          body: getBody(context),
         );
       },
     );
   }
 
-  getAppbar() {
-    return AppAppBar(
-      title: AppText(S.of(Get.context!).chatColorAndWallpaper, fontSize: 20.px),
+  getAppbar(BuildContext context) {
+    return AppAppBar(backgroundColor:  Theme.of(context).colorScheme.background,
+      title: AppText(S.of(context).chatColorAndWallpaper, fontSize: 20.px,color:  Theme.of(context).colorScheme.primary,),
     );
   }
 
-  getBody() {
+  getBody(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildWallpaperFromCamera(),
+        buildWallpaperFromCamera(context),
         SizedBox(
           height: 20.px,
         ),
         Divider(
           height: 2.px,
-          color: AppColorConstant.grey,
+          color:  AppColorConstant.grey,
         ),
-        const Padding(
-          padding: EdgeInsets.all(12.0),
-          child: AppText('Presets',
-              color: AppColorConstant.appBlack, textAlign: TextAlign.start),
+         Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: AppText(S.of(context).presets,
+              color:  Theme.of(context).colorScheme.primary, textAlign: TextAlign.start),
         ),
         buildWallpaperGridview(),
       ],
     );
   }
 
-  buildWallpaperFromCamera() {
+  buildWallpaperFromCamera(BuildContext context) {
     return ListTile(
       onTap: () {
         pickImageGallery();
       },
-      title: const AppText('Choose from photos'),
-      leading: const Icon(Icons.image_outlined),
+      title:  AppText(S.of(context).chooseFromPhotos,color:  Theme.of(context).colorScheme.primary,),
+      leading:  Icon(Icons.image_outlined,color:  Theme.of(context).colorScheme.primary),
     );
   }
 
@@ -91,7 +92,7 @@ class ChatWallpaperScreen extends StatelessWidget {
       AppColorConstant.lightSky,
       AppColorConstant.purple,
       AppColorConstant.darkPink,
-      AppColorConstant.appWhite,
+      AppColorConstant.grey,
     ];
 
     return Expanded(
@@ -126,14 +127,15 @@ class ChatWallpaperScreen extends StatelessWidget {
     );
   }
 
-  Future<void> pickImageGallery( ) async {
+  Future<void> pickImageGallery() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
       logs(selectedImage.toString());
       // controller!.update();
-      Get.toNamed(RouteHelper.getWallpaperPreviewScreen(),parameters: {'image': selectedImage!.path});
+      Get.toNamed(RouteHelper.getWallpaperPreviewScreen(),
+          parameters: {'image': selectedImage!.path});
     }
   }
 }
