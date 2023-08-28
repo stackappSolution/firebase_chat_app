@@ -20,7 +20,7 @@ class ChangePhoneViewModel {
   String newNumCountryCode = "+91";
   bool isButtonActive = false;
 
-  ChangePhoneViewModel(this.changePhoneNumberScreen) {}
+  ChangePhoneViewModel(this.changePhoneNumberScreen);
 
   continueTap(ChangePhoneController controller) {
     isPhoneNumberChange = true;
@@ -49,6 +49,7 @@ class ChangePhoneViewModel {
             insetPadding: EdgeInsets.zero,
             title: AppText("${newNumCountryCode}${newNumberController.text}",
                 fontSize: 25.px),
+            title: AppText("$newNumCountryCode${newNumberController.text}",fontSize: 25.px),
             widget: AppText(
               StringConstant.checkAgainYourNumber,
               color: Theme.of(context).colorScheme.secondary,

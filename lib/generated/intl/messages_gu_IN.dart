@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chats": MessageLookupByLibrary.simpleMessage("ચેટ્સ"),
         "choose": MessageLookupByLibrary.simpleMessage("પસંદ કરો"),
         "contactUs": MessageLookupByLibrary.simpleMessage("અમારો સંપર્ક કરો"),
+        "continues": MessageLookupByLibrary.simpleMessage("ચાલુ રાખો"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "debugLog": MessageLookupByLibrary.simpleMessage("ડીબગ લોગ"),
         "donateToSignal":
@@ -68,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notification": MessageLookupByLibrary.simpleMessage("સૂચના"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
         "other": MessageLookupByLibrary.simpleMessage("અન્ય"),
+        "phoneNumber": MessageLookupByLibrary.simpleMessage("મોબાઇલ નંબર"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("ગોપનીયતા નીતિ"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
             "તમે જે લોકોને સંદેશો મોકલો છો, સંપર્કો અને જૂથોને પ્રોફાઇલ્સ દૃશ્યક્ષમ છે."),
@@ -76,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "શું તમે હજુ સુધી અમારા FAQ વાંચ્યા છે?"),
         "search": MessageLookupByLibrary.simpleMessage("શોધો.."),
         "settings": MessageLookupByLibrary.simpleMessage("સેટિંગ્સ"),
+        "signIn": MessageLookupByLibrary.simpleMessage("સાઇન ઇન"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
             "પ્રારંભ કરવા માટે તમારો ફોન નંબર દાખલ કરો"),
         "signal": MessageLookupByLibrary.simpleMessage("સિગ્નલ"),
@@ -97,7 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transferOrRestoreAccount": MessageLookupByLibrary.simpleMessage(
             "એકાઉન્ટ ટ્રાન્સફર અથવા રિસ્ટોર કરો"),
         "userName": MessageLookupByLibrary.simpleMessage("વપરાશકર્તા નામ"),
-        "verify": MessageLookupByLibrary.simpleMessage("ઓટીપી ચકાસો"),
+        "verify": MessageLookupByLibrary.simpleMessage("OTP દાખલ કરો"),
         "verifyButton": MessageLookupByLibrary.simpleMessage("ચકાસો"),
         "verifyOtp":
             MessageLookupByLibrary.simpleMessage("અમે મોકલેલ કોડ દાખલ કરો"),

@@ -64,3 +64,6 @@ goToChatingScreen() {
 goToPinEnterScreen() {
   Get.toNamed(RouteHelper.getPinEnterScreen());
 }
+goToNewMessageScreen(){
+  Get.toNamed(RouteHelper.getNewMessageScreen());
+}

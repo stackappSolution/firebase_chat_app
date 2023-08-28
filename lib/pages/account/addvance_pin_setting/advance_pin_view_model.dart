@@ -15,7 +15,7 @@ class AdvancePinViewModel {
   AdvancePinSettingScreen? advancePinSettingScreen;
   String firebaseStoredPin = "";
 
-  AdvancePinViewModel(this.advancePinSettingScreen) {}
+  AdvancePinViewModel(this.advancePinSettingScreen);
 
   disablePinTap(context) {
     showDialog(

@@ -1,11 +1,12 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/pages/chating_page/chating_page.dart';
 import 'app/app/utills/theme_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:signal/pages/intro_page/intro_page.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/generated/l10n.dart';
@@ -15,7 +16,15 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
 
-  runApp(const MyApp());
+  runApp(
+     DevicePreview(
+      enabled: true,
+      tools: [
+        ...DevicePreview.defaultTools,
+      ],
+      builder: (context) => const MyApp(),
+    ),
+  );
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     //systemNavigationBarColor: AppColorConstant.appWhite, // navigation bar color
@@ -25,9 +34,6 @@ Future<void> main() async {
     statusBarBrightness:
         (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
   ));
-  runApp(
-    const MyApp(),
-  );
 }
 
 class MyApp extends StatelessWidget {
@@ -45,7 +51,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
-            initialRoute: RouteHelper.getIntroScreen(),
+            initialRoute: RouteHelper.getChattingScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,

@@ -8,7 +8,7 @@ class VerifyOtpViewModel{
   late VerifyOtpPage? verifyOtpPage;
 
   final FirebaseAuth auth = FirebaseAuth.instance;
-  TextEditingController Otp = TextEditingController();
+  TextEditingController otp = TextEditingController();
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   String smsCode = "";
   bool isValidOTP = false;

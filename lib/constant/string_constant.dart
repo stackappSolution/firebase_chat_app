@@ -20,6 +20,8 @@ class StringConstant {
   static const String blankText = '';
 
   static const String selectedFontSize = 'SelectedFontSize';
+  static const String setFontSize = 'setFontSize';
+  static const String selectFontSize = 'Select Fontsize';
   static const String theme = 'Theme';
   static const String yourProfile = 'Your Profile';
   static const String profileAreVisible =
@@ -42,8 +44,7 @@ class StringConstant {
   static const String messageFontSize = 'Message Font Size';
   static const String normal = 'Normal';
   static const String navigationBarSize = 'Navigation Bar Size';
-  static const String transferOrRestoreAccount =
-      ' Transfer or Restore Account ';
+  static const String transferOrRestoreAccount = ' Transfer or Restore Account ';
   static const String getStarted = ' Get Started ';
   static const String termsPrivacyPolicy = ' Terms & Privacy Policy ';
   static const String welcomeToChat = ' Welcome To Chat ';

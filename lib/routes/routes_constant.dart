@@ -1,5 +1,6 @@
 class RouteConstant{
   static const String initial = '/';
+  static const String splashScreen = '/splash';
   static const String introScreen = '/intro';
   static const String signInPage = '/SignInPage';
   static const String verifyOtpScreen = '/VerifyOtpPage';
@@ -21,6 +22,7 @@ class RouteConstant{
   static const String licensesScreen = '/licenses';
   static const String chatProfileScreen = '/chat_profile';
   static const String pinEnterScreen = '/pinEnterScreen';
+  static const String newMessageScreen = '/NewMessagePage';
 
 
 }

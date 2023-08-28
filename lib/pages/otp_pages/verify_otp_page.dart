@@ -7,15 +7,11 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/vreify_otp_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/otp_pages/verify_otp_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
-import 'package:signal/routes/routes_helper.dart';
 
-// ignore: must_be_immutable
 class VerifyOtpPage extends StatelessWidget {
   VerifyOtpPage({super.key});
 
@@ -155,7 +151,7 @@ class VerifyOtpPage extends StatelessWidget {
                         AppColorConstant.appYellow.withOpacity(0.5)),
                     fixedSize: MaterialStatePropertyAll(Size(230.px, 50.px))),
                 child: AppText(
-                  'Verify',
+                  S.of(Get.context!).verifyButton,
                   //StringConstant.verifyButton,
                   fontSize: 22.px,
                   color: AppColorConstant.appWhite,
@@ -177,7 +173,7 @@ class VerifyOtpPage extends StatelessWidget {
                         AppColorConstant.appYellow),
                     fixedSize: MaterialStatePropertyAll(Size(230.px, 50.px))),
                 child: AppText(
-                  'Verify',
+                  S.of(Get.context!).verifyButton,
                   //StringConstant.verifyButton,
                   fontSize: 22.px,
                   color: AppColorConstant.appWhite,

@@ -22,7 +22,7 @@ class AccountViewModel {
   String firebaseStoredPin = "";
   final pinController = TextEditingController();
 
-  AccountViewModel(this.accountScreen) {}
+  AccountViewModel(this.accountScreen);
 
   changePinTap() {
     goToPinSettingScreen();
