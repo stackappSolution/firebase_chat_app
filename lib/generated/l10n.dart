@@ -705,6 +705,11 @@ class S {
     return Intl.message(
       'Sign In',
       name: 'signIn',
+      desc: '',
+      args: [],
+    );
+
+    }
   /// `Contiue`
   String get continues {
     return Intl.message(
@@ -720,16 +725,6 @@ class S {
     return Intl.message(
       'Phone Number',
       name: 'phoneNumber',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Continue`
-  String get continues {
-    return Intl.message(
-      'Continue',
-      name: 'continues',
       desc: '',
       args: [],
     );

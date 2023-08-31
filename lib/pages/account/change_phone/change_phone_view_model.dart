@@ -35,6 +35,7 @@ class ChangePhoneViewModel {
         builder: (context) {
           return AppAlertDialog(
             insetPadding: EdgeInsets.zero,
+
             title: AppText("$newNumCountryCode${newNumberController.text}",fontSize: 25.px),
             widget: AppText(
               StringConstant.checkAgainYourNumber,

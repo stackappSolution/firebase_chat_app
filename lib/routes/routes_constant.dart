@@ -22,6 +22,8 @@ class RouteConstant{
   static const String licensesScreen = '/licenses';
   static const String chatProfileScreen = '/chat_profile';
   static const String newMessageScreen = '/NewMessagePage';
+  static const String newGroupScreen = '/newGroupScreen';
+  static const String pinEnterScreen = '/pinEnterScreen';
 
 
 }

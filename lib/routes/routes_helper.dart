@@ -61,6 +61,8 @@ class RouteHelper {
 
   static String getNewMessageScreen() => RouteConstant.newMessageScreen;
   static String getChatPhoneScreen() => RouteConstant.changePhoneScreen;
+  static String getNewGroupScreen() => RouteConstant.newGroupScreen;
+  static String getPinEnterScreen() => RouteConstant.newGroupScreen;
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),

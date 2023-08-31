@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:signal/routes/routes_helper.dart';
 
-goToIntroPage(){
+goToIntroPage() {
   Get.toNamed(RouteHelper.getIntroScreen());
 }
 
@@ -53,14 +53,22 @@ goToChangePhoneScreen() {
   Get.toNamed(RouteHelper.getChangePhoneScreen());
 }
 
-goToIntroScreen(){
+goToIntroScreen() {
   Get.toNamed(RouteHelper.getIntroScreen());
 }
 
-goToChatingScreen(){
+goToChatingScreen() {
   Get.toNamed(RouteHelper.getChattingScreen());
 }
 
-goToNewMessageScreen(){
+goToPinEnterScreen() {
+  Get.toNamed(RouteHelper.getPinEnterScreen());
+}
+
+goToNewMessageScreen() {
   Get.toNamed(RouteHelper.getNewMessageScreen());
+}
+
+goToNewGroupScreen() {
+  Get.toNamed(RouteHelper.getNewGroupScreen());
 }

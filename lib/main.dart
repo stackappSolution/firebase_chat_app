@@ -17,13 +17,7 @@ Future<void> main() async {
   await ThemeUtil.loadThemeMode();
 
   runApp(
-     DevicePreview(
-      enabled: true,
-      tools: [
-        ...DevicePreview.defaultTools,
-      ],
-      builder: (context) => const MyApp(),
-    ),
+   const MyApp(),
   );
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -51,7 +45,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
-            initialRoute: RouteHelper.getChattingScreen(),
+            initialRoute: RouteHelper.getHomeScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,

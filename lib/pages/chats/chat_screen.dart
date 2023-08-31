@@ -26,7 +26,9 @@ class ChatScreen extends StatelessWidget {
     chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
       init: ContactController(),
-      initState: (state) {},
+      initState: (state) {
+        chatViewModel!.getCurrentUser();
+      },
       builder: (controller) {
         return SafeArea(
             child: Scaffold(

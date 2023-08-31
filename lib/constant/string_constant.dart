@@ -150,4 +150,12 @@ class StringConstant {
   static const String checkAgainYourNumber = 'Check Again Your Number';
   static const String ok = 'Ok';
 
+  static const String enterYourPin = 'Enter Your PIN';
+  static const String enterThePIN  = 'Enter The PIN you Created For Your Account. This is Different From Your SMS Verification Code.';
+
+  static const String selectMember = 'Select Members';
+  static const String searchNameOrNumber = 'Search Name Or Number';
+  static const String contacts = 'Contacts';
+
+
 }

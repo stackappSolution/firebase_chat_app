@@ -107,6 +107,9 @@ buildBottomBar(HomeScreenController controller) {
 buildPopupMenu() {
   return PopupMenuButton(
     onSelected: (value) {
+      if (value == 0) {
+        goToNewGroupScreen();
+      }
       if (value == 2) {
         goToSettingPage();
       }
@@ -121,19 +124,14 @@ buildPopupMenu() {
     ),
     itemBuilder: (context) {
       return [
-         PopupMenuItem(
+        PopupMenuItem(
           value: 0,
           child: AppText(S.of(Get.context!).newGroup),
         ),
+        PopupMenuItem(value: 1, child: AppText(S.of(Get.context!).markAllRead)),
+        PopupMenuItem(value: 2, child: AppText(S.of(Get.context!).settings)),
         PopupMenuItem(
-            value: 1,
-            child: AppText(S.of(Get.context!).markAllRead)),
-        PopupMenuItem(
-            value: 2,
-            child: AppText(S.of(Get.context!).settings)),
-        PopupMenuItem(
-            value: 3,
-            child: AppText(S.of(Get.context!).inviteFriends)),
+            value: 3, child: AppText(S.of(Get.context!).inviteFriends)),
       ];
     },
   );
