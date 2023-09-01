@@ -10,21 +10,23 @@ class ChatViewModel {
   List<Contact> contacts = [];
   ContactController? controller;
 
-  ChatViewModel(this.chatScreen){
-   Future.delayed( const Duration(milliseconds: 100), () {
-     controller= Get.find<ContactController>();
-    },);
+  ChatViewModel(this.chatScreen) {
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        controller = Get.find<ContactController>();
+      },
+    );
   }
 
   Future<void> getPermission() async {
-    final PermissionStatus permissionStatus =
-    await Permission.contacts.status;
+    final PermissionStatus permissionStatus = await Permission.contacts.status;
 
     if (permissionStatus.isGranted) {
       await fetchContacts();
     } else {
       final PermissionStatus requestResult =
-      await Permission.contacts.request();
+          await Permission.contacts.request();
 
       if (requestResult.isGranted) {
         await fetchContacts();
@@ -33,6 +35,7 @@ class ChatViewModel {
       }
     }
   }
+
   Future<void> fetchContacts() async {
     contacts = await ContactsService.getContacts();
     controller!.update();
