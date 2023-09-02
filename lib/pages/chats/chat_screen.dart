@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:contacts_service/contacts_service.dart';
+
 import 'package:flutter/material.dart';
+import 'package:signal/routes/app_navigation.dart';
+
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
@@ -13,16 +15,14 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
-import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
-import 'package:signal/service/auth_service.dart';
 
-// ignore: must_be_immutable
 class ChatScreen extends StatelessWidget {
-  ChatScreen({Key? key}) : super(key: key);
+  ChatScreen({super.key});
 
   ChatViewModel? chatViewModel;
-  ContactController? controller;
+
+  ContactController? contactController;
 
   @override
   Widget build(BuildContext context) {
@@ -159,10 +159,6 @@ class ChatScreen extends StatelessWidget {
           // .where('members', arrayContains: DatabaseService.auth.currentUser!.phoneNumber)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-
-
-        logs('Auth---> ${AuthService.auth.currentUser!.phoneNumber!}');
-
         if (snapshot.hasError) {
           return AppText('Error: ${snapshot.error}');
         }
@@ -177,21 +173,14 @@ class ChatScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             return Container(
                 margin: EdgeInsets.all(10.px),
-                child: ListTile(onTap: () {
-                  Get.toNamed(RouteHelper.getChattingScreen(), parameters: {
-                    'isGroup': documents[index]['isGroup'],
-                    'groupName': documents[index]['groupName'],
-                    'members' : documents[index]['members'],
-                    'id' :documents[index]['id'],
-                  });
-                },
+                child: ListTile(
                   trailing: AppText(
                       fontSize: 10.px,
                       S.of(Get.context!).yesterday,
                       color: AppColorConstant.appBlack),
                   leading: InkWell(
                     onTap: () {
-
+                      Get.toNamed(RouteHelper.getChatProfileScreen());
                     },
                     child: CircleAvatar(
                       maxRadius: 30.px,
@@ -234,55 +223,7 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  // buildContactList(ContactController controller) {
-  //   onSearchContacts(controller);
-  //
-  //   return ListView.builder(
-  //     physics: const BouncingScrollPhysics(),
-  //     shrinkWrap: true,
-  //     itemCount: chatViewModel!.filterContacts.length,
-  //     itemBuilder: (context, index) {
-  //       Contact contact = chatViewModel!.filterContacts[index];
-  //
-  //       String? mobileNumber =
-  //           contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
-  //       String? displayName = contact.displayName ?? 'unknown';
-  //       String firstLetter = displayName.substring(0, 1).toUpperCase();
-  //       return Container(
-  //           margin: EdgeInsets.all(10.px),
-  //           child: ListTile(
-  //             onTap: () {
-  //               Get.toNamed(RouteHelper.getChattingScreen(),
-  //                   parameters: {'phoneNo': mobileNumber});
-  //             },
-  //             trailing: AppText(
-  //                 fontSize: 10.px,
-  //                 S.of(Get.context!).yesterday,
-  //                 color: AppColorConstant.appBlack),
-  //             leading: InkWell(
-  //               onTap: () {
-  //                 Get.toNamed(RouteHelper.getChatProfileScreen());
-  //               },
-  //               child: CircleAvatar(
-  //                 maxRadius: 30.px,
-  //                 backgroundColor: AppColorConstant.appYellow.withOpacity(0.8),
-  //                 child: AppText(
-  //                   firstLetter,
-  //                   color: AppColorConstant.appWhite,
-  //                   fontSize: 22.px,
-  //                 ),
-  //               ),
-  //             ),
-  //             title: AppText(
-  //               displayName,
-  //               fontSize: 15.px,
-  //             ),
-  //             subtitle: AppText(mobileNumber!,
-  //                 color: AppColorConstant.grey, fontSize: 12.px),
-  //           ));
-  //     },
-  //   );
-  // }
+
 
   buildPopupMenu() {
     return PopupMenuButton(
