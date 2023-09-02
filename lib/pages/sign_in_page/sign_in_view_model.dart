@@ -12,6 +12,7 @@ class SignInViewModel{
    String countryCode = '';
    CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
    bool isValidNumber = false;
+   bool otpSend = true;
    var temp;
    var data;
 
