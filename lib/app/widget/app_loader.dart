@@ -7,7 +7,8 @@ class AppLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(alignment: Alignment.center,
+    return Container(
+      alignment: Alignment.center,
       height: Device.height,
       width: Device.height,
       color: AppColorConstant.appWhite.withOpacity(0.9),

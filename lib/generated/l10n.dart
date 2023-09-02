@@ -705,6 +705,10 @@ class S {
     return Intl.message(
       'Sign In',
       name: 'signIn',
+      desc: '',
+      args: [],
+    );
+  }
   /// `Contiue`
   String get continues {
     return Intl.message(
@@ -726,14 +730,14 @@ class S {
   }
 
   /// `Continue`
-  String get continues {
-    return Intl.message(
-      'Continue',
-      name: 'continues',
-      desc: '',
-      args: [],
-    );
-  }
+  // String get continues {
+  //   return Intl.message(
+  //     'Continue',
+  //     name: 'continues',
+  //     desc: '',
+  //     args: [],
+  //   );
+  // }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,9 +1,13 @@
 
 
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class DatabaseService {
 
-  // FirebaseAuth auth = FirebaseAuth.instance;
+
+
+ static  FirebaseAuth auth = FirebaseAuth.instance;
   // DocumentReference<Map<String, dynamic>> users = FirebaseFirestore.instance
   //     .collection('users')
   //     .doc(AuthService.auth.currentUser?.uid);
