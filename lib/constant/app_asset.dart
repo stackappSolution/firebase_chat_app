@@ -28,7 +28,6 @@ class AppAsset {
   static const String drawerIcon = '${iconPath}drawer.svg';
   static const String invisibleIcon = '${iconPath}invisible.png';
   static const String visibleIcon = '${iconPath}visible.png';
-
   static const String person='${iconPath}person.png';
   static const String camera='${iconPath}camera.png';
   static const String chat='${iconPath}chat.png';
@@ -49,7 +48,6 @@ class AppAsset {
 
   static const String search='${iconPath}search.png';
   static const String gallery='${iconPath}gallery.png';
-
   static const String appearance='${iconPath}appearance.png';
   static const String chats='${iconPath}chats.png';
   static const String donate='${iconPath}donate.png';
@@ -61,9 +59,5 @@ class AppAsset {
   static const String notification='${iconPath}notification.png';
   static const String privacyPolicy='${iconPath}privacy_policy.png';
   static const String phoneIcon='${iconPath}phoneIcon.png';
-
-
-
-
 
 }

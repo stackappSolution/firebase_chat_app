@@ -101,6 +101,8 @@ class DatabaseService {
 
     logs(querySnapshot.docs.first.id);
 
+    logs(querySnapshot.docs.first.id);
+
     FirebaseFirestore.instance
         .collection('rooms')
         .doc(querySnapshot.docs.first.id)

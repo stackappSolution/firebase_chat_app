@@ -5,16 +5,21 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/new_message_controller.dart';
 import 'package:signal/pages/new_message_page/new_message_page.dart';
+import '../../service/database_helper.dart';
 
 class NewMessageViewModel{
   NewMessagePage? newMessagePage;
 
   List<Contact> contacts = [];
   List<Contact> filterContacts = [];
+  bool isLoading = true;
   NewMessageController? newMessageController;
   bool isIcon = true;
   bool isKeyBoard = true;
   TextEditingController textController = TextEditingController();
+  final DatabaseService databaseService = DatabaseService();
+  bool isSerching = false;
+
 
 
   NewMessageViewModel(this.newMessagePage){
@@ -27,33 +32,26 @@ class NewMessageViewModel{
     isIcon = !isIcon;
     textController.clear();
     newMessageController!.update();
-    logs('isIcon---> $isIcon');
+    logs('isIcon--> $isIcon');
   }
 
   TextInputType getKeyboardType() {
     return isIcon ? TextInputType.text : TextInputType.number;
   }
-
-  Future<void> getPermission() async {
-    final PermissionStatus permissionStatus =
-    await Permission.contacts.status;
-
-    if (permissionStatus.isGranted) {
-      await fetchContacts();
+  void getContactPermission() async {
+    if (await Permission.contacts.isGranted) {
+      fetchContacts();
     } else {
-      final PermissionStatus requestResult =
       await Permission.contacts.request();
-
-      if (requestResult.isGranted) {
-        await fetchContacts();
-      } else {
-        logs('Contacts permission denied');
-      }
     }
   }
-  Future<void> fetchContacts() async {
+  void fetchContacts() async {
     contacts = await ContactsService.getContacts();
+    isLoading = false;
     newMessageController!.update();
-    logs("contacts --> ${contacts.length}");
+  }
+  getAllContacts() async {
+    List<Contact>contacts = (await ContactsService.getContacts(withThumbnails:false)).toList();
+    logs("contactssssss-->${contacts.first.phones!.length}");
   }
 }

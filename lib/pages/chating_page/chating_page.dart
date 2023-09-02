@@ -14,10 +14,12 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
+
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
+
 import '../../controller/chating_page_controller.dart';
 
 // ignore: must_be_immutable
@@ -499,59 +501,59 @@ class ChatingPage extends StatelessWidget {
         child: Icon(Icons.mic_none_outlined,
             size: 27.px, color: AppColorConstant.offBlack));
   }
-}
 
-buildInviteView(
-  String firstLetter,
-  String displayName,
-  String phoneNo,
-) {
-  return SizedBox(
-    height: double.infinity,
-    width: double.infinity,
-    child: ListView(
-      children: [
-        SizedBox(
-          height: 30.px,
-        ),
-        CircleAvatar(
-          maxRadius: 50.px,
-          backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
-          child: AppText(firstLetter,
-              fontSize: 40.px, color: AppColorConstant.appWhite),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.px),
-          child: AppText(
-            displayName,
-            fontSize: 20.px,
-            textAlign: TextAlign.center,
+  buildInviteView(
+    String firstLetter,
+    String displayName,
+    String phoneNo,
+  ) {
+    return SizedBox(
+      height: double.infinity,
+      width: double.infinity,
+      child: ListView(
+        children: [
+          SizedBox(
+            height: 30.px,
           ),
-        ),
-        AppText(phoneNo,
-            fontSize: 12.px,
-            textAlign: TextAlign.center,
-            color: AppColorConstant.appGrey),
-      ],
-    ),
-  );
-}
+          CircleAvatar(
+            maxRadius: 50.px,
+            backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
+            child: AppText(firstLetter,
+                fontSize: 40.px, color: AppColorConstant.appWhite),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.px),
+            child: AppText(
+              displayName,
+              fontSize: 20.px,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          AppText(phoneNo,
+              fontSize: 12.px,
+              textAlign: TextAlign.center,
+              color: AppColorConstant.appGrey),
+        ],
+      ),
+    );
+  }
 
-double? getFontSizeValue(
-    {required double small,
-    required double large,
-    required double extraLarge,
-    required double normal}) {
-  switch (ChatingPage.fontSize) {
-    case StringConstant.small:
-      return small;
-    case StringConstant.large:
-      return large;
-    case StringConstant.extraLarge:
-      return extraLarge;
-    case StringConstant.normal:
-      return normal;
-    default:
-      return normal;
+  double? getFontSizeValue(
+      {required double small,
+      required double large,
+      required double extraLarge,
+      required double normal}) {
+    switch (ChatingPage.fontSize) {
+      case StringConstant.small:
+        return small;
+      case StringConstant.large:
+        return large;
+      case StringConstant.extraLarge:
+        return extraLarge;
+      case StringConstant.normal:
+        return normal;
+      default:
+        return normal;
+    }
   }
 }

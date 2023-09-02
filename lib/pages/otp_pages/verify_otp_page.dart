@@ -10,10 +10,8 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/vreify_otp_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/otp_pages/verify_otp_view_model.dart';
-
 import 'package:signal/service/auth_service.dart';
 
-// ignore: must_be_immutable
 class VerifyOtpPage extends StatelessWidget {
   VerifyOtpPage({super.key});
 
@@ -26,11 +24,7 @@ class VerifyOtpPage extends StatelessWidget {
       init: VerifyOtpController(),
       initState: (state) {
         verifyOtpViewModel!.parameter = Get.parameters;
-        logs("parameter data---->${verifyOtpViewModel!.parameter['phoneNo']}");
-        logs(
-            "parameter data---->${verifyOtpViewModel!.parameter['selectedCountry']}");
-        logs(
-            "parameter data---->${verifyOtpViewModel!.parameter['verificationid']}");
+        logs("parameter data---->${verifyOtpViewModel!.parameter.values}");
       },
       builder: (VerifyOtpController controller) {
         return SafeArea(
@@ -107,21 +101,19 @@ class VerifyOtpPage extends StatelessWidget {
                                   width: 2.px),
                               borderRadius: BorderRadius.circular(15.px)),
                           height: 50.px,
-                          textStyle: const TextStyle(
-                              fontSize: 20,
+                          textStyle:  TextStyle(
+                              fontSize: 20.px,
                               color: AppColorConstant.appBlack,
                               fontWeight: FontWeight.w600),
                         ),
                         validator: (value) {
                           if (value == null && value!.isEmpty) {
-                            //return 'OTP is required';
-                          } else if (verifyOtpViewModel!.isValidOtp(value)) {
-                            //return 'Invalid OTP number';
-                          }
+                          } else if (verifyOtpViewModel!.isValidOtp(value)) {}
                           return null;
                         },
                         androidSmsAutofillMethod:
                             AndroidSmsAutofillMethod.smsUserConsentApi,
+                        pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                         length: 6,
                         onChanged: (value) {
                           if (value.length == 6) {
@@ -141,62 +133,62 @@ class VerifyOtpPage extends StatelessWidget {
               SizedBox(
                 height: 150.px,
               ),
-              if (verifyOtpViewModel!.isValidOTP != true)
-                Align(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                        backgroundColor: MaterialStatePropertyAll(
-                            AppColorConstant.appYellow.withOpacity(0.5)),
-                        fixedSize:
-                            MaterialStatePropertyAll(Size(230.px, 50.px))),
-                    child: AppText(
-                      'Verify',
-                      //StringConstant.verifyButton,
-                      fontSize: 22.px,
-                      color: AppColorConstant.appWhite,
-                    ),
-                  ),
-                )
-              else
-                Align(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      AuthService()
-                          .verifyOtp(
-                              code: verifyOtpViewModel!
-                                  .parameter['selectedCountry'],
-                              verificationId:
-                                  verifyOtpViewModel!.parameter.values.last,
-                              smsCode: verifyOtpViewModel!.otpcontroller.text,
-                              phoneNo: verifyOtpViewModel!.parameter['phoneNo'])
-                          .then((isVerificationSuccessful) {})
-                          .catchError((error) {
-                        logs("Error during OTP verification: $error");
-                      });
-
-                    },
-                    style: ButtonStyle(
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12))),
-                        backgroundColor: const MaterialStatePropertyAll(
-                            AppColorConstant.appYellow),
-                        fixedSize:
-                            MaterialStatePropertyAll(Size(230.px, 50.px))),
-                    child: AppText(
-                      'Verify',
-                      //StringConstant.verifyButton,
-                      fontSize: 22.px,
-                      color: AppColorConstant.appWhite,
-                    ),
-                  ),
-                ),
+              Align(
+                alignment: Alignment.center,
+                child:verifyOtpViewModel!.isValidOTP != true
+                    ? ElevatedButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                            shape: MaterialStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12))),
+                            backgroundColor: MaterialStatePropertyAll(
+                                AppColorConstant.appYellow.withOpacity(0.5)),
+                            fixedSize:
+                                MaterialStatePropertyAll(Size(230.px, 50.px))),
+                        child: AppText(
+                          'Verify',
+                          //StringConstant.verifyButton,
+                          fontSize: 22.px,
+                          color: AppColorConstant.appWhite,
+                        ),
+                      )
+                    : ElevatedButton(
+                        onPressed: () async {
+                                await AuthService()
+                                    .verifyOtp(
+                                      verificationID:
+                                          AuthService.verificationID,
+                                      smsCode: verifyOtpViewModel!
+                                          .otpcontroller.text,
+                                      phoneNumber: verifyOtpViewModel!
+                                          .parameter.values.first,
+                                    )
+                                    .then((isVerificationSuccessful) {})
+                                    .catchError((error) {
+                                  logs(
+                                      "Error during OTP verification----> $error");
+                                });
+                              },
+                        style: ButtonStyle(
+                            shape: MaterialStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12))),
+                            backgroundColor: const MaterialStatePropertyAll(
+                                AppColorConstant.appYellow),
+                            fixedSize:
+                                MaterialStatePropertyAll(Size(230.px, 50.px))),
+                        child: AppText(
+                          'Verify',
+                          fontSize: 22.px,
+                          color: AppColorConstant.appWhite,
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
       );
+
+
 }

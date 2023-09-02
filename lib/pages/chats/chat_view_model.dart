@@ -26,7 +26,9 @@ class ChatViewModel {
   ChatViewModel(this.chatScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
-      () {
+
+
+          () {
         controller = Get.find<ContactController>();
       },
     );
@@ -39,7 +41,7 @@ class ChatViewModel {
       await fetchContacts();
     } else {
       final PermissionStatus requestResult =
-          await Permission.contacts.request();
+      await Permission.contacts.request();
 
       if (requestResult.isGranted) {
         await fetchContacts();
@@ -60,58 +62,4 @@ class ChatViewModel {
     controller!.update();
   }
 
-  getUsersList() {
-    return Column(
-      children: [
-        Expanded(
-          child: StreamBuilder<QuerySnapshot>(
-            stream: usersStream,
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return const Text('Something went wrong');
-              }
-              if (snapshot.hasData) {
-                data = snapshot.data!.docs;
-                return ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        Get.toNamed(RouteHelper.getChattingScreen(),
-                            parameters: {
-                              'phoneNo': data[index]['phone'],
-                              'photoUrl': data[index]['photoUrl'],
-                              'firstName': data[index]['firstName'],
-                              'receiverId': data[index]['id'],
-                            });
-                      },
-                      leading: CircleAvatar(
-                          maxRadius: 40.px,
-                          backgroundImage:
-                              NetworkImage(data[index]['photoUrl'])),
-                      title: AppText(
-                        fontSize: 15.px,
-                        '${data[index]['firstName']}',
-                      ),
-                      subtitle: AppText(
-                        color: AppColorConstant.appGrey,
-                        '${data[index]['phone']}',
-                        fontSize: 10.px,
-                      ),
-                      trailing: AppText(
-                          fontSize: 10.px,
-                          S.of(Get.context!).yesterday,
-                          color: AppColorConstant.appBlack),
-                    );
-                  },
-                );
-              }
-              return const AppLoader();
-            },
-          ),
-        ),
-      ],
-    );
-  }
 }

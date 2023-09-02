@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:signal/routes/routes_helper.dart';
 
-goToIntroPage(){
+goToIntroPage() {
   Get.toNamed(RouteHelper.getIntroScreen());
 }
 
@@ -9,8 +9,12 @@ goToSignInPage() {
   Get.offAllNamed(RouteHelper.getSignInPage());
 }
 
-goToVerifyPage({required String arguments}) {
-  Get.toNamed(RouteHelper.getVerifyOtpPage(), arguments: arguments);
+goToVerifyPage({required String phonenumber, verificationId, selectedCountry}) {
+  Get.toNamed(RouteHelper.getVerifyOtpPage(), parameters: {
+    "phoneNo": phonenumber,
+    "verificationId": verificationId,
+    "selectedCountry": selectedCountry.toString(),
+  }, );
 }
 
 goToProfilePage() {
@@ -53,14 +57,14 @@ goToChangePhoneScreen() {
   Get.toNamed(RouteHelper.getChangePhoneScreen());
 }
 
-goToIntroScreen(){
+goToIntroScreen() {
   Get.toNamed(RouteHelper.getIntroScreen());
 }
 
-goToChatingScreen(){
+goToChatingScreen() {
   Get.toNamed(RouteHelper.getChattingScreen());
 }
 
-goToNewMessageScreen(){
+goToNewMessageScreen() {
   Get.toNamed(RouteHelper.getNewMessageScreen());
 }
