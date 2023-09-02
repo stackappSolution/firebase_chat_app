@@ -42,12 +42,12 @@ class DatabaseService {
   addNewMessage({
     String? profile,
     String? groupName,
-    required List<String> members,
-    required String massage,
-    required String sender,
-    required bool isGroup,
+    List<dynamic>? members,
+    String? massage,
+    String? sender,
+    bool? isGroup,
   }) async {
-    bool isFirst = await checkFirst(members);
+    bool isFirst = await checkFirst(members!);
 
     if (isFirst) {
       DocumentReference doc =
@@ -67,22 +67,20 @@ class DatabaseService {
             .update({
           'groupProfile': profile,
           'groupName': groupName,
-        }).then((value) => Get.toNamed(RouteHelper.getChattingScreen(),
-                    arguments: members,
-                    parameters: {
-                      'photoUrl': profile!,
-                      'firstName': groupName!,
-                      'phoneNumber': AuthService.auth.currentUser!.phoneNumber!,
-                    }));
-
+        }).then((value) =>
+                Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
+                  'isGroup': true,
+                  'groupName': groupName!,
+                  'members': members,
+                }));
       }
-      addChatMessages(members: members, message: massage, sender: sender);
+      addChatMessages(members: members, message: massage!, sender: sender!);
     }
 
-    addChatMessages(message: massage, sender: sender, members: members);
+    addChatMessages(message: massage!, sender: sender!, members: members);
   }
 
-  Future<bool> checkFirst(List<String> members) async {
+  Future<bool> checkFirst(List<dynamic> members) async {
     QuerySnapshot userMessages = await FirebaseFirestore.instance
         .collection('rooms')
         .where('members', isEqualTo: members)
@@ -92,9 +90,9 @@ class DatabaseService {
   }
 
   addChatMessages({
-    required List<String> members,
-    required String message,
-    required String sender,
+    List<dynamic>? members,
+    String? message,
+    String? sender,
   }) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('rooms')

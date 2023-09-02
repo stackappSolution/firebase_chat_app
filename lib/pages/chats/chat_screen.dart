@@ -16,6 +16,7 @@ import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/auth_service.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -31,7 +32,9 @@ class ChatScreen extends StatelessWidget {
     // chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
       init: ContactController(),
-      initState: (state) {},
+      initState: (state) {
+
+      },
       builder: (ContactController controller) {
         return SafeArea(
             child: Scaffold(
@@ -156,7 +159,7 @@ class ChatScreen extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('rooms')
-          // .where('members', arrayContains: DatabaseService.auth.currentUser!.phoneNumber)
+         .where('members', arrayContains: AuthService.auth.currentUser!.phoneNumber)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -174,6 +177,17 @@ class ChatScreen extends StatelessWidget {
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
+                  onTap: () {
+                    Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
+                      'isGroup':
+                          (documents[index]['isGroup'] == true) ? true : false,
+                      'groupName': (documents[index]['isGroup'] == true)
+                          ? documents[index]['groupName']
+                          : '',
+                      'id': documents[index]['id'],
+                      'members': documents[index]['members'],
+                    });
+                  },
                   trailing: AppText(
                       fontSize: 10.px,
                       S.of(Get.context!).yesterday,
@@ -211,10 +225,10 @@ class ChatScreen extends StatelessWidget {
                           fontSize: 15.px,
                         )
                       : AppText(
-                          documents[index]['members'][1] ?? "",
+                          documents[index]['members'][0] ?? "",
                           fontSize: 15.px,
                         ),
-                  subtitle: AppText(documents[index]['members'][1] ?? "",
+                  subtitle: AppText(documents[index]['members'][0] ?? "",
                       color: AppColorConstant.grey, fontSize: 12.px),
                 ));
           },
@@ -222,8 +236,6 @@ class ChatScreen extends StatelessWidget {
       },
     );
   }
-
-
 
   buildPopupMenu() {
     return PopupMenuButton(

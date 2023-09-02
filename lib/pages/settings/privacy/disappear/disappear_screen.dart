@@ -8,6 +8,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/diappearing_controller.dart';
 import 'package:signal/pages/settings/privacy/disappear/disappear_view_model.dart';
 
+// ignore: must_be_immutable
 class DisappearScreen extends StatelessWidget {
   DisappearScreen({Key? key}) : super(key: key);
 

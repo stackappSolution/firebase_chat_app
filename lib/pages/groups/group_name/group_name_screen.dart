@@ -14,6 +14,7 @@ import 'package:signal/pages/groups/group_name/group_name_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 
+// ignore: must_be_immutable
 class GroupNameScreen extends StatelessWidget {
   GroupNameScreen({Key? key}) : super(key: key);
 
@@ -110,6 +111,10 @@ class GroupNameScreen extends StatelessWidget {
     );
   }
 
+  void addNumbers(String mobileNumbers) {
+    groupNameViewModel!.mobileNo.add(mobileNumbers);
+  }
+
   buildMembersList() {
     return SizedBox(
       height: 350.px,
@@ -121,7 +126,7 @@ class GroupNameScreen extends StatelessWidget {
           String? mobileNumber =
               contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
 
-          groupNameViewModel!.mobileNo.add(mobileNumber!);
+          addNumbers(mobileNumber!);
           logs('mobileNumbers----------> ${groupNameViewModel!.mobileNo}');
 
           String? displayName = contact.displayName ?? 'unknown';
@@ -163,8 +168,9 @@ class GroupNameScreen extends StatelessWidget {
           width: 100.px,
           child: const AppText('Create', color: AppColorConstant.appBlack),
         ),
-        if(groupNameViewModel!.isLoading)
-          const AppLoader(),
+        if (groupNameViewModel!.isLoading)
+          const CircularProgressIndicator(
+              backgroundColor: AppColorConstant.appYellow),
       ],
     );
   }
@@ -173,16 +179,13 @@ class GroupNameScreen extends StatelessWidget {
     groupNameViewModel!.mobileNo
         .add(AuthService.auth.currentUser!.phoneNumber!);
 
-    groupNameViewModel!.isLoading = true;
-    controller!.update();
+    List<dynamic>  members= groupNameViewModel!.mobileNo.toSet().toList();
+
     DatabaseService().addNewMessage(
         groupName: groupNameViewModel!.groupNameController.text,
         profile: groupNameViewModel!.userProfile,
-        members: groupNameViewModel!.mobileNo,
-        massage: '',
-        sender: AuthService.auth.currentUser!.phoneNumber!,
+        members: members,
         isGroup: true);
-    groupNameViewModel!.isLoading = false;
-    controller!.update();
+
   }
 }

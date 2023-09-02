@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -161,6 +160,7 @@ class ProfileViewModel {
     logs("permissionCamera ---- >${await Permission.camera.status.isGranted}");
     if (await Permission.camera.status.isGranted ||
         await Permission.storage.status.isGranted) {
+      // ignore: use_build_context_synchronously
       showDialogs(context, controller);
     } else {
       await Permission.storage.request();

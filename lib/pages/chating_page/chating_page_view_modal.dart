@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../app/app/utills/app_utills.dart';
 
 import '../../constant/string_constant.dart';
-import '../../modal/message.dart';
+
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
@@ -21,9 +21,11 @@ class ChatingPageViewModal {
   Color? chatBubbleColor;
   Color? wallpaperColor;
   Map<String, dynamic> parameter = {};
+  Map<String, dynamic> arguments = {};
   String? wallpaperPath;
   bool isGroup=false;
-  List<String> members=[];
+  String? formatedTime;
+  // List<String> members=[];
 
 
   List<String> mobileNumbers = [];
@@ -94,10 +96,10 @@ class ChatingPageViewModal {
     QuerySnapshot usersSnapshot =
         await FirebaseFirestore.instance.collection('users').get();
 
-    usersSnapshot.docs.forEach((value) {
+    for (var value in usersSnapshot.docs) {
       String mobileNumber = value.get('phone');
       mobileNumbers.add(mobileNumber);
-    });
+    }
 
     return mobileNumbers;
   }

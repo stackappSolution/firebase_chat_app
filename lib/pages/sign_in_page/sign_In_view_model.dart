@@ -1,9 +1,12 @@
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:signal/pages/sign_in_page/sign_in_page.dart';
 
-class SignInViewModel {
+
+class SignInViewModel{
+
   SignInPage? signInPage;
 
   TextEditingController phoneNumber = TextEditingController();
@@ -16,6 +19,7 @@ class SignInViewModel {
 
   var temp;
   var data;
+
   SignInViewModel(this.signInPage);
 
   bool isValidMobileNumber(String value) {

@@ -10,7 +10,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/vreify_otp_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/otp_pages/verify_otp_view_model.dart';
-import 'package:signal/routes/routes_helper.dart';
+
 import 'package:signal/service/auth_service.dart';
 
 // ignore: must_be_immutable
@@ -176,7 +176,7 @@ class VerifyOtpPage extends StatelessWidget {
                               phoneNo: verifyOtpViewModel!.parameter['phoneNo'])
                           .then((isVerificationSuccessful) {})
                           .catchError((error) {
-                        print("Error during OTP verification: $error");
+                        logs("Error during OTP verification: $error");
                       });
 
                     },

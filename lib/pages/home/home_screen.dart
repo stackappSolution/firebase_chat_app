@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
-import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/home_controller.dart';
@@ -12,7 +10,7 @@ import 'package:signal/pages/calls/calls_screen.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/pages/home/home_view_model.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/routes/app_navigation.dart';
+
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {

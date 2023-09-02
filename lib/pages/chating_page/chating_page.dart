@@ -20,6 +20,7 @@ import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 import '../../controller/chating_page_controller.dart';
 
+// ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
   ChatingPage({super.key});
 
@@ -41,17 +42,18 @@ class ChatingPage extends StatelessWidget {
             () async {
               controller = Get.find<ChatingPageController>();
               chatingPageViewModal!.parameter = Get.parameters;
-              chatingPageViewModal!.members = Get.arguments;
+
+              chatingPageViewModal!.arguments = Get.arguments;
+              logs('arg--> ${chatingPageViewModal!.arguments}');
 
               final snapshots = await FirebaseFirestore.instance
                   .collection('rooms')
                   .where('members',
-                      arrayContains: (chatingPageViewModal!.members.isNotEmpty)
-                          ? chatingPageViewModal!.members.first
-                          : chatingPageViewModal!.parameter['members'][1])
+                      isEqualTo: chatingPageViewModal!.arguments['members'])
                   .get();
 
               logs(snapshots.docs.first.id);
+              logs('auth----> ${AuthService.auth.currentUser!.phoneNumber!}');
 
               chats = DatabaseService().getChatStream(
                 snapshots.docs.first.id,
@@ -86,45 +88,42 @@ class ChatingPage extends StatelessWidget {
                           : Colors.transparent),
                   child: Column(children: [
                     Expanded(
-                      child: (chatingPageViewModal!.parameter['members'][1] !=
-                                  null ||
-                              chatingPageViewModal!.parameter['phoneNumber'] !=
-                                  null)
-                          ? StreamBuilder<QuerySnapshot>(
-                              stream: chats,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return const Text('Something went wrong');
-                                }
-                                if (snapshot.hasData) {
-                                  final data = snapshot.data?.docs;
+                      child:
+                          (chatingPageViewModal!.arguments['isGroup'] != null)
+                              ? StreamBuilder<QuerySnapshot>(
+                                  stream: chats,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return const Text('Something went wrong');
+                                    }
+                                    if (snapshot.hasData) {
+                                      final data = snapshot.data?.docs;
 
-                                  logs('data----> ${data!.length}');
+                                      logs('data----> ${data!.length}');
 
-                                  return ListView.builder(
-                                    itemCount: snapshot.data?.docs.length,
-                                    itemBuilder: (context, index) {
-                                      return buildMessage(
-                                          context,
-                                          controller,
-                                          data[index]['message'],
-                                          data[index]['timeStamp']);
-                                    },
-                                  );
-                                }
-                                return const AppLoader();
-                              },
-                            )
-                          : const SizedBox(),
+                                      return ListView.builder(
+                                        itemCount: snapshot.data?.docs.length,
+                                        itemBuilder: (context, index) {
+                                          return buildMessage(
+                                              data[index]['sender'],
+                                              context,
+                                              controller,
+                                              data[index]['message'],
+                                              data[index]['timeStamp']);
+                                        },
+                                      );
+                                    }
+                                    return const AppLoader();
+                                  },
+                                )
+                              : const SizedBox(),
                       // : buildInviteView(
                       //     chatingPageViewModal!.parameter['firstLetter'],
                       //     chatingPageViewModal!.parameter['displayName'],
                       //     chatingPageViewModal!.parameter['phoneNo'])
                     ),
-                    (chatingPageViewModal!.parameter['phoneNo'] != null ||
-                            chatingPageViewModal!.parameter['phoneNumber'] !=
-                                null)
+                    (chatingPageViewModal!.arguments['isGroup'] != null)
                         ? Row(children: [
                             Expanded(
                                 child: Container(
@@ -200,14 +199,14 @@ class ChatingPage extends StatelessWidget {
   }
 
   Widget buildMessage(
+    String sender,
     context,
     ChatingPageController controller,
     String chatMessage,
     int timeStamp,
   ) {
     return Slidable(
-        child: (chatingPageViewModal!.parameter['member'][1] !=
-                AuthService.auth.currentUser!.phoneNumber!)
+        child: (sender == AuthService.auth.currentUser!.phoneNumber!)
             ? (Slidable(
                 endActionPane: ActionPane(
                     extentRatio: fontSize == StringConstant.small
@@ -347,11 +346,11 @@ class ChatingPage extends StatelessWidget {
             maxRadius: 20.px,
             backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
             child: AppText(
-              (chatingPageViewModal!.parameter['isGroup'] != false)
-                  ? chatingPageViewModal!.parameter['groupName']
+              (chatingPageViewModal!.arguments['isGroup'] != false)
+                  ? chatingPageViewModal!.arguments['groupName']
                       .substring(0, 1)
                       .toUpperCase()
-                  : chatingPageViewModal!.parameter['id']
+                  : chatingPageViewModal!.arguments['id']
                       .substring(0, 1)
                       .toUpperCase(),
               color: AppColorConstant.appWhite,
@@ -362,13 +361,15 @@ class ChatingPage extends StatelessWidget {
         ]),
         title: InkWell(
           onTap: () {
-            if (chatingPageViewModal!.parameter['id'] != null || chatingPageViewModal!.parameter['groupName']) {
+            if (chatingPageViewModal!.arguments['id'] != null ||
+                chatingPageViewModal!.arguments['groupName']) {
               Get.toNamed(RouteHelper.getChatProfileScreen());
             }
           },
           child: AppText(
-              chatingPageViewModal!.parameter['id'] ??
-                  chatingPageViewModal!.parameter['groupName'],
+              (chatingPageViewModal!.arguments['isGroup'])
+                  ? chatingPageViewModal!.arguments['groupName']
+                  : chatingPageViewModal!.arguments['id'],
               fontSize: 18.px,
               overflow: TextOverflow.ellipsis),
         ),
@@ -412,20 +413,11 @@ class ChatingPage extends StatelessWidget {
   }
 
   onSendMessage(message) async {
-    (chatingPageViewModal!.members.isNotEmpty)
-        ? DatabaseService().addNewMessage(
-            members: chatingPageViewModal!.members,
-            massage: message,
-            sender: AuthService.auth.currentUser!.phoneNumber!,
-            isGroup: true)
-        : DatabaseService().addNewMessage(
-            members: [
-                AuthService.auth.currentUser!.phoneNumber!,
-                chatingPageViewModal!.parameter['id'],
-              ],
-            massage: message,
-            sender: AuthService.auth.currentUser!.phoneNumber!,
-            isGroup: false);
+    DatabaseService().addNewMessage(
+        members: chatingPageViewModal!.arguments['members'],
+        massage: message,
+        sender: AuthService.auth.currentUser!.phoneNumber!,
+        isGroup: false);
     logs('message---> $message');
 
     controller!.update();

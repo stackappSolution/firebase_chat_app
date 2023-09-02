@@ -12,38 +12,45 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/sign_in_controller.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/pages/sign_in_page/sign_in_view_model.dart';
+import 'package:signal/pages/sign_in_page/sign_In_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
+// ignore: must_be_immutable
 class SignInPage extends StatelessWidget {
+
+
   SignInPage({super.key});
-  FirebaseAuth auth = FirebaseAuth.instance;
-  String verificationID ='';
-  CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
+
   SignInViewModel? signInViewModel;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  String verificationID = '';
+  CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
+
 
   @override
   Widget build(BuildContext context) {
-    signInViewModel ?? (signInViewModel = SignInViewModel());
+    signInViewModel ?? (signInViewModel = SignInViewModel(this));
     return GetBuilder(
         init: SignInController(),
         initState: (state) {},
         builder: (SignInController controller) {
-          return  SafeArea(
+          return SafeArea(
             child: Scaffold(
-                body: buildsignInPage(signInViewModel!.selectedCountry.toString(),
-                    signInViewModel!.phoneNumber.text, context, controller)),
+                body: buildsignInPage(
+                    signInViewModel!.selectedCountry.toString(),
+                    signInViewModel!.phoneNumber.text,
+                    context,
+                    controller)),
           );
-        }
-    );
+        });
   }
 
   Container buildsignInPage(
-      String countryCode,
-      String phoneNumber,
-      BuildContext context,
-      SignInController controller,
-      ) =>
+    String countryCode,
+    String phoneNumber,
+    BuildContext context,
+    SignInController controller,
+  ) =>
       Container(
         height: double.infinity,
         width: double.infinity,
@@ -115,7 +122,8 @@ class SignInPage extends StatelessWidget {
                       initialSelection: 'IN',
                       textStyle: const TextStyle(
                         color: AppColorConstant.appBlack,
-                        fontWeight: FontWeight.w600,),
+                        fontWeight: FontWeight.w600,
+                      ),
                       // Set initial country code
                       favorite: const ['IN'], // Specify favorite country codes
                     ),
@@ -128,7 +136,7 @@ class SignInPage extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.px),
                               color:
-                              AppColorConstant.appYellow.withOpacity(0.1)),
+                                  AppColorConstant.appYellow.withOpacity(0.1)),
                           height: 50.px,
                           margin: EdgeInsets.only(left: 10.px, right: 10.px),
                           child: AppTextFormField(
@@ -186,7 +194,7 @@ class SignInPage extends StatelessWidget {
                         backgroundColor: MaterialStatePropertyAll(
                             AppColorConstant.appYellow.withOpacity(0.5)),
                         fixedSize:
-                        MaterialStatePropertyAll(Size(230.px, 50.px))),
+                            MaterialStatePropertyAll(Size(230.px, 50.px))),
                     child: AppText(
                       S.of(context).continues,
                       fontSize: 22.px,
@@ -199,37 +207,41 @@ class SignInPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     onPressed: () async {
-                      logs("entred contact IS------------->   $countryCode$phoneNumber");
+                      logs(
+                          "entred contact IS------------->   $countryCode$phoneNumber");
                       verified(AuthCredential authResult) async {
                         await auth.signInWithCredential(authResult);
                       }
+
                       verificationFailed(FirebaseAuthException authException) {
                         logs(authException.message.toString());
                       }
-                      smsSent(String verificationId, [int? forceResendingToken]) {
+
+                      smsSent(String verificationId,
+                          [int? forceResendingToken]) {
                         verificationID = verificationId;
                         logs("OTP Sent to your phone");
                         logs("verfication id :::::$verificationID");
                       }
+
                       autoRetrievalTimeout(String verificationId) {
                         controller.update();
                         logs(verificationID);
                       }
+
                       await auth.verifyPhoneNumber(
-                        phoneNumber:"$countryCode$phoneNumber",
+                        phoneNumber: "$countryCode$phoneNumber",
                         timeout: const Duration(seconds: 60),
                         verificationCompleted: verified,
                         verificationFailed: verificationFailed,
                         codeSent: smsSent,
                         codeAutoRetrievalTimeout: autoRetrievalTimeout,
                       );
-                      Get.toNamed(RouteHelper.getVerifyOtpPage(),
-                          parameters: {
-                            'selectedCountry': selectedCountry.toString(),
-                            'phoneNo': phoneNumber,
-                            'verificationid':verificationID,
-                          }
-                      );
+                      Get.toNamed(RouteHelper.getVerifyOtpPage(), parameters: {
+                        'selectedCountry': selectedCountry.toString(),
+                        'phoneNo': phoneNumber,
+                        'verificationid': verificationID,
+                      });
                     },
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(
@@ -239,7 +251,7 @@ class SignInPage extends StatelessWidget {
                         backgroundColor: const MaterialStatePropertyAll(
                             AppColorConstant.appYellow),
                         fixedSize:
-                        MaterialStatePropertyAll(Size(230.px, 50.px))),
+                            MaterialStatePropertyAll(Size(230.px, 50.px))),
                     child: AppText(
                       S.of(context).continues,
                       fontSize: 22.px,

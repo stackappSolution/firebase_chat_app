@@ -10,6 +10,7 @@ import 'package:signal/pages/new_message_page/new_message_view_model.dart';
 
 import 'package:signal/routes/routes_helper.dart';
 
+// ignore: must_be_immutable
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
 
