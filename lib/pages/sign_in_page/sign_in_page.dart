@@ -24,7 +24,7 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    signInViewModel ?? (signInViewModel = SignInViewModel(this));
+    signInViewModel ?? (signInViewModel = SignInViewModel());
     return GetBuilder(
         init: SignInController(),
         initState: (state) {},
