@@ -5,6 +5,7 @@ class ContactController extends GetxController{
   RxBool isSearch = false.obs;
   bool get searchValue => isSearch.value;
   RxString filteredValue=''.obs;
+  bool isLoading= true;
 
   void setSearch(bool value) {
     isSearch.value = value;
@@ -16,6 +17,8 @@ class ContactController extends GetxController{
     filteredValue.value = value;
     update();
   }
+
+
 
 
 

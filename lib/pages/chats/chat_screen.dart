@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
+import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -13,40 +15,42 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/auth_service.dart';
 
 // ignore: must_be_immutable
 class ChatScreen extends StatelessWidget {
   ChatScreen({Key? key}) : super(key: key);
 
   ChatViewModel? chatViewModel;
-
-
+  ContactController? controller;
 
   @override
   Widget build(BuildContext context) {
     logs("Current Screen --> $runtimeType");
     chatViewModel ?? (chatViewModel = ChatViewModel(this));
-    chatViewModel!.getPermission();
+    // chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
       init: ContactController(),
-      initState: (state) {
-      },
-      builder: (controller) {
+      initState: (state) {},
+      builder: (ContactController controller) {
         return SafeArea(
             child: Scaffold(
-          appBar: getAppBar(context),
+          appBar: getAppBar(context, controller),
           backgroundColor: AppColorConstant.appWhite,
           floatingActionButton: buildFloatingButton(),
-          body: getBody(),
+          body: getBody(controller),
         ));
       },
     );
   }
 
-  getBody() {
-    return ListView(
+  getBody(ContactController controller) {
+    logs("load--> ${chatViewModel!.isLoading}");
+    return Stack(
       children: [
-        buildContactList(),
+        //  buildContactList(controller),
+        buildContactList(controller),
+        if (chatViewModel!.isLoading) const Center(child: AppLoader()),
       ],
     );
   }
@@ -87,21 +91,22 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  getAppBar(BuildContext context) {
-    return chatViewModel!.controller!.searchValue
+  getAppBar(BuildContext context, ContactController controller) {
+    return controller.searchValue
         ? AppAppBar(
             leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back_outlined,
               ),
               onPressed: () {
-                chatViewModel!.controller!.setSearch(false);
+                controller.setSearch(false);
               },
             ),
-            title: SizedBox(height: 30,
+            title: SizedBox(
+              height: 30,
               child: TextFormField(
                 onChanged: (value) {
-                  chatViewModel!.controller!.setFilterText(value);
+                  controller.setFilterText(value);
                 },
                 decoration: InputDecoration(
                     hintText: 'Search',
@@ -135,12 +140,8 @@ class ChatScreen extends StatelessWidget {
             actions: [
               InkWell(
                 onTap: () {
-
-                  chatViewModel!.controller!.setSearch(true);
-                  chatViewModel!.controller!.setFilterText('');
-
-
-
+                  controller.setSearch(true);
+                  controller.setFilterText('');
                 },
                 child: Padding(
                     padding: EdgeInsets.all(18.px),
@@ -151,55 +152,137 @@ class ChatScreen extends StatelessWidget {
           );
   }
 
+  buildContactList(ContactController controller) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('rooms')
+          // .where('members', arrayContains: DatabaseService.auth.currentUser!.phoneNumber)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
-  buildContactList() {
-    onSearchContacts();
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: chatViewModel!.filterContacts.length,
-      itemBuilder: (context, index) {
-        Contact contact = chatViewModel!.filterContacts[index];
 
-        String? mobileNumber =
-            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
-        String? displayName = contact.displayName ?? 'unknown';
-        String firstLetter = displayName.substring(0, 1).toUpperCase();
-        return Container(
-            margin: EdgeInsets.all(10.px),
-            child: ListTile(
-              onTap: () {
-                Get.toNamed(RouteHelper.getChattingScreen(),
-                    parameters: {'phoneNo': mobileNumber});
-              },
-              trailing: AppText(
-                  fontSize: 10.px,
-                  S.of(Get.context!).yesterday,
-                  color: AppColorConstant.appBlack),
-              leading: InkWell(
-                onTap: () {
-                  Get.toNamed(RouteHelper.getChatProfileScreen());
+        logs('Auth---> ${AuthService.auth.currentUser!.phoneNumber!}');
+
+        if (snapshot.hasError) {
+          return AppText('Error: ${snapshot.error}');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const AppLoader();
+        }
+        final documents = snapshot.data!.docs;
+        return ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            return Container(
+                margin: EdgeInsets.all(10.px),
+                child: ListTile(onTap: () {
+                  Get.toNamed(RouteHelper.getChattingScreen(), parameters: {
+                    'isGroup': documents[index]['isGroup'],
+                    'groupName': documents[index]['groupName'],
+                    'members' : documents[index]['members'],
+                    'id' :documents[index]['id'],
+                  });
                 },
-                child: CircleAvatar(
-                  maxRadius: 30.px,
-                  backgroundColor: AppColorConstant.appYellow.withOpacity(0.8),
-                  child: AppText(
-                    firstLetter,
-                    color: AppColorConstant.appWhite,
-                    fontSize: 22.px,
+                  trailing: AppText(
+                      fontSize: 10.px,
+                      S.of(Get.context!).yesterday,
+                      color: AppColorConstant.appBlack),
+                  leading: InkWell(
+                    onTap: () {
+
+                    },
+                    child: CircleAvatar(
+                      maxRadius: 30.px,
+                      backgroundColor:
+                          AppColorConstant.appYellow.withOpacity(0.8),
+                      child: (documents[index]['isGroup'] == true)
+                          ? AppText(
+                              documents[index]['groupName']
+                                      .substring(0, 1)
+                                      .toUpperCase() ??
+                                  "",
+                              color: AppColorConstant.appWhite,
+                              fontSize: 22.px,
+                            )
+                          : AppText(
+                              documents[index]['id']
+                                      .substring(0, 1)
+                                      .toUpperCase() ??
+                                  "",
+                              color: AppColorConstant.appWhite,
+                              fontSize: 22.px,
+                            ),
+                    ),
                   ),
-                ),
-              ),
-              title: AppText(
-                displayName,
-                fontSize: 15.px,
-              ),
-              subtitle: AppText(mobileNumber!,
-                  color: AppColorConstant.grey, fontSize: 12.px),
-            ));
+                  title: (documents[index]['isGroup'] == true)
+                      ? AppText(
+                          documents[index]['groupName'] ?? "",
+                          fontSize: 15.px,
+                        )
+                      : AppText(
+                          documents[index]['members'][1] ?? "",
+                          fontSize: 15.px,
+                        ),
+                  subtitle: AppText(documents[index]['members'][1] ?? "",
+                      color: AppColorConstant.grey, fontSize: 12.px),
+                ));
+          },
+        );
       },
     );
   }
+
+  // buildContactList(ContactController controller) {
+  //   onSearchContacts(controller);
+  //
+  //   return ListView.builder(
+  //     physics: const BouncingScrollPhysics(),
+  //     shrinkWrap: true,
+  //     itemCount: chatViewModel!.filterContacts.length,
+  //     itemBuilder: (context, index) {
+  //       Contact contact = chatViewModel!.filterContacts[index];
+  //
+  //       String? mobileNumber =
+  //           contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+  //       String? displayName = contact.displayName ?? 'unknown';
+  //       String firstLetter = displayName.substring(0, 1).toUpperCase();
+  //       return Container(
+  //           margin: EdgeInsets.all(10.px),
+  //           child: ListTile(
+  //             onTap: () {
+  //               Get.toNamed(RouteHelper.getChattingScreen(),
+  //                   parameters: {'phoneNo': mobileNumber});
+  //             },
+  //             trailing: AppText(
+  //                 fontSize: 10.px,
+  //                 S.of(Get.context!).yesterday,
+  //                 color: AppColorConstant.appBlack),
+  //             leading: InkWell(
+  //               onTap: () {
+  //                 Get.toNamed(RouteHelper.getChatProfileScreen());
+  //               },
+  //               child: CircleAvatar(
+  //                 maxRadius: 30.px,
+  //                 backgroundColor: AppColorConstant.appYellow.withOpacity(0.8),
+  //                 child: AppText(
+  //                   firstLetter,
+  //                   color: AppColorConstant.appWhite,
+  //                   fontSize: 22.px,
+  //                 ),
+  //               ),
+  //             ),
+  //             title: AppText(
+  //               displayName,
+  //               fontSize: 15.px,
+  //             ),
+  //             subtitle: AppText(mobileNumber!,
+  //                 color: AppColorConstant.grey, fontSize: 12.px),
+  //           ));
+  //     },
+  //   );
+  // }
 
   buildPopupMenu() {
     return PopupMenuButton(
@@ -232,21 +315,16 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  onSearchContacts() {
-    if (chatViewModel!.controller!.searchValue) {
+  onSearchContacts(ContactController controller) {
+    if (controller.searchValue) {
       chatViewModel!.filterContacts = chatViewModel!.contacts.where((contact) {
         return contact.displayName
             .toString()
             .toLowerCase()
-            .contains(chatViewModel!.controller!.filteredValue.toLowerCase());
+            .contains(controller.filteredValue.toLowerCase());
       }).toList();
     } else {
       chatViewModel!.filterContacts = chatViewModel!.contacts;
-
-
     }
   }
-
-
-
 }

@@ -1,9 +1,8 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:signal/pages/chating_page/chating_page.dart';
+import 'package:signal/service/auth_service.dart';
 import 'app/app/utills/theme_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -17,13 +16,7 @@ Future<void> main() async {
   await ThemeUtil.loadThemeMode();
 
   runApp(
-     DevicePreview(
-      enabled: true,
-      tools: [
-        ...DevicePreview.defaultTools,
-      ],
-      builder: (context) => const MyApp(),
-    ),
+    const MyApp(),
   );
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -51,7 +44,9 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
-            initialRoute: RouteHelper.getChattingScreen(),
+            initialRoute: (AuthService.auth.currentUser != null)
+                ? RouteHelper.getHomeScreen()
+                : RouteHelper.getIntroScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -24,6 +25,7 @@ class ChatProfileScreen extends StatelessWidget {
       init: ChatController(),
       initState: (state) {
         chatProfileViewModel!.parameter = Get.parameters;
+        logs('parameter---> ${chatProfileViewModel!.parameter}');
       },
       builder: (controller) {
         return WillPopScope(

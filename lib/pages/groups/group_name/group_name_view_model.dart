@@ -1,71 +1,30 @@
 import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
+import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
+import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
-import 'package:signal/controller/profile_controller.dart';
-import 'package:signal/pages/home/home_screen.dart';
-import 'package:signal/pages/profile/profile_screen.dart';
+import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/service/auth_service.dart';
 
-import 'package:signal/service/database_service.dart';
-
-import '../../app/app/utills/app_utills.dart';
-import '../../app/app/utills/validation.dart';
-import '../../app/widget/app_image_assets.dart';
-import '../../constant/app_asset.dart';
-
-class ProfileViewModel {
-  ProfileScreen? profileScreen;
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  String errorFirstName = "";
-  bool isButtonActive = false;
+class GroupNameViewModel {
+  GroupNameScreen? groupNameScreen;
   File? selectedImage;
-  String? userProfile;
+  List membersList = [];
+  List<String> mobileNo = [];
   bool isLoading = false;
-  Map<String, dynamic> parameter = {};
-  ProfileController? controller;
+  String? userProfile;
+  TextEditingController groupNameController =TextEditingController();
 
-  ProfileViewModel(this.profileScreen) {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () {
-        controller = Get.find<ProfileController>();
-      },
-    );
-  }
-
-  onChangedValue(value, GetxController controller) {
-    if (ValidationUtil.validateName(value)) {
-      isButtonActive = true;
-      errorFirstName = "";
-
-      controller.update();
-      logs("on change  ${ValidationUtil.validateName(value)}");
-    } else {
-      isButtonActive = false;
-      errorFirstName = StringConstant.enterValidName;
-
-      controller.update();
-    }
-  }
-
-  onTapNext(context) {
-    logs("NextTapped");
-  }
-
-  addProfileTap(BuildContext context, GetxController controller) async {
-    await getPermission(context, controller);
-    // ignore: use_build_context_synchronously
-  }
+  GroupNameViewModel(this.groupNameScreen);
 
   showDialogs(context, GetxController controller) {
     showDialog(
@@ -149,33 +108,15 @@ class ProfileViewModel {
     );
   }
 
-  Future<void> getPermission(
-      BuildContext context, GetxController controller) async {
-    // final permissionStatus = await Permission.storage.status;
-    // final permissionStatus1 = await Permission.camera.status;
-
-    await Permission.camera.request();
-    await Permission.storage.request();
-    logs(
-        "permissionStorage ---- >${await Permission.storage.status.isGranted}");
-    logs("permissionCamera ---- >${await Permission.camera.status.isGranted}");
-    if (await Permission.camera.status.isGranted ||
-        await Permission.storage.status.isGranted) {
-      showDialogs(context, controller);
-    } else {
-      await Permission.storage.request();
-      await Permission.camera.request();
-    }
-  }
-
   Future<void> pickImageGallery(GetxController controller) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(selectedImage!);
+      uploadImage(selectedImage!,controller);
       logs(selectedImage.toString());
+
       controller.update();
     }
   }
@@ -186,39 +127,25 @@ class ProfileViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(selectedImage!);
+      uploadImage(selectedImage!,controller);
       logs(selectedImage.toString());
       controller.update();
     }
   }
 
-  uploadImage(File imageUrl) async {
+  uploadImage(File imageUrl, GetxController controller) async {
     isLoading = true;
     logs("load--> $isLoading");
-    controller!.update();
+    controller.update();
     final storage = FirebaseStorage.instance
-        .ref('profile')
+        .ref('Groups_Profile')
         .child(AuthService.auth.currentUser!.phoneNumber!)
-        .child('profile.jpg');
+        .child('group.jpg');
     await storage.putFile(imageUrl);
     userProfile = await storage.getDownloadURL();
     logs("profile........ $userProfile");
     isLoading = false;
     logs("load--> $isLoading");
-    controller!.update();
-  }
-
-  onSaveProfile(String firstName, String lastName, String phoneNo) {
-
-
-    DatabaseService()
-        .addUser(
-          firstName: firstName,
-          lastName: lastName,
-          phone: phoneNo,
-          photo: (userProfile != null) ? userProfile! : '',
-          fcmToken: '',
-        )
-        .then((value) => Get.offAll(() => HomeScreen()));
+    controller.update();
   }
 }

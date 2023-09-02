@@ -2,12 +2,12 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/new_message_controller.dart';
 import 'package:signal/pages/new_message_page/new_message_view_model.dart';
+
 import 'package:signal/routes/routes_helper.dart';
 
 class NewMessagePage extends StatelessWidget {
@@ -72,7 +72,9 @@ class NewMessagePage extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.only(top: 8.px),
-              child: ListTile(
+              child: ListTile(onTap: () {
+                Get.toNamed(RouteHelper.getNewGroupScreen());
+              },
                   title: AppText('New Group', fontSize: 18.px),
                   leading: CircleAvatar(
                     radius: 30.px,
@@ -100,24 +102,26 @@ class NewMessagePage extends StatelessWidget {
       itemBuilder: (context, index) {
         Contact contact = newMessageViewModel!.filterContacts[index];
         String? mobileNumber =
-        contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
         return Container(
             margin: EdgeInsets.only(top: 5.px),
             child: ListTile(
-              leading: InkWell(
-                onTap: () {
-                  Get.toNamed(RouteHelper.getChatProfileScreen());
-                },
-                child: CircleAvatar(
-                  maxRadius: 30.px,
-                  backgroundColor: AppColorConstant.appYellow.withOpacity(0.8),
-                  child: AppText(
-                    firstLetter,
-                    color: AppColorConstant.appWhite,
-                    fontSize: 22.px,
-                  ),
+              onTap: () {
+                Get.toNamed(RouteHelper.getChattingScreen(), parameters: {
+                  'firstLetter': firstLetter,
+                  'displayName': displayName,
+                  'phoneNo': mobileNumber
+                });
+              },
+              leading: CircleAvatar(
+                maxRadius: 30.px,
+                backgroundColor: AppColorConstant.appYellow.withOpacity(0.8),
+                child: AppText(
+                  firstLetter,
+                  color: AppColorConstant.appWhite,
+                  fontSize: 22.px,
                 ),
               ),
               title: AppText(

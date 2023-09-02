@@ -6,7 +6,7 @@ goToIntroPage(){
 }
 
 goToSignInPage() {
-  Get.toNamed(RouteHelper.getSignInPage());
+  Get.offAllNamed(RouteHelper.getSignInPage());
 }
 
 goToVerifyPage({required String arguments}) {

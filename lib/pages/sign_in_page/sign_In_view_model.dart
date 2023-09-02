@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:signal/pages/sign_in_page/sign_in_page.dart';
 
 class SignInViewModel {
-
   late SignInPage? signInPage;
 
   TextEditingController phoneNumber = TextEditingController();
@@ -14,8 +13,6 @@ class SignInViewModel {
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   bool isValidNumber = false;
 
-  var temp;
-  var data;
 
 
   SignInViewModel(this.signInPage);

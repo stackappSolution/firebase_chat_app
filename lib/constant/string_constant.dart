@@ -28,7 +28,7 @@ class StringConstant {
       'Profiles Are Visible To People, Your Message,Contacts and Groups.';
   static const String firstName = 'First Name ( Required )';
 
-  static const String lastName = 'Last Name ( Required )';
+  static const String lastName = 'Last Name';
   static const String next = 'Next';
   static const String enterValidName = 'Enter Valid Name';
   static const String choose = 'Choose';
@@ -36,6 +36,7 @@ class StringConstant {
   static const String conversa = 'Conversations';
 
   static const String cansel = 'Cancel';
+  static const String selectMember = 'Select Member';
 
   static const String language = 'Language';
   static const String systemDefault = 'System Default';
