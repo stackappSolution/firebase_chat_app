@@ -118,7 +118,7 @@ class DatabaseService {
     final Stream<QuerySnapshot> chatStream = FirebaseFirestore.instance
         .collection('rooms')
         .doc(id)
-        .collection('chats')
+        .collection('chats').orderBy('timeStamp', descending: false)
         .snapshots();
 
     return chatStream;

@@ -22,7 +22,7 @@ class RouteConstant{
   static const String contactUsScreen = '/contact_us';
   static const String licensesScreen = '/licenses';
   static const String chatProfileScreen = '/chat_profile';
-  static const String inviteScreen = '/invite';
+  static const String inviteMemberScreen = '/invite';
   static const String newGroupsScreen = '/groups';
   static const String groupNameScreen = '/group_name';
 

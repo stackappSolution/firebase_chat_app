@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/app/app/utills/date_formation.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_button.dart';
@@ -14,12 +16,10 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
-
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
-
 import '../../controller/chating_page_controller.dart';
 
 // ignore: must_be_immutable
@@ -44,7 +44,6 @@ class ChatingPage extends StatelessWidget {
             () async {
               controller = Get.find<ChatingPageController>();
               chatingPageViewModal!.parameter = Get.parameters;
-
               chatingPageViewModal!.arguments = Get.arguments;
               logs('arg--> ${chatingPageViewModal!.arguments}');
 
@@ -107,12 +106,16 @@ class ChatingPage extends StatelessWidget {
                                       return ListView.builder(
                                         itemCount: snapshot.data?.docs.length,
                                         itemBuilder: (context, index) {
+                                          String formattedTime = DateFormation()
+                                              .getChatTimeFormate(
+                                                  data[index]['timeStamp']);
+
                                           return buildMessage(
                                               data[index]['sender'],
                                               context,
                                               controller,
                                               data[index]['message'],
-                                              data[index]['timeStamp']);
+                                              formattedTime);
                                         },
                                       );
                                     }
@@ -120,10 +123,6 @@ class ChatingPage extends StatelessWidget {
                                   },
                                 )
                               : const SizedBox(),
-                      // : buildInviteView(
-                      //     chatingPageViewModal!.parameter['firstLetter'],
-                      //     chatingPageViewModal!.parameter['displayName'],
-                      //     chatingPageViewModal!.parameter['phoneNo'])
                     ),
                     (chatingPageViewModal!.arguments['isGroup'] != null)
                         ? Row(children: [
@@ -166,38 +165,8 @@ class ChatingPage extends StatelessWidget {
                                 }),
                           ])
                         : const SizedBox(),
-
-                    // Column(
-                    //         children: [
-                    //           AppText(
-                    //             'Invite ${chatingPageViewModal!.parameter['members'][0]} to Signal to keep Conversation here',
-                    //             textAlign: TextAlign.center,
-                    //             color: AppColorConstant.appGrey,
-                    //           ),
-                    //           Padding(
-                    //             padding: EdgeInsets.all(20.px),
-                    //             child: AppButton(
-                    //                 onTap: () async {
-                    //                   chatingPageViewModal!.inviteFriends();
-                    //                 },
-                    //                 borderRadius: BorderRadius.circular(18.px),
-                    //                 height: 40.px,
-                    //                 width: 180.px,
-                    //                 color: AppColorConstant.appYellow,
-                    //                 stringChild: true,
-                    //                 child: const AppText("Invite To signal",
-                    //                     color: AppColorConstant.appWhite)),
-                    //           ),
-                    //         ],
-                    //       )
                   ])));
         });
-  }
-
-  getNumbers() {
-    chatingPageViewModal!.mobileNumbers =
-        chatingPageViewModal!.getMobileNumbers() as List<String>;
-    logs('phones----> ${chatingPageViewModal!.mobileNumbers}');
   }
 
   Widget buildMessage(
@@ -205,7 +174,7 @@ class ChatingPage extends StatelessWidget {
     context,
     ChatingPageController controller,
     String chatMessage,
-    int timeStamp,
+    String timeStamp,
   ) {
     return Slidable(
         child: (sender == AuthService.auth.currentUser!.phoneNumber!)
@@ -352,7 +321,7 @@ class ChatingPage extends StatelessWidget {
                   ? chatingPageViewModal!.arguments['groupName']
                       .substring(0, 1)
                       .toUpperCase()
-                  : chatingPageViewModal!.arguments['id']
+                  : chatingPageViewModal!.arguments['members'][1]
                       .substring(0, 1)
                       .toUpperCase(),
               color: AppColorConstant.appWhite,
@@ -371,7 +340,7 @@ class ChatingPage extends StatelessWidget {
           child: AppText(
               (chatingPageViewModal!.arguments['isGroup'])
                   ? chatingPageViewModal!.arguments['groupName']
-                  : chatingPageViewModal!.arguments['id'],
+                  : chatingPageViewModal!.arguments['members'][1],
               fontSize: 18.px,
               overflow: TextOverflow.ellipsis),
         ),
@@ -500,42 +469,6 @@ class ChatingPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(27.px),
         child: Icon(Icons.mic_none_outlined,
             size: 27.px, color: AppColorConstant.offBlack));
-  }
-
-  buildInviteView(
-    String firstLetter,
-    String displayName,
-    String phoneNo,
-  ) {
-    return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: ListView(
-        children: [
-          SizedBox(
-            height: 30.px,
-          ),
-          CircleAvatar(
-            maxRadius: 50.px,
-            backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
-            child: AppText(firstLetter,
-                fontSize: 40.px, color: AppColorConstant.appWhite),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.px),
-            child: AppText(
-              displayName,
-              fontSize: 20.px,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          AppText(phoneNo,
-              fontSize: 12.px,
-              textAlign: TextAlign.center,
-              color: AppColorConstant.appGrey),
-        ],
-      ),
-    );
   }
 
   double? getFontSizeValue(

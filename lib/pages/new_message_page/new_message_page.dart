@@ -2,23 +2,17 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textForm_field.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/new_message_controller.dart';
 import 'package:signal/pages/new_message_page/new_message_view_model.dart';
-
-
 import 'package:signal/routes/routes_helper.dart';
-
-// ignore: must_be_immutable
-
 import 'package:signal/routes/app_navigation.dart';
-
-
 import '../../service/database_helper.dart';
 
-
+// ignore: must_be_immutable
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
 
@@ -33,6 +27,7 @@ class NewMessagePage extends StatelessWidget {
       initState: (state) {
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
+        getNumbers();
       },
       builder: (NewMessageController controller) {
         return SafeArea(
@@ -85,9 +80,10 @@ class NewMessagePage extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.only(top: 8.px),
-              child: ListTile(onTap: () {
-                Get.toNamed(RouteHelper.getNewGroupScreen());
-              },
+              child: ListTile(
+                  onTap: () {
+                    Get.toNamed(RouteHelper.getNewGroupScreen());
+                  },
                   title: AppText('New Group', fontSize: 18.px),
                   leading: CircleAvatar(
                     radius: 30.px,
@@ -133,30 +129,29 @@ class NewMessagePage extends StatelessWidget {
               goToChatingScreen();
             },
             child: ListTile(
-
               onTap: () {
-                Get.toNamed(RouteHelper.getChattingScreen(), parameters: {
-                  'firstLetter': firstLetter,
-                  'displayName': displayName,
-                  'phoneNo': mobileNumber
-                });
+                (newMessageViewModel!.mobileNumbers.contains(mobileNumber))
+                    ? Get.toNamed(RouteHelper.getChattingScreen())
+                    : Get.toNamed(RouteHelper.getInviteMemberScreen(),
+                        parameters: {
+                            'firstLetter': firstLetter,
+                            'displayName': displayName,
+                            'phoneNo': mobileNumber
+                          });
               },
-
-
               leading: InkWell(
                 onTap: () {
                   Get.toNamed(RouteHelper.getChatProfileScreen());
                 },
                 child: CircleAvatar(
+                    maxRadius: 30.px,
+                    backgroundColor:
+                        AppColorConstant.appYellow.withOpacity(0.8),
                     child: AppText(
                       firstLetter,
                       color: AppColorConstant.appWhite,
                       fontSize: 22.px,
-                    ),
-                    maxRadius: 30.px,
-                    backgroundColor:
-                        AppColorConstant.appYellow.withOpacity(0.8)),
-
+                    )),
               ),
               title: AppText(
                 displayName,
@@ -171,17 +166,12 @@ class NewMessagePage extends StatelessWidget {
     );
   }
 
-  // onSearchContacts() {
-  //   newMessageViewModel!.filterContacts =
-  //       newMessageViewModel!.filterContacts.where((contact) {
-  //     final lowerCaseQuery = newMessageViewModel!
-  //         .newMessageController!.filteredValue
-  //         .toLowerCase();
-  //     return contact.displayName!.toLowerCase().contains(lowerCaseQuery) ||
-  //         contact.phones!.any(
-  //             (phone) => phone.value!.toLowerCase().contains(lowerCaseQuery));
-  //   }).toList();
-  // }
+  getNumbers() async {
+    newMessageViewModel!.mobileNumbers =
+        await newMessageViewModel!.getMobileNumbers();
+    logs('phones----> ${newMessageViewModel!.mobileNumbers}');
+  }
+
   onSearchContacts(bool searching) {
     newMessageViewModel!.isSerching = searching;
     if (searching) {

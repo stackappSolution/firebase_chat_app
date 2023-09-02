@@ -28,7 +28,7 @@ class ChatingPageViewModal {
   // List<String> members=[];
 
 
-  List<String> mobileNumbers = [];
+
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
 
@@ -68,17 +68,7 @@ class ChatingPageViewModal {
   }
 
 
-  inviteFriends() async {
-    if (Platform.isAndroid) {
-      String uri =
-          'sms:${parameter['phoneNo']}?body=${Uri.encodeComponent("Lets switch to signal: \n http://signal.org/install")}';
-      await launchUrl(Uri.parse(uri));
-    } else if (Platform.isIOS) {
-      String uri =
-          'sms:${parameter['phoneNo']}&body=${Uri.encodeComponent("Lets switch to signal: \n http://signal.org/install")}';
-      await launchUrl(Uri.parse(uri));
-    }
-  }
+
 
 
 
@@ -92,16 +82,5 @@ class ChatingPageViewModal {
     }
   }
 
-  Future<List<String>> getMobileNumbers() async {
-    QuerySnapshot usersSnapshot =
-        await FirebaseFirestore.instance.collection('users').get();
-
-    for (var value in usersSnapshot.docs) {
-      String mobileNumber = value.get('phone');
-      mobileNumbers.add(mobileNumber);
-    }
-
-    return mobileNumbers;
-  }
 
 }

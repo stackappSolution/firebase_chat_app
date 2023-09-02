@@ -5,8 +5,8 @@ import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 
-class InviteScreen extends StatelessWidget {
-  const InviteScreen({Key? key}) : super(key: key);
+class InviteMailScreen extends StatelessWidget {
+  const InviteMailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

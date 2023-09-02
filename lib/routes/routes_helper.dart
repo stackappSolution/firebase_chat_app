@@ -12,7 +12,8 @@ import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/pages/groups/view/new_group_screen.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
-import 'package:signal/pages/invite/invite_screen.dart';
+import 'package:signal/pages/invite/invite_mail_screen.dart';
+import 'package:signal/pages/invite/invite_member_screen.dart';
 import 'package:signal/pages/new_message_page/new_message_page.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
@@ -88,7 +89,7 @@ class RouteHelper {
   static String getNewMessageScreen() => RouteConstant.newMessageScreen;
 
   static String getChatPhoneScreen() => RouteConstant.changePhoneScreen;
-  static String getInviteScreen() => RouteConstant.inviteScreen;
+  static String getInviteMemberScreen() => RouteConstant.inviteMemberScreen;
   static String getNewGroupScreen() => RouteConstant.newGroupsScreen;
   static String getGroupNameScreen() => RouteConstant.groupNameScreen;
 
@@ -106,7 +107,7 @@ class RouteHelper {
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
     GetPage(name: RouteConstant.chatingScreen, page: () => ChatingPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
-    GetPage(name: RouteConstant.inviteScreen, page: () => const InviteScreen()),
+    GetPage(name: RouteConstant.inviteMemberScreen, page: () =>  InviteMemberScreen()),
     GetPage(name: RouteConstant.newGroupsScreen, page: () => NewGroupScreen()),
     GetPage(name: RouteConstant.groupNameScreen, page: () =>  GroupNameScreen()),
     GetPage(
