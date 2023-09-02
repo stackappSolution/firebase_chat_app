@@ -5,7 +5,7 @@ import 'package:signal/pages/sign_in_page/sign_in_page.dart';
 
 class SignInViewModel {
 
-  late SignInPage? signInPage;
+   SignInPage? signInPage;
 
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController countrycode = TextEditingController();
@@ -13,6 +13,8 @@ class SignInViewModel {
   String countryCode = '';
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   bool isValidNumber = false;
+  bool otpSend = false;
+
 
   var temp;
   var data;

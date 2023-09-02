@@ -10,8 +10,8 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
-import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/database_helper.dart';
 
 // ignore: must_be_immutable
 class ChatScreen extends StatelessWidget {
@@ -26,7 +26,10 @@ class ChatScreen extends StatelessWidget {
     chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
       init: ContactController(),
-      initState: (state) {},
+      initState: (state) {
+        DatabaseService.getMobileNumbers();
+
+      },
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
@@ -74,6 +77,7 @@ class ChatScreen extends StatelessWidget {
             child: AppImageAsset(
                 image: AppAsset.edit, height: 25.px, width: 25.px),
             onPressed: () {
+              DatabaseService.getMobileNumbers();
               Get.toNamed(RouteHelper.getNewMessageScreen());
             },
           ),
@@ -81,8 +85,6 @@ class ChatScreen extends StatelessWidget {
       ],
     );
   }
-
-
   buildContactList() {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),

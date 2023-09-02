@@ -65,7 +65,7 @@ class RouteHelper {
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
     GetPage(name: RouteConstant.settingsScreen, page: () => SettingScreen()),
-    GetPage(name: RouteConstant.newMessageScreen, page: () => NewMessagePage()),
+    GetPage(name: RouteConstant.newMessageScreen, page: () =>  NewMessagePage()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.splashScreen, page: () => SplashScreen()),

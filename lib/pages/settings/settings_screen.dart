@@ -60,8 +60,6 @@ class SettingScreen extends StatelessWidget {
         ),
         buildProfileView(context),
         buildSettingsList(context, controller),
-        buildProfileView(context),
-        buildSettingsList(context, controller),
       ],
     );
   }

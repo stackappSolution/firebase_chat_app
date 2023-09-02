@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(decoration: const BoxDecoration(   gradient: LinearGradient(
+      body: Container(decoration: const BoxDecoration(gradient: LinearGradient(
           colors: [AppColorConstant.lightOrange,AppColorConstant.appWhite, AppColorConstant.appWhite, AppColorConstant.lightOrange],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter)),
