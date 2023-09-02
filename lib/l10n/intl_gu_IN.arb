@@ -45,7 +45,7 @@
         "search" : "શોધો..",
         "yesterday" : "ગઇકાલે",
         "verifyButton": "ચકાસો",
-        "verify": "ઓટીપી ચકાસો",
+        "verify": "OTP દાખલ કરો",
         "newGroup": "નવું જૂથ",
               "whatsThis" : "આ શું છે?",
                 "supportCenter" : "આધાર કેન્દ્ર",
@@ -68,6 +68,10 @@
         "supportCenter": "આધાર કેન્દ્ર",
         "contactUs": "અમારો સંપર્ક કરો",
         "markAllRead" : "બધા વાંચેલા ચિહ્નિત કરો",
+          "signIn" : "સાઇન ઇન",
+        "phoneNumber":"મોબાઇલ નંબર",
+        "continues" : "ચાલુ રાખો"
+
   "continues": "ચાલુ રાખો",
   "phoneNumber":"મોબાઇલ નંબર"
 

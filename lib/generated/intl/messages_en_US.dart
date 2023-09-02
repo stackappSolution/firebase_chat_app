@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "choose": MessageLookupByLibrary.simpleMessage("choose"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
+        "continues": MessageLookupByLibrary.simpleMessage("Continue"),
         "continues": MessageLookupByLibrary.simpleMessage("Contiue"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "debugLog": MessageLookupByLibrary.simpleMessage("Debug log"),
@@ -79,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Have you read our FAQ yet?"),
         "search": MessageLookupByLibrary.simpleMessage("Search.."),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
             "Enter Your Phone Number To Get Started"),
         "signal": MessageLookupByLibrary.simpleMessage("Signal"),

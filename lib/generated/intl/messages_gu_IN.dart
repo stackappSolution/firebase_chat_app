@@ -78,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "શું તમે હજુ સુધી અમારા FAQ વાંચ્યા છે?"),
         "search": MessageLookupByLibrary.simpleMessage("શોધો.."),
         "settings": MessageLookupByLibrary.simpleMessage("સેટિંગ્સ"),
+        "signIn": MessageLookupByLibrary.simpleMessage("સાઇન ઇન"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
             "પ્રારંભ કરવા માટે તમારો ફોન નંબર દાખલ કરો"),
         "signal": MessageLookupByLibrary.simpleMessage("સિગ્નલ"),
@@ -99,7 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transferOrRestoreAccount": MessageLookupByLibrary.simpleMessage(
             "એકાઉન્ટ ટ્રાન્સફર અથવા રિસ્ટોર કરો"),
         "userName": MessageLookupByLibrary.simpleMessage("વપરાશકર્તા નામ"),
-        "verify": MessageLookupByLibrary.simpleMessage("ઓટીપી ચકાસો"),
+        "verify": MessageLookupByLibrary.simpleMessage("OTP દાખલ કરો"),
         "verifyButton": MessageLookupByLibrary.simpleMessage("ચકાસો"),
         "verifyOtp":
             MessageLookupByLibrary.simpleMessage("અમે મોકલેલ કોડ દાખલ કરો"),

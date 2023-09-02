@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,9 @@ Future<void> main() async {
   await ThemeUtil.loadThemeMode();
   SharedPreferences.getInstance();
   runApp(const MyApp());
+
+
+
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     //systemNavigationBarColor: AppColorConstant.appWhite, // navigation bar color
     statusBarColor: (ThemeUtil.isDark)
@@ -49,7 +53,7 @@ class MyApp extends StatelessWidget {
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
             themeMode: ThemeUtil.selectedTheme,
-            localizationsDelegates: const [
+            localizationsDelegates:  [
               S.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,

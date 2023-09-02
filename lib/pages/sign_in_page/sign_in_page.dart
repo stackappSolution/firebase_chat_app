@@ -38,15 +38,19 @@ class SignInPage extends StatelessWidget {
                     signInViewModel!.selectedCountry.toString(),
                     signInViewModel!.phoneNumber.text,
                     context,
-                    controller, signInViewModel!)),
+                    controller,
+                    signInViewModel!)),
           );
         });
   }
 
-  Container buildsignInPage(String countryCode,
-      String phoneNumber,
-      BuildContext context,
-      SignInController controller, SignInViewModel signInViewModel,) =>
+  Container buildsignInPage(
+    String countryCode,
+    String phoneNumber,
+    BuildContext context,
+    SignInController controller,
+    SignInViewModel signInViewModel,
+  ) =>
       Container(
         height: double.infinity,
         width: double.infinity,
@@ -82,18 +86,14 @@ class SignInPage extends StatelessWidget {
                   margin: EdgeInsets.only(left: 20.px),
                   alignment: Alignment.centerLeft,
                   child: AppText(
-                    S
-                        .of(Get.context!)
-                        .signal,
+                    S.of(Get.context!).signal,
                     fontSize: 30.px,
                     fontWeight: FontWeight.w600,
                   )),
               Container(
                 margin: EdgeInsets.only(left: 20.px),
                 child: AppText(
-                  S
-                      .of(Get.context!)
-                      .signInDescription,
+                  S.of(Get.context!).signInDescription,
                   color: AppColorConstant.appLightBlack.withOpacity(0.4),
                   fontWeight: FontWeight.w400,
                   fontSize: 15.px,
@@ -136,13 +136,11 @@ class SignInPage extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.px),
                               color:
-                              AppColorConstant.appYellow.withOpacity(0.1)),
+                                  AppColorConstant.appYellow.withOpacity(0.1)),
                           height: 50.px,
                           margin: EdgeInsets.only(left: 10.px, right: 10.px),
                           child: AppTextFormField(
-                            labelText: S
-                                .of(context)
-                                .phoneNumber,
+                            labelText: S.of(context).phoneNumber,
                             labelStyle: TextStyle(
                                 color: AppColorConstant.appYellow,
                                 fontSize: 20.px),
@@ -152,8 +150,9 @@ class SignInPage extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                             ),
                             inputFormatters: [
-                                LengthLimitingTextInputFormatter(10),
-                                FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter
+                                  .digitsOnly,
                             ],
                             validator: (value) {
                               if (value == null && value!.isEmpty) {
@@ -166,15 +165,137 @@ class SignInPage extends StatelessWidget {
                             },
                             onChanged: (value) {
                               if (value.length == 10) {
-                                signInViewModel.isValidNumber = true;
+                                signInViewModel.isValidNumber =
+                                true;
                                 controller.update();
                               } else {
-                                signInViewModel.isValidNumber = false;
+                                signInViewModel.isValidNumber =
+                                false;
                                 controller.update();
                               }
                             },
                             keyboardType: TextInputType.number,
                             fontSize: 20.px,
+                          ),
+                       ),  Align(
+                          alignment: Alignment.center,
+                          child: signInViewModel.isValidNumber != true
+                              ? ElevatedButton(
+                            onPressed: () {},
+                            style: ButtonStyle(
+                                shape: MaterialStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            12.px))),
+                                backgroundColor:
+                                MaterialStatePropertyAll(
+                                    AppColorConstant.appYellow
+                                        .withOpacity(0.5)),
+                                fixedSize: MaterialStatePropertyAll(
+                                    Size(230.px, 50.px))),
+                            child: AppText(
+                              S.of(context).continues,
+                              fontSize: 22.px,
+                              color: AppColorConstant.appWhite,
+                            ),
+                          )
+                              : ElevatedButton(
+                            onPressed: signInViewModel.otpSend
+                                ? null
+                                : () async {
+                              logs(
+                                  "entred contact IS------------->   $countryCode$phoneNumber");
+
+                              verified(
+                                  AuthCredential
+                                  authResult) async {
+                                await auth.signInWithCredential(
+                                    authResult);
+                              }
+
+                              verificationFailed(
+                                  FirebaseAuthException
+                                  authException) {
+                                logs(authException.message
+                                    .toString());
+                              }
+
+                              smsSent(String verificationId,
+                                  [int? forceResendingToken]) {
+                                AuthService.verificationID =
+                                    verificationId;
+                                logs("OTP Sent to your phone");
+                                goToVerifyPage(
+                                    phonenumber:
+                                    phoneNumber.toString(),
+                                    verificationId: AuthService
+                                        .verificationID,
+                                    selectedCountry:
+                                    selectedCountry);
+                                logs(
+                                    "verification id ----->${AuthService.verificationID}");
+                              }
+
+                              autoRetrievalTimeout(
+                                  String verificationId) {
+                                controller.update();
+                                logs(
+                                    "verification------->${AuthService.verificationID}");
+                              }
+
+                              signInViewModel.otpSend = true;
+                              controller.update();
+                              try {
+                                await auth.verifyPhoneNumber(
+                                  phoneNumber:
+                                  "$countryCode$phoneNumber",
+                                  timeout:
+                                  const Duration(seconds: 60),
+                                  verificationCompleted: verified,
+                                  verificationFailed:
+                                  verificationFailed,
+                                  codeSent: smsSent,
+                                  codeAutoRetrievalTimeout:
+                                  autoRetrievalTimeout,
+                                );
+                              } catch (e) {
+                                // Handle any errors that may occur during OTP verification
+                                logs("Error: $e");
+                                signInViewModel.otpSend = false;
+                                controller
+                                    .update(); // Reset the sending OTP state
+                              }
+                              var data;
+                              if (data.passParameter['id'] !=
+                                  null) {
+                                DatabaseService.insertData(
+                                    mobileNumber: signInViewModel
+                                        .phoneNumber.text,
+                                    name: '');
+                              }
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(12.px)),
+                              ),
+                              backgroundColor:
+                              const MaterialStatePropertyAll(
+                                  AppColorConstant.appYellow),
+                              fixedSize: MaterialStatePropertyAll(
+                                  Size(230.px, 50.px)),
+                            ),
+                            child: signInViewModel.otpSend
+                                ? const CircularProgressIndicator(
+                              color: AppColorConstant.appWhite,
+                            )
+                                : AppText(
+                              S.of(context).continues,
+                              fontSize: 22.px,
+                              color: AppColorConstant.appWhite,
+                            ),
                           ),
                         ),
                       ],
@@ -182,98 +303,192 @@ class SignInPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 150.px,
-              ),
-                Align(
-                  alignment: Alignment.center,
-                  child: signInViewModel.isValidNumber !=true? ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.px))),
-                        backgroundColor: MaterialStatePropertyAll(
-                            AppColorConstant.appYellow.withOpacity(0.5)),
-                        fixedSize:
-                        MaterialStatePropertyAll(Size(230.px, 50.px))),
-                    child: AppText(
-                      S
-                          .of(context)
-                          .continues,
-                      fontSize: 22.px,
-                      color: AppColorConstant.appWhite,
-                    ),
-                  ):ElevatedButton(
-                    onPressed:signInViewModel.otpSend? null:() async {
-                      logs(
-                          "entred contact IS------------->   $countryCode$phoneNumber");
-
-                      verified(AuthCredential authResult) async {
-                        await auth.signInWithCredential(authResult);
-                      }
-
-                      verificationFailed(FirebaseAuthException authException) {
-                        logs(authException.message.toString());
-                      }
-
-                      smsSent(String verificationId,
-                          [int? forceResendingToken]) {
-                        AuthService.verificationID = verificationId;
-                        logs("OTP Sent to your phone");
-                        goToVerifyPage(
-                            phonenumber: phoneNumber.toString(),
-                            verificationId: AuthService.verificationID,
-                            selectedCountry: selectedCountry);
-                        logs("verification id ----->${AuthService.verificationID}");
-                      }
-
-                      autoRetrievalTimeout(String verificationId) {
-                        controller.update();
-                        logs("verification------->${AuthService.verificationID}");
-                      }
-                      signInViewModel.otpSend = true;
-                      controller.update();
-                      try {
-                        await auth.verifyPhoneNumber(
-                          phoneNumber: "$countryCode$phoneNumber",
-                          timeout: const Duration(seconds: 60),
-                          verificationCompleted: verified,
-                          verificationFailed: verificationFailed,
-                          codeSent: smsSent,
-                          codeAutoRetrievalTimeout: autoRetrievalTimeout,
-                        );
-                      } catch (e) {
-                        // Handle any errors that may occur during OTP verification
-                        logs("Error: $e");
-                        signInViewModel.otpSend = false;
-                        controller.update();// Reset the sending OTP state
-                      }
-                      var data;
-                      if(data.passParameter['id'] != null){
-                        DatabaseService.insertData(mobileNumber: signInViewModel.phoneNumber.text, name: '');
-                      }
-                    },
-                    style: ButtonStyle(
-                        shape: MaterialStatePropertyAll(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.px)),
-                        ),
-                        backgroundColor: const MaterialStatePropertyAll(
-                            AppColorConstant.appYellow),
-                        fixedSize:
-                        MaterialStatePropertyAll(Size(230.px, 50.px)
-                        ),
-                    ),
-                    child: signInViewModel.otpSend? const CircularProgressIndicator(color: AppColorConstant.appWhite,): AppText(
-                      S.of(context)
-                          .continues,
-                      fontSize: 22.px,
-                      color: AppColorConstant.appWhite,
-                    ),
-                  ),
-                ),
             ],
           ),
         ),
       );
 }
+/* Expanded(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.px),
+                                          color: AppColorConstant.appYellow
+                                              .withOpacity(0.1)),
+                                      height: 50.px,
+                                      margin: EdgeInsets.only(
+                                          left: 10.px, right: 10.px),
+                                      child: AppTextFormField(
+                                        labelText: S.of(context).phoneNumber,
+                                        labelStyle: TextStyle(
+                                            color: AppColorConstant.appYellow,
+                                            fontSize: 20.px),
+                                        controller:
+                                            signInViewModel!.phoneNumber,
+                                        style: TextStyle(
+                                          fontSize: 22.px,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(10),
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                        ],
+                                        validator: (value) {
+                                          if (value == null && value!.isEmpty) {
+                                            return 'Mobile number is required';
+                                          } else if (signInViewModel
+                                              .isValidMobileNumber(value)) {
+                                            return 'Invalid mobile number';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          if (value.length == 10) {
+                                            signInViewModel.isValidNumber =
+                                                true;
+                                            controller.update();
+                                          } else {
+                                            signInViewModel.isValidNumber =
+                                                false;
+                                            controller.update();
+                                          }
+                                        },
+                                        keyboardType: TextInputType.number,
+                                        fontSize: 20.px,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                                Align(
+                            alignment: Alignment.center,
+                            child: signInViewModel.isValidNumber != true
+                                ? ElevatedButton(
+                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        12.px))),
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                                AppColorConstant.appYellow
+                                                    .withOpacity(0.5)),
+                                        fixedSize: MaterialStatePropertyAll(
+                                            Size(230.px, 50.px))),
+                                    child: AppText(
+                                      S.of(context).continues,
+                                      fontSize: 22.px,
+                                      color: AppColorConstant.appWhite,
+                                    ),
+                                  )
+                                : ElevatedButton(
+                                    onPressed: signInViewModel.otpSend
+                                        ? null
+                                        : () async {
+                                            logs(
+                                                "entred contact IS------------->   $countryCode$phoneNumber");
+
+                                            verified(
+                                                AuthCredential
+                                                    authResult) async {
+                                              await auth.signInWithCredential(
+                                                  authResult);
+                                            }
+
+                                            verificationFailed(
+                                                FirebaseAuthException
+                                                    authException) {
+                                              logs(authException.message
+                                                  .toString());
+                                            }
+
+                                            smsSent(String verificationId,
+                                                [int? forceResendingToken]) {
+                                              AuthService.verificationID =
+                                                  verificationId;
+                                              logs("OTP Sent to your phone");
+                                              goToVerifyPage(
+                                                  phonenumber:
+                                                      phoneNumber.toString(),
+                                                  verificationId: AuthService
+                                                      .verificationID,
+                                                  selectedCountry:
+                                                      selectedCountry);
+                                              logs(
+                                                  "verification id ----->${AuthService.verificationID}");
+                                            }
+
+                                            autoRetrievalTimeout(
+                                                String verificationId) {
+                                              controller.update();
+                                              logs(
+                                                  "verification------->${AuthService.verificationID}");
+                                            }
+
+                                            signInViewModel.otpSend = true;
+                                            controller.update();
+                                            try {
+                                              await auth.verifyPhoneNumber(
+                                                phoneNumber:
+                                                    "$countryCode$phoneNumber",
+                                                timeout:
+                                                    const Duration(seconds: 60),
+                                                verificationCompleted: verified,
+                                                verificationFailed:
+                                                    verificationFailed,
+                                                codeSent: smsSent,
+                                                codeAutoRetrievalTimeout:
+                                                    autoRetrievalTimeout,
+                                              );
+                                            } catch (e) {
+                                              // Handle any errors that may occur during OTP verification
+                                              logs("Error: $e");
+                                              signInViewModel.otpSend = false;
+                                              controller
+                                                  .update(); // Reset the sending OTP state
+                                            }
+                                            var data;
+                                            if (data.passParameter['id'] !=
+                                                null) {
+                                              DatabaseService.insertData(
+                                                  mobileNumber: signInViewModel
+                                                      .phoneNumber.text,
+                                                  name: '');
+                                            }
+                                          },
+                                    style: ButtonStyle(
+                                      shape: MaterialStatePropertyAll(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12.px)),
+                                      ),
+                                      backgroundColor:
+                                          const MaterialStatePropertyAll(
+                                              AppColorConstant.appYellow),
+                                      fixedSize: MaterialStatePropertyAll(
+                                          Size(230.px, 50.px)),
+                                    ),
+                                    child: signInViewModel.otpSend
+                                        ? const CircularProgressIndicator(
+                                            color: AppColorConstant.appWhite,
+                                          )
+                                        : AppText(
+                                            S.of(context).continues,
+                                            fontSize: 22.px,
+                                            color: AppColorConstant.appWhite,
+                                          ),
+                                  ),
+                          ),
+
+
+
+
+
+                              */

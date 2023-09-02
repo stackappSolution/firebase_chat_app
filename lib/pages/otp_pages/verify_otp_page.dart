@@ -12,7 +12,6 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/otp_pages/verify_otp_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 
-// ignore: must_be_immutable
 class VerifyOtpPage extends StatelessWidget {
   VerifyOtpPage({super.key});
 
@@ -190,4 +189,6 @@ class VerifyOtpPage extends StatelessWidget {
           ),
         ),
       );
+
+
 }
