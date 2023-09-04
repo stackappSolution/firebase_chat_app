@@ -10,6 +10,7 @@ import 'package:signal/controller/new_message_controller.dart';
 import 'package:signal/pages/new_message_page/new_message_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/routes/app_navigation.dart';
+import 'package:signal/service/auth_service.dart';
 import '../../service/database_helper.dart';
 
 // ignore: must_be_immutable
@@ -131,13 +132,21 @@ class NewMessagePage extends StatelessWidget {
             child: ListTile(
               onTap: () {
                 (newMessageViewModel!.mobileNumbers.contains(mobileNumber))
-                    ? Get.toNamed(RouteHelper.getChattingScreen())
+                    ? Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
+                        'members': [
+                          AuthService.auth.currentUser!.phoneNumber!,
+                          mobileNumber
+                        ],
+                        'displayName' : displayName,
+                        'isGroup': false,
+                      })
                     : Get.toNamed(RouteHelper.getInviteMemberScreen(),
                         parameters: {
                             'firstLetter': firstLetter,
                             'displayName': displayName,
                             'phoneNo': mobileNumber
                           });
+                logs('mo--> $mobileNumber');
               },
               leading: InkWell(
                 onTap: () {
@@ -169,6 +178,8 @@ class NewMessagePage extends StatelessWidget {
   getNumbers() async {
     newMessageViewModel!.mobileNumbers =
         await newMessageViewModel!.getMobileNumbers();
+
+
     logs('phones----> ${newMessageViewModel!.mobileNumbers}');
   }
 

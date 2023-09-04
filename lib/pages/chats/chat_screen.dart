@@ -85,8 +85,6 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-
-
   getAppBar(BuildContext context, ContactController controller) {
     return controller.searchValue
         ? AppAppBar(
@@ -179,12 +177,10 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-
-
-
   buildContactList(ContactController controller) {
     return StreamBuilder<QuerySnapshot>(
-      stream: controller.getMyChatContactList(AuthService.auth.currentUser!.phoneNumber!),
+      stream: controller
+          .getMyChatContactList(AuthService.auth.currentUser!.phoneNumber!),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return AppText('Error: ${snapshot.error}');
@@ -205,17 +201,20 @@ class ChatScreen extends StatelessWidget {
 
             return Container(
                 margin: EdgeInsets.all(10.px),
-                child: ListTile( onTap: () {
-                  Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
-                    'groupProfile' : (documents[index]['isGroup'])? documents[index]['groupProfile'] :'',
-                    'isGroup': (documents[index]['isGroup']) ? true : false,
-                    'groupName': (documents[index]['isGroup'])
-                        ? documents[index]['groupName']
-                        : '',
-                    'id': documents[index]['id'],
-                    'members': documents[index]['members'],
-                  });
-                },
+                child: ListTile(
+                  onTap: () {
+                    Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
+                      'groupProfile': (documents[index]['isGroup'])
+                          ? documents[index]['groupProfile']
+                          : '',
+                      'isGroup': (documents[index]['isGroup']) ? true : false,
+                      'groupName': (documents[index]['isGroup'])
+                          ? documents[index]['groupName']
+                          : '',
+                      'id': documents[index]['id'],
+                      'members': documents[index]['members'],
+                    });
+                  },
                   trailing: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -239,50 +238,50 @@ class ChatScreen extends StatelessWidget {
                     child: CircleAvatar(
                       maxRadius: 30.px,
                       backgroundColor:
-                      AppColorConstant.appYellow.withOpacity(0.8),
+                          AppColorConstant.appYellow.withOpacity(0.8),
                       child: (isGroup)
                           ? AppText(
-                        documents[index]['groupName']
-                            .substring(0, 1)
-                            .toUpperCase() ??
-                            "",
-                        color: AppColorConstant.appWhite,
-                        fontSize: 22.px,
-                      )
+                              documents[index]['groupName']
+                                      .substring(0, 1)
+                                      .toUpperCase() ??
+                                  "",
+                              color: AppColorConstant.appWhite,
+                              fontSize: 22.px,
+                            )
                           : AppText(
-                        documents[index]['id']
-                            .substring(0, 1)
-                            .toUpperCase() ??
-                            "",
-                        color: AppColorConstant.appWhite,
-                        fontSize: 22.px,
-                      ),
+                              documents[index]['id']
+                                      .substring(0, 1)
+                                      .toUpperCase() ??
+                                  "",
+                              color: AppColorConstant.appWhite,
+                              fontSize: 22.px,
+                            ),
                     ),
                   ),
                   title: (isGroup)
                       ? AppText(
-                    documents[index]['groupName'] ?? "",
-                    fontSize: 15.px,
-                  )
+                          documents[index]['groupName'] ?? "",
+                          fontSize: 15.px,
+                        )
                       : StreamBuilder(
-                    stream: controller
-                        .getUserName(receiverName),
-                    builder:
-                        (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return AppText('Error: ${snapshot.error}');
-                      }
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const AppText('');
-                      }
-                      final data = snapshot.data!.docs;
-                      return AppText(
-                        data[index]['firstName'] ?? "",
-                        fontSize: 15.px,
-                      );
-                    },
-                  ),
+                          stream: controller.getUserName(receiverName),
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                            logs('receiver----> $receiverName');
+                            if (snapshot.hasError) {
+                              return AppText('Error: ${snapshot.error}');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const AppText('');
+                            }
+                            final data = snapshot.data!.docs;
+                            return AppText(
+                              data[index]['firstName'] ?? "",
+                              fontSize: 15.px,
+                            );
+                          },
+                        ),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -295,24 +294,26 @@ class ChatScreen extends StatelessWidget {
                       final messageData = snapshot.data!.docs;
                       return (isGroup)
                           ? StreamBuilder(
-                        stream: controller.getUserName(messageData[0]["sender"]),
-                        builder: (context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            return AppText('Error: ${snapshot.error}');
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const AppText('');
-                          }
-                          final data = snapshot.data!.docs;
-                          return AppText("${data[0]["firstName"]} | ${messageData[0]["message"]}",
-                              color: AppColorConstant.grey,
-                              fontSize: 12.px);
-                        },
-                      )
+                              stream: controller
+                                  .getUserName(messageData[0]["sender"]),
+                              builder: (context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  return AppText('Error: ${snapshot.error}');
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const AppText('');
+                                }
+                                final data = snapshot.data!.docs;
+                                return AppText(
+                                    "${data[0]["firstName"]} | ${messageData[0]["message"]}",
+                                    color: AppColorConstant.grey,
+                                    fontSize: 12.px);
+                              },
+                            )
                           : AppText(messageData[0]["message"] ?? "",
-                          color: AppColorConstant.grey, fontSize: 12.px);
+                              color: AppColorConstant.grey, fontSize: 12.px);
                     },
                   ),
                 ));
@@ -321,5 +322,4 @@ class ChatScreen extends StatelessWidget {
       },
     );
   }
-
 }

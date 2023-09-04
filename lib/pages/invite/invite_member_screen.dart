@@ -40,17 +40,11 @@ class InviteMemberScreen extends StatelessWidget {
       leadingWidth: 110.px,
       leading: Padding(
         padding: EdgeInsets.all(5.px),
-        child: Row(
-          children: [
-            IconButton(
-                onPressed: () {}, icon: const Icon(Icons.arrow_back_outlined)),
-            CircleAvatar(
-              maxRadius: 20.px,
-              backgroundColor: AppColorConstant.appYellow,
-              child: AppText(inviteViewModel!.parameter['firstLetter'],
-                  color: AppColorConstant.appWhite),
-            ),
-          ],
+        child: CircleAvatar(
+          maxRadius: 20.px,
+          backgroundColor: AppColorConstant.appYellow,
+          child: AppText(inviteViewModel!.parameter['firstLetter'],
+              color: AppColorConstant.appWhite),
         ),
       ),
       title: AppText(

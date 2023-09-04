@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/date_formation.dart';
@@ -340,7 +339,7 @@ class ChatingPage extends StatelessWidget {
           child: AppText(
               (chatingPageViewModal!.arguments['isGroup'])
                   ? chatingPageViewModal!.arguments['groupName']
-                  : chatingPageViewModal!.arguments['members'][1],
+                  : chatingPageViewModal!.arguments['members'][0],
               fontSize: 18.px,
               overflow: TextOverflow.ellipsis),
         ),
