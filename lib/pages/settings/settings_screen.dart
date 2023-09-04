@@ -11,6 +11,7 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
 
+// ignore: must_be_immutable
 class SettingScreen extends StatelessWidget {
   SettingScreen({Key? key}) : super(key: key);
 

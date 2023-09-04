@@ -12,10 +12,10 @@ class DatabaseService {
 
   Future<String?> addUser(
       {required String firstName,
-        required String lastName,
-        required String photo,
-        required String phone,
-        required String fcmToken}) async {
+      String? lastName,
+      required String photo,
+      required String phone,
+      required String fcmToken}) async {
     try {
       users.set({
         'id': AuthService.auth.currentUser!.uid,
@@ -42,23 +42,22 @@ class DatabaseService {
   addNewMessage({
     String? profile,
     String? groupName,
-    required List<String> members,
-    required String massage,
-    required String sender,
-    required bool isGroup,
+    List<dynamic>? members,
+    String? massage,
+    String? sender,
+    bool? isGroup,
   }) async {
-    bool isFirst = await checkFirst(members);
+    bool isFirst = await checkFirst(members!);
 
     if (isFirst) {
       DocumentReference doc =
-      await FirebaseFirestore.instance.collection('rooms').add({
+          await FirebaseFirestore.instance.collection('rooms').add({
         'id': '',
         'members': members,
         'isGroup': isGroup,
         'time': DateTime.now().millisecondsSinceEpoch,
       });
       await doc.update({'id': doc.id});
-
 
       if (isGroup == true) {
         await doc.update({'id': doc.id});
@@ -68,38 +67,42 @@ class DatabaseService {
             .update({
           'groupProfile': profile,
           'groupName': groupName,
-        }).then((value) => Get.toNamed(RouteHelper.getChattingScreen(),
-            arguments: members,
-            parameters: {
-              'photoUrl': profile!,
-              'firstName': groupName!,
-              'phoneNumber': AuthService.auth.currentUser!.phoneNumber!,
-            }));
-        addChatMessages(message: massage, sender: sender, members: members);
+        }).then((value) =>
+                Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
+                  'isGroup': true,
+                  'groupName': groupName!,
+                  'members': members,
+                }));
       }
-      addChatMessages(message: massage, sender: sender, members: members);
-      documentId = doc.id;
+      addChatMessages(members: members, message: massage!, sender: sender!);
     }
+
+    addChatMessages(message: massage!, sender: sender!, members: members);
   }
 
-  Future<bool> checkFirst(List<String> members) async {
+  Future<bool> checkFirst(List<dynamic> members) async {
     QuerySnapshot userMessages = await FirebaseFirestore.instance
         .collection('rooms')
         .where('members', isEqualTo: members)
         .get();
+
     return userMessages.docs.isEmpty;
   }
 
   addChatMessages({
-    required List<String> members,
-    required String message,
-    required String sender,
+    List<dynamic>? members,
+    String? message,
+    String? sender,
   }) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('rooms')
         .where('members', isEqualTo: members)
         .get();
+
     logs(querySnapshot.docs.first.id);
+
+    logs(querySnapshot.docs.first.id);
+
     FirebaseFirestore.instance
         .collection('rooms')
         .doc(querySnapshot.docs.first.id)
@@ -110,12 +113,14 @@ class DatabaseService {
       'timeStamp': DateTime.now().millisecondsSinceEpoch,
     });
   }
+
   getChatStream(String id) {
     final Stream<QuerySnapshot> chatStream = FirebaseFirestore.instance
         .collection('rooms')
         .doc(id)
-        .collection('chats')
+        .collection('chats').orderBy('timeStamp', descending: false)
         .snapshots();
+
     return chatStream;
   }
 }

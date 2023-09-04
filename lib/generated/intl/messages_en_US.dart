@@ -23,19 +23,42 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "account": MessageLookupByLibrary.simpleMessage("Account"),
+        "advance": MessageLookupByLibrary.simpleMessage("Advance"),
+        "advanceDescription": MessageLookupByLibrary.simpleMessage(
+            "Signal messages and calls, always relay calls, and sealed sender"),
         "appIcon": MessageLookupByLibrary.simpleMessage("App Icon"),
+        "appSecurity": MessageLookupByLibrary.simpleMessage("App security"),
         "appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
+        "audio": MessageLookupByLibrary.simpleMessage("Audio"),
+        "blockScreenshots": MessageLookupByLibrary.simpleMessage(
+            "Block screenshots in the recents list and inside the app"),
+        "blocked": MessageLookupByLibrary.simpleMessage("Blocked"),
         "calls": MessageLookupByLibrary.simpleMessage("Calls"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-        "chatColor":
-            MessageLookupByLibrary.simpleMessage("Chat Color & wallpaper"),
+        "chatColor": MessageLookupByLibrary.simpleMessage("Chat color"),
+        "chatColorAndWallpaper":
+            MessageLookupByLibrary.simpleMessage("Chat color & Wallpaper"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "choose": MessageLookupByLibrary.simpleMessage("choose"),
+        "chooseFromPhotos":
+            MessageLookupByLibrary.simpleMessage("Choose from photos"),
+        "colorIsOnlyVisibleYou":
+            MessageLookupByLibrary.simpleMessage("Color is only visible you"),
+        "contactDetails":
+            MessageLookupByLibrary.simpleMessage("Contact details"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
+        "contacts": MessageLookupByLibrary.simpleMessage("contacts"),
         "continues": MessageLookupByLibrary.simpleMessage("Continue"),
-        "continues": MessageLookupByLibrary.simpleMessage("Contiue"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
+        "darkModeWallpaper":
+            MessageLookupByLibrary.simpleMessage("Dark mode dims wallpaper"),
         "debugLog": MessageLookupByLibrary.simpleMessage("Debug log"),
+        "defaultTimerForNewChats":
+            MessageLookupByLibrary.simpleMessage("Default timer for new chats"),
+        "disappearingDescription": MessageLookupByLibrary.simpleMessage(
+            "set a default disappearing message timer for all new chats started to you"),
+        "disappearingMessages":
+            MessageLookupByLibrary.simpleMessage("Disappearing Messages"),
         "donateToSignal":
             MessageLookupByLibrary.simpleMessage("Donate To Signal"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
@@ -44,6 +67,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "featureRequest":
             MessageLookupByLibrary.simpleMessage("Feature Request"),
         "feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
+        "fingerprintTransfer": MessageLookupByLibrary.simpleMessage(
+            "Require Android screen lock or fingerprint to transfer funds"),
         "firstName":
             MessageLookupByLibrary.simpleMessage("First Name ( Required )"),
         "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
@@ -53,7 +78,13 @@ class MessageLookup extends MessageLookupByLibrary {
             "Copyright Signal Messenger \n Licensed under the GNU AGPlv3"),
         "includeDebug":
             MessageLookupByLibrary.simpleMessage("Include Debug Log"),
+        "incognitoKeyboard":
+            MessageLookupByLibrary.simpleMessage("Incognito Keyboard"),
+        "indicatorsDescription": MessageLookupByLibrary.simpleMessage(
+            "if typing indicators are disabled, you wont be able to see typing indicators from others"),
         "inviteFriends": MessageLookupByLibrary.simpleMessage("Invite Friends"),
+        "keyboardDisable": MessageLookupByLibrary.simpleMessage(
+            "Request keyboard to disable personalized learning."),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "lastName":
             MessageLookupByLibrary.simpleMessage("Last Name ( Required )"),
@@ -63,22 +94,48 @@ class MessageLookup extends MessageLookupByLibrary {
         "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
         "messageFontSize":
             MessageLookupByLibrary.simpleMessage("Message Font Size"),
+        "messaging": MessageLookupByLibrary.simpleMessage("Messaging"),
+        "mute": MessageLookupByLibrary.simpleMessage("Mute"),
         "navigationBarSize":
             MessageLookupByLibrary.simpleMessage("Navigation Bar Size"),
         "newGroup": MessageLookupByLibrary.simpleMessage("New Group"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "normal": MessageLookupByLibrary.simpleMessage("Normal"),
         "notification": MessageLookupByLibrary.simpleMessage("Notification"),
+        "off": MessageLookupByLibrary.simpleMessage("off"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "paymentLock": MessageLookupByLibrary.simpleMessage("Payment lock"),
+        "payments": MessageLookupByLibrary.simpleMessage("Payments"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+        "presets": MessageLookupByLibrary.simpleMessage("Presets"),
+        "preview": MessageLookupByLibrary.simpleMessage("Preview"),
+        "privacy": MessageLookupByLibrary.simpleMessage("Privacy"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
             "Profiles Are Visible To People You Message,Contacts, and Groups."),
         "question": MessageLookupByLibrary.simpleMessage("Question"),
         "readFaq":
             MessageLookupByLibrary.simpleMessage("Have you read our FAQ yet?"),
+        "readReceipts": MessageLookupByLibrary.simpleMessage("Read Receipts"),
+        "receiptsDescription": MessageLookupByLibrary.simpleMessage(
+            "if read receipts are disabled, you wont be able to see read receipts from others"),
+        "reset": MessageLookupByLibrary.simpleMessage("Reset"),
+        "resetChatColor":
+            MessageLookupByLibrary.simpleMessage("Reset chat color?"),
+        "resetWallpaper":
+            MessageLookupByLibrary.simpleMessage("Reset Wallpaper"),
+        "screenLock": MessageLookupByLibrary.simpleMessage("Screen lock"),
+        "screenLockDescription": MessageLookupByLibrary.simpleMessage(
+            "Lock signal access with android screen lock for fingerprint"),
+        "screenLockTimeout": MessageLookupByLibrary.simpleMessage(
+            "Screen lock inactivity timeout"),
+        "screenSecurity":
+            MessageLookupByLibrary.simpleMessage("Screen Security"),
         "search": MessageLookupByLibrary.simpleMessage("Search.."),
+        "setWallpaper": MessageLookupByLibrary.simpleMessage("Set Wallpaper"),
+        "settingGuarantee": MessageLookupByLibrary.simpleMessage(
+            "This setting is not a guarantee, and your keyboard may ignore it.."),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "signInDescription": MessageLookupByLibrary.simpleMessage(
@@ -87,6 +144,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "signalMessage": MessageLookupByLibrary.simpleMessage("Signal message"),
         "somethingNotWorking":
             MessageLookupByLibrary.simpleMessage("Somethings Not Working"),
+        "soundAndNotification":
+            MessageLookupByLibrary.simpleMessage("Sound & Notification"),
         "supportCenter": MessageLookupByLibrary.simpleMessage("Support center"),
         "systemDefault": MessageLookupByLibrary.simpleMessage("System Default"),
         "tellUs": MessageLookupByLibrary.simpleMessage(
@@ -99,14 +158,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),
         "toMakeYourDayGreat":
             MessageLookupByLibrary.simpleMessage("to make your day great!"),
+        "today": MessageLookupByLibrary.simpleMessage("Today"),
         "transferOrRestoreAccount":
             MessageLookupByLibrary.simpleMessage("Transfer or Restore Account"),
+        "typingIndicators":
+            MessageLookupByLibrary.simpleMessage("Typing indicators"),
         "userName": MessageLookupByLibrary.simpleMessage("User Name"),
         "verify": MessageLookupByLibrary.simpleMessage("Verify OTP"),
         "verifyButton": MessageLookupByLibrary.simpleMessage("Verify"),
         "verifyOtp":
             MessageLookupByLibrary.simpleMessage("Enter The Code We Sent To"),
         "version": MessageLookupByLibrary.simpleMessage("Version"),
+        "video": MessageLookupByLibrary.simpleMessage("Video"),
+        "viewSafetyNumbers":
+            MessageLookupByLibrary.simpleMessage("View safety numbers"),
         "welcomeToChat":
             MessageLookupByLibrary.simpleMessage(" Welcome To Chat"),
         "whatsThis": MessageLookupByLibrary.simpleMessage("Whats this?"),

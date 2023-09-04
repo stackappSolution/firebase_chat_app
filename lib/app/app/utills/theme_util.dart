@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
-
 import '../../../constant/color_constant.dart';
 import 'app_utills.dart';
 
@@ -37,18 +36,22 @@ class ThemeUtil {
 
 class Themes {
   static ThemeData darkTheme = ThemeData(
+
       appBarTheme:
           const AppBarTheme(backgroundColor: AppColorConstant.appBlack),
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
         background: AppColorConstant.darkPrimary,
         primary: AppColorConstant.appWhite,
+
+
         secondary: AppColorConstant.darkSecondary,
       ));
 
   static ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
       appBarTheme: const AppBarTheme(
+
           iconTheme: IconThemeData(color: AppColorConstant.appBlack),
           titleTextStyle: TextStyle(color: AppColorConstant.appBlack)),
       colorScheme: const ColorScheme.light(
@@ -57,3 +60,6 @@ class Themes {
         secondary: AppColorConstant.darkSecondary,
       ));
 }
+
+
+

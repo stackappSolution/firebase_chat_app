@@ -12,7 +12,7 @@ class AppAlertDialog extends StatelessWidget {
   final EdgeInsetsGeometry? actionsPadding;
   final double? elevation;
   final EdgeInsetsGeometry? contentPadding;
-  final EdgeInsets insetPadding;
+  final EdgeInsets? insetPadding;
 
   const AppAlertDialog({
       this.shape,
@@ -26,7 +26,7 @@ class AppAlertDialog extends StatelessWidget {
       this.actionsPadding,
       this.elevation,
       this.contentPadding,
-      required this.insetPadding, super.key});
+       this.insetPadding, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +42,6 @@ class AppAlertDialog extends StatelessWidget {
         alignment: alignment,
         elevation: elevation,
         contentPadding: contentPadding,
-        insetPadding: insetPadding);
+        insetPadding: insetPadding!);
   }
 }

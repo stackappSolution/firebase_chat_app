@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,11 +20,12 @@ class NewMessageViewModel{
   TextEditingController textController = TextEditingController();
   final DatabaseService databaseService = DatabaseService();
   bool isSerching = false;
+  List<String> mobileNumbers = [];
 
 
 
   NewMessageViewModel(this.newMessagePage){
-    Future.delayed( const Duration(milliseconds: 100), () {
+    Future.delayed( const Duration(milliseconds: 0), () {
       newMessageController= Get.find<NewMessageController>();
     },);
   }
@@ -53,5 +55,22 @@ class NewMessageViewModel{
   getAllContacts() async {
     List<Contact>contacts = (await ContactsService.getContacts(withThumbnails:false)).toList();
     logs("contactssssss-->${contacts.first.phones!.length}");
+  }
+
+
+
+
+
+
+  Future<List<String>> getMobileNumbers() async {
+    QuerySnapshot usersSnapshot =
+    await FirebaseFirestore.instance.collection('users').get();
+
+    for (var value in usersSnapshot.docs) {
+      String mobileNumber = value.get('phone');
+      mobileNumbers.add(mobileNumber);
+    }
+
+    return mobileNumbers;
   }
 }

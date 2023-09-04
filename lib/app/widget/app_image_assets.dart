@@ -37,6 +37,6 @@ class AppImageAsset extends StatelessWidget {
             ? Image.file(File(image ?? ''), height: height, width: width, color: color, fit: fit)
             : image!.split('.').last != 'svg'
                 ? Image.asset(image!, fit: fit, height: height, width: width, color: color)
-                : SvgPicture.asset(image!, height: height, width: width, color: color);
+                : SvgPicture.asset(image!, height: height, width: width,);
   }
 }

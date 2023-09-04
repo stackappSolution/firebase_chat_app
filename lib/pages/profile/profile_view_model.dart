@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -9,8 +9,12 @@ import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
+import 'package:signal/controller/profile_controller.dart';
+import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
-import 'package:signal/routes/app_navigation.dart';
+import 'package:signal/service/auth_service.dart';
+
+import 'package:signal/service/database_service.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/validation.dart';
@@ -24,8 +28,19 @@ class ProfileViewModel {
   String errorFirstName = "";
   bool isButtonActive = false;
   File? selectedImage;
+  String? userProfile;
+  bool isLoading = false;
+  Map<String, dynamic> parameter = {};
+  ProfileController? controller;
 
-  ProfileViewModel(this.profileScreen);
+  ProfileViewModel(this.profileScreen) {
+    Future.delayed(
+      const Duration(milliseconds: 200),
+      () {
+        controller = Get.find<ProfileController>();
+      },
+    );
+  }
 
   onChangedValue(value, GetxController controller) {
     if (ValidationUtil.validateName(value)) {
@@ -43,7 +58,6 @@ class ProfileViewModel {
   }
 
   onTapNext(context) {
-    goToHomeScreen();
     logs("NextTapped");
   }
 
@@ -146,6 +160,7 @@ class ProfileViewModel {
     logs("permissionCamera ---- >${await Permission.camera.status.isGranted}");
     if (await Permission.camera.status.isGranted ||
         await Permission.storage.status.isGranted) {
+      // ignore: use_build_context_synchronously
       showDialogs(context, controller);
     } else {
       await Permission.storage.request();
@@ -159,6 +174,7 @@ class ProfileViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
+      uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
     }
@@ -170,7 +186,39 @@ class ProfileViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
+      uploadImage(selectedImage!);
+      logs(selectedImage.toString());
       controller.update();
     }
+  }
+
+  uploadImage(File imageUrl) async {
+    isLoading = true;
+    logs("load--> $isLoading");
+    controller!.update();
+    final storage = FirebaseStorage.instance
+        .ref('profile')
+        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child('profile.jpg');
+    await storage.putFile(imageUrl);
+    userProfile = await storage.getDownloadURL();
+    logs("profile........ $userProfile");
+    isLoading = false;
+    logs("load--> $isLoading");
+    controller!.update();
+  }
+
+  onSaveProfile(String firstName, String lastName, String phoneNo) {
+
+
+    DatabaseService()
+        .addUser(
+          firstName: firstName,
+          lastName: lastName,
+          phone: phoneNo,
+          photo: (userProfile != null) ? userProfile! : '',
+          fcmToken: '',
+        )
+        .then((value) => Get.offAll(() => HomeScreen()));
   }
 }

@@ -16,6 +16,7 @@ import '../../controller/intro_page_controller.dart';
 import '../../service/network_connectivity.dart';
 import 'package:connectivity/connectivity.dart';
 
+// ignore: must_be_immutable
 class IntroPage extends StatelessWidget {
   Map _source = {ConnectivityResult.none: false};
   final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;

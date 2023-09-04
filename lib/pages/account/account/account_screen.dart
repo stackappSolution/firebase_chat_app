@@ -6,6 +6,8 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
+import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/auth_service.dart';
 
 import 'account_view_model.dart';
 
@@ -176,9 +178,17 @@ class AccountScreen extends StatelessWidget {
                   child: AppText(StringConstant.yourAccountData,
                       color: primaryTheme),
                 ),
-                const AppText(
-                  StringConstant.deleteAccount,
-                  color: AppColorConstant.red,
+                InkWell(
+                  onTap: () async {
+                    AuthService.auth.signOut().then(
+                        (value) => Get.offAllNamed(RouteHelper.getIntroScreen()));
+
+                    controller.update();
+                  },
+                  child: const AppText(
+                    StringConstant.deleteAccount,
+                    color: AppColorConstant.red,
+                  ),
                 ),
               ],
             ),
