@@ -33,6 +33,7 @@ class SignInPage extends StatelessWidget {
         builder: (SignInController controller) {
           return SafeArea(
             child: Scaffold(
+              backgroundColor:Theme.of(context).colorScheme.background,
                 body: buildsignInPage(
                     signInViewModel!.selectedCountry.toString(),
                     signInViewModel!.phoneNumber.text,
@@ -88,12 +89,13 @@ class SignInPage extends StatelessWidget {
                     S.of(Get.context!).signal,
                     fontSize: 30.px,
                     fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.primary,
                   )),
               Container(
                 margin: EdgeInsets.only(left: 20.px),
                 child: AppText(
                   S.of(Get.context!).signInDescription,
-                  color: AppColorConstant.appLightBlack.withOpacity(0.4),
+                  color: Theme.of(context).colorScheme.secondary,
                   fontWeight: FontWeight.w400,
                   fontSize: 15.px,
                 ),

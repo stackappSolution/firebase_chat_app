@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -16,6 +17,10 @@ import 'package:signal/pages/chats/chat_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
+
+import '../../app/widget/app_alert_dialog.dart';
+import '../../app/widget/app_button.dart';
+import '../../service/network_connectivity.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -261,7 +266,9 @@ class ChatScreen extends StatelessWidget {
                                       .substring(0, 1)
                                       .toUpperCase() ??
                                   "",
-                              color: AppColorConstant.appWhite,
+
+                              color: Theme.of(context).colorScheme.primary,
+
                               fontSize: 22.px,
                             )
                           : AppText(
@@ -276,7 +283,7 @@ class ChatScreen extends StatelessWidget {
                   ),
                   title: (isGroup)
                       ? AppText(
-                          documents[index]['groupName'] ?? "",
+      documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
                           color: Theme.of(context).colorScheme.primary,
                         )

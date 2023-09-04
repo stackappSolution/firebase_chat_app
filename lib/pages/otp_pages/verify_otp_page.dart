@@ -29,14 +29,15 @@ class VerifyOtpPage extends StatelessWidget {
       builder: (VerifyOtpController controller) {
         return SafeArea(
           child: Scaffold(
-            body: buildVerifyotpScreen(controller),
+            backgroundColor: Theme.of(context).colorScheme.background,
+            body: buildVerifyotpScreen(context, controller),
           ),
         );
       },
     );
   }
 
-  buildVerifyotpScreen(VerifyOtpController controller) => Container(
+  buildVerifyotpScreen(context, VerifyOtpController controller) => Container(
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -74,12 +75,14 @@ class VerifyOtpPage extends StatelessWidget {
                     S.of(Get.context!).verify,
                     fontSize: 30.px,
                     fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.primary,
+
                   )),
               Container(
                 margin: EdgeInsets.only(left: 20.px),
                 child: AppText(
                   '${S.of(Get.context!).verifyOtp}${verifyOtpViewModel!.parameter["selectedCountry"]}${verifyOtpViewModel!.parameter["phoneNo"]}',
-                  color: AppColorConstant.appLightBlack.withOpacity(0.4),
+                  color: Theme.of(context).colorScheme.secondary,
                   fontWeight: FontWeight.w400,
                   fontSize: 15.px,
                 ),
@@ -101,9 +104,9 @@ class VerifyOtpPage extends StatelessWidget {
                                   width: 2.px),
                               borderRadius: BorderRadius.circular(15.px)),
                           height: 50.px,
-                          textStyle:  TextStyle(
+                          textStyle: TextStyle(
                               fontSize: 20.px,
-                              color: AppColorConstant.appBlack,
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w600),
                         ),
                         validator: (value) {
@@ -135,7 +138,7 @@ class VerifyOtpPage extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.center,
-                child:verifyOtpViewModel!.isValidOTP != true
+                child: verifyOtpViewModel!.isValidOTP != true
                     ? ElevatedButton(
                         onPressed: () {},
                         style: ButtonStyle(
@@ -155,21 +158,18 @@ class VerifyOtpPage extends StatelessWidget {
                       )
                     : ElevatedButton(
                         onPressed: () async {
-                                await AuthService()
-                                    .verifyOtp(
-                                      verificationID:
-                                          AuthService.verificationID,
-                                      smsCode: verifyOtpViewModel!
-                                          .otpcontroller.text,
-                                      phoneNumber: verifyOtpViewModel!
-                                          .parameter.values.first,
-                                    )
-                                    .then((isVerificationSuccessful) {})
-                                    .catchError((error) {
-                                  logs(
-                                      "Error during OTP verification----> $error");
-                                });
-                              },
+                          await AuthService()
+                              .verifyOtp(
+                                verificationID: AuthService.verificationID,
+                                smsCode: verifyOtpViewModel!.otpcontroller.text,
+                                phoneNumber:
+                                    verifyOtpViewModel!.parameter.values.first,
+                              )
+                              .then((isVerificationSuccessful) {})
+                              .catchError((error) {
+                            logs("Error during OTP verification----> $error");
+                          });
+                        },
                         style: ButtonStyle(
                             shape: MaterialStatePropertyAll(
                                 RoundedRectangleBorder(
@@ -189,6 +189,4 @@ class VerifyOtpPage extends StatelessWidget {
           ),
         ),
       );
-
-
 }

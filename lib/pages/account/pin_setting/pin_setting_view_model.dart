@@ -13,6 +13,8 @@ class PinSettingViewModel {
   bool changeKeyBoard = false;
   bool isButtonActive = false;
   bool isConformPage = false;
+  FocusNode focusNode = FocusNode();
+
   String newPin = "";
 
   PinSettingViewModel(this.pinSettingScreen);

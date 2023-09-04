@@ -71,11 +71,15 @@ class PinSettingScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
           child: TextField(
+            style: const TextStyle(color: AppColorConstant.appBlack),
+
             controller: pinSettingViewModel!.pinController,
             keyboardType: (pinSettingViewModel!.changeKeyBoard)
                 ? TextInputType.text
                 : TextInputType.number,
             textAlign: TextAlign.center,
+            focusNode: pinSettingViewModel!.focusNode,
+
             autofocus: true,
             obscureText: true,
             inputFormatters: (!pinSettingViewModel!.changeKeyBoard)
@@ -168,18 +172,14 @@ class PinSettingScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
           child: TextField(
+            style: const TextStyle(color: AppColorConstant.appBlack),
             controller: pinSettingViewModel!.conformPinController,
-            keyboardType: (pinSettingViewModel!.changeKeyBoard)
-                ? TextInputType.text
-                : TextInputType.number,
+            keyboardType:TextInputType.text,
             textAlign: TextAlign.center,
+            focusNode: pinSettingViewModel!.focusNode,
             autofocus: true,
             obscureText: true,
-            inputFormatters: (!pinSettingViewModel!.changeKeyBoard)
-                ? [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                  ]
-                : [
+            inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
                   ],
             decoration: const InputDecoration(
@@ -202,7 +202,8 @@ class PinSettingScreen extends StatelessWidget {
           ? InkWell(
               onTap: (pinSettingViewModel!.isButtonActive)
                   ? () {
-                      pinSettingViewModel!.nextCreateButtonTap(controller);
+                FocusScope.of(context).nextFocus();
+                pinSettingViewModel!.nextCreateButtonTap(controller);
                     }
                   : null,
               child: Container(
@@ -212,7 +213,7 @@ class PinSettingScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: (!pinSettingViewModel!.isButtonActive)
                         ? Theme.of(context).colorScheme.secondary
-                        : AppColorConstant.yellowLight,
+                        : AppColorConstant.appYellow,
                     borderRadius: BorderRadius.all(Radius.circular(30.px))),
                 child: AppText(
                   S.of(context).next,
@@ -224,7 +225,8 @@ class PinSettingScreen extends StatelessWidget {
           : InkWell(
               onTap: (pinSettingViewModel!.isButtonActive)
                   ? () {
-                      pinSettingViewModel!.nextConformButtonTap(controller);
+                FocusScope.of(context).nextFocus();
+                pinSettingViewModel!.nextConformButtonTap(controller);
                     }
                   : null,
               child: Container(
@@ -234,7 +236,7 @@ class PinSettingScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: (!pinSettingViewModel!.isButtonActive)
                         ? Theme.of(context).colorScheme.secondary
-                        : AppColorConstant.yellowLight,
+                        : AppColorConstant.appYellow,
                     borderRadius: BorderRadius.all(Radius.circular(30.px))),
                 child: AppText(
                   S.of(context).next,

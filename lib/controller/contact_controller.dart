@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:signal/service/network_connectivity.dart';
+
 
 class ContactController extends GetxController {
   RxBool isSearch = false.obs;
@@ -31,7 +33,7 @@ class ContactController extends GetxController {
   getUserName(number) {
     return FirebaseFirestore.instance
         .collection("users")
-        .where('phone', isEqualTo: number)
+        .where('phone', isEqualTo:number)
         .snapshots();
   }
 

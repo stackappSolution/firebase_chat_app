@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -47,7 +49,7 @@ class ChangePhoneViewModel {
             actions: [
               InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.px, bottom: 10.px),
@@ -55,7 +57,7 @@ class ChangePhoneViewModel {
                   )),
               InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.px, bottom: 10.px),

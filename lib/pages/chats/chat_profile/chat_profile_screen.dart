@@ -44,17 +44,7 @@ class ChatProfileScreen extends StatelessWidget {
   }
 
   getAppBar() {
-    return AppAppBar(
-      leading: IconButton(
-          onPressed: () {
-            Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
-              'members': chatProfileViewModel!.arguments['members'],
-              'id': chatProfileViewModel!.arguments['id'],
-              'isGroup' : false,
-            });
-          },
-          icon: const Icon(Icons.arrow_back)),
-    );
+    return const AppAppBar();
   }
 
   getBody(BuildContext context) {
@@ -137,8 +127,8 @@ class ChatProfileScreen extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                chatProfileViewModel!
-                    .launchPhoneURL(chatProfileViewModel!.arguments['members'][0]);
+                chatProfileViewModel!.launchPhoneURL(
+                    chatProfileViewModel!.arguments['members'][0]);
               },
               child: Container(
                   height: 50.px,

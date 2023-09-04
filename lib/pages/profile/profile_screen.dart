@@ -36,7 +36,6 @@ class ProfileScreen extends StatelessWidget {
         profileViewModel!.parameter = Get.parameters;
         logs('profileStatus---> ${AuthService.auth.currentUser!.photoURL}');
 
-
       },
       builder: (GetxController controller) {
         return SafeArea(
@@ -94,40 +93,44 @@ class ProfileScreen extends StatelessWidget {
                                     width: 4.px,
                                     color: AppColorConstant.appWhite),
                                 shape: BoxShape.circle),
-                            child: InkWell(
-                                onTap: () {
-                                  profileViewModel!
-                                      .addProfileTap(context, controller);
-                                },
-                                child: (profileViewModel!.selectedImage != null)
-                                    ? CircleAvatar(
-                                        radius: 55,
-                                        backgroundImage: FileImage(File(
-                                            profileViewModel!
-                                                .selectedImage!.path)),
-                                      )
-                                    : AppImageAsset(
-                                        height: 50.px,
-                                        image: AppAsset.profile)),
+                            child: (profileViewModel!.selectedImage != null)
+                                ? CircleAvatar(
+                                    radius: 55,
+                                    backgroundImage: FileImage(File(
+                                        profileViewModel!
+                                            .selectedImage!.path)),
+                                  )
+                                : AppImageAsset(
+                                    height: 50.px,
+                                    image: AppAsset.profile,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary,
+                                  ),
                           ),
                           Positioned(
                               top: 78.px,
                               left: 93.px,
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  height: 27.px,
-                                  padding: EdgeInsets.all(5.px),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColorConstant.appBlack,
-                                      border: Border.all(
-                                          color: AppColorConstant.appWhite,
-                                          width: 2.px)),
-                                  child: const Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: AppColorConstant.appWhite,
-                                    size: 13,
-                                  )))
+                              child: InkWell(onTap:(){
+                                profileViewModel!
+                                    .addProfileTap(context, controller);
+                              } ,
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    height: 27.px,
+                                    padding: EdgeInsets.all(5.px),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppColorConstant.appBlack,
+                                        border: Border.all(
+                                            color: AppColorConstant.appWhite,
+                                            width: 2.px)),
+                                    child: const Icon(
+                                      Icons.camera_alt_outlined,
+                                      color: AppColorConstant.appWhite,
+                                      size: 13,
+                                    )),
+                              ))
                         ],
                       ),
                     ),

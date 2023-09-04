@@ -431,7 +431,7 @@ class ChatingPage extends StatelessWidget {
   TextFormField textFormField(
       ChatingPageController controller, BuildContext context) {
     return TextFormField(
-        style: const TextStyle(color: AppColorConstant.appBlack),
+        style: TextStyle(color: Theme.of(context).colorScheme.primary),
         maxLines: null,
         keyboardType: TextInputType.multiline,
         cursorColor: AppColorConstant.offBlack,
