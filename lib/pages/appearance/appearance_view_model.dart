@@ -50,8 +50,8 @@ class AppearanceViewModel {
               contentPadding: EdgeInsets.zero,
               insetPadding:
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-              title: const AppText(
-                StringConstant.theme,
+              title:  AppText(
+                S.of(context).theme,
                 color: AppColorConstant.appWhite,
               ),
               actions: [
@@ -66,8 +66,8 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(
-                        StringConstant.systemDefault,
+                      title:  AppText(
+                        S.of(context).systemDefault,
                         color: AppColorConstant.appWhite,
                       ),
                       value: ThemeMode.system,
@@ -85,7 +85,7 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.light,
+                      title:  AppText(S.of(context).light,
                           color: AppColorConstant.appWhite),
                       value: ThemeMode.light,
                       groupValue: selectedTheme,
@@ -101,7 +101,7 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.dark,
+                      title:  AppText(S.of(context).dark,
                           color: AppColorConstant.appWhite),
                       value: ThemeMode.dark,
                       groupValue: selectedTheme,
@@ -239,8 +239,8 @@ class AppearanceViewModel {
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
               insetPadding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              title: const AppText(StringConstant.selectFontSize,
+                   EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              title:  AppText(S.of(context).selectMember,
                   color: AppColorConstant.appWhite),
               actions: [
                 Column(
@@ -254,9 +254,9 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.small,
+                      title:  AppText(S.of(context).small,
                           color: AppColorConstant.appWhite),
-                      value: StringConstant.small,
+                      value: S.of(context).small,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
                         setState(()  {
@@ -271,9 +271,9 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.normal,
+                      title:  AppText(S.of(context).normal,
                           color: AppColorConstant.appWhite),
-                      value: StringConstant.normal,
+                      value: S.of(context).normal,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
                         setState(()  {
@@ -286,9 +286,9 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.large,
+                      title:  AppText(S.of(context).large,
                           color: AppColorConstant.appWhite),
-                      value: StringConstant.large,
+                      value: S.of(context).large,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
                         setState(()  {
@@ -301,9 +301,9 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title: const AppText(StringConstant.extraLarge,
+                      title:  AppText(S.of(context).extraLarge,
                           color: AppColorConstant.appWhite),
-                      value: StringConstant.extraLarge,
+                      value: S.of(context).extraLarge,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
                         setState(()  {
@@ -350,7 +350,7 @@ saveFontSize = await getStringValue(StringConstant.setFontSize);
         break;
       case 3:
         {
-          Get.to(ChatingPage());
+         // Get.to(ChatingPage());
         }
         break;
       case 5:

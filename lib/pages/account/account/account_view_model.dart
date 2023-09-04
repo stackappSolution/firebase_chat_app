@@ -9,6 +9,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/app_navigation.dart';
 
 import 'account_screen.dart';
@@ -55,8 +56,8 @@ class AccountViewModel {
             builder: (context, setState) {
               return AppAlertDialog(
                 title: AppText(
-                  StringConstant.conformYourChatAppPIN,
                   fontSize: 18.px,
+                  S.of(context).conformYourChatAppPIN,
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 insetPadding: EdgeInsets.zero,
@@ -64,7 +65,7 @@ class AccountViewModel {
                   height: 170.px,
                   child: Column(children: [
                     AppText(
-                      StringConstant.makeSureYou,
+                      S.of(context).makeSureYou,
                       color: AppColorConstant.darkSecondary,
                       fontSize: 14.px,
                     ),
@@ -124,7 +125,7 @@ class AccountViewModel {
                                   Padding(
                                     padding: EdgeInsets.only(left: 5.px),
                                     child: AppText(
-                                        StringConstant.switchKeyboard,
+                                        S.of(context).switchKeyboard,
                                         fontSize: 13.px,
                                         color: AppColorConstant.blue),
                                   )
@@ -137,7 +138,7 @@ class AccountViewModel {
                       Padding(
                         padding: EdgeInsets.only(top: 10.px),
                         child: AppText(
-                          StringConstant.incorrectPinTryAgain,
+                          S.of(context).incorrectPinTryAgain,
                           color: AppColorConstant.red,
                           fontSize: 12.px,
                         ),
@@ -154,8 +155,8 @@ class AccountViewModel {
                         Navigator.pop(context);
                         controller.update();
                       },
-                      child: const AppText(
-                        StringConstant.cansel,
+                      child:  AppText(
+                        S.of(context).cancel,
                         color: AppColorConstant.appYellow,
                       ),
                     ),
@@ -179,7 +180,7 @@ class AccountViewModel {
                           );
                         }
                       },
-                      child: const AppText(StringConstant.turnOff,
+                      child:  AppText(S.of(context).turnOff,
                           color: AppColorConstant.appYellow),
                     ),
                   )
@@ -206,12 +207,12 @@ class AccountViewModel {
             return AppAlertDialog(
               title: (isRegistrationLockActive)
                   ? AppText(
-                      StringConstant.turnOffRegistration,
+                      S.of(context).turnOffRegistration,
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 16.px,
                     )
                   : AppText(
-                      StringConstant.turnOnRegistration,
+                      S.of(context).turnOnRegistration,
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 16.px,
                     ),
@@ -222,7 +223,7 @@ class AccountViewModel {
                 child: Column(children: [
                   if (!isRegistrationLockActive)
                     AppText(
-                      StringConstant.ifYouForgetYourPIN,
+                      S.of(context).ifYouForgetYourPIN,
                       color: AppColorConstant.darkSecondary,
                       fontSize: 14.px,
                     )
@@ -236,8 +237,8 @@ class AccountViewModel {
                       Get.back();
                       controller.update();
                     },
-                    child: const AppText(
-                      StringConstant.cansel,
+                    child:  AppText(
+                     S.of(context).cancel,
                       color: AppColorConstant.appYellow,
                     ),
                   ),
@@ -260,7 +261,7 @@ class AccountViewModel {
                             controller.update();
                             Get.back();
                           },
-                          child: const AppText(StringConstant.turnOn,
+                          child:  AppText(S.of(context).turnOn,
                               color: AppColorConstant.appYellow)),
                 )
               ],

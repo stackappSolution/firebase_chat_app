@@ -14,6 +14,7 @@ import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
@@ -38,12 +39,15 @@ class ChatingPage extends StatelessWidget {
 
     return GetBuilder<ChatingPageController>(
         initState: (state) async {
+
+          chatingPageViewModal!.parameter = Get.parameters;
+          chatingPageViewModal!.arguments = Get.arguments;
+
           Future.delayed(
             const Duration(milliseconds: 0),
             () async {
-              controller = Get.find<ChatingPageController>();
-              chatingPageViewModal!.parameter = Get.parameters;
-              chatingPageViewModal!.arguments = Get.arguments;
+              controller = Get.put(ChatingPageController());
+
               logs('arg--> ${chatingPageViewModal!.arguments}');
 
               final snapshots = await FirebaseFirestore.instance
@@ -137,7 +141,7 @@ class ChatingPage extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(35.px)),
                                     height: 40.px,
-                                    child: textFormField(controller))),
+                                    child: textFormField(controller,context))),
                             AppButton(
                                 margin: EdgeInsets.only(right: 15.px),
                                 height: 40.px,
@@ -218,17 +222,37 @@ class ChatingPage extends StatelessWidget {
                               alignment: Alignment.topRight,
                               backGroundColor:
                                   chatingPageViewModal!.chatBubbleColor,
-                              child: AppText(chatMessage,
-                                  color: AppColorConstant.appWhite,
-                                  fontSize: getFontSizeValue(
-                                      small: 10.px,
-                                      large: 20.px,
-                                      extraLarge: 25.px,
-                                      normal: 15.px))),
+                              child: (chatingPageViewModal!
+                                      .arguments['isGroup'])
+                                  ? Column(
+                                      children: [
+                                        AppText(
+                                          sender,
+                                          fontSize: 10.px,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                        AppText(chatMessage,
+                                            color: AppColorConstant.appWhite,
+                                            fontSize: getFontSizeValue(
+                                                small: 10.px,
+                                                large: 20.px,
+                                                extraLarge: 25.px,
+                                                normal: 15.px))
+                                      ],
+                                    )
+                                  : AppText(chatMessage,
+                                      color: AppColorConstant.appWhite,
+                                      fontSize: getFontSizeValue(
+                                          small: 10.px,
+                                          large: 20.px,
+                                          extraLarge: 25.px,
+                                          normal: 15.px))),
                           Padding(
                               padding: EdgeInsets.only(right: 5.px, top: 3.px),
                               child: AppText(timeStamp.toString(),
-                                  color: AppColorConstant.appBlack,
+                                  color: Theme.of(context).colorScheme.primary,
                                   fontSize: getFontSizeValue(
                                       small: 8.px,
                                       large: 15.px,
@@ -277,16 +301,34 @@ class ChatingPage extends StatelessWidget {
                                   radius: 5.px),
                               backGroundColor:
                                   AppColorConstant.appGrey.withOpacity(0.3),
-                              child: AppText(chatMessage,
-                                  fontSize: getFontSizeValue(
-                                      small: 10.px,
-                                      large: 20.px,
-                                      extraLarge: 25.px,
-                                      normal: 15.px))),
+                              child: (chatingPageViewModal!
+                                      .arguments['isGroup'])
+                                  ? Column(
+                                      children: [
+                                        AppText(
+                                          sender,
+                                          fontSize: 10.px,
+                                        ),
+                                        AppText(chatMessage,
+                                            color: AppColorConstant.appBlack,
+                                            fontSize: getFontSizeValue(
+                                                small: 10.px,
+                                                large: 20.px,
+                                                extraLarge: 25.px,
+                                                normal: 15.px))
+                                      ],
+                                    )
+                                  : AppText(chatMessage,
+                                      color: AppColorConstant.appWhite,
+                                      fontSize: getFontSizeValue(
+                                          small: 10.px,
+                                          large: 20.px,
+                                          extraLarge: 25.px,
+                                          normal: 15.px))),
                           Padding(
                               padding: EdgeInsets.only(left: 5.px, top: 3.px),
                               child: AppText(timeStamp.toString(),
-                                  color: AppColorConstant.appBlack,
+                                  color: Theme.of(context).colorScheme.primary,
                                   fontSize: getFontSizeValue(
                                       small: 8.px,
                                       large: 15.px,
@@ -300,12 +342,20 @@ class ChatingPage extends StatelessWidget {
     context,
   ) {
     return AppAppBar(
-        backgroundColor: AppColorConstant.appTransparent,
+        backgroundColor: Theme.of(context).colorScheme.background,
         leadingWidth: 90.px,
         leading: Row(children: [
+          SizedBox(width: 2.px),
+          IconButton(
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                size: 30.px,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onPressed: () {
+                Get.to(HomeScreen());
+              }),
           CircleAvatar(
-            // backgroundImage:
-            //     NetworkImage(chatingPageViewModal!.parameter['photoUrl'] ?? ''),
             maxRadius: 20.px,
             backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
             child: AppText(
@@ -313,10 +363,10 @@ class ChatingPage extends StatelessWidget {
                   ? chatingPageViewModal!.arguments['groupName']
                       .substring(0, 1)
                       .toUpperCase()
-                  : chatingPageViewModal!.arguments['members'][1]
+                  : chatingPageViewModal!.arguments['members'][0]
                       .substring(0, 1)
                       .toUpperCase(),
-              color: AppColorConstant.appWhite,
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               fontWeight: FontWeight.w800,
             ),
@@ -326,13 +376,18 @@ class ChatingPage extends StatelessWidget {
           onTap: () {
             if (chatingPageViewModal!.arguments['id'] != null ||
                 chatingPageViewModal!.arguments['groupName']) {
-              Get.toNamed(RouteHelper.getChatProfileScreen());
+              Get.toNamed(RouteHelper.getChatProfileScreen(), arguments: {
+                'members': chatingPageViewModal!.arguments['members'],
+                'id' : chatingPageViewModal!.arguments['id'],
+                'isGroup' : false,
+              });
             }
           },
           child: AppText(
               (chatingPageViewModal!.arguments['isGroup'])
                   ? chatingPageViewModal!.arguments['groupName']
                   : chatingPageViewModal!.arguments['members'][0],
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               overflow: TextOverflow.ellipsis),
         ),
@@ -343,25 +398,16 @@ class ChatingPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AppButton(
-                        onTap: () {},
-                        width: 26.px,
-                        height: 26.px,
-                        color: Colors.transparent,
-                        stringChild: true,
-                        borderRadius: BorderRadius.circular(35.px),
-                        child: Icon(Icons.video_camera_back_outlined,
-                            size: 26.px, color: AppColorConstant.offBlack)),
-                    AppButton(
-                        margin: EdgeInsets.only(left: 12.px),
-                        onTap: () {},
-                        width: 26.px,
-                        height: 26.px,
-                        color: Colors.transparent,
-                        stringChild: true,
-                        borderRadius: BorderRadius.circular(26.px),
-                        child: Icon(Icons.call_outlined,
-                            size: 26.px, color: AppColorConstant.offBlack)),
+                    Icon(
+                      Icons.video_camera_back_outlined,
+                      size: 26.px,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    Icon(
+                      Icons.call_outlined,
+                      size: 26.px,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     PopupMenuButton(
                         onSelected: (value) {
                           Get.toNamed(value);
@@ -370,7 +416,8 @@ class ChatingPage extends StatelessWidget {
                           return controller.chatingPageViewModal.popupMenu;
                         },
                         icon: Icon(Icons.more_vert,
-                            color: AppColorConstant.offBlack, size: 26.px))
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 26.px))
                   ]))
         ]);
   }
@@ -386,7 +433,7 @@ class ChatingPage extends StatelessWidget {
     controller!.update();
   }
 
-  TextFormField textFormField(ChatingPageController controller) {
+  TextFormField textFormField(ChatingPageController controller,BuildContext context) {
     return TextFormField(
         style: const TextStyle(color: AppColorConstant.appBlack),
         maxLines: null,
@@ -415,7 +462,7 @@ class ChatingPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(27.px),
                 child: Icon(Icons.mood,
                     size: 27.px, color: AppColorConstant.offBlack)),
-            hintText: StringConstant.signalMessage,
+            hintText: S.of(context).signalMessage,
             suffixIcon: SizedBox(
                 height: 40.px,
                 width: 78.px,

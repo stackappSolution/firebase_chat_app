@@ -12,6 +12,7 @@ import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 import '../../constant/app_asset.dart';
@@ -60,17 +61,18 @@ class ProfileScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppText(StringConstant.yourProfile,
+                          AppText(S.of(context).yourProfile,
                               color: primaryTheme,
                               fontSize: 40.px,
                               fontWeight: FontWeight.bold),
                           Padding(
                             padding: EdgeInsets.only(top: 20.px),
-                            child: AppText(StringConstant.profileAreVisible,
+                            child: AppText(S.of(context).profileAreVisible,
                                 fontSize: 15.px, color: secondaryTheme),
                           ),
                         ],
                       ),
+
                     ),
                     Container(
                       alignment: Alignment.center,
@@ -131,9 +133,9 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     AppTextFormField(
                       controller: profileViewModel!.firstNameController,
-                      labelText: StringConstant.firstName,
+                      labelText: S.of(context).firstName,
                       onChanged: (value) {
-                        profileViewModel!.onChangedValue(value, controller);
+                        profileViewModel!.onChangedValue(value, controller,context);
                       },
                     ),
                     Align(
@@ -154,7 +156,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       child: AppTextFormField(
                         controller: profileViewModel!.lastNameController,
-                        labelText: StringConstant.lastName,
+                        labelText: S.of(context).lastName,
                         fontSize: null,
                       ),
                     ),
@@ -166,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
                       child: AppElevatedButton(
                         buttonHeight: 50.px,
                         widget: AppText(
-                          StringConstant.next,
+                          S.of(context).next,
                           color: AppColorConstant.appWhite,
                           fontSize: 20.px,
                         ),

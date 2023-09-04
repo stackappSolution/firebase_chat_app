@@ -1,19 +1,11 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:get/get.dart';
 import 'package:signal/controller/chating_page_controller.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../app/app/utills/app_utills.dart';
-
 import '../../constant/string_constant.dart';
-
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
@@ -23,11 +15,8 @@ class ChatingPageViewModal {
   Map<String, dynamic> parameter = {};
   Map<String, dynamic> arguments = {};
   String? wallpaperPath;
-  bool isGroup=false;
+  bool isGroup = false;
   String? formatedTime;
-  // List<String> members=[];
-
-
 
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
@@ -36,7 +25,7 @@ class ChatingPageViewModal {
 
   ChatingPageViewModal([this.chatingPage]) {
     Future.delayed(const Duration(milliseconds: 100), () async {
-      controller = Get.find<ChatingPageController>();
+      controller = Get.put(ChatingPageController());
       ChatingPage.fontSize = await getStringValue(StringConstant.setFontSize);
       controller!.update();
     });
@@ -55,7 +44,6 @@ class ChatingPageViewModal {
     const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3'))
   ];
 
-
   bool iconChange = false;
 
   Future<Color> getWallpaperColor() async {
@@ -67,12 +55,6 @@ class ChatingPageViewModal {
     }
   }
 
-
-
-
-
-
-
   Future<Color> getChatBubbleColor() async {
     final colorCode = await getStringValue(chatColor);
     if (colorCode != null) {
@@ -81,6 +63,4 @@ class ChatingPageViewModal {
       return AppColorConstant.appYellow;
     }
   }
-
-
 }

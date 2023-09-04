@@ -180,10 +180,10 @@ class S {
     );
   }
 
-  /// `Profiles Are Visible To People You Message,Contacts, and Groups.`
+  /// `Profiles Are Visible To People, Your Message,Contacts and Groups.`
   String get profileAreVisible {
     return Intl.message(
-      'Profiles Are Visible To People You Message,Contacts, and Groups.',
+      'Profiles Are Visible To People, Your Message,Contacts and Groups.',
       name: 'profileAreVisible',
       desc: '',
       args: [],
@@ -200,10 +200,10 @@ class S {
     );
   }
 
-  /// `Last Name ( Required )`
+  /// `Last Name`
   String get lastName {
     return Intl.message(
-      'Last Name ( Required )',
+      'Last Name',
       name: 'lastName',
       desc: '',
       args: [],
@@ -230,10 +230,10 @@ class S {
     );
   }
 
-  /// `choose`
+  /// `Choose`
   String get choose {
     return Intl.message(
-      'choose',
+      'Choose',
       name: 'choose',
       desc: '',
       args: [],
@@ -340,10 +340,10 @@ class S {
     );
   }
 
-  /// `Get Started`
+  /// ` Get Started`
   String get getStarted {
     return Intl.message(
-      'Get Started',
+      ' Get Started',
       name: 'getStarted',
       desc: '',
       args: [],
@@ -700,11 +700,591 @@ class S {
     );
   }
 
+  /// `Turn On Registration Lock?`
+  String get turnOnRegistration {
+    return Intl.message(
+      'Turn On Registration Lock?',
+      name: 'turnOnRegistration',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Color is only visible you`
   String get colorIsOnlyVisibleYou {
     return Intl.message(
       'Color is only visible you',
       name: 'colorIsOnlyVisibleYou',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check Again Your Number`
+  String get checkAgainYourNumber {
+    return Intl.message(
+      'Check Again Your Number',
+      name: 'checkAgainYourNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Account`
+  String get deleteAccount {
+    return Intl.message(
+      'Delete Account',
+      name: 'deleteAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Account Data`
+  String get yourAccountData {
+    return Intl.message(
+      'Your Account Data',
+      name: 'yourAccountData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You Will Be Asked Less Frequently over Time`
+  String get youWillBeAsked {
+    return Intl.message(
+      'You Will Be Asked Less Frequently over Time',
+      name: 'youWillBeAsked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registration Lock`
+  String get registrationLock {
+    return Intl.message(
+      'Registration Lock',
+      name: 'registrationLock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Require Your Chat App PIN To Register Your Phone Number With ChatApp Again`
+  String get requireYourChatApp {
+    return Intl.message(
+      'Require Your Chat App PIN To Register Your Phone Number With ChatApp Again',
+      name: 'requireYourChatApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Number`
+  String get changeNumber {
+    return Intl.message(
+      'Change Number',
+      name: 'changeNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Advance PIN Setting`
+  String get advancePinSetting {
+    return Intl.message(
+      'Advance PIN Setting',
+      name: 'advancePinSetting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Phone number`
+  String get changePhoneNumber {
+    return Intl.message(
+      'Change Phone number',
+      name: 'changePhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer account To A New Android Device`
+  String get transferAccountTo {
+    return Intl.message(
+      'Transfer account To A New Android Device',
+      name: 'transferAccountTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer account`
+  String get transferAccount {
+    return Intl.message(
+      'Transfer account',
+      name: 'transferAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Your PIN`
+  String get createYourPIN {
+    return Intl.message(
+      'Create Your PIN',
+      name: 'createYourPIN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PIN Must Be At Least 4 Characters`
+  String get pinMustBeChar {
+    return Intl.message(
+      'PIN Must Be At Least 4 Characters',
+      name: 'pinMustBeChar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your New Number`
+  String get yourNewNumber {
+    return Intl.message(
+      'Your New Number',
+      name: 'yourNewNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If You Forget Yor Pin When Registering with Signal Again, You Will be Locked Out Your AccountFor 7 days.`
+  String get ifYouForgetYourPIN {
+    return Intl.message(
+      'If You Forget Yor Pin When Registering with Signal Again, You Will be Locked Out Your AccountFor 7 days.',
+      name: 'ifYouForgetYourPIN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Warning`
+  String get warning {
+    return Intl.message(
+      'Warning',
+      name: 'warning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Camera`
+  String get camera {
+    return Intl.message(
+      'Camera',
+      name: 'camera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gallery`
+  String get gallery {
+    return Intl.message(
+      'Gallery',
+      name: 'gallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PIN Reminders`
+  String get pinReminders {
+    return Intl.message(
+      'PIN Reminders',
+      name: 'pinReminders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat App PIN`
+  String get chaAppPin {
+    return Intl.message(
+      'Chat App PIN',
+      name: 'chaAppPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Your PIN`
+  String get changeYourPin {
+    return Intl.message(
+      'Change Your PIN',
+      name: 'changeYourPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get phoneNumber {
+    return Intl.message(
+      'Phone Number',
+      name: 'phoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Profile And Changes It Will Be Visible To People Your Message, Contacts, And Groups.`
+  String get yourProfileAndChanges {
+    return Intl.message(
+      'Your Profile And Changes It Will Be Visible To People Your Message, Contacts, And Groups.',
+      name: 'yourProfileAndChanges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Alphanumeric PIN`
+  String get createAlphaNumericPin {
+    return Intl.message(
+      'Create Alphanumeric PIN',
+      name: 'createAlphaNumericPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Old Number`
+  String get yourOldNumber {
+    return Intl.message(
+      'Your Old Number',
+      name: 'yourOldNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Your PIN`
+  String get conformYourPin {
+    return Intl.message(
+      'Confirm Your PIN',
+      name: 'conformYourPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continues {
+    return Intl.message(
+      'Continue',
+      name: 'continues',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Member`
+  String get selectMember {
+    return Intl.message(
+      'Select Member',
+      name: 'selectMember',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turn On`
+  String get turnOn {
+    return Intl.message(
+      'Turn On',
+      name: 'turnOn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Message`
+  String get newMessage {
+    return Intl.message(
+      'New Message',
+      name: 'newMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `search Name or Number`
+  String get searchNameOrNumber {
+    return Intl.message(
+      'search Name or Number',
+      name: 'searchNameOrNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group name (required)`
+  String get groupName {
+    return Intl.message(
+      'Group name (required)',
+      name: 'groupName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Members`
+  String get members {
+    return Intl.message(
+      'Members',
+      name: 'members',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get create {
+    return Intl.message(
+      'Create',
+      name: 'create',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name this Group`
+  String get nameThisGroup {
+    return Intl.message(
+      'Name this Group',
+      name: 'nameThisGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can add or invite friends after creating this group`
+  String get addRemoveMember {
+    return Intl.message(
+      'You can add or invite friends after creating this group',
+      name: 'addRemoveMember',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Small`
+  String get small {
+    return Intl.message(
+      'Small',
+      name: 'small',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Large`
+  String get large {
+    return Intl.message(
+      'Large',
+      name: 'large',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `blankText`
+  String get blankText {
+    return Intl.message(
+      'blankText',
+      name: 'blankText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About`
+  String get about {
+    return Intl.message(
+      'About',
+      name: 'about',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Badges`
+  String get badges {
+    return Intl.message(
+      'Badges',
+      name: 'badges',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Photo`
+  String get editPhoto {
+    return Intl.message(
+      'Edit Photo',
+      name: 'editPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Extra Large`
+  String get extraLarge {
+    return Intl.message(
+      'Extra Large',
+      name: 'extraLarge',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PIN can help you restore your account and keep info encrypted with chatApp.`
+  String get pinCanHelp {
+    return Intl.message(
+      'PIN can help you restore your account and keep info encrypted with chatApp.',
+      name: 'pinCanHelp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Numeric PIN`
+  String get createNumericPin {
+    return Intl.message(
+      'Create Numeric PIN',
+      name: 'createNumericPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conform Your ChatApp PIN`
+  String get conformYourChatAppPIN {
+    return Intl.message(
+      'Conform Your ChatApp PIN',
+      name: 'conformYourChatAppPIN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Make Sure You memorize your PIN`
+  String get makeSureYou {
+    return Intl.message(
+      'Make Sure You memorize your PIN',
+      name: 'makeSureYou',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switch KeyBoard`
+  String get switchKeyboard {
+    return Intl.message(
+      'Switch KeyBoard',
+      name: 'switchKeyboard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turn Off`
+  String get turnOff {
+    return Intl.message(
+      'Turn Off',
+      name: 'turnOff',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disable PIN`
+  String get disablePIN {
+    return Intl.message(
+      'Disable PIN',
+      name: 'disablePIN',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If You Disable PIN, you will lose all data.`
+  String get ifYouDisable {
+    return Intl.message(
+      'If You Disable PIN, you will lose all data.',
+      name: 'ifYouDisable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Re-Enter The PIN You Just Entered.`
+  String get reEnterThePin {
+    return Intl.message(
+      'Re-Enter The PIN You Just Entered.',
+      name: 'reEnterThePin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect PIN. Try Again..`
+  String get incorrectPinTryAgain {
+    return Intl.message(
+      'Incorrect PIN. Try Again..',
+      name: 'incorrectPinTryAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turn Off Registration Lock?`
+  String get turnOffRegistration {
+    return Intl.message(
+      'Turn Off Registration Lock?',
+      name: 'turnOffRegistration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Before Continuing, Make sure your new number can receive SMS or Calls.`
+  String get beforeContinuing {
+    return Intl.message(
+      'Before Continuing, Make sure your new number can receive SMS or Calls.',
+      name: 'beforeContinuing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use this to change your current phone number to new phone number, you can't undo this change.`
+  String get useThisToChange {
+    return Intl.message(
+      'Use this to change your current phone number to new phone number, you can\'t undo this change.',
+      name: 'useThisToChange',
       desc: '',
       args: [],
     );
@@ -1139,25 +1719,7 @@ class S {
       args: [],
     );
   }
-  /// `Contiue`
-  String get continues {
-    return Intl.message(
-      'Contiue',
-      name: 'continues',
-      desc: '',
-      args: [],
-    );
-  }
 
-  /// `Phone Number`
-  String get phoneNumber {
-    return Intl.message(
-      'Phone Number',
-      name: 'phoneNumber',
-      desc: '',
-      args: [],
-    );
-  }
 
   /// `Continue`
   // String get continues {

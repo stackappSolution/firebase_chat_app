@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
         return SafeArea(
             child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
-          bottomNavigationBar: buildBottomBar(controller),
+          bottomNavigationBar: buildBottomBar(controller,context),
           body: getBody(controller),
         ));
       },
@@ -52,16 +52,16 @@ getBody(HomeScreenController controller) {
   );
 }
 
-buildBottomBar(HomeScreenController controller) {
+buildBottomBar(HomeScreenController controller,BuildContext context) {
   return BottomNavigationBar(
       elevation: 0.0,
-      backgroundColor: AppColorConstant.appWhite,
+      backgroundColor:  Theme.of(context).colorScheme.background,
       selectedItemColor: AppColorConstant.appYellow,
       onTap: controller.changeTabIndex,
       currentIndex: controller.tabIndex,
       items: [
         BottomNavigationBarItem(
-            label: S.of(Get.context!).chats,
+            label: S.of(Get.context!).chats,backgroundColor:  Theme.of(context).colorScheme.primary,
             icon: AppImageAsset(
                 height: 28.px,
                 width: 28.px,

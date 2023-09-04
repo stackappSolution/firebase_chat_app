@@ -10,6 +10,7 @@ import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/new_group_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/group_name/group_name_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
@@ -42,9 +43,9 @@ class GroupNameScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: getAppbar(),
+          appBar: getAppbar(context),
           body: buildGroupInfoView(context),
-          floatingActionButton: buildFloatingActionButton(),
+          floatingActionButton: buildFloatingActionButton(context),
         );
       },
     );
@@ -61,9 +62,9 @@ class GroupNameScreen extends StatelessWidget {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                   title: TextFormField(
                       controller: groupNameViewModel!.groupNameController,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Group name (required)')),
+                          hintText: S.of(context).groupName)),
                   leading: (groupNameViewModel!.selectedImage != null)
                       ? CircleAvatar(
                           maxRadius: 40.px,
@@ -73,7 +74,7 @@ class GroupNameScreen extends StatelessWidget {
                       : CircleAvatar(
                           maxRadius: 40.px,
                           backgroundColor:
-                              AppColorConstant.appYellow.withOpacity(0.3),
+                              AppColorConstant.appYellow.withOpacity(0.5),
                           child: IconButton(
                               onPressed: () {
                                 groupNameViewModel!
@@ -94,11 +95,11 @@ class GroupNameScreen extends StatelessWidget {
                 child: ListTile(
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 20.px, horizontal: 20.px),
-                  title: const AppText('Members'),
+                  title:  AppText(S.of(context).members,color:  Theme.of(context).colorScheme.primary,),
                   subtitle: Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.px),
                     child: AppText(
-                        'You can add or invite friends after creating this group',
+                        S.of(context).addRemoveMember,
                         color: AppColorConstant.appGrey,
                         fontSize: 12.px),
                   ),
@@ -140,7 +141,7 @@ class GroupNameScreen extends StatelessWidget {
                     firstLetter,
                     color: AppColorConstant.appWhite,
                   )),
-              title: AppText(displayName),
+              title: AppText(displayName,color:  Theme.of(context).colorScheme.primary,),
             ),
           );
         },
@@ -148,13 +149,13 @@ class GroupNameScreen extends StatelessWidget {
     );
   }
 
-  getAppbar() {
-    return AppAppBar(
-      title: AppText('Name this Group', fontSize: 20.px),
+  getAppbar(BuildContext context) {
+    return AppAppBar(backgroundColor: Theme.of(context).colorScheme.background,
+      title: AppText(S.of(context).nameThisGroup, fontSize: 20.px,color:  Theme.of(context).colorScheme.primary,),
     );
   }
 
-  buildFloatingActionButton() {
+  buildFloatingActionButton(BuildContext context) {
     return Stack(
       children: [
         AppButton(
@@ -162,11 +163,11 @@ class GroupNameScreen extends StatelessWidget {
             onCreateGroup();
           },
           height: 40.px,
-          color: AppColorConstant.appYellow.withOpacity(0.2),
+          color: AppColorConstant.appYellow.withOpacity(0.5),
           stringChild: true,
           borderRadius: BorderRadius.circular(20.px),
           width: 100.px,
-          child: const AppText('Create', color: AppColorConstant.appBlack),
+          child:  AppText(S.of(context).create, color:  Theme.of(context).colorScheme.primary,),
         ),
         if (groupNameViewModel!.isLoading)
           const CircularProgressIndicator(

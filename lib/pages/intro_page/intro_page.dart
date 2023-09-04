@@ -45,12 +45,19 @@ class IntroPage extends StatelessWidget {
                         context, controller),
                     transferOrRestoreAccount(),
                     SizedBox(height: 15.px)
+                    termsPrivacyPolicy(),
+                    getStartedButton(
+                        controller.introPageViewModal.isConnected,
+                        context,
+                        controller),
+                    transferOrRestoreAccount(context),
+                    SizedBox(height:15.px)
                   ])));
         });
   }
 
-  AppText transferOrRestoreAccount() {
-    return AppText(StringConstant.transferOrRestoreAccount,
+  AppText transferOrRestoreAccount(BuildContext context) {
+    return AppText(S.of(context).transferOrRestoreAccount,
         fontWeight: FontWeight.w500,
         color: AppColorConstant.appYellow,
         fontSize: 12.px);
@@ -65,7 +72,7 @@ class IntroPage extends StatelessWidget {
         fontWeight: FontWeight.w500,
         margin: EdgeInsets.all(10.px),
         borderRadius: BorderRadius.circular(10.px),
-        string: StringConstant.getStarted,
+        string: S.of(context).getStarted,
         fontColor: AppColorConstant.appWhite,
         fontSize: 20.px,
         width: 230.px,

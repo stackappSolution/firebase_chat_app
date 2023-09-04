@@ -22,60 +22,100 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "about": MessageLookupByLibrary.simpleMessage("વિશે"),
         "account": MessageLookupByLibrary.simpleMessage("એકાઉન્ટ"),
+        "addRemoveMember": MessageLookupByLibrary.simpleMessage(
+            "તમે આ જૂથ બનાવ્યા પછી મિત્રોને ઉમેરી અથવા આમંત્રિત કરી શકો છો"),
         "advance": MessageLookupByLibrary.simpleMessage("એડવાન્સ"),
         "advanceDescription": MessageLookupByLibrary.simpleMessage(
             "સિગ્નલ સંદેશાઓ અને કોલ્સ, હંમેશા રિલે કોલ્સ અને સીલ કરેલ પ્રેષક"),
+        "advancePinSetting":
+            MessageLookupByLibrary.simpleMessage("એડવાન્સ પિન સેટિંગ"),
         "appIcon": MessageLookupByLibrary.simpleMessage("એપ્લિકેશન આયકન"),
         "appSecurity":
             MessageLookupByLibrary.simpleMessage("એપ્લિકેશન સુરક્ષા"),
         "appearance": MessageLookupByLibrary.simpleMessage("દેખાવ"),
         "audio": MessageLookupByLibrary.simpleMessage("ઓડિયો"),
+        "badges": MessageLookupByLibrary.simpleMessage("બેજ"),
+        "beforeContinuing": MessageLookupByLibrary.simpleMessage(
+            "ચાલુ રાખતા પહેલા, ખાતરી કરો કે તમારો નવો નંબર SMS અથવા કૉલ્સ પ્રાપ્ત કરી શકે છે."),
+        "blankText": MessageLookupByLibrary.simpleMessage("ખાલી ટેક્સ્ટ"),
         "blockScreenshots": MessageLookupByLibrary.simpleMessage(
             "તાજેતરની સૂચિમાં અને એપ્લિકેશનની અંદર સ્ક્રીનશૉટ્સને અવરોધિત કરો"),
         "blocked": MessageLookupByLibrary.simpleMessage("અવરોધિત"),
         "calls": MessageLookupByLibrary.simpleMessage("કૉલ્સ"),
+        "camera": MessageLookupByLibrary.simpleMessage("કેમેરા"),
         "cancel": MessageLookupByLibrary.simpleMessage("રદ કરો"),
+        "changeNumber": MessageLookupByLibrary.simpleMessage("નંબર બદલો"),
+        "changePhoneNumber":
+            MessageLookupByLibrary.simpleMessage("ફોન નંબર બદલો"),
+        "changeYourPin": MessageLookupByLibrary.simpleMessage("તમારી પિન બદલો"),
         "chatColor": MessageLookupByLibrary.simpleMessage("ચેટ રંગ"),
         "chatColorAndWallpaper":
             MessageLookupByLibrary.simpleMessage("ચેટ રંગ અને વોલપેપર"),
         "chats": MessageLookupByLibrary.simpleMessage("ચેટ્સ"),
+        "checkAgainYourNumber":
+            MessageLookupByLibrary.simpleMessage("તમારો નંબર ફરીથી તપાસો"),
         "choose": MessageLookupByLibrary.simpleMessage("પસંદ કરો"),
         "chooseFromPhotos":
             MessageLookupByLibrary.simpleMessage("ફોટામાંથી પસંદ કરો"),
         "colorIsOnlyVisibleYou":
             MessageLookupByLibrary.simpleMessage("રંગ ફક્ત તમને જ દેખાય છે"),
+        "conformYourChatAppPIN": MessageLookupByLibrary.simpleMessage(
+            "તમારા ChatApp પિનને અનુરૂપ બનાવો"),
+        "conformYourPin":
+            MessageLookupByLibrary.simpleMessage("તમારો PIN કન્ફર્મ કરો"),
         "contactDetails": MessageLookupByLibrary.simpleMessage("સંપર્ક વિગતો"),
         "contactUs": MessageLookupByLibrary.simpleMessage("અમારો સંપર્ક કરો"),
         "contacts": MessageLookupByLibrary.simpleMessage("સંપર્કો"),
         "continues": MessageLookupByLibrary.simpleMessage("ચાલુ રાખો"),
+        "create": MessageLookupByLibrary.simpleMessage("બનાવો"),
+        "createAlphaNumericPin":
+            MessageLookupByLibrary.simpleMessage("આલ્ફાન્યૂમેરિક પિન બનાવો"),
+        "createNumericPin":
+            MessageLookupByLibrary.simpleMessage("સંખ્યાત્મક PIN બનાવો"),
+        "createYourPIN":
+            MessageLookupByLibrary.simpleMessage("તમારો PIN બનાવો"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "darkModeWallpaper": MessageLookupByLibrary.simpleMessage(
             "ડાર્ક મોડ વૉલપેપરને ડિમ કરે છે"),
         "debugLog": MessageLookupByLibrary.simpleMessage("ડીબગ લોગ"),
         "defaultTimerForNewChats": MessageLookupByLibrary.simpleMessage(
             "નવી ચેટ્સ માટે ડિફૉલ્ટ ટાઈમર"),
+        "deleteAccount":
+            MessageLookupByLibrary.simpleMessage("એકાઉન્ટ કાઢી નાખો"),
+        "disablePIN": MessageLookupByLibrary.simpleMessage("PIN અક્ષમ કરો"),
         "disappearingDescription": MessageLookupByLibrary.simpleMessage(
             "તમારી સાથે શરૂ થયેલી તમામ નવી ચેટ્સ માટે ડિફોલ્ટ અદ્રશ્ય સંદેશ ટાઈમર સેટ કરો"),
         "disappearingMessages":
             MessageLookupByLibrary.simpleMessage("અદ્રશ્ય થઈ રહેલા સંદેશાઓ"),
         "donateToSignal":
             MessageLookupByLibrary.simpleMessage("સિગ્નલ માટે દાન કરો"),
+        "editPhoto": MessageLookupByLibrary.simpleMessage("ફોટો સંપાદિત કરો"),
         "english": MessageLookupByLibrary.simpleMessage("અંગ્રેજી"),
         "enterValidName":
             MessageLookupByLibrary.simpleMessage("માન્ય નામ દાખલ કરો"),
+        "extraLarge": MessageLookupByLibrary.simpleMessage("વધારાનું મોટું"),
         "featureRequest": MessageLookupByLibrary.simpleMessage("સુવિધા વિનંતી"),
         "feedback": MessageLookupByLibrary.simpleMessage("પ્રતિભાવ"),
         "fingerprintTransfer": MessageLookupByLibrary.simpleMessage(
             "ફંડ ટ્રાન્સફર કરવા માટે Android સ્ક્રીન લૉક અથવા ફિંગરપ્રિન્ટની જરૂર છે"),
         "firstName": MessageLookupByLibrary.simpleMessage("પ્રથમ નામ (જરૂરી)"),
+        "gallery": MessageLookupByLibrary.simpleMessage("ગેલેરી"),
         "getStarted": MessageLookupByLibrary.simpleMessage("શરૂ કરો"),
+        "groupName": MessageLookupByLibrary.simpleMessage("જૂથનું નામ (જરૂરી)"),
         "gujarati": MessageLookupByLibrary.simpleMessage("ગુજરાતી"),
         "help": MessageLookupByLibrary.simpleMessage("મદદ"),
         "helpDescription": MessageLookupByLibrary.simpleMessage(
             "કૉપિરાઇટ સિગ્નલ મેસેન્જર \n GNU AGPlv3 હેઠળ લાઇસન્સ"),
+        "ifYouDisable": MessageLookupByLibrary.simpleMessage(
+            "જો તમે PIN અક્ષમ કરશો, તો તમે બધો ડેટા ગુમાવશો."),
+        "ifYouForgetYourPIN": MessageLookupByLibrary.simpleMessage(
+            "જો તમે ફરીથી સિગ્નલ સાથે નોંધણી કરતી વખતે તમારો પિન ભૂલી જાઓ છો, તો તમારું એકાઉન્ટ 7 દિવસ માટે લૉક કરવામાં આવશે."),
         "includeDebug":
             MessageLookupByLibrary.simpleMessage("ડીબગ લોગ શામેલ કરો"),
+        "incorrectPinTryAgain": MessageLookupByLibrary.simpleMessage(
+            "ખોટો PIN. ફરીથી પ્રયત્ન કરો.."),
         "indicatorsDescription": MessageLookupByLibrary.simpleMessage(
             "જો ટાઈપિંગ ઈન્ડિકેટર્સ અક્ષમ હોય, તો તમે અન્ય લોકો તરફથી ટાઈપિંગ ઈન્ડિકેટર્સ જોઈ શકશો નહીં"),
         "inviteFriends":
@@ -83,19 +123,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "keyboardDisable": MessageLookupByLibrary.simpleMessage(
             "વ્યક્તિગત શિક્ષણને અક્ષમ કરવા માટે કીબોર્ડની વિનંતી કરો."),
         "language": MessageLookupByLibrary.simpleMessage("ભાષા"),
+        "large": MessageLookupByLibrary.simpleMessage("વિશાળ"),
         "lastName": MessageLookupByLibrary.simpleMessage("છેલ્લું નામ (જરૂરી)"),
         "licenses": MessageLookupByLibrary.simpleMessage("લાઇસન્સ"),
         "light": MessageLookupByLibrary.simpleMessage("Light"),
         "linkedDevice": MessageLookupByLibrary.simpleMessage("લિંક કરેલ ઉપકરણ"),
+        "makeSureYou": MessageLookupByLibrary.simpleMessage(
+            "ખાતરી કરો કે તમે તમારો PIN યાદ રાખો છો"),
         "markAllRead":
             MessageLookupByLibrary.simpleMessage("બધા વાંચેલા ચિહ્નિત કરો"),
+        "members": MessageLookupByLibrary.simpleMessage("સભ્યો"),
         "messageFontSize":
             MessageLookupByLibrary.simpleMessage("સંદેશ ફોન્ટ માપ"),
         "messaging": MessageLookupByLibrary.simpleMessage("મેસેજિંગ"),
         "mute": MessageLookupByLibrary.simpleMessage("ચૂપ"),
+        "nameThisGroup":
+            MessageLookupByLibrary.simpleMessage("આ જૂથને નામ આપો"),
         "navigationBarSize":
             MessageLookupByLibrary.simpleMessage("નેવિગેશન બારનું કદ"),
         "newGroup": MessageLookupByLibrary.simpleMessage("નવું જૂથ"),
+        "newMessage": MessageLookupByLibrary.simpleMessage("નવો સંદેશ"),
         "next": MessageLookupByLibrary.simpleMessage("આગળ"),
         "normal": MessageLookupByLibrary.simpleMessage("સામાન્ય"),
         "notification": MessageLookupByLibrary.simpleMessage("સૂચના"),
@@ -105,18 +152,29 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentLock": MessageLookupByLibrary.simpleMessage("ચુકવણી લોક"),
         "payments": MessageLookupByLibrary.simpleMessage("ચુકવણીઓ"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("મોબાઇલ નંબર"),
+        "pinCanHelp": MessageLookupByLibrary.simpleMessage(
+            "PIN તમને તમારું એકાઉન્ટ પુનઃસ્થાપિત કરવામાં અને chatApp સાથે માહિતીને એન્ક્રિપ્ટેડ રાખવામાં મદદ કરી શકે છે."),
+        "pinMustBeChar": MessageLookupByLibrary.simpleMessage(
+            "પિન ઓછામાં ઓછા 4 અક્ષરોનો હોવો જોઈએ"),
+        "pinReminders": MessageLookupByLibrary.simpleMessage("PIN રીમાઇન્ડર્સ"),
         "presets": MessageLookupByLibrary.simpleMessage("પ્રીસેટ્સ"),
         "preview": MessageLookupByLibrary.simpleMessage("પૂર્વાવલોકન"),
         "privacy": MessageLookupByLibrary.simpleMessage("ગોપનીયતા"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("ગોપનીયતા નીતિ"),
+        "profile": MessageLookupByLibrary.simpleMessage("પ્રોફાઇલ"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
             "તમે જે લોકોને સંદેશો મોકલો છો, સંપર્કો અને જૂથોને પ્રોફાઇલ્સ દૃશ્યક્ષમ છે."),
         "question": MessageLookupByLibrary.simpleMessage("પ્રશ્ન"),
+        "reEnterThePin": MessageLookupByLibrary.simpleMessage(
+            "તમે હમણાં જ દાખલ કરેલ પિન ફરીથી દાખલ કરો."),
         "readFaq": MessageLookupByLibrary.simpleMessage(
             "શું તમે હજુ સુધી અમારા FAQ વાંચ્યા છે?"),
         "readReceipts": MessageLookupByLibrary.simpleMessage("રસીદો વાંચો"),
         "receiptsDescription": MessageLookupByLibrary.simpleMessage(
             "જો વાંચવાની રસીદો અક્ષમ હોય, તો તમે અન્ય લોકો પાસેથી વાંચેલી રસીદો જોઈ શકશો નહીં"),
+        "registrationLock": MessageLookupByLibrary.simpleMessage("નોંધણી લોક"),
+        "requireYourChatApp": MessageLookupByLibrary.simpleMessage(
+            "ChatApp સાથે તમારો ફોન નંબર ફરીથી રજીસ્ટર કરવા માટે તમારો ચેટ એપ પિન જરૂરી છે"),
         "reset": MessageLookupByLibrary.simpleMessage("રીસેટ કરો"),
         "resetChatColor":
             MessageLookupByLibrary.simpleMessage("ચેટનો રંગ રીસેટ કરીએ?"),
@@ -130,6 +188,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "screenSecurity":
             MessageLookupByLibrary.simpleMessage("સ્ક્રીન સુરક્ષા"),
         "search": MessageLookupByLibrary.simpleMessage("શોધો.."),
+        "searchNameOrNumber":
+            MessageLookupByLibrary.simpleMessage("નામ અથવા નંબર શોધો"),
+        "selectMember": MessageLookupByLibrary.simpleMessage("સભ્ય પસંદ કરો"),
         "setWallpaper": MessageLookupByLibrary.simpleMessage("વૉલપેપર સેટ કરો"),
         "settingGuarantee": MessageLookupByLibrary.simpleMessage(
             "આ સેટિંગ ગેરેંટી નથી, અને તમારું કીબોર્ડ તેને અવગણી શકે છે.."),
@@ -139,11 +200,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "પ્રારંભ કરવા માટે તમારો ફોન નંબર દાખલ કરો"),
         "signal": MessageLookupByLibrary.simpleMessage("સિગ્નલ"),
         "signalMessage": MessageLookupByLibrary.simpleMessage("સંકેત સંદેશ"),
+        "small": MessageLookupByLibrary.simpleMessage("નાના"),
         "somethingNotWorking":
             MessageLookupByLibrary.simpleMessage("કૈક ચલતુ નાથી"),
         "soundAndNotification":
             MessageLookupByLibrary.simpleMessage("ધ્વનિ અને સૂચના"),
         "supportCenter": MessageLookupByLibrary.simpleMessage("આધાર કેન્દ્ર"),
+        "switchKeyboard":
+            MessageLookupByLibrary.simpleMessage("કીબોર્ડ સ્વિચ કરો"),
         "systemDefault": MessageLookupByLibrary.simpleMessage("સિસ્ટમ ડિફોલ્ટ"),
         "tellUs": MessageLookupByLibrary.simpleMessage(
             "અમને કહો કે તમે શું કરી રહ્યાં છો."),
@@ -156,10 +220,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "toMakeYourDayGreat": MessageLookupByLibrary.simpleMessage(
             "તમારા દિવસને મહાન બનાવવા માટે!"),
         "today": MessageLookupByLibrary.simpleMessage("આજે"),
+        "transferAccount":
+            MessageLookupByLibrary.simpleMessage("એકાઉન્ટ ટ્રાન્સફર કરો"),
+        "transferAccountTo": MessageLookupByLibrary.simpleMessage(
+            "એકાઉન્ટને નવા Android ઉપકરણ પર સ્થાનાંતરિત કરો"),
         "transferOrRestoreAccount": MessageLookupByLibrary.simpleMessage(
             "એકાઉન્ટ ટ્રાન્સફર અથવા રિસ્ટોર કરો"),
+        "turnOff": MessageLookupByLibrary.simpleMessage("બંધ કરો"),
+        "turnOffRegistration":
+            MessageLookupByLibrary.simpleMessage("નોંધણી લોક બંધ કરીએ?"),
+        "turnOn": MessageLookupByLibrary.simpleMessage("ચાલુ કરો"),
         "typingIndicators":
             MessageLookupByLibrary.simpleMessage("ટાઈપિંગ સૂચકાંકો"),
+        "useThisToChange": MessageLookupByLibrary.simpleMessage(
+            "તમારા વર્તમાન ફોન નંબરને નવા ફોન નંબરમાં બદલવા માટે આનો ઉપયોગ કરો, તમે આ ફેરફારને પૂર્વવત્ કરી શકતા નથી."),
         "userName": MessageLookupByLibrary.simpleMessage("વપરાશકર્તા નામ"),
         "verify": MessageLookupByLibrary.simpleMessage("OTP દાખલ કરો"),
         "verifyButton": MessageLookupByLibrary.simpleMessage("ચકાસો"),
@@ -169,10 +243,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "video": MessageLookupByLibrary.simpleMessage("વિડિયો"),
         "viewSafetyNumbers":
             MessageLookupByLibrary.simpleMessage("સુરક્ષા નંબરો જુઓ"),
+        "warning": MessageLookupByLibrary.simpleMessage("ચેતવણી"),
         "welcomeToChat":
             MessageLookupByLibrary.simpleMessage(" ચેટમાં આપનું સ્વાગત છે"),
         "whatsThis": MessageLookupByLibrary.simpleMessage("આ શું છે?"),
         "yesterday": MessageLookupByLibrary.simpleMessage("ગઇકાલે"),
-        "yourProfile": MessageLookupByLibrary.simpleMessage("તમારી પ્રોફાઇલ")
+        "youWillBeAsked": MessageLookupByLibrary.simpleMessage(
+            "સમય જતાં તમને ઓછું વારંવાર પૂછવામાં આવશે"),
+        "yourAccountData":
+            MessageLookupByLibrary.simpleMessage("તમારો એકાઉન્ટ ડેટા"),
+        "yourNewNumber": MessageLookupByLibrary.simpleMessage("તમારો નવો નંબર"),
+        "yourOldNumber":
+            MessageLookupByLibrary.simpleMessage("તમારો જૂનો નંબર"),
+        "yourProfile": MessageLookupByLibrary.simpleMessage("તમારી પ્રોફાઇલ"),
+        "yourProfileAndChanges": MessageLookupByLibrary.simpleMessage(
+            "તમારી પ્રોફાઇલ અને ફેરફારો તે લોકોને તમારા સંદેશ, સંપર્કો અને જૂથો માટે દૃશ્યક્ષમ હશે.")
       };
 }

@@ -9,8 +9,9 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/chat_controller.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/pages/chating_page/chating_page.dart';
+
 import 'package:signal/pages/chats/chat_profile/chat_profile_view_model.dart';
+import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
 class ChatProfileScreen extends StatelessWidget {
@@ -24,8 +25,8 @@ class ChatProfileScreen extends StatelessWidget {
     return GetBuilder<ChatController>(
       init: ChatController(),
       initState: (state) {
-        chatProfileViewModel!.parameter = Get.parameters;
-        logs('parameter---> ${chatProfileViewModel!.parameter}');
+        chatProfileViewModel!.arguments = Get.arguments;
+        logs('parameter---> ${chatProfileViewModel!.arguments}');
       },
       builder: (controller) {
         return WillPopScope(
@@ -89,8 +90,11 @@ class ChatProfileScreen extends StatelessWidget {
           ),
         ),
         AppText('Shyam Jethva', fontSize: 25.px),
-        AppText('+91 9904780294',
-            fontSize: 15.px, color: Theme.of(context).colorScheme.secondary,),
+        AppText(
+          '+91 9904780294',
+          fontSize: 15.px,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ],
     );
   }
@@ -123,8 +127,8 @@ class ChatProfileScreen extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                chatProfileViewModel!
-                    .launchPhoneURL(chatProfileViewModel!.parameter['phoneNo']);
+                chatProfileViewModel!.launchPhoneURL(
+                    chatProfileViewModel!.arguments['members'][0]);
               },
               child: Container(
                   height: 50.px,
@@ -160,7 +164,8 @@ class ChatProfileScreen extends StatelessWidget {
                   ),
                 )),
             AppText(
-              S.of(context).mute,color: Theme.of(context).colorScheme.primary,
+              S.of(context).mute,
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 15,
             )
           ],
@@ -179,7 +184,8 @@ class ChatProfileScreen extends StatelessWidget {
                     image: AppAsset.search,
                   ),
                 )),
-            AppText(color:  Theme.of(context).colorScheme.primary,
+            AppText(
+              color: Theme.of(context).colorScheme.primary,
               S.of(context).search,
               fontSize: 15,
             )
@@ -189,12 +195,7 @@ class ChatProfileScreen extends StatelessWidget {
     );
   }
 
-  chatSettingView(
-    index,
-    image,
-    tittle,
-      context
-  ) {
+  chatSettingView(index, image, tittle, context) {
     return ListTile(
       onTap: () {
         chatProfileViewModel!.mainTap(index);
@@ -202,7 +203,7 @@ class ChatProfileScreen extends StatelessWidget {
       title: AppText(
         tittle,
         fontSize: 15.px,
-        color:  Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.primary,
       ),
       leading: Container(
         height: 50.px,
@@ -222,35 +223,15 @@ class ChatProfileScreen extends StatelessWidget {
       shrinkWrap: true,
       children: [
         chatSettingView(
-          1,
-          AppAsset.audio,
-          S.of(context).disappearingMessages,
-          context
-        ),
+            1, AppAsset.audio, S.of(context).disappearingMessages, context),
         chatSettingView(
-          2,
-          AppAsset.search,
-          S.of(context).chatColorAndWallpaper,
-          context
-        ),
+            2, AppAsset.search, S.of(context).chatColorAndWallpaper, context),
         chatSettingView(
-          3,
-          AppAsset.video,
-          S.of(context).soundAndNotification,
-          context
-        ),
+            3, AppAsset.video, S.of(context).soundAndNotification, context),
         chatSettingView(
-          4,
-          AppAsset.mute,
-          S.of(context).contactDetails,
-          context
-        ),
+            4, AppAsset.mute, S.of(context).contactDetails, context),
         chatSettingView(
-          5,
-          AppAsset.audio,
-          S.of(context).viewSafetyNumbers,
-          context
-        ),
+            5, AppAsset.audio, S.of(context).viewSafetyNumbers, context),
       ],
     );
   }
@@ -259,7 +240,8 @@ class ChatProfileScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
       child: ListTile(
-        title: AppText(color: Theme.of(context).colorScheme.primary,
+        title: AppText(
+          color: Theme.of(context).colorScheme.primary,
           S.of(context).viewSafetyNumbers,
         ),
         leading: AppImageAsset(

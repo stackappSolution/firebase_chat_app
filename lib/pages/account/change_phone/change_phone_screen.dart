@@ -12,6 +12,7 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/chanage_phone_controller.dart';
+import 'package:signal/generated/l10n.dart';
 
 import 'change_phone_view_model.dart';
 
@@ -33,12 +34,12 @@ class ChangePhoneScreen extends StatelessWidget {
           appBar: (!changePhoneViewModel!.isPhoneNumberChange)
               ? AppAppBar(
                   title: AppText(
-                  StringConstant.blankText,
+                  S.of(context).blankText,
                   fontSize: 22.px,
                 ))
               : AppAppBar(
                   title: AppText(
-                  StringConstant.changeNumber,
+                  S.of(context).changeNumber,
                   color: Theme.of(context).colorScheme.primary,
                   fontSize: 22.px,
                 )),
@@ -73,7 +74,7 @@ class ChangePhoneScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 25.px, bottom: 20.px),
                 child: AppText(
-                  StringConstant.changePhoneNumber,
+                  S.of(context).changePhoneNumber,
                   color: primaryTheme,
                   fontWeight: FontWeight.bold,
                   fontSize: 25.px,
@@ -89,14 +90,14 @@ class ChangePhoneScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppText(
-                      StringConstant.useThisToChange,
+                      S.of(context).useThisToChange,
                       color: secondaryTheme,
                       fontSize: 14.px,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 20.px),
                       child: AppText(
-                        StringConstant.beforeContinuing,
+                        S.of(context).beforeContinuing,
                         color: secondaryTheme,
                         fontSize: 14.px,
                       ),
@@ -111,7 +112,7 @@ class ChangePhoneScreen extends StatelessWidget {
                             changePhoneViewModel!.continueTap(controller);
                           },
                           widget: AppText(
-                            StringConstant.continues,
+                            S.of(context).continues,
                             fontSize: 13.px,
                             color: primaryTheme,
                           )),
@@ -124,7 +125,7 @@ class ChangePhoneScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(bottom: 5.px),
                 child: AppText(
-                  StringConstant.yourOldNumber,
+                  S.of(context).yourOldNumber,
                   color: primaryTheme,
                 ),
               ),
@@ -159,7 +160,7 @@ class ChangePhoneScreen extends StatelessWidget {
                     child: AppTextFormField(
                       keyboardType: TextInputType.number,
                       controller: changePhoneViewModel!.oldNumberController,
-                      labelText: StringConstant.phoneNumber,
+                      labelText: S.of(context).phoneNumber,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                       ],
@@ -170,7 +171,7 @@ class ChangePhoneScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 15.px, bottom: 5.px),
                 child: AppText(
-                  StringConstant.yourNewNumber,
+                  S.of(context).yourNewNumber,
                   color: primaryTheme,
                 ),
               ),
@@ -205,7 +206,7 @@ class ChangePhoneScreen extends StatelessWidget {
                     child: AppTextFormField(
                       keyboardType: TextInputType.number,
                       controller: changePhoneViewModel!.newNumberController,
-                      labelText: StringConstant.phoneNumber,
+                      labelText: S.of(context).phoneNumber,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                       ],
@@ -224,7 +225,7 @@ class ChangePhoneScreen extends StatelessWidget {
                           .finalContinueTap(controller, context);
                     },
                     widget: AppText(
-                      StringConstant.continues,
+                      S.of(context).continues,
                       fontSize: 13.px,
                       color: primaryTheme,
                     )),

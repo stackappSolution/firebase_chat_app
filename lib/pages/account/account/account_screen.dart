@@ -6,6 +6,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 
@@ -36,7 +37,7 @@ class AccountScreen extends StatelessWidget {
   getAppBar(BuildContext context) {
     return AppAppBar(
       title: AppText(
-        StringConstant.account,
+        S.of(context).account,
         fontSize: 22.px,
         color: Theme.of(context).colorScheme.primary,
       ),
@@ -59,7 +60,7 @@ class AccountScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  StringConstant.chaAppPin,
+                  S.of(context).chaAppPin,
                   fontSize: 15.px,
                   fontWeight: FontWeight.bold,
                   color: primaryTheme,
@@ -71,17 +72,17 @@ class AccountScreen extends StatelessWidget {
                       accountViewModel!.changePinTap();
                     },
                     child: AppText(
-                      StringConstant.changeYourPin,
+                      S.of(context).changeYourPin,
                       color: primaryTheme,
                     ),
                   ),
                 ),
-                AppText(StringConstant.pinReminders, color: primaryTheme),
+                AppText(S.of(context).pinReminders, color: primaryTheme),
                 Row(
                   children: [
                     Expanded(
                       child: AppText(
-                        StringConstant.youWillBeAsked,
+                        S.of(context).youWillBeAsked,
                         color: secondaryTheme,
                         fontSize: 13.px,
                       ),
@@ -100,14 +101,14 @@ class AccountScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 32.px),
-                  child: AppText(StringConstant.registrationLock,
+                  child: AppText(S.of(context).registrationLock,
                       color: primaryTheme),
                 ),
                 Row(
                   children: [
                     Expanded(
                       child: AppText(
-                        StringConstant.requireYourChatApp,
+                        S.of(context).requireYourChatApp,
                         color: secondaryTheme,
                         fontSize: 13.px,
                         maxLines: 3,
@@ -132,7 +133,7 @@ class AccountScreen extends StatelessWidget {
                     onTap: () {
                       accountViewModel!.onAdvancePinSettingTap();
                     },
-                    child: AppText(StringConstant.advancePinSetting,
+                    child: AppText(S.of(context).advancePinSetting,
                         color: primaryTheme),
                   ),
                 ),
@@ -161,21 +162,21 @@ class AccountScreen extends StatelessWidget {
                     onTap: () {
                       accountViewModel!.changePhoneTap();
                     },
-                    child: AppText(StringConstant.changePhoneNumber,
+                    child: AppText(S.of(context).changePhoneNumber,
                         color: primaryTheme)),
                 Padding(
                   padding: EdgeInsets.only(top: 32.px),
-                  child: AppText(StringConstant.transferAccount,
+                  child: AppText(S.of(context).transferAccount,
                       color: primaryTheme),
                 ),
                 AppText(
-                  StringConstant.transferAccountTo,
+                  S.of(context).transferAccountTo,
                   color: secondaryTheme,
                   fontSize: 13.px,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 32.px),
-                  child: AppText(StringConstant.yourAccountData,
+                  child: AppText(S.of(context).yourAccountData,
                       color: primaryTheme),
                 ),
                 InkWell(
@@ -185,8 +186,8 @@ class AccountScreen extends StatelessWidget {
 
                     controller.update();
                   },
-                  child: const AppText(
-                    StringConstant.deleteAccount,
+                  child:  AppText(
+                    S.of(context).deleteAccount,
                     color: AppColorConstant.red,
                   ),
                 ),

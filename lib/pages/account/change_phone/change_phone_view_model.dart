@@ -7,6 +7,7 @@ import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/chanage_phone_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/account/change_phone/change_phone_screen.dart';
 
 
@@ -38,7 +39,7 @@ class ChangePhoneViewModel {
             insetPadding: EdgeInsets.zero,
             title: AppText("$newNumCountryCode${newNumberController.text}",fontSize: 25.px),
             widget: AppText(
-              StringConstant.checkAgainYourNumber,
+             S.of(context).checkAgainYourNumber,
               color: Theme
                   .of(context)
                   .colorScheme
@@ -52,7 +53,7 @@ class ChangePhoneViewModel {
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.px, bottom: 10.px),
-                    child: const AppText(StringConstant.cansel),
+                    child:  AppText(S.of(context).cancel),
                   )),
               InkWell(
                   onTap: () {
@@ -60,7 +61,7 @@ class ChangePhoneViewModel {
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.px, bottom: 10.px),
-                    child: const AppText(StringConstant.continues),
+                    child:  AppText(S.of(context).continues),
                   ))
             ],
           );

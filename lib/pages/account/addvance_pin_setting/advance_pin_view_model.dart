@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/app_navigation.dart';
 
 import '../../../app/app/utills/app_utills.dart';
@@ -24,12 +23,12 @@ class AdvancePinViewModel {
         return AppAlertDialog(
           insetPadding: EdgeInsets.zero,
           title: AppText(
-            StringConstant.warning,
+            S.of(context).warning,
             fontSize: 18.px,
             color: Theme.of(context).colorScheme.primary,
           ),
           widget: AppText(
-            StringConstant.ifYouDisable,
+            S.of(context).ifYouDisable,
             color: Theme.of(context).colorScheme.secondary,
             fontSize: 13.px,
           ),
@@ -41,7 +40,7 @@ class AdvancePinViewModel {
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 15.px),
                   child: AppText(
-                    StringConstant.cansel,
+                    S.of(context).cancel,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 )),
@@ -56,8 +55,8 @@ class AdvancePinViewModel {
                     logs("pin disabled, changes in firebase");
                   }
                 },
-                child: const AppText(
-                  StringConstant.disablePIN,
+                child: AppText(
+                  S.of(context).disablePIN,
                   color: AppColorConstant.red,
                 ),
               ),

@@ -6,6 +6,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/edit_profile_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/edit_profile/edit_profile_view_model.dart';
 
 
@@ -61,7 +62,7 @@ class EditProfileScreen extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(30.px)),
                         ),
                     child: AppText(
-                      StringConstant.editPhoto,
+                      S.of(context).editPhoto,
                       fontSize: 12.px,
                       fontWeight: FontWeight.bold,
                       color: primaryTheme,
@@ -82,8 +83,8 @@ class EditProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppText(StringConstant.profile, color: primaryTheme),
-                    AppText(StringConstant.yourProfile,
+                    AppText(S.of(context).profile, color: primaryTheme),
+                    AppText(S.of(context).yourProfile,
                         color: secondaryTheme, fontSize: 14.px),
                   ],
                 ),
@@ -101,8 +102,8 @@ class EditProfileScreen extends StatelessWidget {
 
                   InkWell(onTap: () {
                     editProfileViewModel!.aboutTap(context);
-                  },child: const AppText(StringConstant.about)),
-                  AppText(StringConstant.profile,
+                  },child:  AppText(S.of(context).about)),
+                  AppText(S.of(context).profile,
                       color: secondaryTheme, fontSize: 14.px),
                 ],
               ),
@@ -116,7 +117,7 @@ class EditProfileScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.px),
               child: Column(
                 children: [
-                  AppText(StringConstant.badges, color: primaryTheme),
+                  AppText(S.of(context).badges, color: primaryTheme),
                 ],
               ),
             )
@@ -125,7 +126,7 @@ class EditProfileScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 35.px),
           child: AppText(
-            StringConstant.yourProfileAndChanges,
+            S.of(context).yourProfileAndChanges,
             fontSize: 13.px,
             color: secondaryTheme,
           ),
@@ -137,7 +138,7 @@ class EditProfileScreen extends StatelessWidget {
   getAppBar(context) {
     return AppAppBar(
         title: AppText(
-      StringConstant.profile,
+      S.of(context).profile,
       fontSize: 20.px,
       color: Theme.of(context).colorScheme.primary,
     ));

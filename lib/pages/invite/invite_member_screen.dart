@@ -25,17 +25,17 @@ class InviteMemberScreen extends StatelessWidget {
       },
       builder: (controller) {
         return Scaffold(
-          appBar: getAppbar(),
+          appBar: getAppbar(context),
           body: buildInviteView(
               inviteViewModel!.parameter['firstLetter'],
               inviteViewModel!.parameter['displayName'],
-              inviteViewModel!.parameter['phoneNo']),
+              inviteViewModel!.parameter['phoneNo'],context),
         );
       },
     );
   }
 
-  getAppbar() {
+  getAppbar(BuildContext context) {
     return AppAppBar(
       leadingWidth: 110.px,
       leading: Padding(
@@ -44,12 +44,12 @@ class InviteMemberScreen extends StatelessWidget {
           maxRadius: 20.px,
           backgroundColor: AppColorConstant.appYellow,
           child: AppText(inviteViewModel!.parameter['firstLetter'],
-              color: AppColorConstant.appWhite),
+              color: Theme.of(context).colorScheme.primary),
         ),
       ),
       title: AppText(
         inviteViewModel!.parameter['displayName'],
-        color: AppColorConstant.appBlack,
+          color: Theme.of(context).colorScheme.primary
       ),
     );
   }
@@ -58,6 +58,7 @@ class InviteMemberScreen extends StatelessWidget {
     String firstLetter,
     String displayName,
     String phoneNo,
+      BuildContext context
   ) {
     return Column(
       children: [
@@ -76,6 +77,7 @@ class InviteMemberScreen extends StatelessWidget {
             displayName,
             fontSize: 20.px,
             textAlign: TextAlign.center,
+              color: Theme.of(context).colorScheme.primary
           ),
         ),
         AppText(phoneNo,

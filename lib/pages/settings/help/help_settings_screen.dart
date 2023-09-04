@@ -27,10 +27,10 @@ class HelpSettingsScreen extends StatelessWidget {
       init: HelpSettingController(),
       initState: (state) {
         Future.delayed(
-          const Duration(milliseconds: 200),
-          () {
+          const Duration(milliseconds: 0),
+          () async {
             controller = Get.find<HelpSettingController>();
-            helpSettingViewModel!.getVersionStatus();
+            await helpSettingViewModel!.getVersionStatus();
             controller!.update();
           },
         );
@@ -75,7 +75,7 @@ class HelpSettingsScreen extends StatelessWidget {
         ),
         ListTile(
           onTap: () {},
-          title: AppText(S.of(Get.context!).version),
+          title: AppText(S.of(Get.context!).version,color: Theme.of(context).colorScheme.primary,),
           subtitle: AppText(helpSettingViewModel!.localVersion!,
               fontSize: 12.px, color:Theme.of(context).colorScheme.secondary,),
         ),
