@@ -24,4 +24,20 @@ class DateFormation {
       return dateFormat.format(dateTime);
     }
   }
+
+
+  getChatTimeFormate(int time){
+    int millisecondsSinceEpoch = time; // Example timestamp
+
+    DateTime dateTime =
+    DateTime.fromMillisecondsSinceEpoch(
+        millisecondsSinceEpoch);
+    String formattedTime =
+    DateFormat('HH:mm').format(dateTime);
+
+
+    return formattedTime;
+  }
+
+
 }

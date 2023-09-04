@@ -10,7 +10,7 @@ class HelpSettingViewModel{
 
   getVersionStatus() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-   localVersion = packageInfo.version;
+   localVersion =  packageInfo.version;
     logs("verson---> $localVersion");
   }
 

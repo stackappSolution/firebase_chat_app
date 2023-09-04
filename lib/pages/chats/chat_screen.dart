@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/app/app/utills/date_formation.dart';
+import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -10,8 +12,10 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
+import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import '../../app/app/utills/date_formation.dart';
+import 'package:signal/service/auth_service.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -30,6 +34,7 @@ class ChatScreen extends StatelessWidget {
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
+          appBar: getAppBar(context, controller),
           backgroundColor: AppColorConstant.appWhite,
           floatingActionButton: buildFloatingButton(),
           body: getBody(controller),
@@ -80,9 +85,103 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
+  getAppBar(BuildContext context, ContactController controller) {
+    return controller.searchValue
+        ? AppAppBar(
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_outlined,
+              ),
+              onPressed: () {
+                controller.setSearch(false);
+              },
+            ),
+            title: SizedBox(
+              height: 30,
+              child: TextFormField(
+                onChanged: (value) {
+                  controller.setFilterText(value);
+                },
+                decoration: InputDecoration(
+                    hintText: 'Search',
+                    fillColor: AppColorConstant.grey.withOpacity(0.2),
+                    filled: true,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.px),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(18.px),
+                    )),
+              ),
+            ),
+          )
+        : AppAppBar(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            leading: Padding(
+              padding: EdgeInsets.only(left: 15.px),
+              child: CircleAvatar(
+                backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
+                child: AppText('S',
+                    fontSize: 20.px, color: AppColorConstant.appYellow),
+              ),
+            ),
+            title: Padding(
+              padding: EdgeInsets.only(left: 20.px),
+              child: AppText(S.of(Get.context!).signal,
+                  color: Theme.of(Get.context!).colorScheme.primary,
+                  fontSize: 20.px),
+            ),
+            actions: [
+              InkWell(
+                onTap: () {
+                  controller.setSearch(true);
+                  controller.setFilterText('');
+                },
+                child: Padding(
+                    padding: EdgeInsets.all(18.px),
+                    child: const AppImageAsset(image: AppAsset.search)),
+              ),
+              buildPopupMenu(),
+            ],
+          );
+  }
+
+  buildPopupMenu() {
+    return PopupMenuButton(
+      onSelected: (value) {
+        if (value == 2) {
+          goToSettingPage();
+        }
+      },
+      elevation: 0.5,
+      position: PopupMenuPosition.under,
+      color: AppColorConstant.appLightGrey,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
+      icon: Padding(
+        padding: EdgeInsets.all(10.px),
+        child: const AppImageAsset(image: AppAsset.popup),
+      ),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+            value: 0,
+            child: AppText(S.of(Get.context!).newGroup),
+          ),
+          PopupMenuItem(
+              value: 1, child: AppText(S.of(Get.context!).markAllRead)),
+          PopupMenuItem(value: 2, child: AppText(S.of(Get.context!).settings)),
+          PopupMenuItem(
+              value: 3, child: AppText(S.of(Get.context!).inviteFriends)),
+        ];
+      },
+    );
+  }
+
   buildContactList(ContactController controller) {
     return StreamBuilder<QuerySnapshot>(
       stream: controller.getMyChatContactList("current user mobile number"),
+      stream: controller
+          .getMyChatContactList(AuthService.auth.currentUser!.phoneNumber!),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return AppText('Error: ${snapshot.error}');
@@ -100,10 +199,25 @@ class ChatScreen extends StatelessWidget {
             List receiver = documents[index]["members"];
             receiver.remove("current user mobile number");
             String receiverName = receiver.join("").toString().trim();
+            receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
+            String receiverName = receiver.join("").toString();
 
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
+                  onTap: () {
+                    Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
+                      'groupProfile': (documents[index]['isGroup'])
+                          ? documents[index]['groupProfile']
+                          : '',
+                      'isGroup': (documents[index]['isGroup']) ? true : false,
+                      'groupName': (documents[index]['isGroup'])
+                          ? documents[index]['groupName']
+                          : '',
+                      'id': documents[index]['id'],
+                      'members': documents[index]['members'],
+                    });
+                  },
                   trailing: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -158,6 +272,11 @@ class ChatScreen extends StatelessWidget {
                               .getUserName(documents[index]['members'][1]),
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      : StreamBuilder(
+                          stream: controller.getUserName(receiverName),
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                            logs('receiver----> $receiverName');
                             if (snapshot.hasError) {
                               return AppText('Error: ${snapshot.error}');
                             }
@@ -173,6 +292,7 @@ class ChatScreen extends StatelessWidget {
                           },
                         )
                   ,
+                        ),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -186,6 +306,8 @@ class ChatScreen extends StatelessWidget {
                       return (isGroup)
                           ? StreamBuilder(
                               stream: controller.getUserName(messageData[0]["sender"]),
+                              stream: controller
+                                  .getUserName(messageData[0]["sender"]),
                               builder: (context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
@@ -197,6 +319,8 @@ class ChatScreen extends StatelessWidget {
                                 }
                                 final data = snapshot.data!.docs;
                                 return AppText("${data[0]["firstName"]} | ${messageData[0]["message"]}",
+                                return AppText(
+                                    "${data[0]["firstName"]} | ${messageData[0]["message"]}",
                                     color: AppColorConstant.grey,
                                     fontSize: 12.px);
                               },

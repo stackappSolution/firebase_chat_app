@@ -1,6 +1,6 @@
 class Message {
   final String messages;
-  final bool isSender;
+   bool isSender;
   final DateTime messageTimestamps;
 
   Message({

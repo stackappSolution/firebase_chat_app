@@ -7,7 +7,6 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/chanage_phone_controller.dart';
 import 'package:signal/pages/account/change_phone/change_phone_screen.dart';
 
-import '../../../app/app/utills/app_utills.dart';
 
 class ChangePhoneViewModel {
   ChangePhoneScreen? changePhoneNumberScreen;
@@ -65,35 +64,6 @@ class ChangePhoneViewModel {
           );
         },
       );
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AppAlertDialog(
-            insetPadding: EdgeInsets.zero,
-            widget: AppText(
-              StringConstant.phoneNumberDoesNot,
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .secondary,
-              fontSize: 12.px,
-            ),
-            actions: [
-              InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 10.px, bottom: 10.px),
-                    child: const AppText(StringConstant.ok),
-                  ))
-            ],
-          );
-        },
-      );
-      logs("do not match");
     }
-    controller.update();
-  }
+}
 }
