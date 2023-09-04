@@ -303,13 +303,6 @@ class ChatingPage extends StatelessWidget {
         backgroundColor: AppColorConstant.appTransparent,
         leadingWidth: 90.px,
         leading: Row(children: [
-          SizedBox(width: 2.px),
-          IconButton(
-              icon: Icon(Icons.arrow_back_rounded,
-                  size: 30.px, color: AppColorConstant.offBlack),
-              onPressed: () {
-                Get.to(HomeScreen());
-              }),
           CircleAvatar(
             // backgroundImage:
             //     NetworkImage(chatingPageViewModal!.parameter['photoUrl'] ?? ''),

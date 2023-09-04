@@ -70,6 +70,8 @@ class PinSettingScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
           child: TextField(
+            style: const TextStyle(color: AppColorConstant.appBlack),
+
             controller: pinSettingViewModel!.pinController,
             keyboardType: (pinSettingViewModel!.changeKeyBoard)
                 ? TextInputType.text
@@ -169,6 +171,7 @@ class PinSettingScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
           child: TextField(
+            style: const TextStyle(color: AppColorConstant.appBlack),
             controller: pinSettingViewModel!.conformPinController,
             keyboardType:TextInputType.text,
             textAlign: TextAlign.center,

@@ -24,14 +24,7 @@ Future<void> main() async {
   SharedPreferences.getInstance();
   runApp(const MyApp());
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //systemNavigationBarColor: AppColorConstant.appWhite, // navigation bar color
-    statusBarColor: (ThemeUtil.isDark)
-        ? AppColorConstant.darkPrimary
-        : AppColorConstant.appWhite,
-    statusBarBrightness:
-        (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
-  ));
+
 }
 
 class MyApp extends StatelessWidget {
@@ -49,7 +42,6 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
-            initialRoute: RouteHelper.getHomeScreen(),
             initialRoute: (AuthService.auth.currentUser != null)
                 ? RouteHelper.getHomeScreen()
                 : RouteHelper.getSplashScreen(),

@@ -18,7 +18,6 @@ class StringConstant {
   //=====================shared pref keys=======================//
 
   static const String blankText = '';
-
   static const String selectedFontSize = 'SelectedFontSize';
   static const String setFontSize = 'setFontSize';
   static const String selectFontSize = 'Select Fontsize';
@@ -45,7 +44,8 @@ class StringConstant {
   static const String messageFontSize = 'Message Font Size';
   static const String normal = 'Normal';
   static const String navigationBarSize = 'Navigation Bar Size';
-  static const String transferOrRestoreAccount = ' Transfer or Restore Account ';
+  static const String transferOrRestoreAccount =
+      ' Transfer or Restore Account ';
   static const String getStarted = ' Get Started ';
   static const String termsPrivacyPolicy = ' Terms & Privacy Policy ';
   static const String welcomeToChat = ' Welcome To Chat ';
@@ -56,8 +56,6 @@ class StringConstant {
   static const String signInDescription =
       'Enter Your Phone Number To Get Started';
   static const String signalMessage = 'Signal message';
-
-
 
   static const String tellUs = 'Tell us what you are reaching out.';
   static const String oneTwoOne = '121';
@@ -76,7 +74,8 @@ class StringConstant {
   static const String light = 'Light';
   static const String version = 'Version';
 
-  static const String helpDescription =  'Copyright Signal Messenger \n Licensed under the GNU AGPlv3';
+  static const String helpDescription =
+      'Copyright Signal Messenger \n Licensed under the GNU AGPlv3';
   static const String terms = 'Terms & Privacy Policy';
   static const String contactUs = 'Contact us';
   static const String dark = 'Dark';
@@ -152,38 +151,35 @@ class StringConstant {
   static const String checkAgainYourNumber = 'Check Again Your Number';
   static const String ok = 'Ok';
 
-
-
   static const String presets = 'Presets';
-
   static const String payment = 'Payments';
   static const String advance = 'Advance';
   static const String paymentLock = 'Payment lock';
-  static const String advanceDescription = 'Signal messages and calls, always relay calls,\n and sealed sender';
-  static const String fingerprintTransfer = 'Require Android screen lock or fingerprint to transfer funds';
-  static const String settingGuarantee = 'This setting is not a guarantee, and your keyboard may ignore it..';
-  static const String keyboardDisable = 'Request keyboard to disable personalized learning.';
-  static const String blockScreenshots = 'Block screenshots in the recents list and inside the app';
+  static const String advanceDescription =
+      'Signal messages and calls, always relay calls,\n and sealed sender';
+  static const String fingerprintTransfer =
+      'Require Android screen lock or fingerprint to transfer funds';
+  static const String settingGuarantee =
+      'This setting is not a guarantee, and your keyboard may ignore it..';
+  static const String keyboardDisable =
+      'Request keyboard to disable personalized learning.';
+  static const String blockScreenshots =
+      'Block screenshots in the recents list and inside the app';
   static const String screenSecurity = 'Screen Security';
   static const String preview = 'Preview';
   static const String appSecurity = 'App security';
   static const String screenLockTimeout = 'Screen lock inactivity timeout';
   static const String screenLock = 'Screen lock';
-  static const String screenLockDescription = 'Lock signal access with android screen lock for fingerprint';
+  static const String screenLockDescription =
+      'Lock signal access with android screen lock for fingerprint';
   static const String defaultTimerForNewChats = 'Default timer for new chats';
-  static const String disappearingDescription = 'set a default disappearing message timer for all new chats started to you';
-
-
-
-
+  static const String disappearingDescription =
+      'set a default disappearing message timer for all new chats started to you';
 
   static const String reset = 'Reset';
   static const String incognitoKeyboard = 'Incognito Keyboard';
   static const String today = 'Today';
   static const String none = 'None';
-
-
-
 
   static const String privacy = 'Privacy';
   static const String off = 'off';
@@ -193,17 +189,16 @@ class StringConstant {
   static const String readReceipts = 'Read Receipts';
   static const String typingIndicators = 'Typing indicators';
   static const String disappearingMessages = 'Disappearing Messages';
-  static const String indicatorsDescription = 'if typing indicators are disabled, you wont be able to see typing indicators from others';
-  static const String receiptsDescription = 'if read receipts are disabled, you \n wont be able to see read receipts\n from others';
-
-
-
-
-
+  static const String indicatorsDescription =
+      'if typing indicators are disabled, you wont be able to see typing indicators from others';
+  static const String receiptsDescription =
+      'if read receipts are disabled, you \n wont be able to see read receipts\n from others';
 
   static const String chooseFromPhotos = 'Choose from photos';
-
   static const String resetChatColor = 'Reset chat color?';
 
 
+  static const String networkError = 'Network error : \n';
+  static const String back = 'Back';
+  static const String pleaseCheckYourInternet = 'Please check your internet connection or try again later.';
 }

@@ -48,7 +48,7 @@ class RouteHelper {
 
   static String getIntroScreen() => RouteConstant.introScreen;
 
-  static String getSplashScreen() => RouteConstant.introScreen;
+  static String getSplashScreen() => RouteConstant.splashScreen;
 
   static String getChatColorWallpaperScreen() =>
       RouteConstant.chatColorWallpaperScreen;

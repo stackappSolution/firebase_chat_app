@@ -14,6 +14,10 @@ import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/database_service.dart';
 
+import '../../app/widget/app_alert_dialog.dart';
+import '../../app/widget/app_button.dart';
+import '../../constant/string_constant.dart';
+
 class ChatViewModel {
   ChatScreen? chatScreen;
   List<Contact> contacts = [];
@@ -61,5 +65,7 @@ class ChatViewModel {
     logs("$isLoading");
     controller!.update();
   }
+
+
 
 }

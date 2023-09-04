@@ -108,7 +108,7 @@ class ProfileViewModel {
                           child: AppImageAsset(
                               height: 60.px,
                               color: AppColorConstant.appWhite,
-                              image: AppAsset.camera)),
+                              image: AppAsset.newCamera)),
                       Padding(
                         padding: EdgeInsets.only(top: 9.px),
                         child: AppText(
@@ -125,7 +125,7 @@ class ProfileViewModel {
                       InkWell(
                           onTap: () {
                             pickImageGallery(controller);
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           child: AppImageAsset(
                               height: 60.px,

@@ -43,13 +43,7 @@ class ChatProfileScreen extends StatelessWidget {
   }
 
   getAppBar() {
-    return AppAppBar(
-      leading: IconButton(
-          onPressed: () {
-           Get.offAll(()=> ChatingPage());
-          },
-          icon: const Icon(Icons.arrow_back)),
-    );
+    return const AppAppBar();
   }
 
   getBody(BuildContext context) {

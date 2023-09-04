@@ -11,11 +11,13 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
-import '../../app/app/utills/date_formation.dart';
 import 'package:signal/service/auth_service.dart';
+
+import '../../service/network_connectivity.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -30,7 +32,10 @@ class ChatScreen extends StatelessWidget {
     chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
       init: ContactController(),
-      initState: (state) {},
+      initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
+
+      },
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
@@ -179,14 +184,13 @@ class ChatScreen extends StatelessWidget {
 
   buildContactList(ContactController controller) {
     return StreamBuilder<QuerySnapshot>(
-      stream: controller.getMyChatContactList("current user mobile number"),
       stream: controller
           .getMyChatContactList(AuthService.auth.currentUser!.phoneNumber!),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return AppText('Error: ${snapshot.error}');
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting ) {
           return const AppLoader();
         }
         final documents = snapshot.data!.docs;
@@ -197,8 +201,6 @@ class ChatScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             bool isGroup = documents[index]['isGroup'];
             List receiver = documents[index]["members"];
-            receiver.remove("current user mobile number");
-            String receiverName = receiver.join("").toString().trim();
             receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
             String receiverName = receiver.join("").toString();
 
@@ -266,17 +268,10 @@ class ChatScreen extends StatelessWidget {
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
                         )
-                      :
-                  StreamBuilder(
-                          stream: controller
-                              .getUserName(documents[index]['members'][1]),
-                          builder:
-                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       : StreamBuilder(
                           stream: controller.getUserName(receiverName),
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                            logs('receiver----> $receiverName');
                             if (snapshot.hasError) {
                               return AppText('Error: ${snapshot.error}');
                             }
@@ -286,12 +281,10 @@ class ChatScreen extends StatelessWidget {
                             }
                             final data = snapshot.data!.docs;
                             return AppText(
-                              data[index]['firstName'] ?? "",
+                              data[0]['firstName'] ?? "",
                               fontSize: 15.px,
                             );
                           },
-                        )
-                  ,
                         ),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
@@ -305,7 +298,6 @@ class ChatScreen extends StatelessWidget {
                       final messageData = snapshot.data!.docs;
                       return (isGroup)
                           ? StreamBuilder(
-                              stream: controller.getUserName(messageData[0]["sender"]),
                               stream: controller
                                   .getUserName(messageData[0]["sender"]),
                               builder: (context,
@@ -318,7 +310,6 @@ class ChatScreen extends StatelessWidget {
                                   return const AppText('');
                                 }
                                 final data = snapshot.data!.docs;
-                                return AppText("${data[0]["firstName"]} | ${messageData[0]["message"]}",
                                 return AppText(
                                     "${data[0]["firstName"]} | ${messageData[0]["message"]}",
                                     color: AppColorConstant.grey,

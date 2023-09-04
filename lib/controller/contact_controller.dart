@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:signal/service/network_connectivity.dart';
 
 
-class ContactController extends GetxController {
 class ContactController extends GetxController {
   RxBool isSearch = false.obs;
 
@@ -38,8 +38,6 @@ class ContactController extends GetxController {
   }
 
   getMyChatContactList(number) {
-
-
     return FirebaseFirestore.instance
         .collection('rooms')
         .where('members', arrayContains: number)
