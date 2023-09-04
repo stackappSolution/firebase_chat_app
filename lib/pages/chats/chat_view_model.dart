@@ -23,6 +23,9 @@ class ChatViewModel {
   List<Contact> contacts = [];
   List<Contact> filterContacts = [];
   bool isLoading = false;
+  String string = '';
+  bool isConnected = false;
+
   final Stream<QuerySnapshot> usersStream = DatabaseService().getUserStream();
   List<DocumentSnapshot> data = [];
   ContactController? controller;

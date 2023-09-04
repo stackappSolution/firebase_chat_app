@@ -1,5 +1,5 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -17,6 +17,10 @@ import 'package:signal/pages/chats/chat_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
+
+import '../../app/widget/app_alert_dialog.dart';
+import '../../app/widget/app_button.dart';
+import '../../service/network_connectivity.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -90,7 +94,8 @@ class ChatScreen extends StatelessWidget {
     return controller.searchValue
         ? AppAppBar(
             leading: IconButton(
-              icon:  Icon(color: Theme.of(context).colorScheme.primary,
+              icon: Icon(
+                color: Theme.of(context).colorScheme.primary,
                 Icons.arrow_back_outlined,
               ),
               onPressed: () {
@@ -120,9 +125,10 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.background,
             leading: Padding(
               padding: EdgeInsets.only(left: 15.px),
-              child: InkWell(onTap: () {
-                goToSettingPage();
-              },
+              child: InkWell(
+                onTap: () {
+                  goToSettingPage();
+                },
                 child: CircleAvatar(
                   backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
                   child: AppText('S',
@@ -144,7 +150,10 @@ class ChatScreen extends StatelessWidget {
                 },
                 child: Padding(
                     padding: EdgeInsets.all(18.px),
-                    child:  AppImageAsset(image: AppAsset.search,color: Theme.of(context).colorScheme.primary,)),
+                    child: AppImageAsset(
+                      image: AppAsset.search,
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
               ),
               buildPopupMenu(context),
             ],
@@ -164,7 +173,10 @@ class ChatScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
       icon: Padding(
         padding: EdgeInsets.all(10.px),
-        child:  AppImageAsset(image: AppAsset.popup,color: Theme.of(context).colorScheme.primary,),
+        child: AppImageAsset(
+          image: AppAsset.popup,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
       itemBuilder: (context) {
         return [
@@ -251,7 +263,7 @@ class ChatScreen extends StatelessWidget {
                                       .substring(0, 1)
                                       .toUpperCase() ??
                                   "",
-                             color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 22.px,
                             )
                           : AppText(
@@ -265,7 +277,8 @@ class ChatScreen extends StatelessWidget {
                     ),
                   ),
                   title: (isGroup)
-                      ? AppText( color: Theme.of(context).colorScheme.primary,
+                      ? AppText(
+                          // color: Theme.of(context).colorScheme.primary ,
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
                         )

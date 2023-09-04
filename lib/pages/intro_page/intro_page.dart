@@ -25,7 +25,7 @@ class IntroPage extends StatelessWidget {
     return GetBuilder(
         init: IntroPageController(),
         initState: (introPage) {
-          NetworkConnectivity.checkConnectivity(context);
+          introPageInitState(context);
         },
         builder: (IntroPageController controller) {
           return Scaffold(
@@ -43,15 +43,9 @@ class IntroPage extends StatelessWidget {
                     termsPrivacyPolicy(context),
                     getStartedButton(controller.introPageViewModal.isConnected,
                         context, controller),
-                    transferOrRestoreAccount(),
-                    SizedBox(height: 15.px)
-                    termsPrivacyPolicy(),
-                    getStartedButton(
-                        controller.introPageViewModal.isConnected,
-                        context,
-                        controller),
                     transferOrRestoreAccount(context),
-                    SizedBox(height:15.px)
+                    SizedBox(height: 15.px),
+
                   ])));
         });
   }
@@ -145,11 +139,11 @@ class IntroPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const AppText(
-                    StringConstant.networkError,
+                    "networkError",
                     fontWeight: FontWeight.bold,
                   ),
                   AppText(
-                    StringConstant.pleaseCheckYourInternet,
+                    "pleaseCheckYourInternet",
                     fontSize: 15.px,
                   )
                 ]),
@@ -159,7 +153,7 @@ class IntroPage extends StatelessWidget {
                   Get.back();
                 },
                 fontColor: AppColorConstant.appWhite,
-                string: StringConstant.back,
+                string: "back",
                 fontSize: 20,
                 borderRadius: BorderRadius.circular(15),
                 height: 40,

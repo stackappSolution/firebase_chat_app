@@ -24,6 +24,8 @@ class NetworkConnectivity {
   static final controller = StreamController.broadcast();
   static String status = "";
   static bool isConnected = false;
+  Map source = {ConnectivityResult.none: false};
+
 
   Stream get myStream => controller.stream;
 
@@ -48,7 +50,6 @@ class NetworkConnectivity {
   }
 
   static void checkConnectivity(context) {
-    Map source = {ConnectivityResult.none: false};
     initialise();
     NetworkConnectivity.instance.myStream.listen((source) {
       source = source;
@@ -77,11 +78,11 @@ class NetworkConnectivity {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const AppText(
-                          StringConstant.networkError,
+                          "networkError",
                           fontWeight: FontWeight.bold,
                         ),
                         AppText(
-                          StringConstant.pleaseCheckYourInternet,
+                          "pleaseCheckYourInternet",
                           fontSize: 15.px,
                         )
                       ]),
@@ -91,7 +92,7 @@ class NetworkConnectivity {
                         Get.back();
                       },
                       fontColor: AppColorConstant.appWhite,
-                      string: StringConstant.back,
+                      string: "back",
                       fontSize: 20,
                       borderRadius: BorderRadius.circular(15),
                       height: 40,
