@@ -22,48 +22,81 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "about": MessageLookupByLibrary.simpleMessage("About"),
         "account": MessageLookupByLibrary.simpleMessage("Account"),
+        "addRemoveMember": MessageLookupByLibrary.simpleMessage(
+            "You can add or invite friends after creating this group"),
         "advance": MessageLookupByLibrary.simpleMessage("Advance"),
         "advanceDescription": MessageLookupByLibrary.simpleMessage(
             "Signal messages and calls, always relay calls, and sealed sender"),
+        "advancePinSetting":
+            MessageLookupByLibrary.simpleMessage("Advance PIN Setting"),
         "appIcon": MessageLookupByLibrary.simpleMessage("App Icon"),
         "appSecurity": MessageLookupByLibrary.simpleMessage("App security"),
         "appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
         "audio": MessageLookupByLibrary.simpleMessage("Audio"),
+        "badges": MessageLookupByLibrary.simpleMessage("Badges"),
+        "beforeContinuing": MessageLookupByLibrary.simpleMessage(
+            "Before Continuing, Make sure your new number can receive SMS or Calls."),
+        "blankText": MessageLookupByLibrary.simpleMessage("blankText"),
         "blockScreenshots": MessageLookupByLibrary.simpleMessage(
             "Block screenshots in the recents list and inside the app"),
         "blocked": MessageLookupByLibrary.simpleMessage("Blocked"),
         "calls": MessageLookupByLibrary.simpleMessage("Calls"),
+        "camera": MessageLookupByLibrary.simpleMessage("Camera"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "chaAppPin": MessageLookupByLibrary.simpleMessage("Chat App PIN"),
+        "changeNumber": MessageLookupByLibrary.simpleMessage("Change Number"),
+        "changePhoneNumber":
+            MessageLookupByLibrary.simpleMessage("Change Phone number"),
+        "changeYourPin":
+            MessageLookupByLibrary.simpleMessage("Change Your PIN"),
         "chatColor": MessageLookupByLibrary.simpleMessage("Chat color"),
         "chatColorAndWallpaper":
             MessageLookupByLibrary.simpleMessage("Chat color & Wallpaper"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
-        "choose": MessageLookupByLibrary.simpleMessage("choose"),
+        "checkAgainYourNumber":
+            MessageLookupByLibrary.simpleMessage("Check Again Your Number"),
+        "choose": MessageLookupByLibrary.simpleMessage("Choose"),
         "chooseFromPhotos":
             MessageLookupByLibrary.simpleMessage("Choose from photos"),
         "colorIsOnlyVisibleYou":
             MessageLookupByLibrary.simpleMessage("Color is only visible you"),
+        "conformYourChatAppPIN":
+            MessageLookupByLibrary.simpleMessage("Conform Your ChatApp PIN"),
+        "conformYourPin":
+            MessageLookupByLibrary.simpleMessage("Confirm Your PIN"),
         "contactDetails":
             MessageLookupByLibrary.simpleMessage("Contact details"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact us"),
         "contacts": MessageLookupByLibrary.simpleMessage("contacts"),
         "continues": MessageLookupByLibrary.simpleMessage("Continue"),
+        "create": MessageLookupByLibrary.simpleMessage("Create"),
+        "createAlphaNumericPin":
+            MessageLookupByLibrary.simpleMessage("Create Alphanumeric PIN"),
+        "createNumericPin":
+            MessageLookupByLibrary.simpleMessage("Create Numeric PIN"),
+        "createYourPIN":
+            MessageLookupByLibrary.simpleMessage("Create Your PIN"),
         "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "darkModeWallpaper":
             MessageLookupByLibrary.simpleMessage("Dark mode dims wallpaper"),
         "debugLog": MessageLookupByLibrary.simpleMessage("Debug log"),
         "defaultTimerForNewChats":
             MessageLookupByLibrary.simpleMessage("Default timer for new chats"),
+        "deleteAccount": MessageLookupByLibrary.simpleMessage("Delete Account"),
+        "disablePIN": MessageLookupByLibrary.simpleMessage("Disable PIN"),
         "disappearingDescription": MessageLookupByLibrary.simpleMessage(
             "set a default disappearing message timer for all new chats started to you"),
         "disappearingMessages":
             MessageLookupByLibrary.simpleMessage("Disappearing Messages"),
         "donateToSignal":
             MessageLookupByLibrary.simpleMessage("Donate To Signal"),
+        "editPhoto": MessageLookupByLibrary.simpleMessage("Edit Photo"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "enterValidName":
             MessageLookupByLibrary.simpleMessage("Enter Valid Name"),
+        "extraLarge": MessageLookupByLibrary.simpleMessage("Extra Large"),
         "featureRequest":
             MessageLookupByLibrary.simpleMessage("Feature Request"),
         "feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
@@ -71,34 +104,49 @@ class MessageLookup extends MessageLookupByLibrary {
             "Require Android screen lock or fingerprint to transfer funds"),
         "firstName":
             MessageLookupByLibrary.simpleMessage("First Name ( Required )"),
-        "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
+        "gallery": MessageLookupByLibrary.simpleMessage("Gallery"),
+        "getStarted": MessageLookupByLibrary.simpleMessage(" Get Started"),
+        "groupName":
+            MessageLookupByLibrary.simpleMessage("Group name (required)"),
         "gujarati": MessageLookupByLibrary.simpleMessage("Gujarati"),
         "help": MessageLookupByLibrary.simpleMessage("Help"),
         "helpDescription": MessageLookupByLibrary.simpleMessage(
             "Copyright Signal Messenger \n Licensed under the GNU AGPlv3"),
+        "ifYouDisable": MessageLookupByLibrary.simpleMessage(
+            "If You Disable PIN, you will lose all data."),
+        "ifYouForgetYourPIN": MessageLookupByLibrary.simpleMessage(
+            "If You Forget Yor Pin When Registering with Signal Again, You Will be Locked Out Your AccountFor 7 days."),
         "includeDebug":
             MessageLookupByLibrary.simpleMessage("Include Debug Log"),
         "incognitoKeyboard":
             MessageLookupByLibrary.simpleMessage("Incognito Keyboard"),
+        "incorrectPinTryAgain":
+            MessageLookupByLibrary.simpleMessage("Incorrect PIN. Try Again.."),
         "indicatorsDescription": MessageLookupByLibrary.simpleMessage(
             "if typing indicators are disabled, you wont be able to see typing indicators from others"),
         "inviteFriends": MessageLookupByLibrary.simpleMessage("Invite Friends"),
         "keyboardDisable": MessageLookupByLibrary.simpleMessage(
             "Request keyboard to disable personalized learning."),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
-        "lastName":
-            MessageLookupByLibrary.simpleMessage("Last Name ( Required )"),
+        "large": MessageLookupByLibrary.simpleMessage("Large"),
+        "lastName": MessageLookupByLibrary.simpleMessage("Last Name"),
         "licenses": MessageLookupByLibrary.simpleMessage("Licenses"),
         "light": MessageLookupByLibrary.simpleMessage("Light"),
         "linkedDevice": MessageLookupByLibrary.simpleMessage("Linked Devices"),
+        "makeSureYou": MessageLookupByLibrary.simpleMessage(
+            "Make Sure You memorize your PIN"),
         "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
+        "members": MessageLookupByLibrary.simpleMessage("Members"),
         "messageFontSize":
             MessageLookupByLibrary.simpleMessage("Message Font Size"),
         "messaging": MessageLookupByLibrary.simpleMessage("Messaging"),
         "mute": MessageLookupByLibrary.simpleMessage("Mute"),
+        "nameThisGroup":
+            MessageLookupByLibrary.simpleMessage("Name this Group"),
         "navigationBarSize":
             MessageLookupByLibrary.simpleMessage("Navigation Bar Size"),
         "newGroup": MessageLookupByLibrary.simpleMessage("New Group"),
+        "newMessage": MessageLookupByLibrary.simpleMessage("New Message"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "normal": MessageLookupByLibrary.simpleMessage("Normal"),
         "notification": MessageLookupByLibrary.simpleMessage("Notification"),
@@ -108,18 +156,30 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentLock": MessageLookupByLibrary.simpleMessage("Payment lock"),
         "payments": MessageLookupByLibrary.simpleMessage("Payments"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+        "pinCanHelp": MessageLookupByLibrary.simpleMessage(
+            "PIN can help you restore your account and keep info encrypted with chatApp."),
+        "pinMustBeChar": MessageLookupByLibrary.simpleMessage(
+            "PIN Must Be At Least 4 Characters"),
+        "pinReminders": MessageLookupByLibrary.simpleMessage("PIN Reminders"),
         "presets": MessageLookupByLibrary.simpleMessage("Presets"),
         "preview": MessageLookupByLibrary.simpleMessage("Preview"),
         "privacy": MessageLookupByLibrary.simpleMessage("Privacy"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
-            "Profiles Are Visible To People You Message,Contacts, and Groups."),
+            "Profiles Are Visible To People, Your Message,Contacts and Groups."),
         "question": MessageLookupByLibrary.simpleMessage("Question"),
+        "reEnterThePin": MessageLookupByLibrary.simpleMessage(
+            "Re-Enter The PIN You Just Entered."),
         "readFaq":
             MessageLookupByLibrary.simpleMessage("Have you read our FAQ yet?"),
         "readReceipts": MessageLookupByLibrary.simpleMessage("Read Receipts"),
         "receiptsDescription": MessageLookupByLibrary.simpleMessage(
             "if read receipts are disabled, you wont be able to see read receipts from others"),
+        "registrationLock":
+            MessageLookupByLibrary.simpleMessage("Registration Lock"),
+        "requireYourChatApp": MessageLookupByLibrary.simpleMessage(
+            "Require Your Chat App PIN To Register Your Phone Number With ChatApp Again"),
         "reset": MessageLookupByLibrary.simpleMessage("Reset"),
         "resetChatColor":
             MessageLookupByLibrary.simpleMessage("Reset chat color?"),
@@ -133,6 +193,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "screenSecurity":
             MessageLookupByLibrary.simpleMessage("Screen Security"),
         "search": MessageLookupByLibrary.simpleMessage("Search.."),
+        "searchNameOrNumber":
+            MessageLookupByLibrary.simpleMessage("search Name or Number"),
+        "selectMember": MessageLookupByLibrary.simpleMessage("Select Member"),
         "setWallpaper": MessageLookupByLibrary.simpleMessage("Set Wallpaper"),
         "settingGuarantee": MessageLookupByLibrary.simpleMessage(
             "This setting is not a guarantee, and your keyboard may ignore it.."),
@@ -142,11 +205,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Enter Your Phone Number To Get Started"),
         "signal": MessageLookupByLibrary.simpleMessage("Signal"),
         "signalMessage": MessageLookupByLibrary.simpleMessage("Signal message"),
+        "small": MessageLookupByLibrary.simpleMessage("Small"),
         "somethingNotWorking":
             MessageLookupByLibrary.simpleMessage("Somethings Not Working"),
         "soundAndNotification":
             MessageLookupByLibrary.simpleMessage("Sound & Notification"),
         "supportCenter": MessageLookupByLibrary.simpleMessage("Support center"),
+        "switchKeyboard":
+            MessageLookupByLibrary.simpleMessage("Switch KeyBoard"),
         "systemDefault": MessageLookupByLibrary.simpleMessage("System Default"),
         "tellUs": MessageLookupByLibrary.simpleMessage(
             "Tell us wht you are reaching out."),
@@ -159,10 +225,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "toMakeYourDayGreat":
             MessageLookupByLibrary.simpleMessage("to make your day great!"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
+        "transferAccount":
+            MessageLookupByLibrary.simpleMessage("Transfer account"),
+        "transferAccountTo": MessageLookupByLibrary.simpleMessage(
+            "Transfer account To A New Android Device"),
         "transferOrRestoreAccount":
             MessageLookupByLibrary.simpleMessage("Transfer or Restore Account"),
+        "turnOff": MessageLookupByLibrary.simpleMessage("Turn Off"),
+        "turnOffRegistration":
+            MessageLookupByLibrary.simpleMessage("Turn Off Registration Lock?"),
+        "turnOn": MessageLookupByLibrary.simpleMessage("Turn On"),
+        "turnOnRegistration":
+            MessageLookupByLibrary.simpleMessage("Turn On Registration Lock?"),
         "typingIndicators":
             MessageLookupByLibrary.simpleMessage("Typing indicators"),
+        "useThisToChange": MessageLookupByLibrary.simpleMessage(
+            "Use this to change your current phone number to new phone number, you can\'t undo this change."),
         "userName": MessageLookupByLibrary.simpleMessage("User Name"),
         "verify": MessageLookupByLibrary.simpleMessage("Verify OTP"),
         "verifyButton": MessageLookupByLibrary.simpleMessage("Verify"),
@@ -172,10 +250,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "video": MessageLookupByLibrary.simpleMessage("Video"),
         "viewSafetyNumbers":
             MessageLookupByLibrary.simpleMessage("View safety numbers"),
+        "warning": MessageLookupByLibrary.simpleMessage("Warning"),
         "welcomeToChat":
             MessageLookupByLibrary.simpleMessage(" Welcome To Chat"),
         "whatsThis": MessageLookupByLibrary.simpleMessage("Whats this?"),
         "yesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
-        "yourProfile": MessageLookupByLibrary.simpleMessage("Your Profile")
+        "youWillBeAsked": MessageLookupByLibrary.simpleMessage(
+            "You Will Be Asked Less Frequently over Time"),
+        "yourAccountData":
+            MessageLookupByLibrary.simpleMessage("Your Account Data"),
+        "yourNewNumber":
+            MessageLookupByLibrary.simpleMessage("Your New Number"),
+        "yourOldNumber":
+            MessageLookupByLibrary.simpleMessage("Your Old Number"),
+        "yourProfile": MessageLookupByLibrary.simpleMessage("Your Profile"),
+        "yourProfileAndChanges": MessageLookupByLibrary.simpleMessage(
+            "Your Profile And Changes It Will Be Visible To People Your Message, Contacts, And Groups.")
       };
 }

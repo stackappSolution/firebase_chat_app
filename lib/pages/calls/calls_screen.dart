@@ -23,8 +23,8 @@ class CallsScreen extends StatelessWidget {
       initState: (state) {},
       builder: (controller) {
         return  SafeArea(
-            child: Scaffold(appBar: getAppBar(context),
-          backgroundColor: AppColorConstant.appWhite,
+            child: Scaffold(appBar: getAppBar(context,controller),
+          backgroundColor: Theme.of(context).colorScheme.background,
         ));
       },
     );
@@ -51,38 +51,69 @@ class CallsScreen extends StatelessWidget {
     );
   }
 
-  getAppBar(BuildContext context) {
-    return AppAppBar(backgroundColor: Theme.of(context).colorScheme.background,
+  getAppBar(BuildContext context, ContactController controller) {
+    return controller.searchValue
+        ? AppAppBar(
+      leading: IconButton(
+        icon:  Icon(color: Theme.of(context).colorScheme.primary,
+          Icons.arrow_back_outlined,
+        ),
+        onPressed: () {
+          controller.setSearch(false);
+        },
+      ),
+      title: SizedBox(
+        height: 30,
+        child: TextFormField(
+          onChanged: (value) {
+            controller.setFilterText(value);
+          },
+          decoration: InputDecoration(
+              hintText: 'Search',
+              fillColor: AppColorConstant.grey.withOpacity(0.2),
+              filled: true,
+              contentPadding:
+              EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.px),
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(18.px),
+              )),
+        ),
+      ),
+    )
+        : AppAppBar(
+      backgroundColor: Theme.of(context).colorScheme.background,
       leading: Padding(
         padding: EdgeInsets.only(left: 15.px),
         child: CircleAvatar(
-
           backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-          child: AppText('S', fontSize: 20.px, color: AppColorConstant.appYellow),
-
+          child: AppText('S',
+              fontSize: 20.px, color: AppColorConstant.appYellow),
         ),
       ),
       title: Padding(
         padding: EdgeInsets.only(left: 20.px),
         child: AppText(S.of(Get.context!).signal,
-            color: Theme.of(Get.context!).colorScheme.primary, fontSize: 20.px),
+            color: Theme.of(Get.context!).colorScheme.primary,
+            fontSize: 20.px),
       ),
       actions: [
-        InkWell(onTap: () {
-
-        },
+        InkWell(
+          onTap: () {
+            controller.setSearch(true);
+            controller.setFilterText('');
+          },
           child: Padding(
-            padding: EdgeInsets.all(18.px),
-            child: const AppImageAsset(image: AppAsset.search),
-          ),
+              padding: EdgeInsets.all(18.px),
+              child:  AppImageAsset(image: AppAsset.search,color: Theme.of(context).colorScheme.primary,)),
         ),
-        buildPopupMenu(),
+        buildPopupMenu(context),
       ],
     );
   }
 
 
-  buildPopupMenu() {
+  buildPopupMenu(BuildContext context) {
     return PopupMenuButton(
       onSelected: (value) {
         if (value == 2) {
@@ -95,7 +126,7 @@ class CallsScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
       icon: Padding(
         padding: EdgeInsets.all(10.px),
-        child: const AppImageAsset(image: AppAsset.popup),
+        child:  AppImageAsset(image: AppAsset.popup,color: Theme.of(context).colorScheme.primary,),
       ),
       itemBuilder: (context) {
         return [
@@ -104,14 +135,10 @@ class CallsScreen extends StatelessWidget {
             child: AppText(S.of(Get.context!).newGroup),
           ),
           PopupMenuItem(
-              value: 1,
-              child: AppText(S.of(Get.context!).markAllRead)),
+              value: 1, child: AppText(S.of(Get.context!).markAllRead)),
+          PopupMenuItem(value: 2, child: AppText(S.of(Get.context!).settings)),
           PopupMenuItem(
-              value: 2,
-              child: AppText(S.of(Get.context!).settings)),
-          PopupMenuItem(
-              value: 3,
-              child: AppText(S.of(Get.context!).inviteFriends)),
+              value: 3, child: AppText(S.of(Get.context!).inviteFriends)),
         ];
       },
     );

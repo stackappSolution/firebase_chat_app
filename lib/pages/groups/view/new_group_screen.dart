@@ -7,8 +7,8 @@ import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/new_group_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/view/new_group_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
@@ -21,18 +21,17 @@ class NewGroupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     newGroupViewModel ?? (newGroupViewModel = NewGroupViewModel(this));
-     newGroupViewModel!.fetchContacts();
+    newGroupViewModel!.fetchContacts();
     return GetBuilder<GroupController>(
-      initState: (state) async {
-
-      },
+      initState: (state) async {},
       init: GroupController(),
       builder: (controller) {
         return Scaffold(
           appBar: AppAppBar(
               title: AppText(
-            StringConstant.selectMember,
+            S.of(context).selectMember,
             fontSize: 22.px,
+            color: Theme.of(context).colorScheme.primary,
           )),
           floatingActionButton: buildFloatingActionButton(),
           body: Padding(
@@ -42,7 +41,7 @@ class NewGroupScreen extends StatelessWidget {
                 height: 40.px,
                 child: AppTextFormField(
                   decoration: InputDecoration(
-                      hintText: 'search Name or Number',
+                      hintText: S.of(context).searchNameOrNumber,
                       filled: true,
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -69,55 +68,56 @@ class NewGroupScreen extends StatelessWidget {
                       String? displayName = contact.displayName ?? 'unknown';
                       String firstLetter =
                           displayName.substring(0, 1).toUpperCase();
-                      return Container(
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.all(10),
-                        height: 20.px,
-                        width: 200.px,
-                        decoration: BoxDecoration(
-                            color: AppColorConstant.yellowLight,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.px))),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.all(5.px),
-                                height: 200.px,
-                                width: 20.px,
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColorConstant.appYellow),
-                                child: AppText(firstLetter,
-                                    fontSize: 10.px,
-                                    color: AppColorConstant.appWhite),
-                              ),
-                              AppText(displayName,
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: 12.px),
-                              IconButton(
-                                  onPressed: () {
-                                    newGroupViewModel!.groupMembers
-                                        .remove(contact);
-                                    controller.update();
-                                  },
-                                  icon: Icon(
-                                    Icons.clear,
-                                    size: 15.px,
-                                  ))
-                            ]),
+                      return Padding(
+                        padding: EdgeInsets.all(12.px),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: AppColorConstant.yellowLight,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.px))),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.all(5.px),
+                                  height: 200.px,
+                                  width: 20.px,
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColorConstant.appYellow),
+                                  child: AppText(firstLetter,
+                                      fontSize: 10.px,
+                                      color: AppColorConstant.appWhite),
+                                ),
+                                AppText(displayName,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 12.px),
+                                IconButton(
+                                    onPressed: () {
+                                      newGroupViewModel!.groupMembers
+                                          .remove(contact);
+                                      controller.update();
+                                    },
+                                    icon: Icon(
+                                      color: AppColorConstant.appBlack,
+                                      Icons.clear,
+                                      size: 15.px,
+                                    ))
+                              ]),
+                        ),
                       );
                     },
                   ),
                 ),
               ),
-              const Align(
+              Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: AppText(
-                      StringConstant.contacts,
+                      S.of(context).contacts,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   )),
               Expanded(
@@ -131,6 +131,7 @@ class NewGroupScreen extends StatelessWidget {
                           ? contact.phones!.first.value
                           : 'N/A';
                       String? displayName = contact.displayName ?? 'unknown';
+
                       String firstLetter =
                           displayName.substring(0, 1).toUpperCase();
 
@@ -160,7 +161,7 @@ class NewGroupScreen extends StatelessWidget {
                               children: [
                                 AppText(
                                   displayName,
-                                  color: AppColorConstant.darkPrimary,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                                 AppText(
                                   mobileNumber!,
@@ -223,21 +224,17 @@ class NewGroupScreen extends StatelessWidget {
   }
 
   buildFloatingActionButton() {
-    return FloatingActionButton(
-      backgroundColor: AppColorConstant.appYellow,
-      onPressed: () {
-        Get.toNamed(RouteHelper.getGroupNameScreen(),
-            arguments: newGroupViewModel!.groupMembers);
-      },
-      child: (newGroupViewModel!.groupMembers.isNotEmpty)
-          ? const Icon(
+    return (newGroupViewModel!.groupMembers.isNotEmpty)
+        ? FloatingActionButton(
+            backgroundColor: AppColorConstant.appYellow,
+            onPressed: () {
+              Get.toNamed(RouteHelper.getGroupNameScreen(),
+                  arguments: newGroupViewModel!.groupMembers);
+            },
+            child: const Icon(
               Icons.navigate_next,
               color: AppColorConstant.appWhite,
-            )
-          : const AppText(
-              'Skip',
-              color: AppColorConstant.appWhite,
-            ),
-    );
+            ))
+        : const SizedBox();
   }
 }

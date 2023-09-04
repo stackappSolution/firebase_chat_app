@@ -1,4 +1,16 @@
 class StringConstant {
+
+
+
+  //=====================shared pref keys=======================//
+
+  static const String blankText = '';
+  static const String selectedFontSize = 'SelectedFontSize';
+  static const String setFontSize = 'setFontSize';
+  static const String selectFontSize = 'Select Fontsize';
+
+
+
   static const String calls = 'calls';
   static const String chats = 'chats';
   static const String settings = 'Settings';
@@ -14,196 +26,154 @@ class StringConstant {
   static const String signal = 'Signal';
   static const String search = 'Search';
   static const String yesterday = 'Yesterday';
-
-  //=====================shared pref keys=======================//
-
-  static const String blankText = '';
-
-  static const String selectedFontSize = 'SelectedFontSize';
-  static const String setFontSize = 'setFontSize';
-  static const String selectFontSize = 'Select Fontsize';
-  static const String theme = 'Theme';
-  static const String yourProfile = 'Your Profile';
-  static const String profileAreVisible =
-      'Profiles Are Visible To People, Your Message,Contacts and Groups.';
-  static const String firstName = 'First Name ( Required )';
-
-  static const String lastName = 'Last Name';
-  static const String next = 'Next';
-  static const String enterValidName = 'Enter Valid Name';
-  static const String choose = 'Choose';
-  static const String cancel = 'Cancel';
-  static const String conversa = 'Conversations';
-
-  static const String cansel = 'Cancel';
-  static const String selectMember = 'Select Member';
-
-  static const String language = 'Language';
-  static const String systemDefault = 'System Default';
-  static const String chatColor = 'Chat Color & wallpaper';
-  static const String appIcon = 'App Icon';
-  static const String messageFontSize = 'Message Font Size';
-  static const String normal = 'Normal';
-  static const String navigationBarSize = 'Navigation Bar Size';
-  static const String transferOrRestoreAccount = ' Transfer or Restore Account ';
-  static const String getStarted = ' Get Started ';
-  static const String termsPrivacyPolicy = ' Terms & Privacy Policy ';
-  static const String welcomeToChat = ' Welcome To Chat ';
-  static const String theBestMessengerAndChat = ' The best messenger and chat ';
-  static const String toMakeYourDayGreat = ' to make your day great! ';
-  static const String signIndis = 'Enter Your Phone Number To Get Started';
-  static const String verifyOtp = 'Enter The Code We Sent To ';
-  static const String signInDescription =
-      'Enter Your Phone Number To Get Started';
-  static const String signalMessage = 'Signal message';
-
-
-
-  static const String tellUs = 'Tell us what you are reaching out.';
+  static const String theme = 'theme';
+  static const String yourProfile = 'yourProfile';
+  static const String profileAreVisible = 'profileAreVisible';
+  static const String firstName = 'firstName';
+  static const String lastName = 'lastName';
+  static const String next = 'next';
+  static const String enterValidName = 'enterValidName';
+  static const String choose = 'choose';
+  static const String cancel = 'cancel';
+  static const String conversa = 'conversa';
+  static const String cansel = 'cancel';
+  static const String newMessage = 'newMessage';
+  static const String newGroup = 'newGroup';
+  static const String selectMember = 'selectMember';
+  static const String language = 'language';
+  static const String systemDefault = 'systemDefault';
+  static const String chatColor = 'chatColor';
+  static const String appIcon = 'appIcon';
+  static const String messageFontSize = 'messageFontSize';
+  static const String normal = 'normal';
+  static const String navigationBarSize = 'navigationBarSize';
+  static const String transferOrRestoreAccount = ' transferOrRestoreAccount ';
+  static const String getStarted = ' getStarted ';
+  static const String termsPrivacyPolicy = ' termsPrivacyPolicy ';
+  static const String welcomeToChat = 'welcomeToChat ';
+  static const String theBestMessengerAndChat = 'theBestMessengerAndChat';
+  static const String toMakeYourDayGreat = ' toMakeYourDayGreat ';
+  static const String signIndis = 'signIndis';
+  static const String verifyOtp = 'verifyOtp';
+  static const String signInDescription = 'signInDescription';
+  static const String signalMessage = 'signalMessage';
+  static const String tellUs = 'tellUs';
   static const String oneTwoOne = '121';
-  static const String userName = 'User Name';
-  static const String whatsThis = 'Whats this?';
-  static const String supportCenter = 'Support center';
-  static const String other = 'Other';
-  static const String somethingNotWorking = 'Somethings Not Working';
-  static const String featureRequest = 'Feature Request';
-  static const String question = 'Question';
-  static const String feedback = 'Feedback';
-  static const String licenses = 'Licenses';
-  static const String debugLog = 'Debug log';
-  static const String includeDebug = 'Include Debug Log';
-  static const String readFaq = 'Have you read our FAQ yet?';
-  static const String light = 'Light';
-  static const String version = 'Version';
-
-  static const String helpDescription =  'Copyright Signal Messenger \n Licensed under the GNU AGPlv3';
-  static const String terms = 'Terms & Privacy Policy';
-  static const String contactUs = 'Contact us';
-  static const String dark = 'Dark';
-  static const String small = 'Small';
-  static const String large = 'Large';
-  static const String help = 'Help';
-  static const String extraLarge = 'Extra Large';
-  static const String profile = 'Profile';
-  static const String editPhoto = 'Edit Photo';
-  static const String yourName = 'Your Name';
-  static const String newGroup = 'New Group';
-  static const String markAllRead = 'Mark all read';
-  static const String about = 'About';
-  static const String badges = 'Badges';
-  static const String yourProfileAndChanges =
-      'Your Profile And Changes It Will Be Visible To People Your Message, Contacts, And Groups.';
-  static const String signInDis = 'Enter Your Phone Number To Get Started';
-  static const String signIn = 'Sign In';
-  static const String continueButton = 'Continue';
-  static const String verify = 'Verify OTP';
-  static const String verifyButton = 'Verify';
-  static const String camera = 'Camera';
-  static const String gallery = 'Gallery';
-
-  static const String chaAppPin = 'Chat App PIN';
-  static const String changeYourPin = 'Change Your PIN';
-  static const String pinReminders = 'PIN Reminders';
-  static const String youWillBeAsked =
-      'You Will Be Asked Less Frequently over Time';
-  static const String registrationLock = 'Registration Lock';
-  static const String requireYourChatApp =
-      'Require Your Chat App PIN To Register Your Phone Number With ChatApp Again';
-  static const String advancePinSetting = 'Advance PIN Setting';
-  static const String changePhoneNumber = 'Change Phone number';
-  static const String changeNumber = 'Change Number';
-  static const String transferAccount = 'Transfer account';
-  static const String transferAccountTo =
-      'Transfer account To A New Android Device';
-  static const String yourAccountData = 'Your Account Data';
-  static const String deleteAccount = 'Delete Account';
-  static const String createYourPIN = 'Create Your PIN';
-  static const String pinMustBeGigit = 'PIN Must Be At Least 4 Digits';
-  static const String pinMustBeChar = 'PIN Must Be At Least 4 Characters';
-  static const String pinCanHelp =
-      'PIN can help you restore your account and keep info encrypted with chatApp.';
-  static const String createAlphaNumericPin = 'Create Alphanumeric PIN';
-  static const String createNumericPin = 'Create Numeric PIN';
-  static const String conformYourChatAppPIN = 'Conform Your ChatApp PIN';
-  static const String makeSureYou = 'Make Sure You memorize your PIN';
-  static const String switchKeyboard = 'Switch KeyBoard';
-  static const String turnOff = 'Turn Off';
-  static const String turnOn = 'Turn On';
-  static const String turnOnRegistration = 'Turn On Registration Lock?';
-  static const String ifYouForgetYourPIN =
-      'If You Forget Yor Pin When Registering with Signal Again, You Will be Locked Out Your AccountFor 7 days.';
-  static const String disablePIN = 'Disable PIN';
-  static const String ifYouDisable =
-      'If You Disable PIN, you will lose all data.';
-  static const String warning = 'Warning';
-  static const String continues = 'Continue';
-  static const String conformYourPin = 'Confirm Your PIN';
-  static const String reEnterThePin = 'Re-Enter The PIN You Just Entered.';
-  static const String incorrectPinTryAgain = 'Incorrect PIN. Try Again..';
-  static const String turnOffRegistration = 'Turn Off Registration Lock?';
-  static const String beforeContinuing =
-      'Before Continuing, Make sure your new number can receive SMS or Calls.';
-  static const String useThisToChange =
-      "Use this to change your current phone number to new phone number, you can't undo this change.";
-  static const String yourOldNumber = 'Your Old Number';
-  static const String phoneNumber = 'Phone Number';
-  static const String yourNewNumber = 'Your New Number';
-  static const String phoneNumberDoesNot = 'Phone Number Does Not Match';
-  static const String checkAgainYourNumber = 'Check Again Your Number';
-  static const String ok = 'Ok';
-
-
-
-  static const String presets = 'Presets';
-
-  static const String payment = 'Payments';
-  static const String advance = 'Advance';
-  static const String paymentLock = 'Payment lock';
-  static const String advanceDescription = 'Signal messages and calls, always relay calls,\n and sealed sender';
-  static const String fingerprintTransfer = 'Require Android screen lock or fingerprint to transfer funds';
-  static const String settingGuarantee = 'This setting is not a guarantee, and your keyboard may ignore it..';
-  static const String keyboardDisable = 'Request keyboard to disable personalized learning.';
-  static const String blockScreenshots = 'Block screenshots in the recents list and inside the app';
-  static const String screenSecurity = 'Screen Security';
-  static const String preview = 'Preview';
-  static const String appSecurity = 'App security';
-  static const String screenLockTimeout = 'Screen lock inactivity timeout';
-  static const String screenLock = 'Screen lock';
-  static const String screenLockDescription = 'Lock signal access with android screen lock for fingerprint';
-  static const String defaultTimerForNewChats = 'Default timer for new chats';
-  static const String disappearingDescription = 'set a default disappearing message timer for all new chats started to you';
-
-
-
-
-
-  static const String reset = 'Reset';
-  static const String incognitoKeyboard = 'Incognito Keyboard';
-  static const String today = 'Today';
-  static const String none = 'None';
-
-
-
-
-  static const String privacy = 'Privacy';
+  static const String userName = 'userName';
+  static const String whatsThis = 'whatsThis';
+  static const String supportCenter = 'supportCenter';
+  static const String other = 'other';
+  static const String somethingNotWorking = 'somethingNotWorking';
+  static const String featureRequest = 'featureRequest';
+  static const String question = 'question';
+  static const String feedback = 'feedback';
+  static const String licenses = 'licenses';
+  static const String debugLog = 'debugLog';
+  static const String includeDebug = 'includeDebug';
+  static const String readFaq = 'readFaq';
+  static const String light = 'light';
+  static const String version = 'version';
+  static const String helpDescription = 'helpDescription';
+  static const String terms = 'terms';
+  static const String contactUs = 'contactUs';
+  static const String dark = 'dark';
+  static const String small = 'small';
+  static const String large = 'large';
+  static const String help = 'help';
+  static const String extraLarge = 'extraLarge';
+  static const String profile = 'profile';
+  static const String editPhoto = 'editPhoto';
+  static const String yourName = 'yourName';
+  static const String markAllRead = 'markAllRead';
+  static const String about = 'about';
+  static const String badges = 'badges';
+  static const String yourProfileAndChanges = 'yourProfileAndChanges';
+  static const String signInDis = 'signInDis';
+  static const String signIn = 'signIn';
+  static const String continueButton = 'continueButton';
+  static const String verify = 'verify';
+  static const String verifyButton = 'verifyButton';
+  static const String camera = 'camera';
+  static const String gallery = 'gallery';
+  static const String searchNameOrNumber = 'searchNameOrNumber';
+  static const String chaAppPin = 'chaAppPin';
+  static const String changeYourPin = 'changeYourPin';
+  static const String pinReminders = 'pinReminders';
+  static const String youWillBeAsked = 'youWillBeAsked';
+  static const String registrationLock = 'registrationLock';
+  static const String requireYourChatApp = 'requireYourChatApp';
+  static const String advancePinSetting = 'advancePinSetting';
+  static const String changePhoneNumber = 'changePhoneNumber';
+  static const String changeNumber = 'changeNumber';
+  static const String transferAccount = 'transferAccount';
+  static const String transferAccountTo = 'transferAccountTo';
+  static const String yourAccountData = 'yourAccountData';
+  static const String deleteAccount = 'deleteAccount';
+  static const String createYourPIN = 'createYourPIN';
+  static const String pinMustBeGigit = 'pinMustBeGigit';
+  static const String pinMustBeChar = 'pinMustBeChar';
+  static const String pinCanHelp = 'pinCanHelp';
+  static const String createAlphaNumericPin = 'createAlphaNumericPin';
+  static const String createNumericPin = 'createNumericPin';
+  static const String conformYourChatAppPIN = 'conformYourChatAppPIN';
+  static const String makeSureYou = 'makeSureYou';
+  static const String switchKeyboard = 'switchKeyboard';
+  static const String turnOff = 'turnOff';
+  static const String turnOn = 'turnOn';
+  static const String turnOnRegistration = 'turnOnRegistration';
+  static const String ifYouForgetYourPIN = 'ifYouForgetYourPIN';
+  static const String disablePIN = 'disablePIN';
+  static const String ifYouDisable = 'ifYouDisable';
+  static const String warning = 'warning';
+  static const String continues = 'continues';
+  static const String conformYourPin = 'conformYourPin';
+  static const String reEnterThePin = 'reEnterThePin';
+  static const String incorrectPinTryAgain = 'incorrectPinTryAgain';
+  static const String turnOffRegistration = 'turnOffRegistration';
+  static const String beforeContinuing = 'beforeContinuing';
+  static const String useThisToChange = "useThisToChange";
+  static const String yourOldNumber = 'yourOldNumber';
+  static const String phoneNumber = 'phoneNumber';
+  static const String yourNewNumber = 'yourNewNumber';
+  static const String phoneNumberDoesNot = 'phoneNumberDoesNot';
+  static const String checkAgainYourNumber = 'checkAgainYourNumber';
+  static const String ok = 'ok';
+  static const String presets = 'presets';
+  static const String payment = 'payment';
+  static const String advance = 'advance';
+  static const String paymentLock = 'paymentLock';
+  static const String advanceDescription = 'advanceDescription';
+  static const String fingerprintTransfer = 'fingerprintTransfer';
+  static const String settingGuarantee = 'settingGuarantee';
+  static const String keyboardDisable = 'keyboardDisable';
+  static const String blockScreenshots = 'blockScreenshots';
+  static const String screenSecurity = 'screenSecurity';
+  static const String preview = 'preview';
+  static const String appSecurity = 'appSecurity';
+  static const String screenLockTimeout = 'screenLockTimeout';
+  static const String screenLock = 'screenLock';
+  static const String screenLockDescription = 'screenLockDescription';
+  static const String defaultTimerForNewChats = 'defaultTimerForNewChats';
+  static const String disappearingDescription = 'disappearingDescription';
+  static const String reset = 'reset';
+  static const String incognitoKeyboard = 'incognitoKeyboard';
+  static const String today = 'today';
+  static const String none = 'none';
+  static const String groupName = 'groupName';
+  static const String members = 'members';
+  static const String create = 'create';
+  static const String nameThisGroup = 'nameThisGroup';
+  static const String addRemoveMember = 'addRemoveMember';
+  static const String privacy = 'privacy';
   static const String off = 'off';
-  static const String blocked = 'Blocked';
+  static const String blocked = 'blocked';
   static const String contacts = 'contacts';
-  static const String messaging = 'Messaging';
-  static const String readReceipts = 'Read Receipts';
-  static const String typingIndicators = 'Typing indicators';
-  static const String disappearingMessages = 'Disappearing Messages';
-  static const String indicatorsDescription = 'if typing indicators are disabled, you wont be able to see typing indicators from others';
-  static const String receiptsDescription = 'if read receipts are disabled, you \n wont be able to see read receipts\n from others';
-
-
-
-
-
-
-  static const String chooseFromPhotos = 'Choose from photos';
-
-  static const String resetChatColor = 'Reset chat color?';
-
-
+  static const String messaging = 'messaging';
+  static const String readReceipts = 'readReceipts';
+  static const String typingIndicators = 'typingIndicators';
+  static const String disappearingMessages = 'disappearingMessages';
+  static const String indicatorsDescription = 'indicatorsDescription';
+  static const String receiptsDescription = 'receiptsDescription';
+  static const String chooseFromPhotos = 'chooseFromPhotos';
+  static const String resetChatColor = 'resetChatColor';
 }

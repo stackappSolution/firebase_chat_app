@@ -5,6 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/string_constant.dart';
+import 'package:signal/generated/l10n.dart';
 
 import '../../../controller/advance_pin_controller.dart';
 import 'advance_pin_view_model.dart';
@@ -26,7 +27,7 @@ class AdvancePinSettingScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppAppBar(
               title: AppText(
-            StringConstant.advancePinSetting,
+            S.of(context).advancePinSetting,
             fontSize: 22.px,
             color: Theme.of(context).colorScheme.primary,
           )),
@@ -45,12 +46,12 @@ class AdvancePinSettingScreen extends StatelessWidget {
         },
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AppText(
-            StringConstant.disablePIN,
+            S.of(context).disablePIN,
             color: Theme.of(context).colorScheme.primary,
             fontSize: 16.px,
           ),
           AppText(
-            StringConstant.ifYouDisable,
+            S.of(context).ifYouDisable,
             fontSize: 14.px,
             color: Theme.of(context).colorScheme.secondary,
           ),

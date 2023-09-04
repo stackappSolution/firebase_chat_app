@@ -39,22 +39,22 @@ class ContactUsScreen extends StatelessWidget {
       init: SettingsController(),
       builder: (controller) {
         return Scaffold(
-          backgroundColor: AppColorConstant.appWhite,
-          appBar: getAppBar(),
-          body: getBody(),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: getAppBar(context),
+          body: getBody(context),
           bottomNavigationBar: buildNextButton(),
         );
       },
     );
   }
 
-  getBody() {
+  getBody(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText(S.of(Get.context!).contactUs),
+          AppText(S.of(Get.context!).contactUs,color:  Theme.of(context).colorScheme.primary,),
           SizedBox(
             height: 10.px,
           ),
@@ -63,10 +63,11 @@ class ContactUsScreen extends StatelessWidget {
             height: 10.px,
           ),
           AppText(S.of(Get.context!).tellUs,
-              color: AppColorConstant.appBlack, fontSize: 15.px),
+              color: Theme.of(context).colorScheme.primary, fontSize: 15.px),
           selectReasonView(),
           AppText(
             'How Do you Feel? (Optional)',
+            color: Theme.of(context).colorScheme.primary,
             fontSize: 12.px,
           ),
           buildEmojiView(),
@@ -90,9 +91,9 @@ class ContactUsScreen extends StatelessWidget {
     );
   }
 
-  getAppBar() {
+  getAppBar(BuildContext context) {
     return AppAppBar(
-      title: AppText(S.of(Get.context!).help, fontSize: 20.px),
+      title: AppText(S.of(Get.context!).help, fontSize: 20.px,      color: Theme.of(context).colorScheme.primary,),
     );
   }
 
@@ -113,7 +114,7 @@ class ContactUsScreen extends StatelessWidget {
             return DropdownMenuItem<String>(
               value: value,
               child: AppText(value,
-                  fontSize: 15, color: AppColorConstant.appBlack),
+                  fontSize: 15, color: Theme.of(context).colorScheme.primary,),
             );
           }).toList(),
           onChanged: (String? newValue) {
@@ -195,7 +196,7 @@ class ContactUsScreen extends StatelessWidget {
             ),
             AppText(
               S.of(Get.context!).includeDebug,
-              color: AppColorConstant.appBlack,
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 12.px,
             ),
             SizedBox(
