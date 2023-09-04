@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_elevated_button.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_loader.dart';
@@ -179,6 +180,7 @@ class ProfileScreen extends StatelessWidget {
                         onPressed: (profileViewModel!.isButtonActive &&
                                 profileViewModel!.isLoading == false)
                             ? () {
+                          setIntValue('ProfileScreen', 3);
                                 profileViewModel!.onTapNext(context);
                                 profileViewModel!.onSaveProfile(
                                   profileViewModel!.firstNameController.text,

@@ -9,18 +9,17 @@ class SignInViewModel{
 
   SignInPage? signInPage;
 
-  TextEditingController phoneNumber = TextEditingController();
-  TextEditingController countrycode = TextEditingController();
-  FirebaseAuth auth = FirebaseAuth.instance;
-  String countryCode = '';
-  CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
-  bool isValidNumber = false;
-  bool otpSend = false;
 
-  var temp;
-  var data;
-
-
+   TextEditingController phoneNumber = TextEditingController();
+   TextEditingController countrycode = TextEditingController();
+   FirebaseAuth auth = FirebaseAuth.instance;
+   String countryCode = '';
+   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
+   bool isValidNumber = false;
+   bool otpSend = false;
+   bool isSendingOTP = false;
+   var temp;
+   var data;
 
   SignInViewModel(this.signInPage);
 
