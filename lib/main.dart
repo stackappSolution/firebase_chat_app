@@ -46,13 +46,13 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
             initialRoute: (AuthService.auth.currentUser != null)
-                ? RouteHelper.getHomeScreen()
+                ? RouteHelper.getProfileScreen()
                 : RouteHelper.getSplashScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
             themeMode: ThemeUtil.selectedTheme,
-            localizationsDelegates: [
+            localizationsDelegates: const [
               S.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,

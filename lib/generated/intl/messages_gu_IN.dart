@@ -50,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "changePhoneNumber":
             MessageLookupByLibrary.simpleMessage("ફોન નંબર બદલો"),
         "changeYourPin": MessageLookupByLibrary.simpleMessage("તમારી પિન બદલો"),
+        "chatAppPin": MessageLookupByLibrary.simpleMessage("ચેટ એપ્લિકેશન પિન"),
         "chatColor": MessageLookupByLibrary.simpleMessage("ચેટ રંગ"),
         "chatColorAndWallpaper":
             MessageLookupByLibrary.simpleMessage("ચેટ રંગ અને વોલપેપર"),

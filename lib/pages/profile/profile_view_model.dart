@@ -33,10 +33,11 @@ class ProfileViewModel {
   bool isLoading = false;
   Map<String, dynamic> parameter = {};
   ProfileController? controller;
+  bool isProfileSubmitted=false;
 
   ProfileViewModel(this.profileScreen) {
     Future.delayed(
-      const Duration(milliseconds: 200),
+      const Duration(milliseconds: 100),
       () {
         controller = Get.find<ProfileController>();
       },
@@ -221,5 +222,8 @@ class ProfileViewModel {
           fcmToken: '',
         )
         .then((value) => Get.offAll(() => HomeScreen()));
+
+    isProfileSubmitted=true;
+    controller!.update();
   }
 }

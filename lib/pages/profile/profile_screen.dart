@@ -14,6 +14,7 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
+import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 import '../../constant/app_asset.dart';
 
@@ -28,11 +29,13 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     profileViewModel ?? (profileViewModel = ProfileViewModel(this));
 
+
     return GetBuilder<ProfileController>(
       init: ProfileController(),
       initState: (state) {
         profileViewModel!.parameter = Get.parameters;
         logs('profileStatus---> ${AuthService.auth.currentUser!.photoURL}');
+
 
       },
       builder: (GetxController controller) {

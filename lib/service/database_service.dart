@@ -40,6 +40,7 @@ class DatabaseService {
   }
 
   addNewMessage({
+    String? createdBy,
     String? profile,
     String? groupName,
     List<dynamic>? members,
@@ -67,6 +68,7 @@ class DatabaseService {
             .update({
           'groupProfile': profile,
           'groupName': groupName,
+          'createdBy': createdBy,
         }).then((value) =>
                 Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
                   'isGroup': true,

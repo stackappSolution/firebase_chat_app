@@ -60,6 +60,7 @@ class SettingScreen extends StatelessWidget {
           height: 10.px,
         ),
         buildProfileView(context),
+        SizedBox(height: 20.px,),
         buildSettingsList(context, controller),
       ],
     );
@@ -81,7 +82,7 @@ class SettingScreen extends StatelessWidget {
           height: 20.px,
         ),
         CircleAvatar(
-          maxRadius: 40.px,
+          maxRadius: 35.px,
           backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
           child: AppText('JB', fontSize: 25.px, color: primaryTheme),
         ),

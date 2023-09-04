@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change Phone number"),
         "changeYourPin":
             MessageLookupByLibrary.simpleMessage("Change Your PIN"),
+        "chatAppPin": MessageLookupByLibrary.simpleMessage("Chat App Pin"),
         "chatColor": MessageLookupByLibrary.simpleMessage("Chat color"),
         "chatColorAndWallpaper":
             MessageLookupByLibrary.simpleMessage("Chat color & Wallpaper"),
