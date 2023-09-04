@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
@@ -54,13 +56,13 @@ class AccountViewModel {
             builder: (context, setState) {
               return AppAlertDialog(
                 title: AppText(
+                  fontSize: 18.px,
                   S.of(context).conformYourChatAppPIN,
-                  fontSize: 16.px,
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 insetPadding: EdgeInsets.zero,
                 widget: SizedBox(
-                  height: 200,
+                  height: 170.px,
                   child: Column(children: [
                     AppText(
                       S.of(context).makeSureYou,
@@ -216,7 +218,7 @@ class AccountViewModel {
                     ),
               insetPadding: EdgeInsets.zero,
               widget: SizedBox(
-                height: (!isRegistrationLockActive) ? 150.px : 70.px,
+                height: (!isRegistrationLockActive) ? 110.px : 20.px,
                 width: 100.px,
                 child: Column(children: [
                   if (!isRegistrationLockActive)
@@ -232,7 +234,7 @@ class AccountViewModel {
                   padding: EdgeInsets.only(bottom: 20.px),
                   child: InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                      Get.back();
                       controller.update();
                     },
                     child:  AppText(
@@ -249,7 +251,7 @@ class AccountViewModel {
                           onTap: () {
                             isRegistrationLockActive = false;
                             controller.update();
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           child: const AppText(StringConstant.turnOff,
                               color: AppColorConstant.appYellow))
@@ -257,7 +259,7 @@ class AccountViewModel {
                           onTap: () {
                             isRegistrationLockActive = true;
                             controller.update();
-                            Navigator.pop(context);
+                            Get.back();
                           },
                           child:  AppText(S.of(context).turnOn,
                               color: AppColorConstant.appYellow)),

@@ -1719,6 +1719,17 @@ class S {
       args: [],
     );
   }
+
+
+  /// `Continue`
+  // String get continues {
+  //   return Intl.message(
+  //     'Continue',
+  //     name: 'continues',
+  //     desc: '',
+  //     args: [],
+  //   );
+  // }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/app_navigation.dart';
 
@@ -26,6 +25,7 @@ class AdvancePinViewModel {
           title: AppText(
             S.of(context).warning,
             fontSize: 18.px,
+            color: Theme.of(context).colorScheme.primary,
           ),
           widget: AppText(
             S.of(context).ifYouDisable,
@@ -35,11 +35,14 @@ class AdvancePinViewModel {
           actions: [
             InkWell(
                 onTap: () {
-                  Navigator.pop(context);
+                  Get.back();
                 },
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 15.px),
-                  child:  AppText(S.of(context).cancel),
+                  child: AppText(
+                    S.of(context).cancel,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 )),
             Padding(
               padding:
@@ -52,7 +55,7 @@ class AdvancePinViewModel {
                     logs("pin disabled, changes in firebase");
                   }
                 },
-                child:  AppText(
+                child: AppText(
                   S.of(context).disablePIN,
                   color: AppColorConstant.red,
                 ),

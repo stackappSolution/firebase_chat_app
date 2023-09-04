@@ -39,14 +39,13 @@ class ChatingPage extends StatelessWidget {
 
     return GetBuilder<ChatingPageController>(
         initState: (state) async {
-
           chatingPageViewModal!.parameter = Get.parameters;
           chatingPageViewModal!.arguments = Get.arguments;
 
           Future.delayed(
             const Duration(milliseconds: 0),
             () async {
-              controller = Get.put(ChatingPageController());
+              controller = Get.find<ChatingPageController>();
 
               logs('arg--> ${chatingPageViewModal!.arguments}');
 
@@ -141,7 +140,7 @@ class ChatingPage extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(35.px)),
                                     height: 40.px,
-                                    child: textFormField(controller,context))),
+                                    child: textFormField(controller, context))),
                             AppButton(
                                 margin: EdgeInsets.only(right: 15.px),
                                 height: 40.px,
@@ -378,8 +377,8 @@ class ChatingPage extends StatelessWidget {
                 chatingPageViewModal!.arguments['groupName']) {
               Get.toNamed(RouteHelper.getChatProfileScreen(), arguments: {
                 'members': chatingPageViewModal!.arguments['members'],
-                'id' : chatingPageViewModal!.arguments['id'],
-                'isGroup' : false,
+                'id': chatingPageViewModal!.arguments['id'],
+                'isGroup': false,
               });
             }
           },
@@ -433,9 +432,10 @@ class ChatingPage extends StatelessWidget {
     controller!.update();
   }
 
-  TextFormField textFormField(ChatingPageController controller,BuildContext context) {
+  TextFormField textFormField(
+      ChatingPageController controller, BuildContext context) {
     return TextFormField(
-        style: const TextStyle(color: AppColorConstant.appBlack),
+        style: TextStyle(color: Theme.of(context).colorScheme.primary),
         maxLines: null,
         keyboardType: TextInputType.multiline,
         cursorColor: AppColorConstant.offBlack,

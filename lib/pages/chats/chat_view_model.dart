@@ -14,11 +14,18 @@ import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/database_service.dart';
 
+import '../../app/widget/app_alert_dialog.dart';
+import '../../app/widget/app_button.dart';
+import '../../constant/string_constant.dart';
+
 class ChatViewModel {
   ChatScreen? chatScreen;
   List<Contact> contacts = [];
   List<Contact> filterContacts = [];
   bool isLoading = false;
+  String string = '';
+  bool isConnected = false;
+
   final Stream<QuerySnapshot> usersStream = DatabaseService().getUserStream();
   List<DocumentSnapshot> data = [];
   ContactController? controller;
@@ -61,5 +68,7 @@ class ChatViewModel {
     logs("$isLoading");
     controller!.update();
   }
+
+
 
 }

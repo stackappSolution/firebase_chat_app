@@ -78,6 +78,7 @@ class AppearanceViewModel {
                           Get.changeThemeMode(ThemeMode.system);
                           saveThemeMode(selectedTheme);
                           ThemeUtil.loadThemeMode();
+
                         });
                       },
                     ),

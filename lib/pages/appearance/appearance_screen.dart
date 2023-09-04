@@ -58,6 +58,7 @@ class AppearanceScreen extends StatelessWidget {
   }
 
   getAppBar(context) {
+
     return AppAppBar(
         title: AppText(
       S.of(Get.context!).appearance,

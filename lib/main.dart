@@ -17,17 +17,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
+
+  runApp(
+    const MyApp(),
+  );
   SharedPreferences.getInstance();
   runApp(const MyApp());
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //systemNavigationBarColor: AppColorConstant.appWhite, // navigation bar color
-    statusBarColor: (ThemeUtil.isDark)
-        ? AppColorConstant.darkPrimary
-        : AppColorConstant.appWhite,
-    statusBarBrightness:
-        (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
-  ));
+
 }
 
 class MyApp extends StatelessWidget {

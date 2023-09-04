@@ -59,5 +59,6 @@ class AppAsset {
   static const String notification='${iconPath}notification.png';
   static const String privacyPolicy='${iconPath}privacy_policy.png';
   static const String phoneIcon='${iconPath}phoneIcon.png';
+  static const String newCamera='${iconPath}new_camera.png';
 
 }
