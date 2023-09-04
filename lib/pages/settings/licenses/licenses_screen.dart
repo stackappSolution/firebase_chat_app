@@ -13,15 +13,15 @@ class LicensesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorConstant.appWhite,
-      appBar: getAppBar(),
+      backgroundColor:       Theme.of(context).colorScheme.background,
+      appBar: getAppBar(context),
       body: getBody(),
     );
   }
 
-  getAppBar() {
+  getAppBar(BuildContext context) {
     return AppAppBar(
-      title: AppText(S.of(Get.context!).licenses, fontSize: 20.px),
+      title: AppText(S.of(Get.context!).licenses, fontSize: 20.px,      color: Theme.of(context).colorScheme.primary,),
     );
   }
 

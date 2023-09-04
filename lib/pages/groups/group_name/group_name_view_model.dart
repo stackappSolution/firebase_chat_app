@@ -12,6 +12,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/service/auth_service.dart';
 
@@ -32,7 +33,7 @@ class GroupNameViewModel {
       builder: (context) {
         return AppAlertDialog(
             backgroundColor: AppColorConstant.blackOff,
-            title: const AppText(StringConstant.choose,
+            title:  AppText(S.of(context).choose,
                 color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
             actions: [
               Padding(
@@ -43,7 +44,7 @@ class GroupNameViewModel {
                     Navigator.pop(context);
                   },
                   child: AppText(
-                    StringConstant.cansel,
+                    S.of(context).cancel,
                     color: AppColorConstant.appYellow,
                     fontSize: 15.px,
                     fontWeight: FontWeight.bold,
@@ -72,7 +73,7 @@ class GroupNameViewModel {
                       Padding(
                         padding: EdgeInsets.only(top: 9.px),
                         child: AppText(
-                          StringConstant.camera,
+                          S.of(context).camera,
                           fontSize: 15.px,
                           color: AppColorConstant.appWhite,
                         ),
@@ -93,8 +94,8 @@ class GroupNameViewModel {
                               image: AppAsset.gallery)),
                       Padding(
                         padding: EdgeInsets.only(top: 9.px),
-                        child: const AppText(
-                          StringConstant.gallery,
+                        child:  AppText(
+                          S.of(context).gallery,
                           fontSize: 15,
                           color: AppColorConstant.appWhite,
                         ),

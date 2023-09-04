@@ -6,6 +6,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/pin_setting_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/account/pin_setting/pin_setting_view_model.dart';
 
 // ignore: must_be_immutable
@@ -42,27 +43,27 @@ class PinSettingScreen extends StatelessWidget {
     return Column(
       children: [
         if (!pinSettingViewModel!.isConformPage)
-          createPinView(primaryTheme, secondaryTheme, controller)
+          createPinView(primaryTheme, secondaryTheme, controller,context)
         else
-          conformPinView(primaryTheme, secondaryTheme, controller),
+          conformPinView(primaryTheme, secondaryTheme, controller,context),
       ],
     );
   }
 
   createPinView(Color primaryTheme, Color secondaryTheme,
-      PinSettingController controller) {
+      PinSettingController controller,BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         AppText(
-          StringConstant.createYourPIN,
+          S.of(context).createYourPIN,
           fontSize: 27.px,
           color: primaryTheme,
         ),
         Padding(
           padding: EdgeInsets.only(top: 10.px),
           child: AppText(
-            StringConstant.pinCanHelp,
+            S.of(context).pinCanHelp,
             color: secondaryTheme,
             fontSize: 13.px,
           ),
@@ -97,12 +98,12 @@ class PinSettingScreen extends StatelessWidget {
           alignment: Alignment.center,
           child: (!pinSettingViewModel!.changeKeyBoard)
               ? AppText(
-                  StringConstant.pinMustBeChar,
+                  S.of(context).pinMustBeChar,
                   color: secondaryTheme,
                   fontSize: 12.px,
                 )
               : AppText(
-                  StringConstant.pinMustBeGigit,
+                  S.of(context).pinMustBeChar,
                   color: secondaryTheme,
                   fontSize: 12.px,
                 ),
@@ -122,7 +123,7 @@ class PinSettingScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.px),
-                        child: AppText(StringConstant.createAlphaNumericPin,
+                        child: AppText(S.of(context).createAlphaNumericPin,
                             fontSize: 13.px, color: AppColorConstant.blue),
                       )
                     ],
@@ -135,7 +136,7 @@ class PinSettingScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.px),
-                        child: AppText(StringConstant.createNumericPin,
+                        child: AppText(S.of(context).createNumericPin,
                             fontSize: 13.px, color: AppColorConstant.blue),
                       )
                     ],
@@ -147,19 +148,19 @@ class PinSettingScreen extends StatelessWidget {
   }
 
   conformPinView(Color primaryTheme, Color secondaryTheme,
-      PinSettingController controller) {
+      PinSettingController controller,BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         AppText(
-          StringConstant.conformYourPin,
+          S.of(context).conformYourPin,
           fontSize: 27.px,
           color: primaryTheme,
         ),
         Padding(
           padding: EdgeInsets.only(top: 10.px),
           child: AppText(
-            StringConstant.reEnterThePin,
+            S.of(context).reEnterThePin,
             color: secondaryTheme,
             fontSize: 13.px,
           ),
@@ -214,7 +215,7 @@ class PinSettingScreen extends StatelessWidget {
                         : AppColorConstant.yellowLight,
                     borderRadius: BorderRadius.all(Radius.circular(30.px))),
                 child: AppText(
-                  StringConstant.next,
+                  S.of(context).next,
                   fontSize: 14.px,
                   color: Theme.of(context).colorScheme.background,
                 ),
@@ -236,7 +237,7 @@ class PinSettingScreen extends StatelessWidget {
                         : AppColorConstant.yellowLight,
                     borderRadius: BorderRadius.all(Radius.circular(30.px))),
                 child: AppText(
-                  StringConstant.next,
+                  S.of(context).next,
                   fontSize: 14.px,
                   color: Theme.of(context).colorScheme.background,
                 ),

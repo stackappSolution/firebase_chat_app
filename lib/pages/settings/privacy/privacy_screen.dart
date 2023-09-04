@@ -21,7 +21,7 @@ class PrivacyScreen extends StatelessWidget {
 
   getAppbar(BuildContext context) {
     return AppAppBar(
-      title: AppText(S.of(context).privacy, fontSize: 20.px),
+      title: AppText(S.of(context).privacy, fontSize: 20.px,color: Theme.of(context).colorScheme.primary,),
     );
   }
 

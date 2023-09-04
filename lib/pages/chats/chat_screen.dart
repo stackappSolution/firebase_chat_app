@@ -35,7 +35,7 @@ class ChatScreen extends StatelessWidget {
         return SafeArea(
             child: Scaffold(
           appBar: getAppBar(context, controller),
-          backgroundColor: AppColorConstant.appWhite,
+          backgroundColor: Theme.of(context).colorScheme.background,
           floatingActionButton: buildFloatingButton(),
           body: getBody(controller),
         ));
@@ -89,7 +89,7 @@ class ChatScreen extends StatelessWidget {
     return controller.searchValue
         ? AppAppBar(
             leading: IconButton(
-              icon: const Icon(
+              icon:  Icon(color: Theme.of(context).colorScheme.primary,
                 Icons.arrow_back_outlined,
               ),
               onPressed: () {
@@ -119,10 +119,14 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.background,
             leading: Padding(
               padding: EdgeInsets.only(left: 15.px),
-              child: CircleAvatar(
-                backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-                child: AppText('S',
-                    fontSize: 20.px, color: AppColorConstant.appYellow),
+              child: InkWell(onTap: () {
+                goToSettingPage();
+              },
+                child: CircleAvatar(
+                  backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
+                  child: AppText('S',
+                      fontSize: 20.px, color: AppColorConstant.appYellow),
+                ),
               ),
             ),
             title: Padding(
@@ -139,14 +143,14 @@ class ChatScreen extends StatelessWidget {
                 },
                 child: Padding(
                     padding: EdgeInsets.all(18.px),
-                    child: const AppImageAsset(image: AppAsset.search)),
+                    child:  AppImageAsset(image: AppAsset.search,color: Theme.of(context).colorScheme.primary,)),
               ),
-              buildPopupMenu(),
+              buildPopupMenu(context),
             ],
           );
   }
 
-  buildPopupMenu() {
+  buildPopupMenu(BuildContext context) {
     return PopupMenuButton(
       onSelected: (value) {
         if (value == 2) {
@@ -159,7 +163,7 @@ class ChatScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
       icon: Padding(
         padding: EdgeInsets.all(10.px),
-        child: const AppImageAsset(image: AppAsset.popup),
+        child:  AppImageAsset(image: AppAsset.popup,color: Theme.of(context).colorScheme.primary,),
       ),
       itemBuilder: (context) {
         return [
@@ -194,6 +198,7 @@ class ChatScreen extends StatelessWidget {
           shrinkWrap: true,
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
+            logs('${snapshot.data!.docs.length}');
             bool isGroup = documents[index]['isGroup'];
             List receiver = documents[index]["members"];
             receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
@@ -245,7 +250,7 @@ class ChatScreen extends StatelessWidget {
                                       .substring(0, 1)
                                       .toUpperCase() ??
                                   "",
-                              color: AppColorConstant.appWhite,
+                             color: Theme.of(context).colorScheme.primary,
                               fontSize: 22.px,
                             )
                           : AppText(
@@ -259,7 +264,7 @@ class ChatScreen extends StatelessWidget {
                     ),
                   ),
                   title: (isGroup)
-                      ? AppText(
+                      ? AppText( color: Theme.of(context).colorScheme.primary,
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
                         )
@@ -277,8 +282,9 @@ class ChatScreen extends StatelessWidget {
                             }
                             final data = snapshot.data!.docs;
                             return AppText(
-                              data[index]['firstName'] ?? "",
+                              data[0]['firstName'] ?? "",
                               fontSize: 15.px,
+                              color: Theme.of(context).colorScheme.primary,
                             );
                           },
                         ),

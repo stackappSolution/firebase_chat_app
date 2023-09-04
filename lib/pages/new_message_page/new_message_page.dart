@@ -7,6 +7,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textForm_field.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/new_message_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/new_message_page/new_message_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/routes/app_navigation.dart';
@@ -33,20 +34,24 @@ class NewMessagePage extends StatelessWidget {
       builder: (NewMessageController controller) {
         return SafeArea(
             child: Scaffold(
-          backgroundColor: AppColorConstant.appWhite,
-          appBar: buildAppBar(),
-          body: buildSearchBar(),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: buildAppBar(context),
+          body: buildSearchBar(context),
         ));
       },
     );
   }
 
-  buildAppBar() => AppBar(
-        backgroundColor: AppColorConstant.appWhite,
-        title: AppText('New message', fontSize: 20.px),
+  buildAppBar(BuildContext context) => AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        title: AppText(
+          S.of(context).newMessage,
+          fontSize: 20.px,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       );
 
-  buildSearchBar() => SingleChildScrollView(
+  buildSearchBar(BuildContext context) => SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,7 +75,7 @@ class NewMessagePage extends StatelessWidget {
                         : const Icon(Icons.keyboard),
                   ),
                   keyboardType: newMessageViewModel!.getKeyboardType(),
-                  hintText: 'Search',
+                  hintText: S.of(context).search,
                   style: TextStyle(
                     fontSize: 22.px,
                     fontWeight: FontWeight.w400,
@@ -85,7 +90,11 @@ class NewMessagePage extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(RouteHelper.getNewGroupScreen());
                   },
-                  title: AppText('New Group', fontSize: 18.px),
+                  title: AppText(
+                    S.of(context).newGroup,
+                    fontSize: 18.px,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   leading: CircleAvatar(
                     radius: 30.px,
                     backgroundColor:
@@ -96,7 +105,11 @@ class NewMessagePage extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.all(20.px),
-              child: AppText('Contacts', fontSize: 22.px),
+              child: AppText(
+                S.of(context).contacts,
+                fontSize: 22.px,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
             buildContactList(),
           ],
@@ -137,7 +150,7 @@ class NewMessagePage extends StatelessWidget {
                           AuthService.auth.currentUser!.phoneNumber!,
                           mobileNumber
                         ],
-                        'displayName' : displayName,
+                        'displayName': displayName,
                         'isGroup': false,
                       })
                     : Get.toNamed(RouteHelper.getInviteMemberScreen(),
@@ -165,6 +178,7 @@ class NewMessagePage extends StatelessWidget {
               title: AppText(
                 displayName,
                 fontSize: 15.px,
+                color: Theme.of(context).colorScheme.primary,
               ),
               subtitle: AppText(mobileNumber!,
                   color: AppColorConstant.grey, fontSize: 12.px),
@@ -178,7 +192,6 @@ class NewMessagePage extends StatelessWidget {
   getNumbers() async {
     newMessageViewModel!.mobileNumbers =
         await newMessageViewModel!.getMobileNumbers();
-
 
     logs('phones----> ${newMessageViewModel!.mobileNumbers}');
   }

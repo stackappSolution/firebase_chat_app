@@ -10,7 +10,7 @@ class AppLoader extends StatelessWidget {
     return Container(alignment: Alignment.center,
       height: Device.height,
       width: Device.height,
-      color: AppColorConstant.appWhite.withOpacity(0.9),
+      color: Theme.of(context).colorScheme.background.withOpacity(0.5),
       child: const Center(child: CircularProgressIndicator(color: AppColorConstant.appYellow,)),
     );
   }

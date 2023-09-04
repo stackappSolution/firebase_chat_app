@@ -97,7 +97,7 @@ class AppearanceScreen extends StatelessWidget {
                 ? appearanceViewModel.saveFontSize
                 : "default", controller),
         appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
-            StringConstant.normal, controller),
+            S.of(context).normal, controller),
       ]),);}
 
 

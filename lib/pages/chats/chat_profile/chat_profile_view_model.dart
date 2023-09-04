@@ -10,7 +10,7 @@ class ChatProfileViewModel{
 
   ChatProfileScreen? chatProfileScreen;
 
-  Map<String,dynamic> parameter= {};
+  Map<String,dynamic> arguments= {};
   ChatProfileViewModel(this.chatProfileScreen);
 
 
