@@ -59,7 +59,7 @@ class AppearanceScreen extends StatelessWidget {
 
   getAppBar(context) {
 
-    return AppAppBar(leading: IconButton(icon:Icon(Icons.arrow_back_sharp), onPressed: () {   Get.to(ChatingPage()); },),
+    return AppAppBar(
         title: AppText(
       S.of(Get.context!).appearance,
       fontSize: 22.px,

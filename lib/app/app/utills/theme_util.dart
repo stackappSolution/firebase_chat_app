@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/constant/string_constant.dart';
@@ -24,6 +25,14 @@ class ThemeUtil {
         isDark = false;
         controller.update();
       }
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        //systemNavigationBarColor: AppColorConstant.appWhite, // navigation bar color
+        statusBarColor: (ThemeUtil.isDark)
+            ? AppColorConstant.darkPrimary
+            : AppColorConstant.appWhite,
+        statusBarBrightness:
+        (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
+      ));
       logs("loadThemeMode Is Dark----> $isDark");
     });
   }

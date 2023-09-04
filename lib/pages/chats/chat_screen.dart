@@ -152,7 +152,8 @@ class ChatScreen extends StatelessWidget {
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
                         )
-                      : StreamBuilder(
+                      :
+                  StreamBuilder(
                           stream: controller
                               .getUserName(documents[index]['members'][1]),
                           builder:
@@ -170,7 +171,8 @@ class ChatScreen extends StatelessWidget {
                               fontSize: 15.px,
                             );
                           },
-                        ),
+                        )
+                  ,
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {

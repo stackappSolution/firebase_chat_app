@@ -19,15 +19,6 @@ Future<void> main() async {
   runApp(
     const MyApp(),
   );
-
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //systemNavigationBarColor: AppColorConstant.appWhite, // navigation bar color
-    statusBarColor: (ThemeUtil.isDark)
-        ? AppColorConstant.darkPrimary
-        : AppColorConstant.appWhite,
-    statusBarBrightness:
-        (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
-  ));
 }
 
 class MyApp extends StatelessWidget {
