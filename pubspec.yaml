@@ -48,6 +48,9 @@ dependencies:
   sticky_headers: ^0.3.0+2
   grouped_list: ^5.1.2
 
+  #serchField
+  flutter_typeahead: ^4.6.2
+
 
 
   # Fetch server data & State management :

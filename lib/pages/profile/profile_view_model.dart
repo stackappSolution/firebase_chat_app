@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -13,6 +14,7 @@ import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
+import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 
 import 'package:signal/service/database_service.dart';
@@ -58,7 +60,8 @@ class ProfileViewModel {
     }
   }
 
-  onTapNext(context) {
+  onTapNext(context) async {
+    goToHomeScreen();
     logs("NextTapped");
   }
 

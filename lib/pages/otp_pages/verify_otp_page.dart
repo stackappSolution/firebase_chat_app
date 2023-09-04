@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
@@ -30,14 +31,14 @@ class VerifyOtpPage extends StatelessWidget {
         return SafeArea(
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
-            body: buildVerifyotpScreen(context, controller),
+            body: buildVerifyotpScreen(controller,context),
           ),
         );
       },
     );
   }
 
-  buildVerifyotpScreen(context, VerifyOtpController controller) => Container(
+  buildVerifyotpScreen(VerifyOtpController controller ,BuildContext context) => Container(
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -158,6 +159,7 @@ class VerifyOtpPage extends StatelessWidget {
                       )
                     : ElevatedButton(
                         onPressed: () async {
+                          setIntValue('verification', 2);
                           await AuthService()
                               .verifyOtp(
                                 verificationID: AuthService.verificationID,
@@ -168,7 +170,9 @@ class VerifyOtpPage extends StatelessWidget {
                               .then((isVerificationSuccessful) {})
                               .catchError((error) {
                             logs("Error during OTP verification----> $error");
-                          });
+                          },
+                          );
+                          controller.update();
                         },
                         style: ButtonStyle(
                             shape: MaterialStatePropertyAll(
@@ -178,11 +182,13 @@ class VerifyOtpPage extends StatelessWidget {
                                 AppColorConstant.appYellow),
                             fixedSize:
                                 MaterialStatePropertyAll(Size(230.px, 50.px))),
-                        child: AppText(
-                          'Verify',
-                          fontSize: 22.px,
-                          color: AppColorConstant.appWhite,
-                        ),
+                        child: (verifyOtpViewModel!.isValidOTP)
+                            ? const CircularProgressIndicator(color: AppColorConstant.appWhite,)
+                            : AppText(
+                                'Verify',
+                                fontSize: 22.px,
+                                color : AppColorConstant.appWhite
+                              ),
                       ),
               ),
             ],

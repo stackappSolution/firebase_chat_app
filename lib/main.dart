@@ -1,15 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:signal/service/auth_service.dart';
 import 'app/app/utills/theme_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:signal/constant/color_constant.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/generated/l10n.dart';
 
@@ -17,18 +13,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
-
-  runApp(
-    const MyApp(),
-  );
   SharedPreferences.getInstance();
   runApp(const MyApp());
-
-
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   const MyApp({super.key});
+
+  bool get isProfileCompleted => false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +35,13 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
             initialRoute: (AuthService.auth.currentUser != null)
-                ? RouteHelper.getHomeScreen()
-                : RouteHelper.getSplashScreen(),
+                ? RouteHelper.getProfileScreen()
+                : RouteHelper.getHomeScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
             themeMode: ThemeUtil.selectedTheme,
-            localizationsDelegates: [
+            localizationsDelegates:  const [
               S.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -61,4 +53,11 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+   String determineInitialRoute() {
+     if (AuthService.auth.currentUser != null) {
+       return isProfileCompleted ? RouteHelper.getHomeScreen() : RouteHelper.getProfileScreen();
+     } else {
+       return RouteHelper.getSplashScreen();
+     }
+   }
 }

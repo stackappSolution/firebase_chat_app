@@ -44,3 +44,4 @@ class ContactController extends GetxController {
         .snapshots();
   }
 }
+
