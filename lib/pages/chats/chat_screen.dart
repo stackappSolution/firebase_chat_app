@@ -16,8 +16,9 @@ import 'package:signal/pages/chats/chat_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
+import 'package:signal/service/database_helper.dart';
 
-import '../../service/database_helper.dart';
+
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -254,6 +255,9 @@ class ChatScreen extends StatelessWidget {
                           fontSize: 12.px);
                     },
                   ),
+
+
+
                   leading: InkWell(
                     onTap: () {
                       Get.toNamed(RouteHelper.getChatProfileScreen());
@@ -277,6 +281,7 @@ class ChatScreen extends StatelessWidget {
                               fontSize: 22.px,
                             ),
                     ),
+
                   ),
                   title: (isGroup)
                       ? AppText(

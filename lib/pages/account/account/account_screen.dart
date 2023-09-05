@@ -153,9 +153,10 @@ class AccountScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 32.px),
                   child: AppText(
-                    StringConstant.account,
+                    S.of(context).account,
                     fontWeight: FontWeight.bold,
                     color: primaryTheme,
+
                   ),
                 ),
                 InkWell(

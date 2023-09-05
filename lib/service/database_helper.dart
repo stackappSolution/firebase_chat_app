@@ -17,6 +17,7 @@ class DataBaseHelper {
           'CREATE TABLE data (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, contact TEXT)');
     });
     return database;
+
   }
 
   static setContactDetails(name, contact) async {

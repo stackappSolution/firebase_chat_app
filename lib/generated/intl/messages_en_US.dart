@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "beforeContinuing": MessageLookupByLibrary.simpleMessage(
             "Before Continuing, Make sure your new number can receive SMS or Calls."),
         "blankText": MessageLookupByLibrary.simpleMessage("blankText"),
+        "block": MessageLookupByLibrary.simpleMessage("Block"),
         "blockScreenshots": MessageLookupByLibrary.simpleMessage(
             "Block screenshots in the recents list and inside the app"),
         "blocked": MessageLookupByLibrary.simpleMessage("Blocked"),
@@ -51,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change Phone number"),
         "changeYourPin":
             MessageLookupByLibrary.simpleMessage("Change Your PIN"),
+        "chatAppPin": MessageLookupByLibrary.simpleMessage("Chat App Pin"),
         "chatColor": MessageLookupByLibrary.simpleMessage("Chat color"),
         "chatColorAndWallpaper":
             MessageLookupByLibrary.simpleMessage("Chat color & Wallpaper"),

@@ -149,7 +149,8 @@
         "useThisToChange" : "Use this to change your current phone number to new phone number, you can't undo this change.",
 
 
-
+         "chatAppPin" : "Chat App Pin",
+         "block" : "Block",
         "privacy" : "Privacy",
         "payments" : "Payments",
         "advance" : "Advance",
