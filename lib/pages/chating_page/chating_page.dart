@@ -36,6 +36,7 @@ class ChatingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
     fontSize = '${chatingPageViewModal!.fontSizeInitState()}';
+    getBlockedUsersList();
 
     return GetBuilder<ChatingPageController>(
         initState: (state) async {
@@ -143,8 +144,55 @@ class ChatingPage extends StatelessWidget {
                             )
                           : const SizedBox(),
                     ),
-                    (chatingPageViewModal!.arguments['isGroup'] != null)
-                        ? Row(children: [
+                    (chatingPageViewModal!.blockedNumbers.contains(
+                            chatingPageViewModal!.arguments['number']))
+                        ? (chatingPageViewModal!.arguments['number']!= AuthService.auth.currentUser!.phoneNumber!)?Container(
+                            height: 150.px,
+                            color: AppColorConstant.appYellow.withOpacity(0.1),
+                            child: Column(
+                              children: [
+                                SizedBox(height: 20.px,),
+                                 AppText(
+                                    'You cant send message to block user , To send Message you have to unblock User',textAlign: TextAlign.center,fontSize: 12.px,),
+                                SizedBox(height: 20.px,),
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    InkWell(
+                                        onTap: () {
+                                          Get.back();
+                                        },
+                                        child: AppText(S.of(context).cancel,
+                                            color: AppColorConstant.appYellow)),
+                                    SizedBox(
+                                      width: 20.px,
+                                    ),
+                                    InkWell(
+                                        onTap: () {
+                                          chatingPageViewModal!.blockedNumbers.remove(chatingPageViewModal!.arguments['number']);
+                                          DatabaseService().unblockUser(chatingPageViewModal!.arguments['number']);
+                                          Get.back();
+                                          controller.update();
+
+                                        },
+                                        child: AppButton(
+                                          width: 120.px,
+                                          borderRadius:
+                                              BorderRadius.circular(12.px),
+                                          height: 35.px,
+                                          color: AppColorConstant.appYellow,
+                                          stringChild: true,
+                                          child: AppText(
+                                            'Unblock',
+                                            color: AppColorConstant.appWhite,
+                                            fontSize: 12.px,
+                                          ),
+                                        ))
+                                  ],
+                                )
+                              ],
+                            ),
+                          ): const AppText('You Blocked by This user')
+                        : Row(children: [
                             Expanded(
                                 child: Container(
                                     margin: EdgeInsets.only(
@@ -183,7 +231,6 @@ class ChatingPage extends StatelessWidget {
                                   }
                                 }),
                           ])
-                        : const SizedBox(),
                   ])));
         });
   }
@@ -333,6 +380,12 @@ class ChatingPage extends StatelessWidget {
                         ])))));
   }
 
+  getBlockedUsersList() async {
+    chatingPageViewModal!.blockedNumbers =
+        await DatabaseService().getBlockedUsers();
+    logs('blockkkkk-----------> ${chatingPageViewModal!.blockedNumbers}');
+  }
+
   AppAppBar appBar(
     ChatingPageController controller,
     context,
@@ -359,7 +412,7 @@ class ChatingPage extends StatelessWidget {
                   ? chatingPageViewModal!.arguments['groupName']
                       .substring(0, 1)
                       .toUpperCase()
-                  : chatingPageViewModal!.arguments['members'][0]
+                  : chatingPageViewModal!.arguments['name']
                       .substring(0, 1)
                       .toUpperCase(),
               color: Theme.of(context).colorScheme.primary,
@@ -370,19 +423,19 @@ class ChatingPage extends StatelessWidget {
         ]),
         title: InkWell(
           onTap: () {
-            if (chatingPageViewModal!.arguments['id'] != null ||
-                chatingPageViewModal!.arguments['isGroup']) {
+            if (chatingPageViewModal!.arguments['id'] != null) {
               Get.toNamed(RouteHelper.getChatProfileScreen(), arguments: {
-                'members': chatingPageViewModal!.arguments['members'],
+                'name': chatingPageViewModal!.arguments['name'],
+                'number': chatingPageViewModal!.arguments['number'],
                 'id': chatingPageViewModal!.arguments['id'],
                 'isGroup': chatingPageViewModal!.arguments['isGroup'],
+                'members': chatingPageViewModal!.arguments['members'],
               });
             }
           },
           child: AppText(
               (chatingPageViewModal!.arguments['isGroup'])
                   ? chatingPageViewModal!.arguments['groupName']
-                  //  : chatingPageViewModal!.arguments['members'][0],
                   : chatingPageViewModal!.arguments['name'],
               color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
@@ -430,8 +483,7 @@ class ChatingPage extends StatelessWidget {
     controller!.update();
   }
 
-  TextFormField textFormField(
-      ChatingPageController controller, BuildContext context) {
+  textFormField(ChatingPageController controller, BuildContext context) {
     return TextFormField(
         style: TextStyle(color: Theme.of(context).colorScheme.primary),
         maxLines: null,

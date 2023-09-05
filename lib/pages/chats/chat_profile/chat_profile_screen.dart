@@ -8,7 +8,6 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/controller/chat_controller.dart';
 import 'package:signal/controller/chat_profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_view_model.dart';
@@ -37,6 +36,7 @@ class ChatProfileScreen extends StatelessWidget {
           },
         );
         getBlockedUsersList();
+
       },
       builder: (controller) {
         return WillPopScope(
@@ -58,9 +58,11 @@ class ChatProfileScreen extends StatelessWidget {
       leading: IconButton(
           onPressed: () {
             Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
-              'members': chatProfileViewModel!.arguments['members'],
+              'name': chatProfileViewModel!.arguments['name'],
+              'number': chatProfileViewModel!.arguments['number'],
               'id': chatProfileViewModel!.arguments['id'],
               'isGroup': chatProfileViewModel!.arguments['isGroup'],
+              'members' : chatProfileViewModel!.arguments['members'],
             });
           },
           icon: const Icon(Icons.arrow_back_outlined)),
@@ -106,12 +108,13 @@ class ChatProfileScreen extends StatelessWidget {
           child: CircleAvatar(
             maxRadius: 40.px,
             backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
-            child: AppText('SJ', fontSize: 30.px),
+            child: AppText(chatProfileViewModel!.arguments['name'].substring(0, 1)
+        .toUpperCase(), fontSize: 30.px),
           ),
         ),
-        AppText('Shyam Jethva', fontSize: 25.px),
+        AppText(chatProfileViewModel!.arguments['name'], fontSize: 25.px),
         AppText(
-          '${chatProfileViewModel!.arguments['members'][0]}',
+          '${chatProfileViewModel!.arguments['number']}',
           fontSize: 15.px,
           color: Theme.of(context).colorScheme.secondary,
         ),
@@ -149,7 +152,7 @@ class ChatProfileScreen extends StatelessWidget {
             InkWell(
               onTap: () {
                 chatProfileViewModel!.launchPhoneURL(
-                    chatProfileViewModel!.arguments['members'][0]);
+                    chatProfileViewModel!.arguments['number']);
               },
               child: Container(
                   height: 50.px,
@@ -258,7 +261,7 @@ class ChatProfileScreen extends StatelessWidget {
   }
 
   buildBlockUser(BuildContext context, ChatProfileController controller) {
-    return (controller.blockedUsers.contains(chatProfileViewModel!.arguments['members'][0]))
+    return (controller.blockedUsers.contains(chatProfileViewModel!.arguments['number']))
         ? Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
             child: ListTile(
@@ -300,7 +303,7 @@ class ChatProfileScreen extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
               backgroundColor: Theme.of(context).colorScheme.background,
               title: AppText(
-                  'Are you sure you want to block ${chatProfileViewModel!.arguments['members'][0]}?'),
+                  'Are you sure you want to block ${chatProfileViewModel!.arguments['number']}?'),
               actions: [
                 InkWell(
                     onTap: () {
@@ -314,7 +317,7 @@ class ChatProfileScreen extends StatelessWidget {
                 InkWell(
                     onTap: () {
                       controller!.blockUser(
-                          chatProfileViewModel!.arguments['members'][0]);
+                          chatProfileViewModel!.arguments['number']);
                       Get.back();
                     },
                     child: AppButton(
@@ -350,7 +353,7 @@ class ChatProfileScreen extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
               backgroundColor: Theme.of(context).colorScheme.background,
               title: AppText(
-                  'Are you sure you want to unblock ${chatProfileViewModel!.arguments['members'][0]}?'),
+                  'Are you sure you want to unblock ${chatProfileViewModel!.arguments['number']}?'),
               actions: [
                 InkWell(
                     onTap: () {
@@ -363,7 +366,7 @@ class ChatProfileScreen extends StatelessWidget {
                 ),
                 InkWell(
                     onTap: () {
-                     controller.unBlockUser(chatProfileViewModel!.arguments['members'][0]);
+                     controller.unBlockUser(chatProfileViewModel!.arguments['number']);
                      Get.back();
                     },
                     child: AppButton(

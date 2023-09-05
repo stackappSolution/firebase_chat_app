@@ -32,6 +32,7 @@ class ChatViewModel {
   }
 
   Future<void> getPermission() async {
+
     final PermissionStatus permissionStatus = await Permission.contacts.status;
 
     if (permissionStatus.isGranted) {

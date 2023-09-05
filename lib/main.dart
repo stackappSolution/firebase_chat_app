@@ -35,8 +35,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
             initialRoute: (AuthService.auth.currentUser != null)
-                ? RouteHelper.getProfileScreen()
-                : RouteHelper.getHomeScreen(),
+                ? RouteHelper.getHomeScreen()
+                : RouteHelper.getIntroScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,

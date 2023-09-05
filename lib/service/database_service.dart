@@ -13,6 +13,8 @@ class DatabaseService {
   static FirebaseAuth auth = FirebaseAuth.instance;
 
   //==========================addUsers=======================================
+
+
   Future<String?> addUser(
       {required String firstName,
       String? lastName,
@@ -85,6 +87,11 @@ class DatabaseService {
     addChatMessages(message: massage!, sender: sender!, members: members);
   }
 
+
+
+
+  //==========================checkFirstMessage===========================
+
   Future<bool> checkFirst(List<dynamic> members) async {
     QuerySnapshot userMessages = await FirebaseFirestore.instance
         .collection('rooms')
@@ -95,6 +102,7 @@ class DatabaseService {
   }
 
   //===============================addChatMessage=============================
+
   addChatMessages({
     List<dynamic>? members,
     String? message,
@@ -121,6 +129,7 @@ class DatabaseService {
   }
 
   //=============================getChats====================================
+
   getChatStream(String id) {
     final Stream<QuerySnapshot> chatStream = FirebaseFirestore.instance
         .collection('rooms')
@@ -132,6 +141,7 @@ class DatabaseService {
   }
 
   //===========================blockUsers=====================================
+
   Future<void> blockUser(List<String> phoneNo) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -156,7 +166,7 @@ class DatabaseService {
         .doc(querySnapshot.docs.first.id);
 
     final userSnapshot = await userDoc.get();
-    final blockedUsers = userSnapshot['blockedNumbers'] as List<dynamic>;
+    final blockedUsers = userSnapshot['blockedNumbers'] ;
 
     return blockedUsers;
   }

@@ -12,6 +12,7 @@ class ChatingPageViewModal {
 
   Color? chatBubbleColor;
   Color? wallpaperColor;
+  List<dynamic> blockedNumbers=[];
   Map<String, dynamic> parameter = {};
   Map<String, dynamic> arguments = {};
   String? wallpaperPath;
