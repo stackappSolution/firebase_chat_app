@@ -12,7 +12,6 @@ import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/pages/groups/view/new_group_screen.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/intro_page/intro_page.dart';
-import 'package:signal/pages/invite/invite_mail_screen.dart';
 import 'package:signal/pages/invite/invite_member_screen.dart';
 import 'package:signal/pages/new_message_page/new_message_page.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
@@ -100,7 +99,7 @@ class RouteHelper {
       page: () => SignInPage(),
     ),
     GetPage(name: RouteConstant.settingsScreen, page: () => SettingScreen()),
-    GetPage(name: RouteConstant.newMessageScreen, page: () =>  NewMessagePage()),
+    GetPage(name: RouteConstant.newMessageScreen, page: () => NewMessagePage()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.splashScreen, page: () =>  SplashScreen()),

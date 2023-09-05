@@ -147,4 +147,6 @@ class DatabaseService {
 
     return chatStream;
   }
+
+  static getMobileNumbers() {}
 }

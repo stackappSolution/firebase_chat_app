@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/pages/splash/splash_view_model.dart';
+import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/auth_service.dart';
 
 import '../../constant/color_constant.dart';
 
@@ -16,8 +18,17 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     splashViewModel ?? (splashViewModel = SplashViewModel(this));
     Timer(const Duration(seconds: 5), () {
-     Get.toNamed('/intro');
+      SharedPreferences.getInstance().then((prefs) {
+        if (AuthService.auth.currentUser != null) {
+          RouteHelper.getHomeScreen();
+        } else if (AuthService.auth.currentUser?.phoneNumber?.isNotEmpty == true) {
+          RouteHelper.getProfileScreen();
+        } else {
+          RouteHelper.getIntroScreen();
+        }
+      });
     });
+
 
     return Scaffold(
       backgroundColor: Colors.white,

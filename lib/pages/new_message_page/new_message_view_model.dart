@@ -6,7 +6,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/new_message_controller.dart';
 import 'package:signal/pages/new_message_page/new_message_page.dart';
-import '../../service/database_helper.dart';
 
 class NewMessageViewModel{
   NewMessagePage? newMessagePage;
@@ -20,7 +19,7 @@ class NewMessageViewModel{
   bool isIcon = true;
   bool isKeyBoard = true;
   TextEditingController textController = TextEditingController();
-  final DatabaseService databaseService = DatabaseService();
+ // final DatabaseService databaseService = DatabaseService();
   bool isSerching = false;
   List<String> mobileNumbers = [];
 
@@ -51,7 +50,7 @@ class NewMessageViewModel{
   }
   void fetchContacts() async {
     contacts = await ContactsService.getContacts();
-    logs('contact12345-->${contacts[0]}');
+    logs('contact12345-->${contacts}');
     //DatabaseService.insertData();
     isLoading = false;
     Contact contact = contacts[0];
@@ -70,18 +69,14 @@ class NewMessageViewModel{
     }
     logs('mobile-->$mobilenumber');
     logs('name-->$name');
-    DatabaseService.insertData(mobileNumber: mobilenumber,name: name);
+    //DatabaseService.insertData(mobileNumber: mobilenumber,name: name);
     newMessageController!.update();
   }
   getAllContacts() async {
     List<Contact>contacts = (await ContactsService.getContacts(withThumbnails:false)).toList();
     logs("contactssssss-->${contacts.length}");
+
   }
-
-
-
-
-
 
   Future<List<String>> getMobileNumbers() async {
     QuerySnapshot usersSnapshot =
@@ -91,7 +86,6 @@ class NewMessageViewModel{
       String mobileNumber = value.get('phone');
       mobileNumbers.add(mobileNumber);
     }
-
     return mobileNumbers;
   }
 }

@@ -75,7 +75,6 @@ class AppTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       inputFormatters: inputFormatters,
-
       style: TextStyle(
         fontSize: fontSize,
       ),
