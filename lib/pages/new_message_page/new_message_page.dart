@@ -27,6 +27,7 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
+        DatabaseService.createContactDatabase();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
         getNumbers();
@@ -62,7 +63,9 @@ class NewMessagePage extends StatelessWidget {
                 child: AppTextFormField(
                   onChanged: (value) {
                     newMessageViewModel!.textController.text = value;
-                    onSearchContacts(value.isNotEmpty);
+                    onSearchContacts(filterContacts());
+                    newMessageViewModel!.newMessageController!.isSearch(true);
+                    newMessageViewModel!.newMessageController!.setFilterText('');
                   },
                   controller: newMessageViewModel!.textController,
                   suffixIcon: InkWell(
@@ -131,7 +134,7 @@ class NewMessagePage extends StatelessWidget {
           ? newMessageViewModel!.contacts.length
           : newMessageViewModel!.contacts.length,
       itemBuilder: (context, index) {
-        Contact contact = newMessageViewModel!.contacts[index];
+        final Contact contact = newMessageViewModel!.contacts[index];
         String? mobileNumber =
             contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
@@ -196,34 +199,35 @@ class NewMessagePage extends StatelessWidget {
     logs('phones----> ${newMessageViewModel!.mobileNumbers}');
   }
 
-  onSearchContacts(bool searching) {
-    newMessageViewModel!.isSerching = searching;
-    if (searching) {
-      newMessageViewModel!.filterContacts =
-          newMessageViewModel!.contacts.where((contact) {
-        final displayName = contact.displayName?.toLowerCase() ?? '';
-        final phones = contact.phones ?? [];
+  // onSearchContacts(bool searching) {
+  //   newMessageViewModel!.isSerching = searching;
+  //   if (searching) {
+  //     newMessageViewModel!.filterContacts =
+  //         newMessageViewModel!.contacts.where((contact) {
+  //       final displayName = contact.displayName?.toLowerCase() ?? '';
+  //       final phones = contact.phones ?? [];
+  //
+  //       return displayName.contains(
+  //               newMessageViewModel!.textController.text.toLowerCase()) ||
+  //           phones.any((phone) =>
+  //               phone.value?.toLowerCase().contains(
+  //                   newMessageViewModel!.textController.text.toLowerCase()) ??
+  //               false);
+  //     }).toList();
+  //   } else {
+  //     newMessageViewModel!.filterContacts = newMessageViewModel!.contacts;
+  //   }
+  //   newMessageViewModel!.newMessageController!.update();
+  // }
 
-        return displayName.contains(
-                newMessageViewModel!.textController.text.toLowerCase()) ||
-            phones.any((phone) =>
-                phone.value?.toLowerCase().contains(
-                    newMessageViewModel!.textController.text.toLowerCase()) ??
-                false);
-      }).toList();
-    } else {
-      newMessageViewModel!.filterContacts = newMessageViewModel!.contacts;
-    }
-    newMessageViewModel!.newMessageController!.update();
-  }
-
-  void insertData(String mobileNumber, String name) {
+  void insertData(List mobileNumber, List name) {
     DatabaseService.insertData(mobileNumber: mobileNumber, name: name);
   }
 
   Future<List<Map<String, String>>> getMobileNumbers() async {
     List<Map<String, String>> mobileNumbers =
         await DatabaseService.getMobileNumbers();
+    logs('mobileNumbers-->${mobileNumbers}');
     return mobileNumbers;
   }
 
@@ -238,6 +242,31 @@ class NewMessagePage extends StatelessWidget {
       });
       newMessageViewModel!.contacts = newMessageViewModel!.filterContacts;
       newMessageViewModel!.newMessageController!.update();
+    }
+  }
+  // Future<void> filterContacts() async {
+  //   List<Contact> contacts = await newMessageViewModel!.getAllContacts();
+  //   contacts.addAll(contacts); // Use the actual contacts data, not the Future
+  //   if (newMessageViewModel!.textController.text.isNotEmpty) {
+  //     contacts.retainWhere((contact) {
+  //       String searchterm = newMessageViewModel!.textController.text.toLowerCase();
+  //       String contactName = contact.displayName!.toLowerCase();
+  //       return contactName.contains(searchterm);
+  //     });
+  //     newMessageViewModel!.contacts = contacts; // Update the filtered contacts
+  //     newMessageViewModel!.newMessageController!.update();
+  //   }
+  // }
+  onSearchContacts(NewMessageController controller) {
+    if (controller.searchValue) {
+      newMessageViewModel!.filterContacts = newMessageViewModel!.contacts.where((contact) {
+        return contact.displayName
+            .toString()
+            .toLowerCase()
+            .contains(controller.filteredValue.toLowerCase());
+      }).toList();
+    } else {
+      newMessageViewModel!.filterContacts = newMessageViewModel!.contacts;
     }
   }
 }

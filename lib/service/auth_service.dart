@@ -12,9 +12,6 @@ class AuthService {
   TextEditingController otpcontroller = TextEditingController();
   static String verificationID = '';
 
-
-
-
   Future<bool?> verifyOtp({String? verificationID, String? smsCode, String? phoneNumber}) async {
     logs("v id--->$verificationID");
     logs("smsCode--->$smsCode");
@@ -25,7 +22,7 @@ class AuthService {
         verificationId: verificationID!,
         smsCode: smsCode!,
       );
-
+      isOtpSent = true;
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       User? user = userCredential.user;
       if (user != null) {
@@ -36,6 +33,7 @@ class AuthService {
       }
 
     } catch (e) {
+      isOtpSent = false;
       logs("Exception in verifyOtp --> $e");
     }
     return  true;

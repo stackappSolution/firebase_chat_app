@@ -12,6 +12,8 @@ class NewMessageViewModel{
   NewMessagePage? newMessagePage;
 
   List<Contact> contacts = [];
+  List name = [];
+  List mobilenumber = [];
   List<Contact> filterContacts = [];
   bool isLoading = true;
   NewMessageController? newMessageController;
@@ -49,12 +51,31 @@ class NewMessageViewModel{
   }
   void fetchContacts() async {
     contacts = await ContactsService.getContacts();
+    logs('contact12345-->${contacts[0]}');
+    //DatabaseService.insertData();
     isLoading = false;
+    Contact contact = contacts[0];
+    logs('Contact Name-->${contact.displayName}');
+    logs('ContactNumber-->${contact.phones}');
+    name = [];
+    mobilenumber = [];
+    for(int i = 0 ; i<contacts.length; i++)
+    {
+      Contact contact = contacts[i];
+      name.add(contact.displayName);
+      mobilenumber.add(contact.phones);
+    }
+    for (Item phone in contact.phones ?? []) {
+      mobilenumber.add(phone.value ?? 'N/A');
+    }
+    logs('mobile-->$mobilenumber');
+    logs('name-->$name');
+    DatabaseService.insertData(mobileNumber: mobilenumber,name: name);
     newMessageController!.update();
   }
   getAllContacts() async {
     List<Contact>contacts = (await ContactsService.getContacts(withThumbnails:false)).toList();
-    logs("contactssssss-->${contacts.first.phones!.length}");
+    logs("contactssssss-->${contacts.length}");
   }
 
 
