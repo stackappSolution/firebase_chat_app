@@ -14,6 +14,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
   SharedPreferences.getInstance();
+  SharedPreferences prefs =await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 
@@ -55,11 +56,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-   String determineInitialRoute() {
-     if (AuthService.auth.currentUser != null) {
-       return isProfileCompleted ? RouteHelper.getHomeScreen() : RouteHelper.getProfileScreen();
-     } else {
-       return RouteHelper.getSplashScreen();
-     }
-   }
 }

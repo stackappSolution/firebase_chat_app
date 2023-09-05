@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
@@ -210,8 +211,9 @@ class SignInPage extends StatelessWidget {
                             ? null
                             : () async {
                           setIntValue('signIn', 1);
-                                logs(
-                                    "entred contact IS------------->   $countryCode$phoneNumber");
+                          SharedPreferences pref =await SharedPreferences.getInstance();
+                          pref.setString("MobileNumber",phoneNumber);
+                                logs("entred contact IS------------->   $countryCode$phoneNumber");
 
                                 verified(AuthCredential authResult) async {
                                   await auth.signInWithCredential(authResult);

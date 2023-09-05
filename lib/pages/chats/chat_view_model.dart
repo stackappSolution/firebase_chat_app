@@ -5,8 +5,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
-import 'package:signal/service/database_helper.dart';
 import 'package:signal/service/database_service.dart';
+
+import 'package:signal/service/database_helper.dart';
 
 
 
@@ -17,7 +18,6 @@ class ChatViewModel {
   bool isLoading = false;
   String string = '';
   bool isConnected = false;
-
   final Stream<QuerySnapshot> usersStream = DatabaseService().getUserStream();
   List<DocumentSnapshot> data = [];
   ContactController? controller;
@@ -62,6 +62,7 @@ class ChatViewModel {
     DataBaseHelper.getContactDetails();
     controller!.update();
   }
+}
 
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
@@ -72,4 +73,3 @@ class ChatViewModel {
     return "Wait";
   }
 
-}
