@@ -14,6 +14,7 @@ class VerifyOtpViewModel{
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   String smsCode = "";
   bool isValidOTP = false;
+  bool isLoading = false;
   Map<String,dynamic> parameter = {};
 
   final defaultPinTheme = PinTheme(

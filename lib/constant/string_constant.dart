@@ -12,6 +12,7 @@ class StringConstant {
 
 
   static const String calls = 'calls';
+  static const String block = 'block';
   static const String chats = 'chats';
   static const String settings = 'Settings';
   static const String appearance = 'appearance';

@@ -12,6 +12,7 @@ class ChatingPageViewModal {
 
   Color? chatBubbleColor;
   Color? wallpaperColor;
+  List<dynamic> blockedNumbers=[];
   Map<String, dynamic> parameter = {};
   Map<String, dynamic> arguments = {};
   String? wallpaperPath;
@@ -24,8 +25,8 @@ class ChatingPageViewModal {
   ChatingPageController? controller;
 
   ChatingPageViewModal([this.chatingPage]) {
-    Future.delayed(const Duration(milliseconds: 100), () async {
-      controller = Get.put(ChatingPageController());
+    Future.delayed(const Duration(milliseconds: 0), () async {
+      controller = Get.find<ChatingPageController>();
       ChatingPage.fontSize = await getStringValue(StringConstant.setFontSize);
       controller!.update();
     });

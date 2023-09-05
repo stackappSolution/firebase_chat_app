@@ -42,7 +42,9 @@ class MyApp extends StatelessWidget {
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
             themeMode: ThemeUtil.selectedTheme,
+
             localizationsDelegates:  const [
+
               S.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,

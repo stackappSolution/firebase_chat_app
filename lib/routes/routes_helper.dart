@@ -123,7 +123,7 @@ class RouteHelper {
         name: RouteConstant.privacyScreen, page: () => const PrivacyScreen()),
     GetPage(
         name: RouteConstant.blockedUsersScreen,
-        page: () => const BlockedUsersScreen()),
+        page: () =>  BlockedUsersScreen()),
     GetPage(
         name: RouteConstant.disappearingScreen, page: () => DisappearScreen()),
     GetPage(

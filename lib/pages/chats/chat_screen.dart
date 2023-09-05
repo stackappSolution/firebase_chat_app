@@ -15,6 +15,9 @@ import 'package:signal/pages/chats/chat_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
+import 'package:signal/service/database_helper.dart';
+
+
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -26,10 +29,12 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     logs("Current Screen --> $runtimeType");
     chatViewModel ?? (chatViewModel = ChatViewModel(this));
-    chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
       init: ContactController(),
-      initState: (state) {},
+      initState: (state) {
+        DataBaseHelper.createDB();
+        chatViewModel!.getPermission();
+      },
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
@@ -205,11 +210,13 @@ class ChatScreen extends StatelessWidget {
           shrinkWrap: true,
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
-            logs('${snapshot.data!.docs.length}');
             bool isGroup = documents[index]['isGroup'];
             List receiver = documents[index]["members"];
             receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
-            String receiverName = receiver.join("").toString();
+            String receiverNumber =
+                receiver.join("").toString().trim().removeAllWhitespace;
+            String firstLetter =
+                chatViewModel!.getNameFromContact(receiverNumber).toString().substring(0,1);
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
@@ -227,6 +234,8 @@ class ChatScreen extends StatelessWidget {
                           : '',
                       'id': documents[index]['id'],
                       'members': documents[index]['members'],
+                      'name': chatViewModel!.getNameFromContact(receiverNumber),
+                      'number': receiverNumber,
                     });
                   },
                   // trailing: StreamBuilder(
@@ -266,6 +275,46 @@ class ChatScreen extends StatelessWidget {
                             color: AppColorConstant.appWhite,
                             fontSize: 22.px,
                           ),
+                  trailing: StreamBuilder(
+                    stream: controller.getLastMessage(documents[index]['id']),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return AppText('Error: ${snapshot.error}');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const AppText('');
+                      }
+                      final data = snapshot.data!.docs;
+                      return AppText(
+                          DateFormation.formatTimestamp(data[0]["timeStamp"]),
+                          color: AppColorConstant.grey,
+                          fontSize: 12.px);
+                    },
+                  ),
+                  leading: InkWell(
+                    onTap: () {
+                      Get.toNamed(RouteHelper.getChatProfileScreen());
+                    },
+                    child: CircleAvatar(
+                      maxRadius: 30.px,
+                      backgroundColor:
+                          AppColorConstant.appYellow.withOpacity(0.8),
+                      child: (isGroup)
+                          ? AppText(
+                              documents[index]['groupName']
+                                      .substring(0, 1)
+                                      .toUpperCase() ??
+                                  "",
+                              color: AppColorConstant.appWhite,
+                              fontSize: 22.px,
+                            )
+                          : AppText(
+                              firstLetter,
+                              color: AppColorConstant.appWhite,
+                              fontSize: 22.px,
+                            ),
+                    ),
+
                   ),
                   title: (isGroup)
                       ? AppText(
@@ -273,26 +322,8 @@ class ChatScreen extends StatelessWidget {
                           fontSize: 15.px,
                           color: Theme.of(context).colorScheme.primary,
                         )
-                      : StreamBuilder(
-                          stream: controller.getUserName(receiverName),
-                          builder:
-                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                            logs('receiver----> $receiverName');
-                            if (snapshot.hasError) {
-                              return AppText('Error: ${snapshot.error}');
-                            }
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const AppText('');
-                            }
-                            final data = snapshot.data!.docs;
-                            return AppText(
-                              data[0]['firstName'] ?? "",
-                              fontSize: 15.px,
-                              color: Theme.of(context).colorScheme.primary,
-                            );
-                          },
-                        ),
+                      : AppText(
+                          chatViewModel!.getNameFromContact(receiverNumber)),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -327,7 +358,7 @@ class ChatScreen extends StatelessWidget {
                               color: AppColorConstant.grey, fontSize: 12.px);
                     },
                   ),
-                ));
+          ));
           },
         );
       },

@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "beforeContinuing": MessageLookupByLibrary.simpleMessage(
             "ચાલુ રાખતા પહેલા, ખાતરી કરો કે તમારો નવો નંબર SMS અથવા કૉલ્સ પ્રાપ્ત કરી શકે છે."),
         "blankText": MessageLookupByLibrary.simpleMessage("ખાલી ટેક્સ્ટ"),
+        "block": MessageLookupByLibrary.simpleMessage("બ્લોક"),
         "blockScreenshots": MessageLookupByLibrary.simpleMessage(
             "તાજેતરની સૂચિમાં અને એપ્લિકેશનની અંદર સ્ક્રીનશૉટ્સને અવરોધિત કરો"),
         "blocked": MessageLookupByLibrary.simpleMessage("અવરોધિત"),
@@ -50,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "changePhoneNumber":
             MessageLookupByLibrary.simpleMessage("ફોન નંબર બદલો"),
         "changeYourPin": MessageLookupByLibrary.simpleMessage("તમારી પિન બદલો"),
+        "chatAppPin": MessageLookupByLibrary.simpleMessage("ચેટ એપ્લિકેશન પિન"),
         "chatColor": MessageLookupByLibrary.simpleMessage("ચેટ રંગ"),
         "chatColorAndWallpaper":
             MessageLookupByLibrary.simpleMessage("ચેટ રંગ અને વોલપેપર"),

@@ -12,6 +12,7 @@ import 'package:signal/pages/new_message_page/new_message_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
+import 'package:signal/service/database_helper.dart';
 
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
@@ -25,6 +26,7 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
+        DataBaseHelper.createDB();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
         getNumbers();
@@ -133,8 +135,7 @@ class NewMessagePage extends StatelessWidget {
           : newMessageViewModel!.contacts.length,
       itemBuilder: (context, index) {
         final Contact contact = newMessageViewModel!.contacts[index];
-        String? mobileNumber =
-            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        String? mobileNumber = contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
         return Container(
@@ -147,13 +148,14 @@ class NewMessagePage extends StatelessWidget {
             },
             child: ListTile(
               onTap: () {
-                (newMessageViewModel!.mobileNumbers.contains(mobileNumber))
+                (newMessageViewModel!.mobileNumbers.contains(mobileNumber.toString().trim().removeAllWhitespace))
                     ? Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
                         'members': [
                           AuthService.auth.currentUser!.phoneNumber!,
                           mobileNumber
                         ],
-                        'displayName': displayName,
+                        'name': displayName,
+                        'number': mobileNumber.toString().trim().removeAllWhitespace,
                         'isGroup': false,
                       })
                     : Get.toNamed(RouteHelper.getInviteMemberScreen(),
@@ -215,7 +217,6 @@ class NewMessagePage extends StatelessWidget {
   Future<void>filterContacts() async {
     final contacts = await newMessageViewModel!.getAllContacts();
     final searchTerm = newMessageViewModel!.textController.text.toLowerCase();
-
     if (contacts != null && searchTerm.isNotEmpty) {
       newMessageViewModel!.contacts = contacts.where((contact) {
         final displayName = contact.displayName?.toLowerCase() ?? '';

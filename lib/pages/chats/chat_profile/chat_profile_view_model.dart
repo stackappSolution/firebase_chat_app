@@ -11,6 +11,8 @@ class ChatProfileViewModel{
   ChatProfileScreen? chatProfileScreen;
 
   Map<String,dynamic> arguments= {};
+  List<dynamic> blockedNumbers=[];
+  List<String> addBlockNumbers = [];
   ChatProfileViewModel(this.chatProfileScreen);
 
 

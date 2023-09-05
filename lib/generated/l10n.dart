@@ -1290,6 +1290,26 @@ class S {
     );
   }
 
+  /// `Chat App Pin`
+  String get chatAppPin {
+    return Intl.message(
+      'Chat App Pin',
+      name: 'chatAppPin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block`
+  String get block {
+    return Intl.message(
+      'Block',
+      name: 'block',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Privacy`
   String get privacy {
     return Intl.message(

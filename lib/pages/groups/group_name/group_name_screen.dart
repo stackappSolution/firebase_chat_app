@@ -183,6 +183,7 @@ class GroupNameScreen extends StatelessWidget {
     List<dynamic>  members= groupNameViewModel!.mobileNo.toSet().toList();
 
     DatabaseService().addNewMessage(
+      createdBy: AuthService.auth.currentUser!.phoneNumber!,
         groupName: groupNameViewModel!.groupNameController.text,
         profile: groupNameViewModel!.userProfile,
         members: members,
