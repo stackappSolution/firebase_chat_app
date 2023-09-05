@@ -271,10 +271,10 @@ class ChatScreen extends StatelessWidget {
                               fontSize: 22.px,
                             )
                           : AppText(
-                              documents[index]['id']
-                                      .substring(0, 1)
-                                      .toUpperCase() ??
-                                  "",
+                              chatViewModel!
+                                  .getNameFromContact(receiverNumber)
+                                  .substring(0, 1)
+                                  .toUpperCase(),
                               color: AppColorConstant.appWhite,
                               fontSize: 22.px,
                             ),
