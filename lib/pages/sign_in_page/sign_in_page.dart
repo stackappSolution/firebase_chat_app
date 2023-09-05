@@ -272,9 +272,12 @@ class SignInPage extends StatelessWidget {
                               MaterialStatePropertyAll(Size(230.px, 50.px)),
                         ),
                         child: signInViewModel.otpSend
-                            ? const CircularProgressIndicator(
-                                color: AppColorConstant.appWhite,
-                              )
+                            ? Padding(
+                              padding:  EdgeInsets.all(8.0.px),
+                              child: const CircularProgressIndicator(
+                                  color: AppColorConstant.appWhite,
+                                ),
+                            )
                             : AppText(
                                 S.of(context).continues,
                                 fontSize: 22.px,

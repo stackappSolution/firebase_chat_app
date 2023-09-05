@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
@@ -159,6 +160,9 @@ class VerifyOtpPage extends StatelessWidget {
                       )
                     : ElevatedButton(
                         onPressed: () async {
+                          verifyOtpViewModel!.isLoading = true;
+                          controller.update();
+
                           setIntValue('verification', 2);
                           await AuthService()
                               .verifyOtp(
@@ -182,7 +186,7 @@ class VerifyOtpPage extends StatelessWidget {
                                 AppColorConstant.appYellow),
                             fixedSize:
                                 MaterialStatePropertyAll(Size(230.px, 50.px))),
-                        child: (verifyOtpViewModel!.isValidOTP)
+                        child: (verifyOtpViewModel!.isLoading)
                             ? const CircularProgressIndicator(color: AppColorConstant.appWhite,)
                             : AppText(
                                 'Verify',
