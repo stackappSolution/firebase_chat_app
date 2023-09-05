@@ -1,17 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
+import 'package:signal/constant/color_constant.dart';
+import 'package:signal/controller/settings_controller.dart';
+import 'package:signal/pages/settings/privacy/blocked/blocked_users_view_model.dart';
+import 'package:signal/service/database_service.dart';
 
 class BlockedUsersScreen extends StatelessWidget {
-  const BlockedUsersScreen({Key? key}) : super(key: key);
+  BlockedUsersScreen({Key? key}) : super(key: key);
+
+  BlockedUsersViewModel? blockedUsersViewModel;
+  SettingsController? controller;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: getAppbar(context),
-      body: getBody(context),
+    blockedUsersViewModel ??
+        (blockedUsersViewModel = (BlockedUsersViewModel(this)));
+
+    return GetBuilder(
+      init: SettingsController(),
+      initState: (state) {
+        Future.delayed(
+          const Duration(milliseconds: 100),
+          () {
+            controller = Get.find<SettingsController>();
+          },
+        );
+        getBlockedUsersList();
+      },
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: getAppbar(context),
+          body: getBody(context),
+        );
+      },
     );
   }
 
@@ -24,18 +50,20 @@ class BlockedUsersScreen extends StatelessWidget {
   }
 
   getBody(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start ,
-
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildAddBlockView(context),
-        Padding(padding: EdgeInsets.all(20.px),
+        Padding(
+          padding: EdgeInsets.all(20.px),
           child: AppText(
             'Blocked Users',
             fontSize: 15.px,
             fontWeight: FontWeight.w900,
             color: Theme.of(context).colorScheme.primary,
           ),
-        )
+        ),
+        buildBlockedListView(),
       ],
     );
   }
@@ -51,9 +79,30 @@ class BlockedUsersScreen extends StatelessWidget {
     );
   }
 
+  buildBlockedListView() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: blockedUsersViewModel!.blockedUsersList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: AppText(blockedUsersViewModel!.blockedUsersList[index]),
+          leading: CircleAvatar(
+              backgroundColor: AppColorConstant.appYellow,
+              child: AppText(
+                blockedUsersViewModel!.blockedUsersList[index]
+                    .substring(0, 1)
+                    .toUpperCase(),
+                color: AppColorConstant.appWhite,
+              )),
+        );
+      },
+    );
+  }
 
-
-
-
-
+  getBlockedUsersList() async {
+    blockedUsersViewModel!.blockedUsersList =
+        await DatabaseService().getBlockedUsers();
+    controller!.update();
+    logs('blockkkkk-----------> ${blockedUsersViewModel!.blockedUsersList}');
+  }
 }

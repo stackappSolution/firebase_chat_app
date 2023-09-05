@@ -150,6 +150,7 @@
 
 
          "chatAppPin" : "Chat App Pin",
+         "block" : "Block",
         "privacy" : "Privacy",
         "payments" : "Payments",
         "advance" : "Advance",

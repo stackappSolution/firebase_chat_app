@@ -48,6 +48,7 @@
                 "turnOn" : "ચાલુ કરો",
                 "pinReminders" : "PIN રીમાઇન્ડર્સ",
                 "dark" : "અંધારું",
+                 "block" : "બ્લોક",
 
 
                   "groupName" : "જૂથનું નામ (જરૂરી)",
@@ -65,6 +66,8 @@
                 "searchNameOrNumber" : "નામ અથવા નંબર શોધો",
                  "newMessage" : "નવો સંદેશ",
                 "about" : "વિશે",
+                "dark" :"અંધારું",
+                "light" : "પ્રકાશ",
                 "camera" : "કેમેરા",
                 "gallery" : "ગેલેરી",
                 "chatAppPin" : "ચેટ એપ્લિકેશન પિન",

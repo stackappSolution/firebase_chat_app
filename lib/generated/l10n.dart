@@ -1300,6 +1300,16 @@ class S {
     );
   }
 
+  /// `Block`
+  String get block {
+    return Intl.message(
+      'Block',
+      name: 'block',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Privacy`
   String get privacy {
     return Intl.message(
@@ -1729,17 +1739,6 @@ class S {
       args: [],
     );
   }
-
-
-  /// `Continue`
-  // String get continues {
-  //   return Intl.message(
-  //     'Continue',
-  //     name: 'continues',
-  //     desc: '',
-  //     args: [],
-  //   );
-  // }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

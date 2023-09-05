@@ -34,24 +34,37 @@ class NewMessagePage extends StatelessWidget {
       builder: (NewMessageController controller) {
         return SafeArea(
             child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: buildAppBar(context),
-          body: buildSearchBar(context),
-        ));
+              backgroundColor: Theme
+                  .of(context)
+                  .colorScheme
+                  .background,
+              appBar: buildAppBar(context),
+              body: buildSearchBar(context),
+            ));
       },
     );
   }
 
-  buildAppBar(BuildContext context) => AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
+  buildAppBar(BuildContext context) =>
+      AppBar(
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .background,
         title: AppText(
-          S.of(context).newMessage,
+          S
+              .of(context)
+              .newMessage,
           fontSize: 20.px,
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .primary,
         ),
       );
 
-  buildSearchBar(BuildContext context) => SingleChildScrollView(
+  buildSearchBar(BuildContext context) =>
+      SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -75,7 +88,9 @@ class NewMessagePage extends StatelessWidget {
                         : const Icon(Icons.keyboard),
                   ),
                   keyboardType: newMessageViewModel!.getKeyboardType(),
-                  hintText: S.of(context).search,
+                  hintText: S
+                      .of(context)
+                      .search,
                   style: TextStyle(
                     fontSize: 22.px,
                     fontWeight: FontWeight.w400,
@@ -91,14 +106,19 @@ class NewMessagePage extends StatelessWidget {
                     Get.toNamed(RouteHelper.getNewGroupScreen());
                   },
                   title: AppText(
-                    S.of(context).newGroup,
+                    S
+                        .of(context)
+                        .newGroup,
                     fontSize: 18.px,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .primary,
                   ),
                   leading: CircleAvatar(
                     radius: 30.px,
                     backgroundColor:
-                        AppColorConstant.appYellow.withOpacity(0.5),
+                    AppColorConstant.appYellow.withOpacity(0.5),
                     child: const Icon(Icons.group,
                         color: AppColorConstant.appBlack),
                   )),
@@ -106,9 +126,14 @@ class NewMessagePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(20.px),
               child: AppText(
-                S.of(context).contacts,
+                S
+                    .of(context)
+                    .contacts,
                 fontSize: 22.px,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
               ),
             ),
             buildContactList(),
@@ -133,7 +158,7 @@ class NewMessagePage extends StatelessWidget {
       itemBuilder: (context, index) {
         Contact contact = newMessageViewModel!.contacts[index];
         String? mobileNumber =
-            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
         return Container(
@@ -144,21 +169,21 @@ class NewMessagePage extends StatelessWidget {
             },
             child: ListTile(
               onTap: () {
-                (newMessageViewModel!.mobileNumbers.contains(mobileNumber))
+                (newMessageViewModel!.mobileNumbers.contains(mobileNumber.toString().trim().removeAllWhitespace))
                     ? Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
-                        'members': [
-                          AuthService.auth.currentUser!.phoneNumber!,
-                          mobileNumber
-                        ],
-                        'displayName': displayName,
-                        'isGroup': false,
-                      })
+                  'members': [
+                    mobileNumber,
+                    AuthService.auth.currentUser!.phoneNumber!,
+                  ],
+                  'displayName': displayName,
+                  'isGroup': false,
+                })
                     : Get.toNamed(RouteHelper.getInviteMemberScreen(),
-                        parameters: {
-                            'firstLetter': firstLetter,
-                            'displayName': displayName,
-                            'phoneNo': mobileNumber
-                          });
+                    parameters: {
+                      'firstLetter': firstLetter,
+                      'displayName': displayName,
+                      'phoneNo': mobileNumber
+                    });
                 logs('mo--> $mobileNumber');
               },
               leading: InkWell(
@@ -168,7 +193,7 @@ class NewMessagePage extends StatelessWidget {
                 child: CircleAvatar(
                     maxRadius: 30.px,
                     backgroundColor:
-                        AppColorConstant.appYellow.withOpacity(0.8),
+                    AppColorConstant.appYellow.withOpacity(0.8),
                     child: AppText(
                       firstLetter,
                       color: AppColorConstant.appWhite,
@@ -178,7 +203,10 @@ class NewMessagePage extends StatelessWidget {
               title: AppText(
                 displayName,
                 fontSize: 15.px,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
               ),
               subtitle: AppText(mobileNumber!,
                   color: AppColorConstant.grey, fontSize: 12.px),
@@ -191,7 +219,7 @@ class NewMessagePage extends StatelessWidget {
 
   getNumbers() async {
     newMessageViewModel!.mobileNumbers =
-        await newMessageViewModel!.getMobileNumbers();
+    await newMessageViewModel!.getMobileNumbers();
 
     logs('phones----> ${newMessageViewModel!.mobileNumbers}');
   }
@@ -201,16 +229,16 @@ class NewMessagePage extends StatelessWidget {
     if (searching) {
       newMessageViewModel!.filterContacts =
           newMessageViewModel!.contacts.where((contact) {
-        final displayName = contact.displayName?.toLowerCase() ?? '';
-        final phones = contact.phones ?? [];
+            final displayName = contact.displayName?.toLowerCase() ?? '';
+            final phones = contact.phones ?? [];
 
-        return displayName.contains(
+            return displayName.contains(
                 newMessageViewModel!.textController.text.toLowerCase()) ||
-            phones.any((phone) =>
+                phones.any((phone) =>
                 phone.value?.toLowerCase().contains(
                     newMessageViewModel!.textController.text.toLowerCase()) ??
-                false);
-      }).toList();
+                    false);
+          }).toList();
     } else {
       newMessageViewModel!.filterContacts = newMessageViewModel!.contacts;
     }
@@ -218,12 +246,12 @@ class NewMessagePage extends StatelessWidget {
   }
 
   void insertData(String mobileNumber, String name) {
-    DatabaseService.insertData(mobileNumber: mobileNumber, name: name);
+    DatabaseHelper.insertData(mobileNumber: mobileNumber, name: name);
   }
 
   Future<List<Map<String, String>>> getMobileNumbers() async {
     List<Map<String, String>> mobileNumbers =
-        await DatabaseService.getMobileNumbers();
+    await DatabaseHelper.getMobileNumbers();
     return mobileNumbers;
   }
 
@@ -232,7 +260,7 @@ class NewMessagePage extends StatelessWidget {
     if (newMessageViewModel!.textController.text.isNotEmpty) {
       newMessageViewModel!.contacts.retainWhere((contact) {
         String serchterm =
-            newMessageViewModel!.textController.text.toLowerCase();
+        newMessageViewModel!.textController.text.toLowerCase();
         String contactName = contact.displayName!.toLowerCase();
         return contactName.contains(serchterm);
       });

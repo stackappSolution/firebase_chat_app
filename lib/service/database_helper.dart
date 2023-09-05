@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 
-class DatabaseService {
+class DatabaseHelper {
   static  Database? _database; // Use nullable type
 
   Future openDatabase(String path, {required int version, required Future<Null> Function(Database db, int version) onCreate}) async {
@@ -47,7 +47,7 @@ class DatabaseService {
   }
   static Future<void> fetchDataFromDatabase() async {
     try {
-      final mobileNumberList = await DatabaseService.getMobileNumbers();
+      final mobileNumberList = await DatabaseHelper.getMobileNumbers();
       // Use mobileNumberList to populate your UI or perform other actions
       for (final map in mobileNumberList) {
         final mobileNumber = map['mobileNumber'];

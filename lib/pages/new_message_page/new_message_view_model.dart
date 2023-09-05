@@ -18,7 +18,7 @@ class NewMessageViewModel{
   bool isIcon = true;
   bool isKeyBoard = true;
   TextEditingController textController = TextEditingController();
-  final DatabaseService databaseService = DatabaseService();
+  final DatabaseHelper databaseService = DatabaseHelper();
   bool isSerching = false;
   List<String> mobileNumbers = [];
 

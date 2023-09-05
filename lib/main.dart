@@ -1,15 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:signal/service/auth_service.dart';
 import 'app/app/utills/theme_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:signal/constant/color_constant.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/generated/l10n.dart';
 
@@ -43,7 +39,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
             initialRoute: (AuthService.auth.currentUser != null)
-                ? RouteHelper.getProfileScreen()
+                ? RouteHelper.getHomeScreen()
                 : RouteHelper.getSplashScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,

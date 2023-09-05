@@ -46,7 +46,6 @@ class ChatingPage extends StatelessWidget {
             const Duration(milliseconds: 0),
             () async {
               controller = Get.find<ChatingPageController>();
-
               logs('arg--> ${chatingPageViewModal!.arguments}');
 
               final snapshots = await FirebaseFirestore.instance
@@ -54,11 +53,9 @@ class ChatingPage extends StatelessWidget {
                   .where('members',
                       isEqualTo: chatingPageViewModal!.arguments['members'])
                   .get();
-
               chats = DatabaseService().getChatStream(
                 snapshots.docs.first.id,
               );
-
               Future<String?> key = getStringValue(wallPaperColor);
               chatingPageViewModal!.wallpaperPath = await key;
 
@@ -107,40 +104,44 @@ class ChatingPage extends StatelessWidget {
                           )
                         : const SizedBox(),
                     Expanded(
-                      child:
-                          (chatingPageViewModal!.arguments['isGroup'] != null)
-                              ? StreamBuilder<QuerySnapshot>(
-                                  stream: chats,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (snapshot.hasError) {
-                                      return const Text('Something went wrong');
-                                    }
-                                    if (snapshot.hasData) {
-                                      final data = snapshot.data?.docs;
+                      child: (chatingPageViewModal!.arguments['isGroup'] !=
+                              null)
+                          ? StreamBuilder<QuerySnapshot>(
+                              stream: chats,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Text('Something went wrong');
+                                }
+                                if (snapshot.hasData) {
+                                  final data = snapshot.data!.docs;
 
-                                      logs('data----> ${data!.length}');
+                                  logs('data----> ${data.length}');
 
-                                      return ListView.builder(
-                                        itemCount: snapshot.data?.docs.length,
-                                        itemBuilder: (context, index) {
-                                          String formattedTime = DateFormation()
-                                              .getChatTimeFormate(
-                                                  data[index]['timeStamp']);
+                                  return (snapshot.data!.docs.isEmpty)
+                                      ? const SizedBox()
+                                      : ListView.builder(
+                                          itemCount: snapshot.data?.docs.length,
+                                          itemBuilder: (context, index) {
+                                            String formattedTime =
+                                                DateFormation()
+                                                    .getChatTimeFormate(
+                                                        data[index]
+                                                            ['timeStamp']);
 
-                                          return buildMessage(
-                                              data[index]['sender'],
-                                              context,
-                                              controller,
-                                              data[index]['message'],
-                                              formattedTime);
-                                        },
-                                      );
-                                    }
-                                    return const AppLoader();
-                                  },
-                                )
-                              : const SizedBox(),
+                                            return buildMessage(
+                                                data[index]['sender'],
+                                                context,
+                                                controller,
+                                                data[index]['message'],
+                                                formattedTime);
+                                          },
+                                        );
+                                }
+                                return const AppLoader();
+                              },
+                            )
+                          : const SizedBox(),
                     ),
                     (chatingPageViewModal!.arguments['isGroup'] != null)
                         ? Row(children: [
@@ -370,7 +371,7 @@ class ChatingPage extends StatelessWidget {
         title: InkWell(
           onTap: () {
             if (chatingPageViewModal!.arguments['id'] != null ||
-                chatingPageViewModal!.arguments['groupName']) {
+                chatingPageViewModal!.arguments['isGroup']) {
               Get.toNamed(RouteHelper.getChatProfileScreen(), arguments: {
                 'members': chatingPageViewModal!.arguments['members'],
                 'id': chatingPageViewModal!.arguments['id'],
