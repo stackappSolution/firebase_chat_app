@@ -131,7 +131,7 @@ class NewMessagePage extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: newMessageViewModel!.isSerching == true
-          ? newMessageViewModel!.contacts.length
+          ? newMessageViewModel!.filterContacts.length
           : newMessageViewModel!.contacts.length,
       itemBuilder: (context, index) {
         final Contact contact = newMessageViewModel!.contacts[index];

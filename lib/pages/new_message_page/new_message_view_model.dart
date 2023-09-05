@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/new_message_controller.dart';
 import 'package:signal/pages/new_message_page/new_message_page.dart';
-import '../../service/database_helper.dart';
+
 class NewMessageViewModel {
   NewMessagePage? newMessagePage;
   List<Contact> contacts = [];
