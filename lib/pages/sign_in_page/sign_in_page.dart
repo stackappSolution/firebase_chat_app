@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
@@ -22,7 +23,6 @@ class SignInPage extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
   SignInViewModel? signInViewModel;
-  bool isSendingOTP = false;
 
   @override
   Widget build(BuildContext context) {
@@ -115,14 +115,15 @@ class SignInPage extends StatelessWidget {
                         border: Border.all(color: AppColorConstant.appYellow),
                         borderRadius: BorderRadius.circular(13.px)),
                     child: CountryCodePicker(
+                      dialogBackgroundColor:Theme.of(context).colorScheme.background,
                       showFlag: false,
                       showFlagDialog: true,
                       onChanged: (country) {
                         signInViewModel.selectedCountry = country;
                       },
                       initialSelection: 'IN',
-                      textStyle: const TextStyle(
-                        color: AppColorConstant.appBlack,
+                      textStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600,
                       ),
                       // Set initial country code
@@ -208,18 +209,17 @@ class SignInPage extends StatelessWidget {
                         onPressed: signInViewModel.otpSend
                             ? null
                             : () async {
+                          setIntValue('signIn', 1);
                                 logs(
                                     "entred contact IS------------->   $countryCode$phoneNumber");
 
                                 verified(AuthCredential authResult) async {
                                   await auth.signInWithCredential(authResult);
                                 }
-
                                 verificationFailed(
                                     FirebaseAuthException authException) {
                                   logs(authException.message.toString());
                                 }
-
                                 smsSent(String verificationId,
                                     [int? forceResendingToken]) {
                                   AuthService.verificationID = verificationId;
@@ -232,13 +232,11 @@ class SignInPage extends StatelessWidget {
                                   logs(
                                       "verification id ----->${AuthService.verificationID}");
                                 }
-
                                 autoRetrievalTimeout(String verificationId) {
                                   controller.update();
                                   logs(
                                       "verification------->${AuthService.verificationID}");
                                 }
-
                                 try {
                                   await auth.verifyPhoneNumber(
                                     phoneNumber: "$countryCode$phoneNumber",
@@ -249,12 +247,18 @@ class SignInPage extends StatelessWidget {
                                     codeAutoRetrievalTimeout:
                                         autoRetrievalTimeout,
                                   );
+                                  signInViewModel.otpSend = true;
+                                  controller.update();
                                 } catch (e) {
                                   // Handle any errors that may occur during OTP verification
                                   logs("Error: $e");
                                   signInViewModel.otpSend = false;
                                   controller
-                                      .update(); // Reset the sending OTP state
+                                      .update();
+                                  controller.update(); // Reset the sending OTP state
+                                }
+                                var data;
+                                if (data.passParameter['id'] != null) {
                                 }
                               },
                         style: ButtonStyle(

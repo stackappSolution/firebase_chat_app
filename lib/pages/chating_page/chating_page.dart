@@ -382,7 +382,8 @@ class ChatingPage extends StatelessWidget {
           child: AppText(
               (chatingPageViewModal!.arguments['isGroup'])
                   ? chatingPageViewModal!.arguments['groupName']
-                  : chatingPageViewModal!.arguments['members'][0],
+                  //  : chatingPageViewModal!.arguments['members'][0],
+                  : chatingPageViewModal!.arguments['name'],
               color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               overflow: TextOverflow.ellipsis),

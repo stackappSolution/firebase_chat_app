@@ -1,5 +1,3 @@
-
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 
@@ -23,7 +21,16 @@ Future<String?> getStringValue(String key) async {
    logs('getStringValue');
   final prefs = await SharedPreferences.getInstance();
   return prefs.getString(key);
-
 }
 
+setIntValue(String key, int value) async {
+  logs('setIntValue');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setInt(key, value);
+}
 
+Future<int?> getIntValue(String key) async {
+  logs('getIntValue');
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getInt(key);
+}

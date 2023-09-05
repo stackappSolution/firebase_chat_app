@@ -1,62 +1,55 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:signal/app/app/utills/app_utills.dart';
 
-class DatabaseHelper {
-  static  Database? _database; // Use nullable type
+import '../app/app/utills/app_utills.dart';
 
-  Future openDatabase(String path, {required int version, required Future<Null> Function(Database db, int version) onCreate}) async {
-    if (_database == null) {
-      final databasesPath = await getDatabasesPath();
-      final path = join(databasesPath, 'demo.db');
+class DataBaseHelper {
+  static Database? database;
+  static List contactData = [];
 
-      _database = await openDatabase(path, version: 1,
-          onCreate: (Database db, int version) async {
-            await db.execute('CREATE TABLE users (id INTEGER PRIMARY KEY, mobileNumber TEXT, name TEXT)');
-          });
-    }
+  static create_db() async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'chat.db');
+
+    database = await openDatabase(path, version: 1,
+        onCreate: (Database db, int version) async {
+      await db.execute(
+          'CREATE TABLE data (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, contact TEXT)');
+    });
   }
 
-  static Future<void> insertData({
-    required String mobileNumber,required String name,
-  }) async {
-    if (_database == null) {
-      throw Exception("Database not initialized");
-    }
+  static Future<Database> createDB() async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'chat.db');
 
-    final insertData = "INSERT INTO users (mobileNumber,name) VALUES ('$mobileNumber','$name')";
-    logs("insertData--> $insertData");
+    Database database = await openDatabase(path, version: 1,
+        onCreate: (Database db, int version) async {
+      await db.execute(
+          'CREATE TABLE data (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, contact TEXT)');
+    });
+    return database;
   }
 
-  static Future<List<Map<String, String>>> getMobileNumbers() async {
-    if (_database == null) {
-      throw Exception("Database not initialized");
-    }
-
-    final List<Map<String, dynamic>> maps = await _database!.query('users');
-    logs('mobile-->$maps');
-
-    return maps.map((map) {
-      final mobileNumber = map['mobileNumber'] as String;
-      final name = map['name'] as String;
-      return {
-        'mobileNumber': mobileNumber,
-        'name': name,
-      };
-    }).toList();
+  static setContactDetails(name, contact) async {
+    String qry = "insert into data values(null,'$name','$contact')";
+    await createDB().then((value) => value.rawInsert(qry));
   }
-  static Future<void> fetchDataFromDatabase() async {
+
+  static getContactDetails() async {
+    await createDB().then((value) async {
+      String qry = "select * from data";
+      value.rawQuery(qry).then((value) {
+        contactData = value;
+      });
+    });
+    logs("conatcs ====>  ${contactData}");
+  }
+
+  static removeDetails() async {
     try {
-      final mobileNumberList = await DatabaseHelper.getMobileNumbers();
-      // Use mobileNumberList to populate your UI or perform other actions
-      for (final map in mobileNumberList) {
-        final mobileNumber = map['mobileNumber'];
-        final name = map['name'];
-        print("Mobile Number: $mobileNumber, Name: $name");
-      }
+      await database!.execute('DROP TABLE IF EXISTS data');
     } catch (e) {
-      // Handle errors, e.g., database not initialized
-      print("Error fetching data: $e");
+      print('Error deleting table: $e');
     }
   }
 }

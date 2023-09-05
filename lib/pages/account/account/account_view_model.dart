@@ -253,7 +253,7 @@ class AccountViewModel {
                             controller.update();
                             Get.back();
                           },
-                          child: const AppText(StringConstant.turnOff,
+                          child:  AppText(S.of(context).turnOff,
                               color: AppColorConstant.appYellow))
                       : InkWell(
                           onTap: () {

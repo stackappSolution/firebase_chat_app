@@ -27,6 +27,7 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
+        DataBaseHelper.create_db();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
         getNumbers();
@@ -34,37 +35,24 @@ class NewMessagePage extends StatelessWidget {
       builder: (NewMessageController controller) {
         return SafeArea(
             child: Scaffold(
-              backgroundColor: Theme
-                  .of(context)
-                  .colorScheme
-                  .background,
-              appBar: buildAppBar(context),
-              body: buildSearchBar(context),
-            ));
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: buildAppBar(context),
+          body: buildSearchBar(context),
+        ));
       },
     );
   }
 
-  buildAppBar(BuildContext context) =>
-      AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .background,
+  buildAppBar(BuildContext context) => AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: AppText(
-          S
-              .of(context)
-              .newMessage,
+          S.of(context).newMessage,
           fontSize: 20.px,
-          color: Theme
-              .of(context)
-              .colorScheme
-              .primary,
+          color: Theme.of(context).colorScheme.primary,
         ),
       );
 
-  buildSearchBar(BuildContext context) =>
-      SingleChildScrollView(
+  buildSearchBar(BuildContext context) => SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -75,7 +63,9 @@ class NewMessagePage extends StatelessWidget {
                 child: AppTextFormField(
                   onChanged: (value) {
                     newMessageViewModel!.textController.text = value;
-                    onSearchContacts(value.isNotEmpty);
+                    onSearchContacts(filterContacts());
+                    newMessageViewModel!.newMessageController!.isSearch(true);
+                    newMessageViewModel!.newMessageController!.setFilterText('');
                   },
                   controller: newMessageViewModel!.textController,
                   suffixIcon: InkWell(
@@ -88,9 +78,7 @@ class NewMessagePage extends StatelessWidget {
                         : const Icon(Icons.keyboard),
                   ),
                   keyboardType: newMessageViewModel!.getKeyboardType(),
-                  hintText: S
-                      .of(context)
-                      .search,
+                  hintText: S.of(context).search,
                   style: TextStyle(
                     fontSize: 22.px,
                     fontWeight: FontWeight.w400,
@@ -106,19 +94,14 @@ class NewMessagePage extends StatelessWidget {
                     Get.toNamed(RouteHelper.getNewGroupScreen());
                   },
                   title: AppText(
-                    S
-                        .of(context)
-                        .newGroup,
+                    S.of(context).newGroup,
                     fontSize: 18.px,
-                    color: Theme
-                        .of(context)
-                        .colorScheme
-                        .primary,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   leading: CircleAvatar(
                     radius: 30.px,
                     backgroundColor:
-                    AppColorConstant.appYellow.withOpacity(0.5),
+                        AppColorConstant.appYellow.withOpacity(0.5),
                     child: const Icon(Icons.group,
                         color: AppColorConstant.appBlack),
                   )),
@@ -126,14 +109,9 @@ class NewMessagePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(20.px),
               child: AppText(
-                S
-                    .of(context)
-                    .contacts,
+                S.of(context).contacts,
                 fontSize: 22.px,
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
             buildContactList(),
@@ -156,9 +134,8 @@ class NewMessagePage extends StatelessWidget {
           ? newMessageViewModel!.contacts.length
           : newMessageViewModel!.contacts.length,
       itemBuilder: (context, index) {
-        Contact contact = newMessageViewModel!.contacts[index];
-        String? mobileNumber =
-        contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        final Contact contact = newMessageViewModel!.contacts[index];
+        String? mobileNumber = contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
         return Container(
@@ -171,19 +148,20 @@ class NewMessagePage extends StatelessWidget {
               onTap: () {
                 (newMessageViewModel!.mobileNumbers.contains(mobileNumber.toString().trim().removeAllWhitespace))
                     ? Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
-                  'members': [
-                    mobileNumber,
-                    AuthService.auth.currentUser!.phoneNumber!,
-                  ],
-                  'displayName': displayName,
-                  'isGroup': false,
-                })
+                        'members': [
+                          AuthService.auth.currentUser!.phoneNumber!,
+                          mobileNumber
+                        ],
+                        'name': displayName,
+                        'number': mobileNumber.toString().trim().removeAllWhitespace,
+                        'isGroup': false,
+                      })
                     : Get.toNamed(RouteHelper.getInviteMemberScreen(),
-                    parameters: {
-                      'firstLetter': firstLetter,
-                      'displayName': displayName,
-                      'phoneNo': mobileNumber
-                    });
+                        parameters: {
+                            'firstLetter': firstLetter,
+                            'displayName': displayName,
+                            'phoneNo': mobileNumber
+                          });
                 logs('mo--> $mobileNumber');
               },
               leading: InkWell(
@@ -193,7 +171,7 @@ class NewMessagePage extends StatelessWidget {
                 child: CircleAvatar(
                     maxRadius: 30.px,
                     backgroundColor:
-                    AppColorConstant.appYellow.withOpacity(0.8),
+                        AppColorConstant.appYellow.withOpacity(0.8),
                     child: AppText(
                       firstLetter,
                       color: AppColorConstant.appWhite,
@@ -203,10 +181,7 @@ class NewMessagePage extends StatelessWidget {
               title: AppText(
                 displayName,
                 fontSize: 15.px,
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
               subtitle: AppText(mobileNumber!,
                   color: AppColorConstant.grey, fontSize: 12.px),
@@ -219,53 +194,69 @@ class NewMessagePage extends StatelessWidget {
 
   getNumbers() async {
     newMessageViewModel!.mobileNumbers =
-    await newMessageViewModel!.getMobileNumbers();
-
+        await newMessageViewModel!.getMobileNumbers();
     logs('phones----> ${newMessageViewModel!.mobileNumbers}');
   }
 
-  onSearchContacts(bool searching) {
-    newMessageViewModel!.isSerching = searching;
-    if (searching) {
-      newMessageViewModel!.filterContacts =
-          newMessageViewModel!.contacts.where((contact) {
-            final displayName = contact.displayName?.toLowerCase() ?? '';
-            final phones = contact.phones ?? [];
+  // onSearchContacts(bool searching) {
+  //   newMessageViewModel!.isSerching = searching;
+  //   if (searching) {
+  //     newMessageViewModel!.filterContacts =
+  //         newMessageViewModel!.contacts.where((contact) {
+  //       final displayName = contact.displayName?.toLowerCase() ?? '';
+  //       final phones = contact.phones ?? [];
+  //
+  //       return displayName.contains(
+  //               newMessageViewModel!.textController.text.toLowerCase()) ||
+  //           phones.any((phone) =>
+  //               phone.value?.toLowerCase().contains(
+  //                   newMessageViewModel!.textController.text.toLowerCase()) ??
+  //               false);
+  //     }).toList();
+  //   } else {
+  //     newMessageViewModel!.filterContacts = newMessageViewModel!.contacts;
+  //   }
+  //   newMessageViewModel!.newMessageController!.update();
+  // }
 
-            return displayName.contains(
-                newMessageViewModel!.textController.text.toLowerCase()) ||
-                phones.any((phone) =>
-                phone.value?.toLowerCase().contains(
-                    newMessageViewModel!.textController.text.toLowerCase()) ??
-                    false);
-          }).toList();
-    } else {
-      newMessageViewModel!.filterContacts = newMessageViewModel!.contacts;
-    }
-    newMessageViewModel!.newMessageController!.update();
-  }
 
-  void insertData(String mobileNumber, String name) {
-    DatabaseHelper.insertData(mobileNumber: mobileNumber, name: name);
-  }
-
-  Future<List<Map<String, String>>> getMobileNumbers() async {
-    List<Map<String, String>> mobileNumbers =
-    await DatabaseHelper.getMobileNumbers();
-    return mobileNumbers;
-  }
 
   filterContacts() {
     newMessageViewModel!.getAllContacts().addAll(newMessageViewModel!.contacts);
     if (newMessageViewModel!.textController.text.isNotEmpty) {
       newMessageViewModel!.contacts.retainWhere((contact) {
         String serchterm =
-        newMessageViewModel!.textController.text.toLowerCase();
+            newMessageViewModel!.textController.text.toLowerCase();
         String contactName = contact.displayName!.toLowerCase();
         return contactName.contains(serchterm);
       });
       newMessageViewModel!.contacts = newMessageViewModel!.filterContacts;
       newMessageViewModel!.newMessageController!.update();
+    }
+  }
+  // Future<void> filterContacts() async {
+  //   List<Contact> contacts = await newMessageViewModel!.getAllContacts();
+  //   contacts.addAll(contacts); // Use the actual contacts data, not the Future
+  //   if (newMessageViewModel!.textController.text.isNotEmpty) {
+  //     contacts.retainWhere((contact) {
+  //       String searchterm = newMessageViewModel!.textController.text.toLowerCase();
+  //       String contactName = contact.displayName!.toLowerCase();
+  //       return contactName.contains(searchterm);
+  //     });
+  //     newMessageViewModel!.contacts = contacts; // Update the filtered contacts
+  //     newMessageViewModel!.newMessageController!.update();
+  //   }
+  // }
+  onSearchContacts(NewMessageController controller) {
+    if (controller.searchValue) {
+      newMessageViewModel!.filterContacts = newMessageViewModel!.contacts.where((contact) {
+        return contact.displayName
+            .toString()
+            .toLowerCase()
+            .contains(controller.filteredValue.toLowerCase());
+      }).toList();
+    } else {
+      newMessageViewModel!.filterContacts = newMessageViewModel!.contacts;
     }
   }
 }

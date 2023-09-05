@@ -13,18 +13,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
-
-  runApp(
-    const MyApp(),
-  );
   SharedPreferences.getInstance();
   runApp(const MyApp());
-
-
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   const MyApp({super.key});
+
+  bool get isProfileCompleted => false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +35,15 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
             initialRoute: (AuthService.auth.currentUser != null)
-                ? RouteHelper.getHomeScreen()
-                : RouteHelper.getSplashScreen(),
+                ? RouteHelper.getProfileScreen()
+                : RouteHelper.getHomeScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
             themeMode: ThemeUtil.selectedTheme,
-            localizationsDelegates: const [
+
+            localizationsDelegates:  const [
+
               S.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -57,4 +55,11 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+   String determineInitialRoute() {
+     if (AuthService.auth.currentUser != null) {
+       return isProfileCompleted ? RouteHelper.getHomeScreen() : RouteHelper.getProfileScreen();
+     } else {
+       return RouteHelper.getSplashScreen();
+     }
+   }
 }
