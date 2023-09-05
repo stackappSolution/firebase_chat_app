@@ -20,7 +20,7 @@ class SplashScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(decoration: const BoxDecoration(gradient: LinearGradient(
           colors: [AppColorConstant.lightOrange,AppColorConstant.appWhite, AppColorConstant.appWhite, AppColorConstant.lightOrange],
           begin: Alignment.topCenter,

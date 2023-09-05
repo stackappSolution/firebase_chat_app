@@ -27,7 +27,7 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
-        DatabaseService.createContactDatabase();
+        DataBaseHelper.create_db();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
         getNumbers();
@@ -135,8 +135,7 @@ class NewMessagePage extends StatelessWidget {
           : newMessageViewModel!.contacts.length,
       itemBuilder: (context, index) {
         final Contact contact = newMessageViewModel!.contacts[index];
-        String? mobileNumber =
-            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        String? mobileNumber = contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
         return Container(
@@ -147,13 +146,14 @@ class NewMessagePage extends StatelessWidget {
             },
             child: ListTile(
               onTap: () {
-                (newMessageViewModel!.mobileNumbers.contains(mobileNumber))
+                (newMessageViewModel!.mobileNumbers.contains(mobileNumber.toString().trim().removeAllWhitespace))
                     ? Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
                         'members': [
                           AuthService.auth.currentUser!.phoneNumber!,
                           mobileNumber
                         ],
-                        'displayName': displayName,
+                        'name': displayName,
+                        'number': mobileNumber.toString().trim().removeAllWhitespace,
                         'isGroup': false,
                       })
                     : Get.toNamed(RouteHelper.getInviteMemberScreen(),
@@ -195,7 +195,6 @@ class NewMessagePage extends StatelessWidget {
   getNumbers() async {
     newMessageViewModel!.mobileNumbers =
         await newMessageViewModel!.getMobileNumbers();
-
     logs('phones----> ${newMessageViewModel!.mobileNumbers}');
   }
 
@@ -220,16 +219,7 @@ class NewMessagePage extends StatelessWidget {
   //   newMessageViewModel!.newMessageController!.update();
   // }
 
-  void insertData(List mobileNumber, List name) {
-    DatabaseService.insertData(mobileNumber: mobileNumber, name: name);
-  }
 
-  Future<List<Map<String, String>>> getMobileNumbers() async {
-    List<Map<String, String>> mobileNumbers =
-        await DatabaseService.getMobileNumbers();
-    logs('mobileNumbers-->${mobileNumbers}');
-    return mobileNumbers;
-  }
 
   filterContacts() {
     newMessageViewModel!.getAllContacts().addAll(newMessageViewModel!.contacts);
