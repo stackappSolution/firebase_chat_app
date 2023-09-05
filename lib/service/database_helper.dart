@@ -7,17 +7,6 @@ class DataBaseHelper {
   static Database? database;
   static List contactData = [];
 
-  static create_db() async {
-    var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'chat.db');
-
-    database = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-      await db.execute(
-          'CREATE TABLE data (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT, contact TEXT)');
-    });
-  }
-
   static Future<Database> createDB() async {
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'chat.db');
@@ -42,15 +31,15 @@ class DataBaseHelper {
       value.rawQuery(qry).then((value) {
         contactData = value;
       });
+      logs("SQF contacts ---> $contactData");
     });
-    logs("conatcs ====>  ${contactData}");
   }
 
   static removeDetails() async {
     try {
       await database!.execute('DROP TABLE IF EXISTS data');
     } catch (e) {
-      print('Error deleting table: $e');
+      logs('Error deleting table: $e');
     }
   }
 }

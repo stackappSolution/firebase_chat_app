@@ -50,7 +50,7 @@ class AppearanceViewModel {
               contentPadding: EdgeInsets.zero,
               insetPadding:
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-              title:  AppText(
+              title: AppText(
                 S.of(context).theme,
                 color: AppColorConstant.appWhite,
               ),
@@ -66,7 +66,7 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title:  AppText(
+                      title: AppText(
                         S.of(context).systemDefault,
                         color: AppColorConstant.appWhite,
                       ),
@@ -78,14 +78,13 @@ class AppearanceViewModel {
                           Get.changeThemeMode(ThemeMode.system);
                           saveThemeMode(selectedTheme);
                           ThemeUtil.loadThemeMode();
-
                         });
                       },
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title:  AppText(S.of(context).light,
+                      title: AppText(S.of(context).light,
                           color: AppColorConstant.appWhite),
                       value: ThemeMode.light,
                       groupValue: selectedTheme,
@@ -101,7 +100,7 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title:  AppText(S.of(context).dark,
+                      title: AppText(S.of(context).dark,
                           color: AppColorConstant.appWhite),
                       value: ThemeMode.dark,
                       groupValue: selectedTheme,
@@ -138,7 +137,7 @@ class AppearanceViewModel {
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
               insetPadding:
-              const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               title: Container(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.all(10.px),
@@ -238,9 +237,8 @@ class AppearanceViewModel {
               backgroundColor: AppColorConstant.blackOff,
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
-              insetPadding:
-                   EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              title:  AppText(S.of(context).selectMember,
+              insetPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              title: AppText(S.of(context).selectMember,
                   color: AppColorConstant.appWhite),
               actions: [
                 Column(
@@ -254,62 +252,60 @@ class AppearanceViewModel {
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title:  AppText(S.of(context).small,
+                      title: AppText(S.of(context).small,
                           color: AppColorConstant.appWhite),
                       value: S.of(context).small,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
-                        setState(()  {
+                        setState(() {
                           saveFontSize = value;
                         });
-                        await   saveSelectedFontSize(value!);
+                        await saveSelectedFontSize(value!);
                         controller.update();
                       },
                     ),
-
-
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title:  AppText(S.of(context).normal,
+                      title: AppText(S.of(context).normal,
                           color: AppColorConstant.appWhite),
                       value: S.of(context).normal,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
-                        setState(()  {
+                        setState(() {
                           saveFontSize = value;
                         });
-                        await   saveSelectedFontSize(value!);
+                        await saveSelectedFontSize(value!);
                         controller.update();
                       },
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title:  AppText(S.of(context).large,
+                      title: AppText(S.of(context).large,
                           color: AppColorConstant.appWhite),
                       value: S.of(context).large,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
-                        setState(()  {
+                        setState(() {
                           saveFontSize = value;
                         });
-                        await  saveSelectedFontSize(value!);
+                        await saveSelectedFontSize(value!);
                         controller.update();
                       },
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
                           (states) => AppColorConstant.appYellow),
-                      title:  AppText(S.of(context).extraLarge,
+                      title: AppText(S.of(context).extraLarge,
                           color: AppColorConstant.appWhite),
                       value: S.of(context).extraLarge,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
-                        setState(()  {
+                        setState(() {
                           saveFontSize = value;
                         });
-                        await  saveSelectedFontSize(value!);
+                        await saveSelectedFontSize(value!);
                         controller.update();
                       },
                     ),
@@ -325,9 +321,10 @@ class AppearanceViewModel {
 
   saveSelectedFontSize(String fontSize) async {
     setStringValue(StringConstant.setFontSize, fontSize);
-    logs('setStringValue(StringConstant.selectedFontSize) : ${StringConstant.setFontSize} - $fontSize');
+    logs(
+        'setStringValue(StringConstant.selectedFontSize) : ${StringConstant.setFontSize} - $fontSize');
 
-saveFontSize = await getStringValue(StringConstant.setFontSize);
+    saveFontSize = await getStringValue(StringConstant.setFontSize);
     logs('getStringValue(StringConstant.selectedFontSize) : $saveFontSize');
   }
 
@@ -349,9 +346,7 @@ saveFontSize = await getStringValue(StringConstant.setFontSize);
         }
         break;
       case 3:
-        {
-         // Get.to(ChatingPage());
-        }
+        {}
         break;
       case 5:
         {
@@ -362,13 +357,7 @@ saveFontSize = await getStringValue(StringConstant.setFontSize);
         }
         break;
       case 6:
-        {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return EditProfileScreen();
-            },
-          ));
-        }
+        {}
     }
   }
 

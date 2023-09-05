@@ -24,7 +24,7 @@ class ChatViewModel {
 
   ChatViewModel(this.chatScreen) {
     Future.delayed(
-      const Duration(milliseconds: 0),
+      const Duration(milliseconds: 20),
       () {
         controller = Get.find<ContactController>();
       },
@@ -53,6 +53,7 @@ class ChatViewModel {
     logs("fetch contact entered");
     contacts = await ContactsService.getContacts();
     isLoading = false;
+    logs("saved contact length----->  ${contacts.length}");
     for (int i = 0; i < contacts.length; i++) {
       Contact contact = contacts[i];
       await DataBaseHelper.setContactDetails(
@@ -65,10 +66,10 @@ class ChatViewModel {
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
       if (contact["contact"].toString().trim().removeAllWhitespace == number) {
-        return contact["name"];
+        return contact["name"] ?? "";
       }
     }
-    return "Not Saved";
+    return "Wait";
   }
 
 }

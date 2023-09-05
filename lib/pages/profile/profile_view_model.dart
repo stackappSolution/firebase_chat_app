@@ -5,11 +5,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/home/home_screen.dart';
@@ -46,7 +44,7 @@ class ProfileViewModel {
     );
   }
 
-  onChangedValue(value, GetxController controller,BuildContext context) {
+  onChangedValue(value, GetxController controller, BuildContext context) {
     if (ValidationUtil.validateName(value)) {
       isButtonActive = true;
       errorFirstName = "";
@@ -77,7 +75,7 @@ class ProfileViewModel {
       builder: (context) {
         return AppAlertDialog(
             backgroundColor: AppColorConstant.blackOff,
-            title:  AppText(S.of(context).choose,
+            title: AppText(S.of(context).choose,
                 color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
             actions: [
               Padding(
@@ -138,7 +136,7 @@ class ProfileViewModel {
                               image: AppAsset.gallery)),
                       Padding(
                         padding: EdgeInsets.only(top: 9.px),
-                        child:  AppText(
+                        child: AppText(
                           S.of(context).gallery,
                           fontSize: 15,
                           color: AppColorConstant.appWhite,
@@ -214,8 +212,6 @@ class ProfileViewModel {
   }
 
   onSaveProfile(String firstName, String lastName, String phoneNo) {
-
-
     DatabaseService()
         .addUser(
           firstName: firstName,
