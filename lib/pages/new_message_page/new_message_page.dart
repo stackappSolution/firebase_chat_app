@@ -144,7 +144,7 @@ class NewMessagePage extends StatelessWidget {
             },
             child: ListTile(
               onTap: () {
-                (newMessageViewModel!.mobileNumbers.contains(mobileNumber))
+                (newMessageViewModel!.mobileNumbers.contains(mobileNumber.toString().trim().removeAllWhitespace))
                     ? Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
                         'members': [
                           AuthService.auth.currentUser!.phoneNumber!,

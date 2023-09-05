@@ -278,9 +278,9 @@ class ChatScreen extends StatelessWidget {
                   ),
                   title: (isGroup)
                       ? AppText(
-                          // color: Theme.of(context).colorScheme.primary ,
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
+                          color: Theme.of(context).colorScheme.primary,
                         )
                       : StreamBuilder(
                           stream: controller.getUserName(receiverName),
