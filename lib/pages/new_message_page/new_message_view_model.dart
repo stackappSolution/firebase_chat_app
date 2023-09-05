@@ -12,15 +12,13 @@ class NewMessageViewModel{
   NewMessagePage? newMessagePage;
 
   List<Contact> contacts = [];
-  List name = [];
-  List mobilenumber = [];
+
   List<Contact> filterContacts = [];
   bool isLoading = true;
   NewMessageController? newMessageController;
   bool isIcon = true;
   bool isKeyBoard = true;
   TextEditingController textController = TextEditingController();
-  final DatabaseService databaseService = DatabaseService();
   bool isSerching = false;
   List<String> mobileNumbers = [];
 
@@ -50,39 +48,23 @@ class NewMessageViewModel{
     }
   }
   void fetchContacts() async {
+    logs("fetch contact entered");
     contacts = await ContactsService.getContacts();
-    logs('contact12345-->${contacts[0]}');
-    //DatabaseService.insertData();
     isLoading = false;
-    Contact contact = contacts[0];
-    logs('Contact Name-->${contact.displayName}');
-    logs('ContactNumber-->${contact.phones}');
-    name = [];
-    mobilenumber = [];
     for(int i = 0 ; i<contacts.length; i++)
     {
       Contact contact = contacts[i];
-      name.add(contact.displayName);
-      mobilenumber.add(contact.phones);
+      await DataBaseHelper.setContactDetails(contact.displayName, contact.phones!.first.value);
     }
-    for (Item phone in contact.phones ?? []) {
-      mobilenumber.add(phone.value ?? 'N/A');
-    }
-    logs('mobile-->$mobilenumber');
-    logs('name-->$name');
-    DatabaseService.insertData(mobileNumber: mobilenumber,name: name);
+    DataBaseHelper.getContactDetails();
     newMessageController!.update();
   }
   getAllContacts() async {
     List<Contact>contacts = (await ContactsService.getContacts(withThumbnails:false)).toList();
-    logs("contactssssss-->${contacts.length}");
+    logs("contacts length-->${contacts.length}");
   }
-
-
-
-
-
-
+  
+  
   Future<List<String>> getMobileNumbers() async {
     QuerySnapshot usersSnapshot =
     await FirebaseFirestore.instance.collection('users').get();

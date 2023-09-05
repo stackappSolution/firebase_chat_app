@@ -17,6 +17,7 @@ import 'package:signal/service/database_service.dart';
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
 import '../../constant/string_constant.dart';
+import '../../service/database_helper.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;
@@ -33,9 +34,7 @@ class ChatViewModel {
   ChatViewModel(this.chatScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
-
-
-          () {
+      () {
         controller = Get.find<ContactController>();
       },
     );
@@ -45,30 +44,39 @@ class ChatViewModel {
     final PermissionStatus permissionStatus = await Permission.contacts.status;
 
     if (permissionStatus.isGranted) {
-      await fetchContacts();
+      fetchContacts();
     } else {
       final PermissionStatus requestResult =
-      await Permission.contacts.request();
+          await Permission.contacts.request();
 
       if (requestResult.isGranted) {
-        await fetchContacts();
+        fetchContacts();
       } else {
         logs('Contacts permission denied');
       }
     }
   }
 
-  Future<void> fetchContacts() async {
-    isLoading = true;
-    logs("$isLoading");
-    controller!.update();
+  void fetchContacts() async {
+    logs("fetch contact entered");
     contacts = await ContactsService.getContacts();
-    logs("contacts --> ${contacts.length}");
     isLoading = false;
-    logs("$isLoading");
+    for (int i = 0; i < contacts.length; i++) {
+      Contact contact = contacts[i];
+      await DataBaseHelper.setContactDetails(
+          contact.displayName, contact.phones!.first.value);
+    }
+    DataBaseHelper.getContactDetails();
     controller!.update();
   }
 
-
+  getNameFromContact(String number) {
+    for (var contact in DataBaseHelper.contactData) {
+      if (contact["contact"].toString().trim().removeAllWhitespace == number) {
+        return contact["name"];
+      }
+    }
+    return "Not Saved";
+  }
 
 }

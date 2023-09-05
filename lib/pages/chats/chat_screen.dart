@@ -17,6 +17,8 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 
+import '../../service/database_helper.dart';
+
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
 
@@ -30,7 +32,9 @@ class ChatScreen extends StatelessWidget {
     chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
       init: ContactController(),
-      initState: (state) {},
+      initState: (state) {
+        DataBaseHelper.create_db();
+      },
       builder: (controller) {
         return SafeArea(
             child: Scaffold(
@@ -210,7 +214,8 @@ class ChatScreen extends StatelessWidget {
             bool isGroup = documents[index]['isGroup'];
             List receiver = documents[index]["members"];
             receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
-            String receiverName = receiver.join("").toString();
+            String receiverNumber =
+                receiver.join("").toString().trim().removeAllWhitespace;
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
@@ -228,6 +233,8 @@ class ChatScreen extends StatelessWidget {
                           : '',
                       'id': documents[index]['id'],
                       'members': documents[index]['members'],
+                      'name': chatViewModel!.getNameFromContact(receiverNumber),
+                      'number': receiverNumber,
                     });
                   },
                   trailing: StreamBuilder(
@@ -279,26 +286,8 @@ class ChatScreen extends StatelessWidget {
                           fontSize: 15.px,
                           color: Theme.of(context).colorScheme.primary,
                         )
-                      : StreamBuilder(
-                          stream: controller.getUserName(receiverName),
-                          builder:
-                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                            logs('receiver----> $receiverName');
-                            if (snapshot.hasError) {
-                              return AppText('Error: ${snapshot.error}');
-                            }
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const AppText('');
-                            }
-                            final data = snapshot.data!.docs;
-                            return AppText(
-                              data[0]['firstName'] ?? "",
-                              fontSize: 15.px,
-                              color: Theme.of(context).colorScheme.primary,
-                            );
-                          },
-                        ),
+                      : AppText(
+                          chatViewModel!.getNameFromContact(receiverNumber)),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
