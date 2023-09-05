@@ -27,7 +27,7 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
-        DataBaseHelper.create_db();
+        DataBaseHelper.createDB();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
         getNumbers();

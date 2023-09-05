@@ -29,11 +29,11 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     logs("Current Screen --> $runtimeType");
     chatViewModel ?? (chatViewModel = ChatViewModel(this));
-    chatViewModel!.getPermission();
     return GetBuilder<ContactController>(
       init: ContactController(),
       initState: (state) {
-        DataBaseHelper.create_db();
+        DataBaseHelper.createDB();
+        chatViewModel!.getPermission();
       },
       builder: (controller) {
         return SafeArea(
@@ -210,12 +210,13 @@ class ChatScreen extends StatelessWidget {
           shrinkWrap: true,
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
-            logs('${snapshot.data!.docs.length}');
             bool isGroup = documents[index]['isGroup'];
             List receiver = documents[index]["members"];
             receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
             String receiverNumber =
                 receiver.join("").toString().trim().removeAllWhitespace;
+            String firstLetter =
+                chatViewModel!.getNameFromContact(receiverNumber).toString().substring(0,1);
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
@@ -271,10 +272,7 @@ class ChatScreen extends StatelessWidget {
                               fontSize: 22.px,
                             )
                           : AppText(
-                              chatViewModel!
-                                  .getNameFromContact(receiverNumber)
-                                  .substring(0, 1)
-                                  .toUpperCase(),
+                              firstLetter,
                               color: AppColorConstant.appWhite,
                               fontSize: 22.px,
                             ),
