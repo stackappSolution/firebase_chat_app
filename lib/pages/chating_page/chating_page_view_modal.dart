@@ -16,6 +16,7 @@ class ChatingPageViewModal {
   Map<String, dynamic> parameter = {};
   Map<String, dynamic> arguments = {};
   String? wallpaperPath;
+  String? blockedBy;
   bool isGroup = false;
   String? formatedTime;
   bool isBlocked=false;

@@ -140,7 +140,6 @@ class DatabaseService {
     return chatStream;
   }
 
-  static getMobileNumbers() {}
   //===========================blockUsers=====================================
 
   Future<void> blockUser(List<dynamic> phoneNo, String receiver) async {
@@ -172,8 +171,18 @@ class DatabaseService {
     return blockedUsers;
   }
 
-
-
+  Future<dynamic> getWhoBlocked(List blockedList) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('blockedNumbers', isEqualTo: blockedList)
+        .get();
+    final userDoc = FirebaseFirestore.instance
+        .collection('users')
+        .doc(querySnapshot.docs.first.id);
+    final userSnapshot = await userDoc.get();
+    final blockedBy = userSnapshot['phone'];
+    return blockedBy;
+  }
 
   //============================unBlockUser==================================
 
@@ -191,7 +200,6 @@ class DatabaseService {
     });
   }
 
-
   //==============================getChatRoomId===============================
 
   getChatRoomId(List<dynamic> conversationId) async {
@@ -202,19 +210,49 @@ class DatabaseService {
     return snapshots;
   }
 
-
   Future<bool> isBlockedByLoggedInUser(String receiverNumber) async {
-
-
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
-        .where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber!)
+        .where('phone', isEqualTo: receiverNumber)
         .get();
-    final docSnapshot = await FirebaseFirestore.instance.collection('users').doc(querySnapshot.docs.first.id).get();
-    final blockedUsersList = docSnapshot.data()!['blockedNumbers'] ?? <String>[];
-    return blockedUsersList.contains(receiverNumber);
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(querySnapshot.docs.first.id)
+        .get();
+    final blockedUsersList =
+        docSnapshot.data()!['blockedNumbers'] ?? <String>[];
+    return blockedUsersList
+        .contains(AuthService.auth.currentUser!.phoneNumber!);
   }
 
+  Future<List> blockedList(String receiverNumber) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('phone', isEqualTo: receiverNumber)
+        .get();
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(querySnapshot.docs.first.id)
+        .get();
+    final blockedUsersList =
+        docSnapshot.data()!['blockedNumbers'] ?? <String>[];
+    return blockedUsersList;
+  }
+
+  getBlockedBy(List<dynamic> blockedList) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('blockedNumbers', isEqualTo: blockedList)
+        .get();
+    final  docSnapshot= await FirebaseFirestore.instance
+        .collection('users')
+        .doc(querySnapshot.docs.first.id)
+        .get();
+    final blockedBy =
+    docSnapshot.data()!['phone'] ?? '';
+
+    return blockedBy;
 
 
+  }
 }
