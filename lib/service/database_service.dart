@@ -16,10 +16,10 @@ class DatabaseService {
 
   Future<String?> addUser(
       {required String firstName,
-      String? lastName,
-      required String photo,
-      required String phone,
-      required String fcmToken}) async {
+        String? lastName,
+        required String photo,
+        required String phone,
+        required String fcmToken}) async {
     try {
       users.set({
         'id': AuthService.auth.currentUser!.uid,
@@ -60,7 +60,7 @@ class DatabaseService {
 
     if (isFirst) {
       DocumentReference doc =
-          await FirebaseFirestore.instance.collection('rooms').add({
+      await FirebaseFirestore.instance.collection('rooms').add({
         'id': '',
         'members': members,
         'isGroup': isGroup,
@@ -78,11 +78,11 @@ class DatabaseService {
           'groupName': groupName,
           'createdBy': createdBy,
         }).then((value) =>
-                Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
-                  'isGroup': true,
-                  'groupName': groupName!,
-                  'members': members,
-                }));
+            Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
+              'isGroup': true,
+              'groupName': groupName!,
+              'members': members,
+            }));
       }
       addChatMessages(members: members, message: massage, sender: sender);
     }
@@ -249,7 +249,7 @@ class DatabaseService {
         .doc(querySnapshot.docs.first.id)
         .get();
     final blockedBy =
-    docSnapshot.data()!['phone'] ?? '';
+        docSnapshot.data()!['phone'] ?? '';
 
     return blockedBy;
 

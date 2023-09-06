@@ -19,7 +19,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 
-
+import '../../app/app/utills/date_formation.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -207,7 +207,9 @@ class ChatScreen extends StatelessWidget {
           return const AppLoader();
         }
         final documents = snapshot.data!.docs;
+
         return ListView.builder(
+
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
           itemCount: snapshot.data!.docs.length,
@@ -217,8 +219,12 @@ class ChatScreen extends StatelessWidget {
             receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
             String receiverNumber =
                 receiver.join("").toString().trim().removeAllWhitespace;
-            String firstLetter =
-                chatViewModel!.getNameFromContact(receiverNumber).toString().substring(0,1);
+            String firstLetter = chatViewModel!
+                .getNameFromContact(receiverNumber)
+                .toString()
+                .substring(0, 1);
+            controller.getTimeStamp(documents[index]["id"]);
+
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
@@ -245,7 +251,7 @@ class ChatScreen extends StatelessWidget {
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
-                        return AppText('Error: ${snapshot.error}');
+                        return const AppText('');
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const AppText('');
@@ -280,7 +286,6 @@ class ChatScreen extends StatelessWidget {
                               fontSize: 22.px,
                             ),
                     ),
-
                   ),
                   title: (isGroup)
                       ? AppText(
@@ -289,12 +294,13 @@ class ChatScreen extends StatelessWidget {
                           color: AppColorConstant.appWhite,
                         )
                       : AppText(
-                          chatViewModel!.getNameFromContact(receiverNumber),color: Theme.of(context).colorScheme.primary),
+                          chatViewModel!.getNameFromContact(receiverNumber),
+                          color: Theme.of(context).colorScheme.primary),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
-                        return AppText('Error: ${snapshot.error}');
+                        return const AppText('');
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const AppText('');
@@ -307,7 +313,7 @@ class ChatScreen extends StatelessWidget {
                               builder: (context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
-                                  return AppText('Error: ${snapshot.error}');
+                                  return const AppText('');
                                 }
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -324,7 +330,7 @@ class ChatScreen extends StatelessWidget {
                               color: AppColorConstant.grey, fontSize: 12.px);
                     },
                   ),
-          ));
+                ));
           },
         );
       },
