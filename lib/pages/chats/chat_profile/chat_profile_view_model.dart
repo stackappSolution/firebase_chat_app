@@ -1,6 +1,7 @@
 
 
 import 'package:get/get.dart';
+import 'package:signal/controller/chat_profile_controller.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,11 +10,16 @@ class ChatProfileViewModel{
 
 
   ChatProfileScreen? chatProfileScreen;
+  ChatProfileController? controller;
 
   Map<String,dynamic> arguments= {};
   List<dynamic> blockedNumbers=[];
-  List<String> addBlockNumbers = [];
-  ChatProfileViewModel(this.chatProfileScreen);
+  List<dynamic> addBlockNumbers = [];
+  ChatProfileViewModel(this.chatProfileScreen){
+    Future.delayed(const Duration(milliseconds: 1),() {
+      controller=Get.find<ChatProfileController>();
+    },);
+  }
 
 
   launchPhoneURL(String phoneNumber) async {

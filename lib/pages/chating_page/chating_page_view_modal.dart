@@ -18,6 +18,7 @@ class ChatingPageViewModal {
   String? wallpaperPath;
   bool isGroup = false;
   String? formatedTime;
+  bool isBlocked=false;
 
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();

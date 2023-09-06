@@ -259,9 +259,7 @@ class SignInPage extends StatelessWidget {
                                       .update();
                                   controller.update(); // Reset the sending OTP state
                                 }
-                                var data;
-                                if (data.passParameter['id'] != null) {
-                                }
+
                               },
                         style: ButtonStyle(
                           shape: MaterialStatePropertyAll(
