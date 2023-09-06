@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/pages/splash/splash_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
@@ -8,7 +9,7 @@ class SplashViewModel {
 
   SplashViewModel(this.splashScreen);
 
-  redirect(int index) {
+  redirect(int index) async {
     switch (index) {
       case 1:
         {
@@ -40,6 +41,17 @@ class SplashViewModel {
           goToHomeScreen();
         }
         break;
+    }
+  }
+
+  Future<void> checkUserStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isUserRegistered = prefs.getBool('isUserRegistered') ?? false;
+
+    if (isUserRegistered) {
+      goToHomeScreen();
+    } else {
+      goToIntroPage();
     }
   }
 }

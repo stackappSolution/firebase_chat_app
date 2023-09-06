@@ -140,6 +140,7 @@ class DatabaseService {
     return chatStream;
   }
 
+  static getMobileNumbers() {}
   //===========================blockUsers=====================================
 
   Future<void> blockUser(List<dynamic> phoneNo, String receiver) async {
@@ -190,6 +191,7 @@ class DatabaseService {
     });
   }
 
+
   //==============================getChatRoomId===============================
 
   getChatRoomId(List<dynamic> conversationId) async {
@@ -212,6 +214,7 @@ class DatabaseService {
     final blockedUsersList = docSnapshot.data()!['blockedNumbers'] ?? <String>[];
     return blockedUsersList.contains(receiverNumber);
   }
+
 
 
 }
