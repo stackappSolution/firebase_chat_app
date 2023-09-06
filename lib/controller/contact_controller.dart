@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:signal/service/network_connectivity.dart';
 
+import '../app/app/utills/app_utills.dart';
 
 class ContactController extends GetxController {
   RxBool isSearch = false.obs;
@@ -42,6 +42,18 @@ class ContactController extends GetxController {
         .collection('rooms')
         .where('members', arrayContains: number)
         .snapshots();
+  }
+  getTimeStamp(id)
+  async {
+    final  data = await FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(id)
+        .collection("chats")
+        .orderBy("timeStamp", descending: true)
+        .limit(1)
+        .get();
+    final docs = data.docs;
+    logs("time Stamp --- > ${docs[0]["timeStamp"]}");
   }
 }
 

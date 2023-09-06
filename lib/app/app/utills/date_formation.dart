@@ -9,75 +9,75 @@ class DateFormation {
     if (difference.inMinutes < 1) {
       return 'Now';
     } else if (difference.inMinutes < 5) {
-      return '1 minute ago';
+      return '1m';
     } else if (difference.inMinutes < 10) {
-      return '5 minutes ago';
+      return '5m';
     } else if (difference.inMinutes < 15) {
-      return '10 minutes ago';
+      return '10m';
     } else if (difference.inMinutes < 20) {
-      return '15 minutes ago';
+      return '15m';
     } else if (difference.inMinutes < 25) {
-      return '20 minutes ago';
+      return '20m';
     } else if (difference.inMinutes < 30) {
-      return '25 minutes ago';
+      return '25m';
     } else if (difference.inMinutes < 35) {
-      return '30 minutes ago';
+      return '30m';
     } else if (difference.inMinutes < 40) {
-      return '35 minutes ago';
+      return '35m';
     } else if (difference.inMinutes < 45) {
-      return '40 minutes ago';
+      return '40m';
     } else if (difference.inMinutes < 50) {
-      return '45 minutes ago';
+      return '45m';
     } else if (difference.inMinutes < 55) {
-      return '50 minutes ago';
+      return '50m';
     } else if (difference.inHours < 1) {
-      return '55 minutes ago';
+      return '55m';
     } else if (difference.inHours < 2) {
-      return '1 hour ago';
+      return '1h';
     } else if (difference.inHours < 3) {
-      return '2 hours ago';
+      return '2h';
     } else if (difference.inHours < 4) {
-      return '3 hours ago';
+      return '3h';
     } else if (difference.inHours < 5) {
-      return '4 hours ago';
+      return '4h';
     } else if (difference.inHours < 6) {
-      return '5 hours ago';
+      return '5h';
     } else if (difference.inHours < 7) {
-      return '6 hours ago';
+      return '6h';
     } else if (difference.inHours < 8) {
-      return '7 hours ago';
+      return '7h';
     } else if (difference.inHours < 9) {
-      return '8 hours ago';
+      return '8h';
     } else if (difference.inHours < 10) {
-      return '9 hours ago';
+      return '9h';
     } else if (difference.inHours < 11) {
-      return '10 hours ago';
+      return '10h';
     } else if (difference.inHours < 12) {
-      return '11 hours ago';
+      return '11h';
     } else if (difference.inHours < 13) {
-      return '12 hours ago';
+      return '12h';
     } else if (difference.inHours < 14) {
-      return '13 hours ago';
+      return '13h';
     } else if (difference.inHours < 15) {
-      return '14 hours ago';
+      return '14h';
     } else if (difference.inHours < 16) {
-      return '15 hours ago';
+      return '15h';
     } else if (difference.inHours < 17) {
-      return '16 hours ago';
+      return '16h';
     } else if (difference.inHours < 18) {
-      return '17 hours ago';
+      return '17h';
     } else if (difference.inHours < 19) {
-      return '18 hours ago';
+      return '18h';
     } else if (difference.inHours < 20) {
-      return '19 hours ago';
+      return '19h';
     } else if (difference.inHours < 21) {
-      return '20 hours ago';
+      return '20h';
     } else if (difference.inHours < 22) {
-      return '21 hours ago';
+      return '21h';
     } else if (difference.inHours < 23) {
-      return '22 hours ago';
+      return '22h';
     } else if (difference.inHours < 24) {
-      return '23 hours ago';
+      return '23h';
     } else if (dateTime.year == now.year &&
         dateTime.month == now.month &&
         dateTime.day == now.day - 1) {
