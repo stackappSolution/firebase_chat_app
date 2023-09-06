@@ -73,6 +73,9 @@ dependencies:
   cloud_firestore: ^4.8.4
   firebase_storage: ^11.2.6
 
+  # notification
+  firebase_messaging: ^14.6.7
+
   #sqflite Database
   sqflite: ^2.3.0
 

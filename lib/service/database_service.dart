@@ -6,14 +6,13 @@ import 'package:signal/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
- final users = FirebaseFirestore.instance
+  final users = FirebaseFirestore.instance
       .collection('users')
       .doc(AuthService.auth.currentUser?.uid);
   String documentId = '';
   static FirebaseAuth auth = FirebaseAuth.instance;
 
   //==========================addUsers=======================================
-
 
   Future<String?> addUser(
       {required String firstName,
@@ -49,9 +48,13 @@ class DatabaseService {
   //================================addNewMessage==============================
 
   addNewMessage({
-    String? createdBy, String? profile,
-    String? groupName, List<dynamic>? members,
-    String? massage, String? sender, bool? isGroup,
+    String? createdBy,
+    String? profile,
+    String? groupName,
+    List<dynamic>? members,
+    String? massage,
+    String? sender,
+    bool? isGroup,
   }) async {
     bool isFirst = await checkFirst(members!);
 
@@ -86,9 +89,6 @@ class DatabaseService {
 
     addChatMessages(message: massage!, sender: sender!, members: members);
   }
-
-
-
 
   //==========================checkFirstMessage===========================
 
@@ -142,7 +142,7 @@ class DatabaseService {
 
   //===========================blockUsers=====================================
 
-  Future<void> blockUser(List<String> phoneNo) async {
+  Future<void> blockUser(List<dynamic> phoneNo, String receiver) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
         .where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber!)
@@ -166,10 +166,13 @@ class DatabaseService {
         .doc(querySnapshot.docs.first.id);
 
     final userSnapshot = await userDoc.get();
-    final blockedUsers = userSnapshot['blockedNumbers'] ;
+    final blockedUsers = userSnapshot['blockedNumbers'];
 
     return blockedUsers;
   }
+
+
+
 
   //============================unBlockUser==================================
 
@@ -187,7 +190,28 @@ class DatabaseService {
     });
   }
 
+  //==============================getChatRoomId===============================
 
+  getChatRoomId(List<dynamic> conversationId) async {
+    final snapshots = await FirebaseFirestore.instance
+        .collection('rooms')
+        .where('members', isEqualTo: conversationId)
+        .get();
+    return snapshots;
+  }
+
+
+  Future<bool> isBlockedByLoggedInUser(String receiverNumber) async {
+
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber!)
+        .get();
+    final docSnapshot = await FirebaseFirestore.instance.collection('users').doc(querySnapshot.docs.first.id).get();
+    final blockedUsersList = docSnapshot.data()!['blockedNumbers'] ?? <String>[];
+    return blockedUsersList.contains(receiverNumber);
+  }
 
 
 }

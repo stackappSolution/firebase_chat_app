@@ -188,7 +188,7 @@ class ProfileScreen extends StatelessWidget {
                                 profileViewModel!.onSaveProfile(
                                   profileViewModel!.firstNameController.text,
                                   profileViewModel!.lastNameController.text,
-                                  AuthService.auth.currentUser!.phoneNumber!,
+                                  AuthService.auth.currentUser!.phoneNumber!.trim().removeAllWhitespace,
                                 );
                               }
                             : null,
