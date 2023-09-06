@@ -38,21 +38,23 @@ class ChatingPage extends StatelessWidget {
     fontSize = '${chatingPageViewModal!.fontSizeInitState()}';
     //getBlockedUsersList();
 
-
     return GetBuilder<ChatingPageController>(
         initState: (state) async {
           chatingPageViewModal!.parameter = Get.parameters;
           chatingPageViewModal!.arguments = Get.arguments;
 
-
           Future.delayed(
             const Duration(milliseconds: 0),
             () async {
               controller = Get.find<ChatingPageController>();
-              logs('arg--> ${chatingPageViewModal!.arguments}');
+              logs('arg--> ${chatingPageViewModal!.arguments['number']}');
+
               chatingPageViewModal!.isBlocked = await DatabaseService()
-                  .isBlockedByLoggedInUser(AuthService.auth.currentUser!.phoneNumber!);
+                  .isBlockedByLoggedInUser(
+                      chatingPageViewModal!.arguments['number']);
               logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
+
+              getBlockedList();
 
               final snapshots = await FirebaseFirestore.instance
                   .collection('rooms')
@@ -150,23 +152,48 @@ class ChatingPage extends StatelessWidget {
                             )
                           : const SizedBox(),
                     ),
-                    (chatingPageViewModal!.blockedNumbers.contains(
-                            chatingPageViewModal!.arguments['number']))
-                        ? (chatingPageViewModal!.isBlocked)
-                            ? const AppText('You Blocked by this User')
-                            : Container(
+                    (chatingPageViewModal!.isBlocked)
+                        ? Container(
+                            width: double.infinity,
+                            height: 150.px,
+                            color: AppColorConstant.appYellow.withOpacity(0.1),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20.px,
+                                ),
+                                AppText(
+                                  'You can not send Message , You blocked by this user',
+                                  textAlign: TextAlign.center,
+                                  fontSize: 12.px,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                SizedBox(
+                                  height: 20.px,
+                                ),
+                              ],
+                            ))
+                        : (chatingPageViewModal!.blockedBy ==
+                                AuthService.auth.currentUser!.phoneNumber!)
+                            ? Container(
+                                padding: EdgeInsets.all(12.px),
+                                width: double.infinity,
                                 height: 150.px,
                                 color:
                                     AppColorConstant.appYellow.withOpacity(0.1),
                                 child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     SizedBox(
                                       height: 20.px,
                                     ),
                                     AppText(
-                                      'You cant send message to block user , To send Message you have to unblock User',
+                                      'you Blocked this user, to send this user you have to unblock',
                                       textAlign: TextAlign.center,
                                       fontSize: 12.px,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
                                     SizedBox(
                                       height: 20.px,
@@ -175,88 +202,83 @@ class ChatingPage extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        InkWell(
-                                            onTap: () {
-                                              Get.back();
-                                            },
-                                            child: AppText(S.of(context).cancel,
-                                                color: AppColorConstant
-                                                    .appYellow)),
-                                        SizedBox(
-                                          width: 20.px,
+                                        const AppText(
+                                          'cancel',
+                                          color: AppColorConstant.appYellow,
                                         ),
-                                        InkWell(
-                                            onTap: () {
-                                              chatingPageViewModal!
-                                                  .blockedNumbers
-                                                  .remove(chatingPageViewModal!
-                                                      .arguments['number']);
-                                              DatabaseService().unblockUser(
-                                                  chatingPageViewModal!
-                                                      .arguments['number']);
-                                              Get.back();
-                                              controller.update();
-                                            },
-                                            child: AppButton(
-                                              width: 120.px,
-                                              borderRadius:
-                                                  BorderRadius.circular(12.px),
-                                              height: 35.px,
-                                              color: AppColorConstant.appYellow,
-                                              stringChild: true,
-                                              child: AppText(
-                                                'Unblock',
-                                                color:
-                                                    AppColorConstant.appWhite,
-                                                fontSize: 12.px,
-                                              ),
-                                            ))
+                                        AppButton(onTap: () {
+                                          chatingPageViewModal!.blockedNumbers.remove(chatingPageViewModal!.arguments['number']);
+                                          DatabaseService().unblockUser(
+                                              chatingPageViewModal!.arguments['number']);
+                                          controller.update();
+                                        },
+                                          borderRadius:
+                                              BorderRadius.circular(12.px),
+                                          height: 35,
+                                          width: 90.px,
+                                          color: AppColorConstant.appYellow,
+                                          stringChild: true,
+                                          child: AppText('Unblock',
+                                              color: AppColorConstant.appWhite,
+                                              fontSize: 12.px),
+                                        )
                                       ],
                                     )
                                   ],
                                 ),
                               )
-                        : Row(children: [
-                            Expanded(
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        right: 15.px,
-                                        left: 15.px,
-                                        bottom: 5.px,
-                                        top: 5.px),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black12,
-                                        borderRadius:
-                                            BorderRadius.circular(35.px)),
+                            : Row(children: [
+                                Expanded(
+                                    child: Container(
+                                        margin: EdgeInsets.only(
+                                            right: 15.px,
+                                            left: 15.px,
+                                            bottom: 5.px,
+                                            top: 5.px),
+                                        decoration: BoxDecoration(
+                                            color: Colors.black12,
+                                            borderRadius:
+                                                BorderRadius.circular(35.px)),
+                                        height: 40.px,
+                                        child: textFormField(
+                                            controller, context))),
+                                AppButton(
+                                    margin: EdgeInsets.only(right: 15.px),
                                     height: 40.px,
-                                    child: textFormField(controller, context))),
-                            AppButton(
-                                margin: EdgeInsets.only(right: 15.px),
-                                height: 40.px,
-                                color: AppColorConstant.appWhite,
-                                stringChild: true,
-                                width: 40.px,
-                                borderRadius: BorderRadius.circular(40.px),
-                                child:
-                                    controller.chatingPageViewModal.iconChange
+                                    color: AppColorConstant.appWhite,
+                                    stringChild: true,
+                                    width: 40.px,
+                                    borderRadius: BorderRadius.circular(40.px),
+                                    child: controller
+                                            .chatingPageViewModal.iconChange
                                         ? const Icon(Icons.send,
                                             color: AppColorConstant.appBlack)
                                         : Icon(Icons.add,
                                             size: 27.px,
                                             color: AppColorConstant.appBlack),
-                                onTap: () {
-                                  if (chatingPageViewModal!
-                                      .chatController.text.isNotEmpty) {
-                                    onSendMessage(chatingPageViewModal!
-                                        .chatController.text);
-                                    controller.update();
-                                    chatingPageViewModal!.chatController
-                                        .clear();
-                                  }
-                                }),
-                          ])
+                                    onTap: () {
+                                      if (chatingPageViewModal!
+                                          .chatController.text.isNotEmpty) {
+                                        onSendMessage(chatingPageViewModal!
+                                            .chatController.text);
+                                        controller.update();
+                                        chatingPageViewModal!.chatController
+                                            .clear();
+                                      }
+                                    }),
+                              ])
                   ])));
         });
+  }
+
+  getBlockedList() async {
+    chatingPageViewModal!.blockedNumbers =
+        await DatabaseService().getBlockedUsers();
+    logs('list-------------> ${chatingPageViewModal!.blockedNumbers}');
+
+    // chatingPageViewModal!.blockedBy = await DatabaseService()
+    //     .getBlockedBy(chatingPageViewModal!.blockedNumbers);
+    // logs('blockedBy===========> ${chatingPageViewModal!.blockedBy}');
   }
 
   Widget buildMessage(
@@ -403,6 +425,7 @@ class ChatingPage extends StatelessWidget {
                                       normal: 12.px)))
                         ])))));
   }
+
   //
   // getBlockedUsersList() async {
   //   chatingPageViewModal!.blockedNumbers =

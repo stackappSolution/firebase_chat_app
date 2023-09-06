@@ -62,7 +62,6 @@ class ChatViewModel {
     DataBaseHelper.getContactDetails();
     controller!.update();
   }
-}
 
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
@@ -72,4 +71,6 @@ class ChatViewModel {
     }
     return "Wait";
   }
+}
+
 
