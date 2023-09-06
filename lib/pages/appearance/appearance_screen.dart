@@ -5,11 +5,9 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
-import 'package:signal/pages/chating_page/chating_page.dart';
 
 // ignore: must_be_immutable
 class AppearanceScreen extends StatelessWidget {
@@ -70,7 +68,7 @@ class AppearanceScreen extends StatelessWidget {
   getBody(BuildContext context, AppearanceController controller,
       AppearanceViewModel appearanceViewModel) {
     return SingleChildScrollView(
-      padding: EdgeInsets.only(top: 30.px),
+      padding: EdgeInsets.only(top: 20.px),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         appearanceViewTile(
             1,

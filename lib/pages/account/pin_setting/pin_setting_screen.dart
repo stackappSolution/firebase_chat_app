@@ -4,7 +4,6 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/pin_setting_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/account/pin_setting/pin_setting_view_model.dart';

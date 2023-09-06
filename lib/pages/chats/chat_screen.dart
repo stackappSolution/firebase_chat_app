@@ -18,8 +18,6 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 
-
-
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
 
@@ -216,8 +214,10 @@ class ChatScreen extends StatelessWidget {
             receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
             String receiverNumber =
                 receiver.join("").toString().trim().removeAllWhitespace;
-            String firstLetter =
-                chatViewModel!.getNameFromContact(receiverNumber).toString().substring(0,1);
+            String firstLetter = chatViewModel!
+                .getNameFromContact(receiverNumber)
+                .toString()
+                .substring(0, 1);
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
@@ -243,7 +243,7 @@ class ChatScreen extends StatelessWidget {
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
-                        return AppText('Error: ${snapshot.error}');
+                        return const AppText('');
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const AppText('');
@@ -255,9 +255,6 @@ class ChatScreen extends StatelessWidget {
                           fontSize: 12.px);
                     },
                   ),
-
-
-
                   leading: InkWell(
                     onTap: () {
                       Get.toNamed(RouteHelper.getChatProfileScreen());
@@ -281,7 +278,6 @@ class ChatScreen extends StatelessWidget {
                               fontSize: 22.px,
                             ),
                     ),
-
                   ),
                   title: (isGroup)
                       ? AppText(
@@ -295,7 +291,7 @@ class ChatScreen extends StatelessWidget {
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
-                        return AppText('Error: ${snapshot.error}');
+                        return const AppText('');
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const AppText('');
@@ -308,7 +304,7 @@ class ChatScreen extends StatelessWidget {
                               builder: (context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
-                                  return AppText('Error: ${snapshot.error}');
+                                  return const AppText('');
                                 }
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {

@@ -18,7 +18,6 @@ const String wallPaperColor = 'wallpaperColor';
 }
 
 Future<String?> getStringValue(String key) async {
-   logs('getStringValue');
   final prefs = await SharedPreferences.getInstance();
   return prefs.getString(key);
 }

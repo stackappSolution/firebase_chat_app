@@ -8,8 +8,6 @@ import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/service/database_helper.dart';
 import 'package:signal/service/database_service.dart';
 
-
-
 class ChatViewModel {
   ChatScreen? chatScreen;
   List<Contact> contacts = [];
@@ -69,7 +67,7 @@ class ChatViewModel {
         return contact["name"] ?? "";
       }
     }
-    return "Wait";
+    return "Not Saved Yet";
   }
 
 }

@@ -383,7 +383,7 @@ class ChatingPage extends StatelessWidget {
   getBlockedUsersList() async {
     chatingPageViewModal!.blockedNumbers =
         await DatabaseService().getBlockedUsers();
-    logs('blockkkkk-----------> ${chatingPageViewModal!.blockedNumbers}');
+    logs('block-----------> ${chatingPageViewModal!.blockedNumbers}');
   }
 
   AppAppBar appBar(

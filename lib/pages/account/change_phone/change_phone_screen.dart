@@ -10,7 +10,6 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/chanage_phone_controller.dart';
 import 'package:signal/generated/l10n.dart';
 
@@ -32,11 +31,7 @@ class ChangePhoneScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: (!changePhoneViewModel!.isPhoneNumberChange)
-              ? AppAppBar(
-                  title: AppText(
-                  S.of(context).blankText,
-                  fontSize: 22.px,
-                ))
+              ? const AppAppBar(title: AppText(""))
               : AppAppBar(
                   title: AppText(
                   S.of(context).changeNumber,
@@ -90,6 +85,7 @@ class ChangePhoneScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppText(
+                      textAlign: TextAlign.center,
                       S.of(context).useThisToChange,
                       color: secondaryTheme,
                       fontSize: 14.px,
@@ -97,6 +93,7 @@ class ChangePhoneScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 20.px),
                       child: AppText(
+                        textAlign: TextAlign.center,
                         S.of(context).beforeContinuing,
                         color: secondaryTheme,
                         fontSize: 14.px,
@@ -161,6 +158,8 @@ class ChangePhoneScreen extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       controller: changePhoneViewModel!.oldNumberController,
                       labelText: S.of(context).phoneNumber,
+                      onChanged: (value) =>
+                          changePhoneViewModel!.onChangedNumber(controller),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                       ],
@@ -207,6 +206,8 @@ class ChangePhoneScreen extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       controller: changePhoneViewModel!.newNumberController,
                       labelText: S.of(context).phoneNumber,
+                      onChanged: (value) =>
+                          changePhoneViewModel!.onChangedNumber(controller),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                       ],
@@ -214,16 +215,21 @@ class ChangePhoneScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              const Spacer(),
               Padding(
-                padding: EdgeInsets.only(top: 120.px),
+                padding: EdgeInsets.only(bottom: 30.px),
                 child: AppElevatedButton(
                     buttonRadius: 30.px,
-                    buttonColor: AppColorConstant.appYellow,
+                    buttonColor: (changePhoneViewModel!.isButtonActive)
+                        ? AppColorConstant.appYellow
+                        : AppColorConstant.grey,
                     buttonHeight: 42.px,
-                    onPressed: () {
-                      changePhoneViewModel!
-                          .finalContinueTap(controller, context);
-                    },
+                    onPressed: (changePhoneViewModel!.isButtonActive)
+                        ? () {
+                            changePhoneViewModel!
+                                .finalContinueTap(controller, context);
+                          }
+                        : null,
                     widget: AppText(
                       S.of(context).continues,
                       fontSize: 13.px,
