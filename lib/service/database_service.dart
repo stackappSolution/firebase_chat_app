@@ -140,6 +140,7 @@ class DatabaseService {
     return chatStream;
   }
 
+  static getMobileNumbers() {}
   //===========================blockUsers=====================================
 
   Future<void> blockUser(List<String> phoneNo) async {
@@ -186,8 +187,4 @@ class DatabaseService {
       'blockedNumbers': FieldValue.arrayRemove([unBlockedNumber]),
     });
   }
-
-
-
-
 }

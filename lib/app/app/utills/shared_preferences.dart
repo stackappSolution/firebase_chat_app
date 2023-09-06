@@ -13,7 +13,6 @@ const String wallPaperColor = 'wallpaperColor';
  setStringValue(String key, String value) async {
    logs('setStringValue');
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
    prefs.setString(key, value);
 }
 
