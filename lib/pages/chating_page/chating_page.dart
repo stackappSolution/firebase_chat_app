@@ -36,7 +36,7 @@ class ChatingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
     fontSize = '${chatingPageViewModal!.fontSizeInitState()}';
-    //getBlockedUsersList();
+    getBlockedList();
 
     return GetBuilder<ChatingPageController>(
         initState: (state) async {
@@ -47,14 +47,14 @@ class ChatingPage extends StatelessWidget {
             const Duration(milliseconds: 0),
             () async {
               controller = Get.find<ChatingPageController>();
-              logs('arg--> ${chatingPageViewModal!.arguments['number']}');
+              logs('arg--> ${chatingPageViewModal!.arguments}');
 
               chatingPageViewModal!.isBlocked = await DatabaseService()
                   .isBlockedByLoggedInUser(
                       chatingPageViewModal!.arguments['number']);
               logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
 
-              getBlockedList();
+
 
               final snapshots = await FirebaseFirestore.instance
                   .collection('rooms')
@@ -173,8 +173,8 @@ class ChatingPage extends StatelessWidget {
                                 ),
                               ],
                             ))
-                        : (chatingPageViewModal!.blockedBy ==
-                                AuthService.auth.currentUser!.phoneNumber!)
+                        : (chatingPageViewModal!.blockedNumbers.contains(
+                                chatingPageViewModal!.arguments['number']))
                             ? Container(
                                 padding: EdgeInsets.all(12.px),
                                 width: double.infinity,
@@ -206,12 +206,16 @@ class ChatingPage extends StatelessWidget {
                                           'cancel',
                                           color: AppColorConstant.appYellow,
                                         ),
-                                        AppButton(onTap: () {
-                                          chatingPageViewModal!.blockedNumbers.remove(chatingPageViewModal!.arguments['number']);
-                                          DatabaseService().unblockUser(
-                                              chatingPageViewModal!.arguments['number']);
-                                          controller.update();
-                                        },
+                                        AppButton(
+                                          onTap: () {
+                                            chatingPageViewModal!.blockedNumbers
+                                                .remove(chatingPageViewModal!
+                                                    .arguments['number']);
+                                            DatabaseService().unblockUser(
+                                                chatingPageViewModal!
+                                                    .arguments['number']);
+                                            controller.update();
+                                          },
                                           borderRadius:
                                               BorderRadius.circular(12.px),
                                           height: 35,
@@ -276,9 +280,6 @@ class ChatingPage extends StatelessWidget {
         await DatabaseService().getBlockedUsers();
     logs('list-------------> ${chatingPageViewModal!.blockedNumbers}');
 
-    // chatingPageViewModal!.blockedBy = await DatabaseService()
-    //     .getBlockedBy(chatingPageViewModal!.blockedNumbers);
-    // logs('blockedBy===========> ${chatingPageViewModal!.blockedBy}');
   }
 
   Widget buildMessage(
