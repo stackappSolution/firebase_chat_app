@@ -25,21 +25,20 @@ class ChatViewModel {
   ChatViewModel(this.chatScreen) {
     Future.delayed(
       const Duration(milliseconds: 20),
-      () {
+          () {
         controller = Get.find<ContactController>();
       },
     );
   }
 
   Future<void> getPermission() async {
-
     final PermissionStatus permissionStatus = await Permission.contacts.status;
 
     if (permissionStatus.isGranted) {
       fetchContacts();
     } else {
       final PermissionStatus requestResult =
-          await Permission.contacts.request();
+      await Permission.contacts.request();
 
       if (requestResult.isGranted) {
         fetchContacts();
@@ -62,14 +61,17 @@ class ChatViewModel {
     DataBaseHelper.getContactDetails();
     controller!.update();
   }
-}
+
 
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
-      if (contact["contact"].toString().trim().removeAllWhitespace == number) {
+      if (contact["contact"]
+          .toString()
+          .trim()
+          .removeAllWhitespace == number) {
         return contact["name"] ?? "";
       }
     }
     return "Not Saved Yet";
   }
-
+}

@@ -17,6 +17,8 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 
+import '../../app/app/utills/date_formation.dart';
+
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
 
@@ -238,43 +240,6 @@ class ChatScreen extends StatelessWidget {
                       'number': receiverNumber,
                     });
                   },
-                  // trailing: StreamBuilder(
-                  //   stream: controller.getLastMessage(documents[index]['id']),
-                  //   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //     if (snapshot.hasError) {
-                  //       return AppText('Error: ${snapshot.error}');
-                  //     }
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return const AppText('');
-                  //     }
-                  //     final data = snapshot.data!.docs;
-                  //     return AppText(
-                  //         DateFormation.formatTimestamp(data[0]["timeStamp"]),
-                  //         color: AppColorConstant.grey,
-                  //         fontSize: 12.px);
-                  //   },
-                  // ),
-                  leading: CircleAvatar(
-                    maxRadius: 30.px,
-                    backgroundColor:
-                        AppColorConstant.appYellow.withOpacity(0.8),
-                    child: (isGroup)
-                        ? AppText(
-                            documents[index]['groupName']
-                                    .substring(0, 1)
-                                    .toUpperCase() ??
-                                "",
-                            color: AppColorConstant.appWhite,
-                            fontSize: 22.px,
-                          )
-                        : AppText(
-                            documents[index]['id']
-                                    .substring(0, 1)
-                                    .toUpperCase() ??
-                                "",
-                            color: AppColorConstant.appWhite,
-                            fontSize: 22.px,
-                          ),
                   trailing: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
