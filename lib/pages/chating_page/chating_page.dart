@@ -38,12 +38,10 @@ class ChatingPage extends StatelessWidget {
     fontSize = '${chatingPageViewModal!.fontSizeInitState()}';
     //getBlockedUsersList();
 
-
     return GetBuilder<ChatingPageController>(
         initState: (state) async {
           chatingPageViewModal!.parameter = Get.parameters;
           chatingPageViewModal!.arguments = Get.arguments;
-
 
           Future.delayed(
             const Duration(milliseconds: 0),
@@ -51,7 +49,8 @@ class ChatingPage extends StatelessWidget {
               controller = Get.find<ChatingPageController>();
               logs('arg--> ${chatingPageViewModal!.arguments}');
               chatingPageViewModal!.isBlocked = await DatabaseService()
-                  .isBlockedByLoggedInUser(AuthService.auth.currentUser!.phoneNumber!);
+                  .isBlockedByLoggedInUser(
+                      AuthService.auth.currentUser!.phoneNumber!);
               logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
 
               final snapshots = await FirebaseFirestore.instance
@@ -216,45 +215,47 @@ class ChatingPage extends StatelessWidget {
                                   ],
                                 ),
                               )
-                        : Row(children: [
-                            Expanded(
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        right: 15.px,
-                                        left: 15.px,
-                                        bottom: 5.px,
-                                        top: 5.px),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black12,
-                                        borderRadius:
-                                            BorderRadius.circular(35.px)),
-                                    height: 40.px,
-                                    child: textFormField(controller, context))),
-                            AppButton(
-                                margin: EdgeInsets.only(right: 15.px),
-                                height: 40.px,
-                                color: AppColorConstant.appWhite,
-                                stringChild: true,
-                                width: 40.px,
-                                borderRadius: BorderRadius.circular(40.px),
-                                child:
-                                    controller.chatingPageViewModal.iconChange
-                                        ? const Icon(Icons.send,
-                                            color: AppColorConstant.appBlack)
-                                        : Icon(Icons.add,
-                                            size: 27.px,
-                                            color: AppColorConstant.appBlack),
-                                onTap: () {
-                                  if (chatingPageViewModal!
-                                      .chatController.text.isNotEmpty) {
-                                    onSendMessage(chatingPageViewModal!
-                                        .chatController.text);
-                                    controller.update();
-                                    chatingPageViewModal!.chatController
-                                        .clear();
-                                  }
-                                }),
-                          ])
+                        : Padding(
+                          padding:  EdgeInsets.only(bottom:15.px),
+                          child: Row(children: [
+                              Expanded(
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                          right: 15.px,
+                                          left: 15.px,
+                                          top: 5.px),
+                                      decoration: BoxDecoration(
+                                          color: Colors.black12,
+                                          borderRadius:
+                                              BorderRadius.circular(35.px)),
+                                      height: 40.px,
+                                      child: textFormField(controller, context))),
+                              AppButton(
+                                  margin: EdgeInsets.only(right: 15.px),
+                                  height: 40.px,
+                                  color: AppColorConstant.appWhite,
+                                  stringChild: true,
+                                  width: 40.px,
+                                  borderRadius: BorderRadius.circular(40.px),
+                                  child:
+                                      controller.chatingPageViewModal.iconChange
+                                          ? const Icon(Icons.send,
+                                              color: AppColorConstant.appBlack)
+                                          : Icon(Icons.add,
+                                              size: 27.px,
+                                              color: AppColorConstant.appBlack),
+                                  onTap: () {
+                                    if (chatingPageViewModal!
+                                        .chatController.text.isNotEmpty) {
+                                      onSendMessage(chatingPageViewModal!
+                                          .chatController.text);
+                                      controller.update();
+                                      chatingPageViewModal!.chatController
+                                          .clear();
+                                    }
+                                  }),
+                            ]),
+                        )
                   ])));
         });
   }
@@ -409,6 +410,7 @@ class ChatingPage extends StatelessWidget {
         await DatabaseService().getBlockedUsers();
     logs('block-----------> ${chatingPageViewModal!.blockedNumbers}');
   }
+
   //
   // getBlockedUsersList() async {
   //   chatingPageViewModal!.blockedNumbers =

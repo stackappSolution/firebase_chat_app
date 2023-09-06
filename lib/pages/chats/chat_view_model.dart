@@ -20,6 +20,7 @@ class ChatViewModel {
   bool isConnected = false;
   final Stream<QuerySnapshot> usersStream = DatabaseService().getUserStream();
   List<DocumentSnapshot> data = [];
+  List timeStamp = [];
   ContactController? controller;
 
   ChatViewModel(this.chatScreen) {

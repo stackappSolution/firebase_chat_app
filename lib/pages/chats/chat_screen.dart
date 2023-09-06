@@ -205,7 +205,9 @@ class ChatScreen extends StatelessWidget {
           return const AppLoader();
         }
         final documents = snapshot.data!.docs;
+
         return ListView.builder(
+
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
           itemCount: snapshot.data!.docs.length,
@@ -219,6 +221,8 @@ class ChatScreen extends StatelessWidget {
                 .getNameFromContact(receiverNumber)
                 .toString()
                 .substring(0, 1);
+            controller.getTimeStamp(documents[index]["id"]);
+
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
@@ -287,7 +291,8 @@ class ChatScreen extends StatelessWidget {
                           color: AppColorConstant.appWhite,
                         )
                       : AppText(
-                          chatViewModel!.getNameFromContact(receiverNumber),color: Theme.of(context).colorScheme.primary),
+                          chatViewModel!.getNameFromContact(receiverNumber),
+                          color: Theme.of(context).colorScheme.primary),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -322,7 +327,7 @@ class ChatScreen extends StatelessWidget {
                               color: AppColorConstant.grey, fontSize: 12.px);
                     },
                   ),
-          ));
+                ));
           },
         );
       },
