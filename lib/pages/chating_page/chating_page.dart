@@ -36,24 +36,30 @@ class ChatingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
     fontSize = '${chatingPageViewModal!.fontSizeInitState()}';
-    getBlockedUsersList();
+    //getBlockedUsersList();
+
 
     return GetBuilder<ChatingPageController>(
         initState: (state) async {
           chatingPageViewModal!.parameter = Get.parameters;
           chatingPageViewModal!.arguments = Get.arguments;
 
+
           Future.delayed(
             const Duration(milliseconds: 0),
             () async {
               controller = Get.find<ChatingPageController>();
               logs('arg--> ${chatingPageViewModal!.arguments}');
+              chatingPageViewModal!.isBlocked = await DatabaseService()
+                  .isBlockedByLoggedInUser(AuthService.auth.currentUser!.phoneNumber!);
+              logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
 
               final snapshots = await FirebaseFirestore.instance
                   .collection('rooms')
                   .where('members',
                       isEqualTo: chatingPageViewModal!.arguments['members'])
                   .get();
+
               chats = DatabaseService().getChatStream(
                 snapshots.docs.first.id,
               );
@@ -146,52 +152,70 @@ class ChatingPage extends StatelessWidget {
                     ),
                     (chatingPageViewModal!.blockedNumbers.contains(
                             chatingPageViewModal!.arguments['number']))
-                        ? (chatingPageViewModal!.arguments['number']!= AuthService.auth.currentUser!.phoneNumber!)?Container(
-                            height: 150.px,
-                            color: AppColorConstant.appYellow.withOpacity(0.1),
-                            child: Column(
-                              children: [
-                                SizedBox(height: 20.px,),
-                                 AppText(
-                                    'You cant send message to block user , To send Message you have to unblock User',textAlign: TextAlign.center,fontSize: 12.px,),
-                                SizedBox(height: 20.px,),
-                                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        ? (chatingPageViewModal!.isBlocked)
+                            ? const AppText('You Blocked by this User')
+                            : Container(
+                                height: 150.px,
+                                color:
+                                    AppColorConstant.appYellow.withOpacity(0.1),
+                                child: Column(
                                   children: [
-                                    InkWell(
-                                        onTap: () {
-                                          Get.back();
-                                        },
-                                        child: AppText(S.of(context).cancel,
-                                            color: AppColorConstant.appYellow)),
                                     SizedBox(
-                                      width: 20.px,
+                                      height: 20.px,
                                     ),
-                                    InkWell(
-                                        onTap: () {
-                                          chatingPageViewModal!.blockedNumbers.remove(chatingPageViewModal!.arguments['number']);
-                                          DatabaseService().unblockUser(chatingPageViewModal!.arguments['number']);
-                                          Get.back();
-                                          controller.update();
-
-                                        },
-                                        child: AppButton(
-                                          width: 120.px,
-                                          borderRadius:
-                                              BorderRadius.circular(12.px),
-                                          height: 35.px,
-                                          color: AppColorConstant.appYellow,
-                                          stringChild: true,
-                                          child: AppText(
-                                            'Unblock',
-                                            color: AppColorConstant.appWhite,
-                                            fontSize: 12.px,
-                                          ),
-                                        ))
+                                    AppText(
+                                      'You cant send message to block user , To send Message you have to unblock User',
+                                      textAlign: TextAlign.center,
+                                      fontSize: 12.px,
+                                    ),
+                                    SizedBox(
+                                      height: 20.px,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: AppText(S.of(context).cancel,
+                                                color: AppColorConstant
+                                                    .appYellow)),
+                                        SizedBox(
+                                          width: 20.px,
+                                        ),
+                                        InkWell(
+                                            onTap: () {
+                                              chatingPageViewModal!
+                                                  .blockedNumbers
+                                                  .remove(chatingPageViewModal!
+                                                      .arguments['number']);
+                                              DatabaseService().unblockUser(
+                                                  chatingPageViewModal!
+                                                      .arguments['number']);
+                                              Get.back();
+                                              controller.update();
+                                            },
+                                            child: AppButton(
+                                              width: 120.px,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.px),
+                                              height: 35.px,
+                                              color: AppColorConstant.appYellow,
+                                              stringChild: true,
+                                              child: AppText(
+                                                'Unblock',
+                                                color:
+                                                    AppColorConstant.appWhite,
+                                                fontSize: 12.px,
+                                              ),
+                                            ))
+                                      ],
+                                    )
                                   ],
-                                )
-                              ],
-                            ),
-                          ): const AppText('You Blocked by This user')
+                                ),
+                              )
                         : Row(children: [
                             Expanded(
                                 child: Container(
@@ -385,6 +409,12 @@ class ChatingPage extends StatelessWidget {
         await DatabaseService().getBlockedUsers();
     logs('block-----------> ${chatingPageViewModal!.blockedNumbers}');
   }
+  //
+  // getBlockedUsersList() async {
+  //   chatingPageViewModal!.blockedNumbers =
+  //       await DatabaseService().getBlockedUsers();
+  //   logs('blockkkkk-----------> ${chatingPageViewModal!.blockedNumbers}');
+  // }
 
   AppAppBar appBar(
     ChatingPageController controller,
@@ -473,11 +503,14 @@ class ChatingPage extends StatelessWidget {
   }
 
   onSendMessage(message) async {
-    DatabaseService().addNewMessage(
-        members: chatingPageViewModal!.arguments['members'],
-        massage: message,
-        sender: AuthService.auth.currentUser!.phoneNumber!,
-        isGroup: false);
+    (chatingPageViewModal!.blockedNumbers
+            .contains(chatingPageViewModal!.arguments['number']))
+        ? null
+        : DatabaseService().addNewMessage(
+            members: chatingPageViewModal!.arguments['members'],
+            massage: message,
+            sender: AuthService.auth.currentUser!.phoneNumber!,
+            isGroup: false);
     logs('message---> $message');
 
     controller!.update();

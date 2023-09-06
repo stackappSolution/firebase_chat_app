@@ -284,10 +284,10 @@ class ChatScreen extends StatelessWidget {
                       ? AppText(
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: AppColorConstant.appWhite,
                         )
                       : AppText(
-                          chatViewModel!.getNameFromContact(receiverNumber)),
+                          chatViewModel!.getNameFromContact(receiverNumber),color: Theme.of(context).colorScheme.primary),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
