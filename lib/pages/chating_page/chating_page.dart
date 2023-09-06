@@ -37,6 +37,7 @@ class ChatingPage extends StatelessWidget {
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
     fontSize = '${chatingPageViewModal!.fontSizeInitState()}';
     //getBlockedUsersList();
+    getBlockedList();
 
     return GetBuilder<ChatingPageController>(
         initState: (state) async {
@@ -54,7 +55,6 @@ class ChatingPage extends StatelessWidget {
                   chatingPageViewModal!.arguments['number']);
               logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
 
-              getBlockedList();
 
               final snapshots = await FirebaseFirestore.instance
                   .collection('rooms')
@@ -173,9 +173,7 @@ class ChatingPage extends StatelessWidget {
                             ),
                           ],
                         ))
-                        : (chatingPageViewModal!.blockedBy ==
-                        AuthService
-                            .auth.currentUser!.phoneNumber! &&
+                        : (
                         chatingPageViewModal!.blockedNumbers.contains(
                             chatingPageViewModal!.arguments['number']))
                         ? Container(
@@ -257,7 +255,7 @@ class ChatingPage extends StatelessWidget {
                           width: 40.px,
                           borderRadius: BorderRadius.circular(40.px),
                           child: controller
-                              .chatingPageViewModal.iconChange
+                              .chatingPageViewModal!.iconChange
                               ? const Icon(Icons.send,
                               color: AppColorConstant.appBlack)
                               : Icon(Icons.add,
@@ -517,7 +515,7 @@ class ChatingPage extends StatelessWidget {
                           Get.toNamed(value);
                         },
                         itemBuilder: (context) {
-                          return controller.chatingPageViewModal.popupMenu;
+                          return controller.chatingPageViewModal!.popupMenu;
                         },
                         icon: Icon(Icons.more_vert,
                             color: Theme.of(context).colorScheme.primary,
@@ -548,10 +546,10 @@ class ChatingPage extends StatelessWidget {
         cursorColor: AppColorConstant.offBlack,
         onChanged: (value) {
           if (chatingPageViewModal!.chatController.text == '') {
-            controller.chatingPageViewModal.iconChange = false;
+            controller.chatingPageViewModal!.iconChange = false;
             controller.update();
           } else {
-            controller.chatingPageViewModal.iconChange = true;
+            controller.chatingPageViewModal!.iconChange = true;
             controller.update();
           }
         },
