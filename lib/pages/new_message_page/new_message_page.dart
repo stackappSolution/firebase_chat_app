@@ -166,6 +166,10 @@ class NewMessagePage extends StatelessWidget {
         final Contact contact = newMessageViewModel!.contacts[index];
         String? mobileNumber =
         contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        logs(mobileNumber
+            .toString()
+            .trim()
+            .removeAllWhitespace);
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
         return Container(

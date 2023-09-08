@@ -1,0 +1,62 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:signal/constant/color_constant.dart';
+import 'package:signal/controller/acccount_controller.dart';
+import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
+import 'package:image_cropper/image_cropper.dart';
+
+import '../../../app/app/utills/app_utills.dart';
+
+class AttachmentViewModel{
+
+  AttachmentScreen?  attachmentScreen;
+  Map<String,dynamic> parameter = {};
+    dynamic selectedImage = "";
+  CroppedFile? croppedFile;
+
+
+  AttachmentViewModel(this.attachmentScreen);
+
+  imageCrop(BuildContext context, AttachmentController controller)
+  async {
+   if(selectedImage!=null)
+     {
+       croppedFile = await
+       ImageCropper().cropImage(
+         sourcePath: selectedImage,
+         aspectRatioPresets: [
+           CropAspectRatioPreset.square,
+           CropAspectRatioPreset.ratio3x2,
+           CropAspectRatioPreset.original,
+           CropAspectRatioPreset.ratio4x3,
+           CropAspectRatioPreset.ratio16x9
+         ],
+         uiSettings: [
+           AndroidUiSettings(
+               toolbarTitle: 'Crop Image',
+               toolbarColor: AppColorConstant.appWhite,
+               toolbarWidgetColor: AppColorConstant.blackOff,
+               initAspectRatio: CropAspectRatioPreset.original,
+               activeControlsWidgetColor:AppColorConstant.appYellow,
+                backgroundColor: AppColorConstant.appWhite,
+               cropFrameColor: AppColorConstant.appYellow,
+               lockAspectRatio: false),
+           IOSUiSettings(
+             title: 'Crop Image',
+           ),
+           WebUiSettings(
+             context: context,
+           ),
+         ],
+       );
+
+       selectedImage = croppedFile!.path;
+       controller.update();
+     }
+   else{
+     logs("Please select Image");
+   }
+  }
+
+}
