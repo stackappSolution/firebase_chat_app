@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/routes/routes_helper.dart';
@@ -219,7 +222,18 @@ class DatabaseService {
         .contains(AuthService.auth.currentUser!.phoneNumber!);
   }
 
+  //==========================Upload Image on Storage=================================
 
+  static String imageURL = "";
+  static uploadImage(File imageUrl) async {
+    final storage = FirebaseStorage.instance
+        .ref('images')
+        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child('sentImage.jpg');
+    await storage.putFile(imageUrl);
+    imageURL = await storage.getDownloadURL();
+    logs("Image URL ------ > $imageURL");
+  }
 
 
 

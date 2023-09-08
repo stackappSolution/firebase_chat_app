@@ -212,4 +212,8 @@ class StringConstant {
   static const String receiptsDescription = 'receiptsDescription';
   static const String chooseFromPhotos = 'chooseFromPhotos';
   static const String resetChatColor = 'resetChatColor';
+
+  static const String addContact='addContact';
+  static const String viewContact='viewContact';
+  static const String files='files';
 }
