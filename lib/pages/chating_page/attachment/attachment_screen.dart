@@ -24,8 +24,8 @@ class AttachmentScreen extends StatelessWidget {
     return GetBuilder<AttachmentController>(
       init: AttachmentController(),
       initState: (state) {
-        attachmentViewModel!.parameter = Get.parameters;
-        attachmentViewModel!.selectedImage = attachmentViewModel!.parameter['image'];
+        attachmentViewModel!.argument = Get.arguments;
+        attachmentViewModel!.selectedImage = attachmentViewModel!.argument['image'];
         logs("parameter data---->${attachmentViewModel!.selectedImage}");
       },
       builder: (controller) {
@@ -55,7 +55,7 @@ class AttachmentScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 15.px),
                 child: AppTextFormField(
                   suffixIcon: IconButton(
-                    onPressed: () {},
+                    onPressed: () => attachmentViewModel!.imageButtonTap(controller),
                     icon: const Icon(Icons.send,color: AppColorConstant.appYellow),
                   ),
                 ),

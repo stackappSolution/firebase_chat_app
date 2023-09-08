@@ -71,8 +71,9 @@ goToNewMessageScreen() {
   Get.toNamed(RouteHelper.getNewMessageScreen());
 }
 
-goToAttachmentScreen(selectedImage) {
-  Get.toNamed(RouteHelper.getAttachmentScreen(), parameters: {
+goToAttachmentScreen(selectedImage, members) {
+  Get.toNamed(RouteHelper.getAttachmentScreen(), arguments: {
     "image": selectedImage,
+    "members": members,
   },);
 }

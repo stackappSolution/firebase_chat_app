@@ -293,5 +293,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourProfile": MessageLookupByLibrary.simpleMessage("Your Profile"),
         "yourProfileAndChanges": MessageLookupByLibrary.simpleMessage(
             "Your Profile And Changes It Will Be Visible To People Your Message, Contacts, And Groups.")
+
       };
 }

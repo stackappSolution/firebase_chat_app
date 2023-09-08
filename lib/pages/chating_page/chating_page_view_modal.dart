@@ -23,6 +23,8 @@ import '../../generated/l10n.dart';
 import '../../service/auth_service.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../service/database_service.dart';
+
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
 
@@ -86,116 +88,26 @@ class ChatingPageViewModal {
     }
   }
 
-  attachment(controller, context) {
-    return IconButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AppAlertDialog(
-                  backgroundColor: AppColorConstant.blackOff,
-                  title: AppText(S.of(context).choose,
-                      color: AppColorConstant.appWhite,
-                      fontWeight: FontWeight.bold),
-                  actions: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 80.px, top: 20.px, bottom: 10.px, right: 10.px),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: AppText(
-                          S.of(context).cancel,
-                          color: AppColorConstant.appYellow,
-                          fontSize: 15.px,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  ],
-                  insetPadding: EdgeInsets.zero,
-                  widget: SizedBox(
-                    height: 100.px,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  pickImageCamera(controller);
-                                  Navigator.pop(context);
-                                },
-                                child: AppImageAsset(
-                                    height: 60.px,
-                                    color: AppColorConstant.appWhite,
-                                    image: AppAsset.newCamera)),
-                            Padding(
-                              padding: EdgeInsets.only(top: 9.px),
-                              child: AppText(
-                                S.of(context).camera,
-                                fontSize: 15.px,
-                                color: AppColorConstant.appWhite,
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  pickImageGallery(controller);
-                                  Get.back();
-                                },
-                                child: AppImageAsset(
-                                    height: 60.px,
-                                    color: AppColorConstant.appWhite,
-                                    image: AppAsset.gallery)),
-                            Padding(
-                              padding: EdgeInsets.only(top: 9.px),
-                              child: AppText(
-                                S.of(context).gallery,
-                                fontSize: 15,
-                                color: AppColorConstant.appWhite,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ));
-            },
-          );
-        },
-        icon: const Icon(Icons.attach_file, color: Colors.black));
-  }
-
-  Future<void> pickImageGallery(GetxController controller) async {
+  Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(selectedImage!.path);
-     // uploadImage(selectedImage!);
+      goToAttachmentScreen(selectedImage!.path,members);
+      // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
+    }
+  }
 
-
-
-
-
-
-  Future<void> pickImageCamera(GetxController controller) async {
+  Future<void> pickImageCamera(GetxController controller, members) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(selectedImage!.path);
+      goToAttachmentScreen(selectedImage!.path,members);
       // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
@@ -217,16 +129,10 @@ class ChatingPageViewModal {
     logs("load--> $isLoading");
     controller!.update();
   }
-    await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      selectedImage = (File(pickedFile.path));
-
-    }
-  }
-
 
   buildPopupMenu(BuildContext context) {
-    return PopupMenuButton(  offset: Offset(-10, kToolbarHeight),
+    return PopupMenuButton(
+      offset: Offset(-10, kToolbarHeight),
       onSelected: (value) {
         if (value == 0) {
           buildImagePickerMenu(context);
@@ -313,7 +219,8 @@ class ChatingPageViewModal {
   }
 
   buildImagePickerMenu(BuildContext context) {
-    showMenu( color: AppColorConstant.appLightGrey,
+    showMenu(
+      color: AppColorConstant.appLightGrey,
       elevation: 0.3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.px)),
       context: context,
@@ -322,29 +229,32 @@ class ChatingPageViewModal {
       items: <PopupMenuEntry>[
         PopupMenuItem(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 15.px,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20,top: 5.px),
-                  child: AppText(S.of(Get.context!).select,fontWeight: FontWeight.w800,fontSize: 18.px,),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.px),
-                  child: Divider(
-                    height: 1.px,
-                    color: AppColorConstant.appGrey.withOpacity(0.3),
-                  ),
-                )
-              ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 15.px,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 20, top: 5.px),
+              child: AppText(
+                S.of(Get.context!).select,
+                fontWeight: FontWeight.w800,
+                fontSize: 18.px,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.px),
+              child: Divider(
+                height: 1.px,
+                color: AppColorConstant.appGrey.withOpacity(0.3),
+              ),
             )
-        ),
-        PopupMenuItem(onTap: () {
-      pickImageGallery(controller!);
-        },
-
+          ],
+        )),
+        PopupMenuItem(
+            onTap: () {
+              pickImageGallery(controller!,arguments['members']);
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -360,11 +270,11 @@ class ChatingPageViewModal {
                   ),
                 )
               ],
-            )
-        ),
-        PopupMenuItem(onTap: () {
-          pickImageCamera(controller!);
-        },
+            )),
+        PopupMenuItem(
+            onTap: () {
+              pickImageCamera(controller!,arguments['members']);
+            },
             child: Column(
               children: [
                 Padding(
@@ -375,10 +285,60 @@ class ChatingPageViewModal {
                   height: 20.px,
                 )
               ],
-            )
-        ),
+            )),
       ],
-
     );
   }
+
+  buildNavigationMenu(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (value) {
+        if (value == 2) {
+
+        }
+      },
+      elevation: 0.5,
+      position: PopupMenuPosition.under,
+      color: AppColorConstant.appLightGrey,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
+      icon: Padding(
+        padding: EdgeInsets.all(10.px),
+        child: AppImageAsset(
+          image: AppAsset.popup,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+              value: 0,
+              child: Row(children: [ AppText("S.of(Get.context!).addContact"),Icon(Icons.add)],)
+          ),
+          PopupMenuItem(
+              value: 1, child: Row(
+            children: [
+              AppText("S.of(Get.context!).viewContact"),
+              const Icon(Icons.remove_red_eye),
+            ],
+          )),
+          PopupMenuItem(value: 2, child: Row(
+            children: [
+              AppText("S.of(Get.context!).files"),
+              const Icon(Icons.file_copy_sharp),
+            ],
+          )),
+          PopupMenuItem(
+              value: 3, child: Row(
+            children: [
+              AppText(S.of(Get.context!).block),
+              const Icon(Icons.block),
+            ],
+          )),
+        ];
+      },
+    );
+  }
+
+
+
 }
