@@ -17,6 +17,37 @@ class StringConstant {
   static const String settings = 'Settings';
   static const String appearance = 'appearance';
   static const String account = 'Account';
+
+
+  static const String weeks = 'weeks';
+  static const String week = 'week';
+  static const String day = 'day';
+  static const String hours = 'hours';
+  static const String hour = 'hour';
+  static const String minutes = 'minutes';
+
+
+
+
+
+
+  static const String photo='photo';
+  static const String audio='audio';
+  static const String video='video';
+  static const String document='document';
+  static const String select='select';
+
+
+
+  static const String blockedUsers = 'blockedUsers';
+  static const String addBlockUsers = 'addBlockUsers';
+  static const String disappearingMessage = 'disappearingMessage';
+  static const String disappearingMessageDescription = 'disappearingMessageDescription';
+  static const String blockedUserCannotSendMessage = 'blockedUserCannotSendMessage';
+
+
+
+
   static const String linkedDevice = 'linkedDevice';
   static const String donateToSignal = 'donateToSignal';
   static const String notification = 'notification';
@@ -57,8 +88,12 @@ class StringConstant {
   static const String signIndis = 'signIndis';
   static const String verifyOtp = 'verifyOtp';
   static const String signInDescription = 'signInDescription';
+  static const String blockMessageToReceiver = 'blockMessageToReceiver';
+  static const String unblockMessage = 'unblockMessage';
   static const String signalMessage = 'signalMessage';
   static const String tellUs = 'tellUs';
+  static const String unblock = 'unblock';
+  static const String somethingWentWrong ='somethingWentWrong';
   static const String oneTwoOne = '121';
   static const String userName = 'userName';
   static const String whatsThis = 'whatsThis';

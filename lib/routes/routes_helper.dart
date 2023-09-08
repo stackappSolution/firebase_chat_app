@@ -120,7 +120,7 @@ class RouteHelper {
         name: RouteConstant.wallpaperPreviewScreen,
         page: () => WallpaperPreviewScreen()),
     GetPage(
-        name: RouteConstant.privacyScreen, page: () => const PrivacyScreen()),
+        name: RouteConstant.privacyScreen, page: () =>  PrivacyScreen()),
     GetPage(
         name: RouteConstant.blockedUsersScreen,
         page: () =>  BlockedUsersScreen()),

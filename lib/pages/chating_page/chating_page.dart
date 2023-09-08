@@ -35,8 +35,8 @@ class ChatingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
-    fontSize = '${chatingPageViewModal!.fontSizeInitState()}';
-    //getBlockedUsersList();
+    fontSize = '${chatingPageViewModal!.fontSizeInitState}';
+    logs('fontSize-----------> $fontSize');
     getBlockedList();
 
     return GetBuilder<ChatingPageController>(
@@ -46,20 +46,19 @@ class ChatingPage extends StatelessWidget {
 
           Future.delayed(
             const Duration(milliseconds: 0),
-                () async {
+            () async {
               controller = Get.find<ChatingPageController>();
               logs('arg--> ${chatingPageViewModal!.arguments['number']}');
 
               chatingPageViewModal!.isBlocked = await DatabaseService()
                   .isBlockedByLoggedInUser(
-                  chatingPageViewModal!.arguments['number']);
+                      chatingPageViewModal!.arguments['number']);
               logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
-
 
               final snapshots = await FirebaseFirestore.instance
                   .collection('rooms')
                   .where('members',
-                  isEqualTo: chatingPageViewModal!.arguments['members'])
+                      isEqualTo: chatingPageViewModal!.arguments['members'])
                   .get();
 
               chats = DatabaseService().getChatStream(
@@ -69,10 +68,10 @@ class ChatingPage extends StatelessWidget {
               chatingPageViewModal!.wallpaperPath = await key;
 
               chatingPageViewModal!.chatBubbleColor =
-              await chatingPageViewModal!.getChatBubbleColor();
+                  await chatingPageViewModal!.getChatBubbleColor();
 
               chatingPageViewModal!.wallpaperColor =
-              await chatingPageViewModal!.getWallpaperColor();
+                  await chatingPageViewModal!.getWallpaperColor();
 
               controller!.update();
             },
@@ -86,8 +85,8 @@ class ChatingPage extends StatelessWidget {
                   decoration: BoxDecoration(
                       image: (chatingPageViewModal!.wallpaperPath != null)
                           ? DecorationImage(
-                          image: FileImage(
-                              File(chatingPageViewModal!.wallpaperPath!)))
+                              image: FileImage(
+                                  File(chatingPageViewModal!.wallpaperPath!)))
                           : null,
                       color: (chatingPageViewModal!.wallpaperPath != null)
                           ? chatingPageViewModal!.wallpaperColor
@@ -95,353 +94,315 @@ class ChatingPage extends StatelessWidget {
                   child: Column(children: [
                     (chatingPageViewModal!.arguments['isGroup'])
                         ? Container(
-                      padding: EdgeInsets.all(8.px),
-                      margin: EdgeInsets.all(8.px),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.px),
-                            color: AppColorConstant.appWhite
-                                .withOpacity(0.3)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AppText(
-                            '${chatingPageViewModal!.arguments['createdBy']} created this group',
-                            fontSize: 10.px,
-                          ),
-                        ),
-                      ),
-                    )
+                            padding: EdgeInsets.all(8.px),
+                            margin: EdgeInsets.all(8.px),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15.px),
+                                  color: AppColorConstant.appWhite
+                                      .withOpacity(0.3)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AppText(
+                                  '${chatingPageViewModal!.arguments['createdBy']} created this group',
+                                  fontSize: 10.px,
+                                ),
+                              ),
+                            ),
+                          )
                         : const SizedBox(),
                     Expanded(
                       child: (chatingPageViewModal!.arguments['isGroup'] !=
-                          null)
+                              null)
                           ? StreamBuilder<QuerySnapshot>(
-                        stream: chats,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            return const Text('Something went wrong');
-                          }
-                          if (snapshot.hasData) {
-                            final data = snapshot.data!.docs;
+                              stream: chats,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  return AppText(
+                                      S.of(context).somethingWentWrong);
+                                }
+                                if (snapshot.hasData) {
+                                  final data = snapshot.data!.docs;
+                                  logs('data----> ${data.length}');
+                                  return (snapshot.data!.docs.isEmpty)
+                                      ? const SizedBox()
+                                      : ListView.builder(
+                                          itemCount: snapshot.data?.docs.length,
+                                          itemBuilder: (context, index) {
+                                            String formattedTime =
+                                                DateFormation()
+                                                    .getChatTimeFormate(
+                                                        data[index]
+                                                            ['timeStamp']);
 
-                            logs('data----> ${data.length}');
-
-                            return (snapshot.data!.docs.isEmpty)
-                                ? const SizedBox()
-                                : ListView.builder(
-                              itemCount: snapshot.data?.docs.length,
-                              itemBuilder: (context, index) {
-                                String formattedTime =
-                                DateFormation()
-                                    .getChatTimeFormate(
-                                    data[index]
-                                    ['timeStamp']);
-
-                                return buildMessage(
-                                    data[index]['sender'],
-                                    context,
-                                    controller,
-                                    data[index]['message'],
-                                    formattedTime);
+                                            return buildMessage(
+                                                data[index]['sender'],
+                                                context,
+                                                controller,
+                                                data[index]['message'],
+                                                formattedTime);
+                                          },
+                                        );
+                                }
+                                return const AppLoader();
                               },
-                            );
-                          }
-                          return const AppLoader();
-                        },
-                      )
+                            )
                           : const SizedBox(),
                     ),
                     (chatingPageViewModal!.isBlocked)
-                        ? Container(
-                        width: double.infinity,
-                        height: 150.px,
-                        color: AppColorConstant.appYellow.withOpacity(0.1),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 20.px,
-                            ),
-                            AppText(
-                              'You can not send Message , You blocked by this user',
-                              textAlign: TextAlign.center,
-                              fontSize: 12.px,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            SizedBox(
-                              height: 20.px,
-                            ),
-                          ],
-                        ))
-                        : (
-                        chatingPageViewModal!.blockedNumbers.contains(
-                            chatingPageViewModal!.arguments['number']))
-                        ? Container(
-                      padding: EdgeInsets.all(12.px),
-                      width: double.infinity,
-                      height: 150.px,
-                      color:
-                      AppColorConstant.appYellow.withOpacity(0.1),
-                      child: Column(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(
-                            height: 20.px,
-                          ),
-                          AppText(
-                            'you Blocked this user, to send this user you have to unblock',
-                            textAlign: TextAlign.center,
-                            fontSize: 12.px,
-                            color:
-                            Theme.of(context).colorScheme.primary,
-                          ),
-                          SizedBox(
-                            height: 20.px,
-                          ),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const AppText(
-                                'cancel',
-                                color: AppColorConstant.appYellow,
-                              ),
-                              AppButton(
-                                onTap: () {
-                                  chatingPageViewModal!.blockedNumbers
-                                      .remove(chatingPageViewModal!
-                                      .arguments['number']);
-                                  DatabaseService().unblockUser(
-                                      chatingPageViewModal!
-                                          .arguments['number']);
-                                  controller.update();
-                                },
-                                borderRadius:
-                                BorderRadius.circular(12.px),
-                                height: 35,
-                                width: 90.px,
-                                color: AppColorConstant.appYellow,
-                                stringChild: true,
-                                child: AppText('Unblock',
-                                    color: AppColorConstant.appWhite,
-                                    fontSize: 12.px),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                        : Row(children: [
-                      Expanded(
-                          child: Container(
-                              margin: EdgeInsets.only(
-                                  right: 15.px,
-                                  left: 15.px,
-                                  bottom: 5.px,
-                                  top: 5.px),
-                              decoration: BoxDecoration(
-                                  color: Colors.black12,
-                                  borderRadius:
-                                  BorderRadius.circular(35.px)),
-                              height: 40.px,
-                              child: textFormField(
-                                  controller, context))),
-                      AppButton(
-                          margin: EdgeInsets.only(right: 15.px),
-                          height: 40.px,
-                          color: AppColorConstant.appWhite,
-                          stringChild: true,
-                          width: 40.px,
-                          borderRadius: BorderRadius.circular(40.px),
-                          child: controller
-                              .chatingPageViewModal!.iconChange
-                              ? const Icon(Icons.send,
-                              color: AppColorConstant.appBlack)
-                              : Icon(Icons.add,
-                              size: 27.px,
-                              color: AppColorConstant.appBlack),
-                          onTap: () {
-                            if (chatingPageViewModal!
-                                .chatController.text.isNotEmpty) {
-                              onSendMessage(chatingPageViewModal!
-                                  .chatController.text);
-                              controller.update();
-                              chatingPageViewModal!.chatController
-                                  .clear();
-                            }
-                          }),
-                    ])
+                        ? buildBlockView(context)
+                        : (chatingPageViewModal!.blockedNumbers.contains(
+                                chatingPageViewModal!.arguments['number']))
+                            ? buildUnblockView(context)
+                            : buildTextFormField(context, controller)
                   ])));
         });
   }
 
   getBlockedList() async {
     chatingPageViewModal!.blockedNumbers =
-    await DatabaseService().getBlockedUsers();
+        await DatabaseService().getBlockedUsers();
     logs('list-------------> ${chatingPageViewModal!.blockedNumbers}');
+  }
 
-    // chatingPageViewModal!.blockedBy = await DatabaseService()
-    //     .getBlockedBy(chatingPageViewModal!.blockedNumbers);
-    // logs('blockedBy===========> ${chatingPageViewModal!.blockedBy}');
+  buildBlockView(BuildContext context) {
+    return Container(
+        width: double.infinity,
+        height: 150.px,
+        color: AppColorConstant.appYellow.withOpacity(0.1),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20.px,
+            ),
+            AppText(
+              S.of(context).blockMessageToReceiver,
+              textAlign: TextAlign.center,
+              fontSize: 12.px,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            SizedBox(
+              height: 20.px,
+            ),
+          ],
+        ));
+  }
+
+  buildTextFormField(BuildContext context, ChatingPageController controller) {
+    return Row(children: [
+      chatingPageViewModal!.buildPopupMenu(context),
+      Expanded(
+          child: Container(
+              margin: EdgeInsets.only(right: 15.px, bottom: 5.px, top: 5.px),
+              decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(35.px)),
+              height: 40.px,
+              child: textFormField(controller, context))),
+    ]);
+  }
+
+  buildUnblockView(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(12.px),
+      width: double.infinity,
+      height: 150.px,
+      color: AppColorConstant.appYellow.withOpacity(0.1),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            height: 20.px,
+          ),
+          AppText(
+            S.of(context).unblockMessage,
+            textAlign: TextAlign.center,
+            fontSize: 12.px,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          SizedBox(
+            height: 20.px,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const AppText(
+                'cancel',
+                color: AppColorConstant.appYellow,
+              ),
+              AppButton(
+                onTap: () {
+                  chatingPageViewModal!.blockedNumbers
+                      .remove(chatingPageViewModal!.arguments['number']);
+                  DatabaseService()
+                      .unblockUser(chatingPageViewModal!.arguments['number']);
+                  controller!.update();
+                },
+                borderRadius: BorderRadius.circular(12.px),
+                height: 35,
+                width: 90.px,
+                color: AppColorConstant.appYellow,
+                stringChild: true,
+                child: AppText(S.of(context).unblock,
+                    color: AppColorConstant.appWhite, fontSize: 12.px),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   Widget buildMessage(
-      String sender,
-      context,
-      ChatingPageController controller,
-      String chatMessage,
-      String timeStamp,
-      ) {
+    String sender,
+    context,
+    ChatingPageController controller,
+    String chatMessage,
+    String timeStamp,
+  ) {
     return Slidable(
         child: (sender == AuthService.auth.currentUser!.phoneNumber!)
             ? (Slidable(
-            endActionPane: ActionPane(
-                extentRatio: fontSize == StringConstant.small
-                    ? 0.115.px
-                    : fontSize == StringConstant.large
-                    ? 0.15.px
-                    : fontSize == StringConstant.extraLarge
-                    ? 0.189.px
-                    : 0.13.px,
-                motion: const ScrollMotion(),
-                children: [
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                          padding: EdgeInsets.only(bottom: 10.px),
-                          child: CircleAvatar(
-                              radius: getFontSizeValue(
-                                  small: 15.px,
-                                  large: 22.px,
-                                  extraLarge: 28.px,
-                                  normal: 18.px),
-                              backgroundColor: AppColorConstant.appYellow)))
-                ]),
-            child: Container(
-                margin:
-                EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
-                alignment: Alignment.centerRight,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                endActionPane: ActionPane(
+                    extentRatio: fontSize == StringConstant.small
+                        ? 0.115.px
+                        : fontSize == StringConstant.large
+                            ? 0.15.px
+                            : fontSize == StringConstant.extraLarge
+                                ? 0.189.px
+                                : 0.13.px,
+                    motion: const ScrollMotion(),
                     children: [
-                      ChatBubble(
-                          elevation: 0,
-                          margin: EdgeInsets.only(left: 100.px),
-                          clipper: ChatBubbleClipper2(
-                              type: BubbleType.sendBubble,
-                              nipHeight: 10.px,
-                              nipWidth: 6.px,
-                              radius: 5.px),
-                          alignment: Alignment.topRight,
-                          backGroundColor:
-                          chatingPageViewModal!.chatBubbleColor,
-                          child: AppText(chatMessage,
-                              color: AppColorConstant.appWhite,
-                              fontSize: getFontSizeValue(
-                                  small: 10.px,
-                                  large: 20.px,
-                                  extraLarge: 25.px,
-                                  normal: 15.px))),
-                      Padding(
-                          padding: EdgeInsets.only(right: 5.px, top: 3.px),
-                          child: AppText(timeStamp.toString(),
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: getFontSizeValue(
-                                  small: 8.px,
-                                  large: 15.px,
-                                  extraLarge: 20.px,
-                                  normal: 12.px)))
-                    ]))))
-            : (Slidable(
-            startActionPane: ActionPane(
-                extentRatio: fontSize == StringConstant.small
-                    ? 0.115.px
-                    : fontSize == StringConstant.large
-                    ? 0.15.px
-                    : fontSize == StringConstant.extraLarge
-                    ? 0.189.px
-                    : 0.13.px,
-                motion: const ScrollMotion(),
-                children: [
-                  SizedBox(width: 10.px),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                          padding: EdgeInsets.only(bottom: 10.px),
-                          child: CircleAvatar(
-                              radius: getFontSizeValue(
-                                  small: 15.px,
-                                  large: 22.px,
-                                  extraLarge: 28.px,
-                                  normal: 18.px),
-                              backgroundColor:
-                              chatingPageViewModal!.chatBubbleColor)))
-                ]),
-            child: Container(
-                margin:
-                EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
-                alignment: Alignment.centerLeft,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ChatBubble(
-                          elevation: 0,
-                          margin: EdgeInsets.only(right: 100.px),
-                          clipper: ChatBubbleClipper2(
-                              type: BubbleType.receiverBubble,
-                              nipHeight: 10.px,
-                              nipWidth: 6.px,
-                              radius: 5.px),
-                          backGroundColor:
-                          AppColorConstant.appGrey.withOpacity(0.3),
-                          child: (chatingPageViewModal!
-                              .arguments['isGroup'])
-                              ? Column(
-                            children: [
-                              AppText(
-                                sender,
-                                fontSize: 10.px,
-                              ),
-                              AppText(chatMessage,
-                                  color: AppColorConstant.appBlack,
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                              padding: EdgeInsets.only(bottom: 10.px),
+                              child: CircleAvatar(
+                                  radius: getFontSizeValue(
+                                      small: 15.px,
+                                      large: 22.px,
+                                      extraLarge: 28.px,
+                                      normal: 18.px),
+                                  backgroundColor: AppColorConstant.appYellow)))
+                    ]),
+                child: Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
+                    alignment: Alignment.centerRight,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          ChatBubble(
+                              elevation: 0,
+                              margin: EdgeInsets.only(left: 100.px),
+                              clipper: ChatBubbleClipper2(
+                                  type: BubbleType.sendBubble,
+                                  nipHeight: 10.px,
+                                  nipWidth: 6.px,
+                                  radius: 5.px),
+                              alignment: Alignment.topRight,
+                              backGroundColor:
+                                  chatingPageViewModal!.chatBubbleColor,
+                              child: AppText(chatMessage,
+                                  color: AppColorConstant.appWhite,
                                   fontSize: getFontSizeValue(
                                       small: 10.px,
                                       large: 20.px,
                                       extraLarge: 25.px,
-                                      normal: 15.px))
-                            ],
-                          )
-                              : AppText(chatMessage,
-                              color: AppColorConstant.appWhite,
-                              fontSize: getFontSizeValue(
-                                  small: 10.px,
-                                  large: 20.px,
-                                  extraLarge: 25.px,
-                                  normal: 15.px))),
-                      Padding(
-                          padding: EdgeInsets.only(left: 5.px, top: 3.px),
-                          child: AppText(timeStamp.toString(),
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: getFontSizeValue(
-                                  small: 8.px,
-                                  large: 15.px,
-                                  extraLarge: 20.px,
-                                  normal: 12.px)))
-                    ])))));
+                                      normal: 15.px))),
+                          Padding(
+                              padding: EdgeInsets.only(right: 5.px, top: 3.px),
+                              child: AppText(timeStamp.toString(),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: getFontSizeValue(
+                                      small: 8.px,
+                                      large: 15.px,
+                                      extraLarge: 20.px,
+                                      normal: 12.px)))
+                        ]))))
+            : (Slidable(
+                startActionPane: ActionPane(
+                    extentRatio: fontSize == StringConstant.small
+                        ? 0.115.px
+                        : fontSize == StringConstant.large
+                            ? 0.15.px
+                            : fontSize == StringConstant.extraLarge
+                                ? 0.189.px
+                                : 0.13.px,
+                    motion: const ScrollMotion(),
+                    children: [
+                      SizedBox(width: 10.px),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                              padding: EdgeInsets.only(bottom: 10.px),
+                              child: CircleAvatar(
+                                  radius: getFontSizeValue(
+                                      small: 15.px,
+                                      large: 22.px,
+                                      extraLarge: 28.px,
+                                      normal: 18.px),
+                                  backgroundColor:
+                                      chatingPageViewModal!.chatBubbleColor)))
+                    ]),
+                child: Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ChatBubble(
+                              elevation: 0,
+                              margin: EdgeInsets.only(right: 100.px),
+                              clipper: ChatBubbleClipper2(
+                                  type: BubbleType.receiverBubble,
+                                  nipHeight: 10.px,
+                                  nipWidth: 6.px,
+                                  radius: 5.px),
+                              backGroundColor:
+                                  AppColorConstant.appGrey.withOpacity(0.3),
+                              child: (chatingPageViewModal!
+                                      .arguments['isGroup'])
+                                  ? Column(
+                                      children: [
+                                        AppText(
+                                          sender,
+                                          fontSize: 10.px,
+                                        ),
+                                        AppText(chatMessage,
+                                            color: AppColorConstant.appBlack,
+                                            fontSize: getFontSizeValue(
+                                                small: 10.px,
+                                                large: 20.px,
+                                                extraLarge: 25.px,
+                                                normal: 15.px))
+                                      ],
+                                    )
+                                  : AppText(chatMessage,
+                                      color: AppColorConstant.appWhite,
+                                      fontSize: getFontSizeValue(
+                                          small: 10.px,
+                                          large: 20.px,
+                                          extraLarge: 25.px,
+                                          normal: 15.px))),
+                          Padding(
+                              padding: EdgeInsets.only(left: 5.px, top: 3.px),
+                              child: AppText(timeStamp.toString(),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: getFontSizeValue(
+                                      small: 8.px,
+                                      large: 15.px,
+                                      extraLarge: 20.px,
+                                      normal: 12.px)))
+                        ])))));
   }
 
-  //
-  // getBlockedUsersList() async {
-  //   chatingPageViewModal!.blockedNumbers =
-  //       await DatabaseService().getBlockedUsers();
-  //   logs('blockkkkk-----------> ${chatingPageViewModal!.blockedNumbers}');
-  // }
-
   AppAppBar appBar(
-      ChatingPageController controller,
-      context,
-      ) {
+    ChatingPageController controller,
+    context,
+  ) {
     return AppAppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         leadingWidth: 90.px,
@@ -462,11 +423,11 @@ class ChatingPage extends StatelessWidget {
             child: AppText(
               (chatingPageViewModal!.arguments['isGroup'] != false)
                   ? chatingPageViewModal!.arguments['groupName']
-                  .substring(0, 1)
-                  .toUpperCase()
+                      .substring(0, 1)
+                      .toUpperCase()
                   : chatingPageViewModal!.arguments['name']
-                  .substring(0, 1)
-                  .toUpperCase(),
+                      .substring(0, 1)
+                      .toUpperCase(),
               color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               fontWeight: FontWeight.w800,
@@ -515,7 +476,7 @@ class ChatingPage extends StatelessWidget {
                           Get.toNamed(value);
                         },
                         itemBuilder: (context) {
-                          return controller.chatingPageViewModal!.popupMenu;
+                          return controller.chatingPageViewModal.popupMenu;
                         },
                         icon: Icon(Icons.more_vert,
                             color: Theme.of(context).colorScheme.primary,
@@ -526,13 +487,14 @@ class ChatingPage extends StatelessWidget {
 
   onSendMessage(message) async {
     (chatingPageViewModal!.blockedNumbers
-        .contains(chatingPageViewModal!.arguments['number']))
+            .contains(chatingPageViewModal!.arguments['number']))
         ? null
         : DatabaseService().addNewMessage(
-        members: chatingPageViewModal!.arguments['members'],
-        massage: message,
-        sender: AuthService.auth.currentUser!.phoneNumber!,
-        isGroup: false);
+            type: 'text',
+            members: chatingPageViewModal!.arguments['members'],
+            massage: message,
+            sender: AuthService.auth.currentUser!.phoneNumber!,
+            isGroup: false);
     logs('message---> $message');
 
     controller!.update();
@@ -554,30 +516,32 @@ class ChatingPage extends StatelessWidget {
           }
         },
         decoration: InputDecoration(
-            alignLabelWithHint: true,
-            contentPadding: EdgeInsets.all(2.px),
-            border: const OutlineInputBorder(borderSide: BorderSide.none),
-            prefixIcon: AppButton(
-                onTap: () {},
-                margin: EdgeInsets.only(left: 3.px),
-                width: 27.px,
-                height: 27.px,
-                color: Colors.transparent,
-                stringChild: true,
-                borderRadius: BorderRadius.circular(27.px),
-                child: Icon(Icons.mood,
-                    size: 27.px, color: AppColorConstant.offBlack)),
-            hintText: S.of(context).signalMessage,
-            suffixIcon: SizedBox(
-                height: 40.px,
-                width: 78.px,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [cameraButton(), micButton()]))),
+          alignLabelWithHint: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10.px),
+          border: const OutlineInputBorder(borderSide: BorderSide.none),
+          hintText: S.of(context).signalMessage,
+          suffixIcon: AppButton(
+              color: AppColorConstant.appTransparent,
+              height: 30.px,
+              stringChild: true,
+              width: 40.px,
+              borderRadius: BorderRadius.circular(40.px),
+              child: controller.chatingPageViewModal.iconChange
+                  ? const Icon(Icons.send, color: AppColorConstant.appBlack)
+                  : Icon(Icons.add,
+                      size: 27.px, color: AppColorConstant.appBlack),
+              onTap: () {
+                if (chatingPageViewModal!.chatController.text.isNotEmpty) {
+                  onSendMessage(chatingPageViewModal!.chatController.text);
+                  controller.update();
+                  chatingPageViewModal!.chatController.clear();
+                }
+              }),
+        ),
         controller: chatingPageViewModal!.chatController);
   }
 
-  AppButton emojiButton() {
+  AppButton micButton() {
     return AppButton(
         onTap: () {},
         margin: EdgeInsets.only(left: 3.px),
@@ -586,40 +550,14 @@ class ChatingPage extends StatelessWidget {
         color: Colors.transparent,
         stringChild: true,
         borderRadius: BorderRadius.circular(27.px),
-        child: Icon(Icons.mood, size: 27.px, color: AppColorConstant.offBlack));
-  }
-
-  AppButton cameraButton() {
-    return AppButton(
-        onTap: () {},
-        margin: EdgeInsets.only(right: 10.px),
-        width: 27.px,
-        height: 27.px,
-        color: Colors.transparent,
-        stringChild: true,
-        borderRadius: BorderRadius.circular(27.px),
-        child: Icon(Icons.camera_alt_outlined,
-            size: 27.px, color: AppColorConstant.offBlack));
-  }
-
-  AppButton micButton() {
-    return AppButton(
-        onTap: () async {},
-        margin: EdgeInsets.only(right: 10.px),
-        width: 27.px,
-        height: 27.px,
-        color: Colors.transparent,
-        stringChild: true,
-        borderRadius: BorderRadius.circular(27.px),
-        child: Icon(Icons.mic_none_outlined,
-            size: 27.px, color: AppColorConstant.offBlack));
+        child: Icon(Icons.mic, size: 27.px, color: AppColorConstant.offBlack));
   }
 
   double? getFontSizeValue(
       {required double small,
-        required double large,
-        required double extraLarge,
-        required double normal}) {
+      required double large,
+      required double extraLarge,
+      required double normal}) {
     switch (ChatingPage.fontSize) {
       case StringConstant.small:
         return small;
