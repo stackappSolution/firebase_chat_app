@@ -52,6 +52,10 @@ dependencies:
   flutter_typeahead: ^4.6.2
 
 
+  # file
+  file_picker: ^5.5.0
+
+
 
   # Fetch server data & State management :
   get: ^4.6.5
@@ -61,6 +65,10 @@ dependencies:
   # contact numbers
   contacts_service: ^0.6.3
 
+
+
+  # screenshot disable
+  window_manager: ^0.3.6
 
   # permissions
   permission_handler: ^10.4.3

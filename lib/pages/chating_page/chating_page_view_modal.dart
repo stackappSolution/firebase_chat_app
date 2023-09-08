@@ -1,34 +1,39 @@
 import 'dart:io';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_button.dart';
+import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
+import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:get/get.dart';
 import 'package:signal/controller/chating_page_controller.dart';
+import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/database_service.dart';
 import '../../app/app/utills/app_utills.dart';
 import '../../constant/string_constant.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
 
   Color? chatBubbleColor;
   Color? wallpaperColor;
-  List<dynamic> blockedNumbers=[];
+  List<dynamic> blockedNumbers = [];
   Map<String, dynamic> parameter = {};
   Map<String, dynamic> arguments = {};
   String? wallpaperPath;
   String? blockedBy;
   bool isGroup = false;
   String? formatedTime;
-  bool isBlocked=false;
+  bool isBlocked = false;
   File? selectedImage;
+  List<PlatformFile> videos = [];
+
 
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
@@ -76,33 +81,26 @@ class ChatingPageViewModal {
     }
   }
 
-
-
-
-
-
   Future<void> pickImageGallery(GetxController controller) async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-
     }
   }
 
   Future<void> pickImageCamera(GetxController controller) async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.camera);
+        await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-
     }
   }
 
-
   buildPopupMenu(BuildContext context) {
-    return PopupMenuButton(  offset: Offset(-10, kToolbarHeight),
+    return PopupMenuButton(
+
       onSelected: (value) {
         if (value == 0) {
           buildImagePickerMenu(context);
@@ -189,7 +187,8 @@ class ChatingPageViewModal {
   }
 
   buildImagePickerMenu(BuildContext context) {
-    showMenu( color: AppColorConstant.appLightGrey,
+    showMenu(
+      color: AppColorConstant.appLightGrey,
       elevation: 0.3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.px)),
       context: context,
@@ -198,29 +197,32 @@ class ChatingPageViewModal {
       items: <PopupMenuEntry>[
         PopupMenuItem(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 15.px,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20,top: 5.px),
-                  child: AppText(S.of(Get.context!).select,fontWeight: FontWeight.w800,fontSize: 18.px,),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.px),
-                  child: Divider(
-                    height: 1.px,
-                    color: AppColorConstant.appGrey.withOpacity(0.3),
-                  ),
-                )
-              ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 15.px,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 20, top: 5.px),
+              child: AppText(
+                S.of(Get.context!).select,
+                fontWeight: FontWeight.w800,
+                fontSize: 18.px,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.px),
+              child: Divider(
+                height: 1.px,
+                color: AppColorConstant.appGrey.withOpacity(0.3),
+              ),
             )
-        ),
-        PopupMenuItem(onTap: () {
-      pickImageGallery(controller!);
-        },
-
+          ],
+        )),
+        PopupMenuItem(
+            onTap: () {
+              pickImageGallery(controller!);
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -236,11 +238,11 @@ class ChatingPageViewModal {
                   ),
                 )
               ],
-            )
-        ),
-        PopupMenuItem(onTap: () {
-          pickImageCamera(controller!);
-        },
+            )),
+        PopupMenuItem(
+            onTap: () {
+              pickImageCamera(controller!);
+            },
             child: Column(
               children: [
                 Padding(
@@ -251,12 +253,88 @@ class ChatingPageViewModal {
                   height: 20.px,
                 )
               ],
-            )
-        ),
+            )),
       ],
-
     );
   }
+
+  buildNavigationMenu(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (value) {
+        onSelectItem(value);
+      },
+      elevation: 0.5,
+      position: PopupMenuPosition.under,
+      color: AppColorConstant.appLightGrey,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
+      icon: Padding(
+        padding: EdgeInsets.all(10.px),
+        child: AppImageAsset(
+          image: AppAsset.popup,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+              value: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).addContact),
+                  const Icon(Icons.add)
+                ],
+              )),
+          PopupMenuItem(
+              value: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).viewContact),
+                  const Icon(Icons.remove_red_eye_outlined),
+                ],
+              )),
+          PopupMenuItem(
+              value: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).files),
+                  const Icon(Icons.file_copy_outlined),
+                ],
+              )),
+          PopupMenuItem(
+              value: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).block),
+                  const Icon(Icons.block),
+                ],
+              )),
+        ];
+      },
+    );
+  }
+
+  onSelectItem(value) {
+    if (value == 1) {
+      Get.toNamed(RouteHelper.getChatProfileScreen(), arguments: {
+        'name': arguments['name'],
+        'number': arguments['number'],
+        'id': arguments['id'],
+        'isGroup': arguments['isGroup'],
+        'members': arguments['members'],
+      });
+    }
+    if (value == 3) {
+      blockedNumbers.add(arguments['number']);
+      DatabaseService().blockUser(blockedNumbers, arguments['number']);
+
+      controller!.update();
+    }
+  }
+
 
 
 

@@ -90,7 +90,7 @@ class DatabaseService {
     }
 
     addChatMessages(
-        message: massage!, sender: sender!, members: members, type: type);
+        message: massage, sender: sender, members: members, type: type);
   }
 
   //==========================checkFirstMessage===========================

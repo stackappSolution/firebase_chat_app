@@ -471,16 +471,7 @@ class ChatingPage extends StatelessWidget {
                       size: 26.px,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    PopupMenuButton(
-                        onSelected: (value) {
-                          Get.toNamed(value);
-                        },
-                        itemBuilder: (context) {
-                          return controller.chatingPageViewModal.popupMenu;
-                        },
-                        icon: Icon(Icons.more_vert,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 26.px))
+                    chatingPageViewModal!.buildNavigationMenu(context)
                   ]))
         ]);
   }

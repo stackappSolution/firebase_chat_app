@@ -75,6 +75,10 @@
                                    "video" : "વિડિયો",
                                    "documents" : "દસ્તાવેજો",
 
+                                   "addContact" : "સંપર્ક ઉમેરો",
+                                            "viewContact" : "સંપર્ક જુઓ",
+                                            "files" : "ફાઈલો",
+
 
                   "groupName" : "જૂથનું નામ (જરૂરી)",
                         "members" : "સભ્યો",

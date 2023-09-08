@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "account": MessageLookupByLibrary.simpleMessage("Account"),
         "addBlockUsers":
             MessageLookupByLibrary.simpleMessage("Add blocked user"),
+        "addContact": MessageLookupByLibrary.simpleMessage("Add contact"),
         "addRemoveMember": MessageLookupByLibrary.simpleMessage(
             "You can add or invite friends after creating this group"),
         "advance": MessageLookupByLibrary.simpleMessage("Advance"),
@@ -115,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "featureRequest":
             MessageLookupByLibrary.simpleMessage("Feature Request"),
         "feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
+        "files": MessageLookupByLibrary.simpleMessage("files"),
         "fingerprintTransfer": MessageLookupByLibrary.simpleMessage(
             "Require Android screen lock or fingerprint to transfer funds"),
         "firstName":
@@ -273,6 +275,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter The Code We Sent To"),
         "version": MessageLookupByLibrary.simpleMessage("Version"),
         "video": MessageLookupByLibrary.simpleMessage("Video"),
+        "viewContact": MessageLookupByLibrary.simpleMessage("View contact"),
         "viewSafetyNumbers":
             MessageLookupByLibrary.simpleMessage("View safety numbers"),
         "warning": MessageLookupByLibrary.simpleMessage("Warning"),

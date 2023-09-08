@@ -39,6 +39,14 @@ class StringConstant {
 
 
 
+
+  static const String addContact='addContact';
+  static const String viewContact='viewContact';
+  static const String files='files';
+
+
+
+
   static const String blockedUsers = 'blockedUsers';
   static const String addBlockUsers = 'addBlockUsers';
   static const String disappearingMessage = 'disappearingMessage';
