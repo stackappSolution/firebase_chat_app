@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
-import 'package:image_cropper/image_cropper.dart';
+
 
 import '../../../app/app/utills/app_utills.dart';
 import '../../../service/auth_service.dart';
