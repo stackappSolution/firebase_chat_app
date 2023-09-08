@@ -35,7 +35,6 @@ class ChatProfileScreen extends StatelessWidget {
           const Duration(milliseconds: 0),
           () {
             controller = Get.find<ChatProfileController>();
-
           },
         );
       },
@@ -116,7 +115,8 @@ class ChatProfileScreen extends StatelessWidget {
                 fontSize: 30.px),
           ),
         ),
-        AppText(chatProfileViewModel!.arguments['name'], fontSize: 25.px),
+        AppText(chatProfileViewModel!.arguments['name'],
+            fontSize: 25.px, color: Theme.of(context).colorScheme.primary),
         AppText(
           '${chatProfileViewModel!.arguments['number']}',
           fontSize: 15.px,
@@ -148,6 +148,7 @@ class ChatProfileScreen extends StatelessWidget {
             AppText(
               S.of(context).video,
               fontSize: 15,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ],
         ),
@@ -171,10 +172,8 @@ class ChatProfileScreen extends StatelessWidget {
                     ),
                   )),
             ),
-            AppText(
-              S.of(context).audio,
-              fontSize: 15,
-            ),
+            AppText(S.of(context).audio,
+                fontSize: 15, color: Theme.of(context).colorScheme.primary),
           ],
         ),
         Column(
@@ -238,10 +237,10 @@ class ChatProfileScreen extends StatelessWidget {
         width: 50.px,
         padding: EdgeInsets.all(12.px),
         child: AppImageAsset(
-          height: 10.px,
-          width: 10.px,
-          image: image,
-        ),
+            height: 10.px,
+            width: 10.px,
+            image: image,
+            color: Theme.of(context).colorScheme.primary),
       ),
     );
   }
@@ -275,9 +274,12 @@ class ChatProfileScreen extends StatelessWidget {
                 buildUnBlockDialog(context, controller);
                 controller.update();
               },
-              title: const AppText(color: AppColorConstant.appBlack, 'unBlock'),
-              leading: const Icon(Icons.block_flipped,
-                  color: AppColorConstant.appBlack),
+              title: AppText(
+                  color: Theme.of(context).colorScheme.primary, 'unBlock'),
+              leading: Icon(
+                Icons.block_flipped,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           )
         : Padding(
@@ -324,8 +326,9 @@ class ChatProfileScreen extends StatelessWidget {
                     onTap: () {
                       chatProfileViewModel!.blockedNumbers
                           .add(chatProfileViewModel!.arguments['number']);
-                      DatabaseService()
-                          .blockUser(chatProfileViewModel!.blockedNumbers,chatProfileViewModel!.arguments['number']);
+                      DatabaseService().blockUser(
+                          chatProfileViewModel!.blockedNumbers,
+                          chatProfileViewModel!.arguments['number']);
                       Get.back();
                       controller.update();
                     },
@@ -362,7 +365,8 @@ class ChatProfileScreen extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
               backgroundColor: Theme.of(context).colorScheme.background,
               title: AppText(
-                  'Are you sure you want to unblock ${chatProfileViewModel!.arguments['number']}?'),
+                  'Are you sure you want to unblock ${chatProfileViewModel!.arguments['number']}?',
+                  color: Theme.of(context).colorScheme.primary),
               actions: [
                 InkWell(
                     onTap: () {

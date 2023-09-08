@@ -6,6 +6,7 @@ import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/privacy/blocked/blocked_users_view_model.dart';
 import 'package:signal/service/database_service.dart';
 
@@ -44,7 +45,7 @@ class BlockedUsersScreen extends StatelessWidget {
   getAppbar(BuildContext context) {
     return AppAppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
-      title: AppText('Blocked users',
+      title: AppText( S.of(context).blockedUsers,
           fontSize: 18.px, color: Theme.of(context).colorScheme.primary),
     );
   }
@@ -57,7 +58,7 @@ class BlockedUsersScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(20.px),
           child: AppText(
-            'Blocked Users',
+           S.of(context).blockedUsers,
             fontSize: 15.px,
             fontWeight: FontWeight.w900,
             color: Theme.of(context).colorScheme.primary,
@@ -70,10 +71,10 @@ class BlockedUsersScreen extends StatelessWidget {
 
   buildAddBlockView(BuildContext context) {
     return ListTile(
-      title: AppText('Add blocked user',
+      title: AppText(S.of(context).addBlockUsers,
           fontSize: 15.px, color: Theme.of(context).colorScheme.primary),
       subtitle: AppText(
-          'Blocked users will not be able to call you and send you messages',
+          S.of(context).blockedUserCannotSendMessage,
           fontSize: 12.px,
           color: Theme.of(context).colorScheme.secondary),
     );

@@ -1,27 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
+import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/pages/settings/privacy/privacy_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/database_service.dart';
 
+// ignore: must_be_immutable
 class PrivacyScreen extends StatelessWidget {
-  const PrivacyScreen({Key? key}) : super(key: key);
+  PrivacyScreen({Key? key}) : super(key: key);
+
+  PrivacyViewModel? privacyViewModel;
+  SettingsController? controller;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: getAppbar(context),
-      body: getBody(context),
+    privacyViewModel ?? (privacyViewModel = PrivacyViewModel(this));
+
+    return GetBuilder<SettingsController>(initState: (state) {
+      Future.delayed(const Duration(milliseconds: 10),() {
+        Get.find<SettingsController>();
+      },);
+      getBlockedContacts();
+    },
+      init: SettingsController(),
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: getAppbar(context),
+          body: getBody(context),
+        );
+      },
     );
   }
 
   getAppbar(BuildContext context) {
     return AppAppBar(
-      title: AppText(S.of(context).privacy, fontSize: 20.px,color: Theme.of(context).colorScheme.primary,),
+      title: AppText(
+        S.of(context).privacy,
+        fontSize: 20.px,
+        color: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 
@@ -45,15 +69,18 @@ class PrivacyScreen extends StatelessWidget {
   buildBlockView(context) {
     return Padding(
       padding: EdgeInsets.all(12.px),
-      child: ListTile(onTap: () {
-        Get.toNamed(RouteHelper.getBlockedUsersScreen());
-      },
+      child: ListTile(
+        onTap: () {
+          Get.toNamed(RouteHelper.getBlockedUsersScreen());
+        },
         title: AppText(
           S.of(context).blocked,
           color: Theme.of(context).colorScheme.primary,
         ),
-        subtitle: AppText('0 ${S.of(context).contacts}',
-            color: Theme.of(context).colorScheme.secondary, fontSize: 12.px),
+        subtitle: AppText(
+            '${privacyViewModel!.blockedNumbers.length} ${S.of(context).contacts}',
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: 12.px),
       ),
     );
   }
@@ -121,15 +148,15 @@ class PrivacyScreen extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.all(10.px),
-          child: ListTile(onTap: () {
-            Get.toNamed(RouteHelper.getDisappearingScreen());
-          },
+          child: ListTile(
+            onTap: () {
+              Get.toNamed(RouteHelper.getDisappearingScreen());
+            },
             title: AppText(S.of(context).defaultTimerForNewChats,
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 15.px,
                 fontWeight: FontWeight.w300),
-            subtitle: AppText(
-                S.of(context).disappearingDescription,
+            subtitle: AppText(S.of(context).disappearingDescription,
                 color: Theme.of(context).colorScheme.secondary,
                 fontSize: 12.px),
             trailing: AppText(S.of(context).off),
@@ -165,8 +192,7 @@ class PrivacyScreen extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary,
                 fontSize: 15.px,
                 fontWeight: FontWeight.w300),
-            subtitle: AppText(
-               S.of(context).screenLockDescription,
+            subtitle: AppText(S.of(context).screenLockDescription,
                 color: Theme.of(context).colorScheme.secondary,
                 fontSize: 12.px),
             trailing: customSwitch(false),
@@ -194,7 +220,7 @@ class PrivacyScreen extends StatelessWidget {
                 fontSize: 15.px,
                 fontWeight: FontWeight.w300),
             subtitle: AppText(
-             S.of(context).blockScreenshots,
+              S.of(context).blockScreenshots,
               color: Theme.of(context).colorScheme.secondary,
               fontSize: 12.px,
             ),
@@ -209,7 +235,7 @@ class PrivacyScreen extends StatelessWidget {
                 fontSize: 15.px,
                 fontWeight: FontWeight.w300),
             subtitle: AppText(
-             S.of(context).keyboardDisable,
+              S.of(context).keyboardDisable,
               color: Theme.of(context).colorScheme.secondary,
               fontSize: 12.px,
             ),
@@ -219,7 +245,7 @@ class PrivacyScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(30.px),
           child: AppText(
-           S.of(context).settingGuarantee,
+            S.of(context).settingGuarantee,
             fontSize: 12.px,
             color: Theme.of(context).colorScheme.secondary,
           ),
@@ -233,12 +259,13 @@ class PrivacyScreen extends StatelessWidget {
   }
 
   buildPaymentView(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.all(20.px),
           child: AppText(
-          S.of(context).payments ,
+            S.of(context).payments,
             color: Theme.of(context).colorScheme.primary,
             fontSize: 15.px,
           ),
@@ -250,8 +277,7 @@ class PrivacyScreen extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 15.px,
                 fontWeight: FontWeight.w300),
-            subtitle: AppText(
-                S.of(context).fingerprintTransfer,
+            subtitle: AppText(S.of(context).fingerprintTransfer,
                 color: Theme.of(context).colorScheme.secondary,
                 fontSize: 12.px),
             trailing: customSwitch(false),
@@ -265,22 +291,16 @@ class PrivacyScreen extends StatelessWidget {
     );
   }
 
-
-
-
-  buildAdvanceView(BuildContext context){
-    return  Padding(
+  buildAdvanceView(BuildContext context) {
+    return Padding(
       padding: EdgeInsets.all(10.px),
       child: ListTile(
-        title: AppText( S.of(context).advance,
+        title: AppText(S.of(context).advance,
             color: Theme.of(context).colorScheme.primary,
             fontSize: 15.px,
             fontWeight: FontWeight.w300),
-        subtitle: AppText(
-            S.of(context).advanceDescription,
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 12.px),
-
+        subtitle: AppText(S.of(context).advanceDescription,
+            color: Theme.of(context).colorScheme.secondary, fontSize: 12.px),
       ),
     );
   }
@@ -307,5 +327,12 @@ class PrivacyScreen extends StatelessWidget {
             shape: BoxShape.circle),
       ),
     );
+  }
+
+  getBlockedContacts() async {
+    privacyViewModel!.blockedNumbers =
+        await DatabaseService().getBlockedUsers();
+          controller!.update();
+    logs('list-------------> ${privacyViewModel!.blockedNumbers.length}');
   }
 }
