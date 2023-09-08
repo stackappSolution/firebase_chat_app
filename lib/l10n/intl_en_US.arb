@@ -151,6 +151,35 @@
 
          "chatAppPin" : "Chat App Pin",
          "block" : "Block",
+         "blockedUsers" : "Blocked users",
+         "addBlockUsers" : "Add blocked user",
+         "disappearingMessage" : "Disappearing Messages",
+         "disappearingMessageDescription" : "When enabled,new messages sent and received in new chats started by you will disappear after they have been seen.",
+         "blockedUserCannotSendMessage" : "Blocked users will not be able to call you and send you messages",
+         "off" : "off",
+         "weeks" : "weeks",
+         "week" : "week",
+         "day" : "day",
+         "hours" : "hours",
+         "hour" : "hour",
+         "minutes" : "minutes",
+
+         "photo" : "Photo",
+         "audio" : "Audio",
+         "video" : "Video",
+         "documents" : "Documents",
+         "select" : "Select",
+
+
+
+
+
+
+
+         "somethingWentWrong" : "Something went wrong",
+         "unblock" : "Unblock",
+         "blockMessageToReceiver" : "You can not send Message , You blocked by this user",
+         "unblockMessage" : "you Blocked this user, to send this user you have to unblock",
         "privacy" : "Privacy",
         "payments" : "Payments",
         "advance" : "Advance",

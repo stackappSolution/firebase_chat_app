@@ -1310,6 +1310,196 @@ class S {
     );
   }
 
+  /// `Blocked users`
+  String get blockedUsers {
+    return Intl.message(
+      'Blocked users',
+      name: 'blockedUsers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add blocked user`
+  String get addBlockUsers {
+    return Intl.message(
+      'Add blocked user',
+      name: 'addBlockUsers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disappearing Messages`
+  String get disappearingMessage {
+    return Intl.message(
+      'Disappearing Messages',
+      name: 'disappearingMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When enabled,new messages sent and received in new chats started by you will disappear after they have been seen.`
+  String get disappearingMessageDescription {
+    return Intl.message(
+      'When enabled,new messages sent and received in new chats started by you will disappear after they have been seen.',
+      name: 'disappearingMessageDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blocked users will not be able to call you and send you messages`
+  String get blockedUserCannotSendMessage {
+    return Intl.message(
+      'Blocked users will not be able to call you and send you messages',
+      name: 'blockedUserCannotSendMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `off`
+  String get off {
+    return Intl.message(
+      'off',
+      name: 'off',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `weeks`
+  String get weeks {
+    return Intl.message(
+      'weeks',
+      name: 'weeks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `week`
+  String get week {
+    return Intl.message(
+      'week',
+      name: 'week',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `day`
+  String get day {
+    return Intl.message(
+      'day',
+      name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hours`
+  String get hours {
+    return Intl.message(
+      'hours',
+      name: 'hours',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hour`
+  String get hour {
+    return Intl.message(
+      'hour',
+      name: 'hour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `minutes`
+  String get minutes {
+    return Intl.message(
+      'minutes',
+      name: 'minutes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Photo`
+  String get photo {
+    return Intl.message(
+      'Photo',
+      name: 'photo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Documents`
+  String get documents {
+    return Intl.message(
+      'Documents',
+      name: 'documents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select`
+  String get select {
+    return Intl.message(
+      'Select',
+      name: 'select',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something went wrong`
+  String get somethingWentWrong {
+    return Intl.message(
+      'Something went wrong',
+      name: 'somethingWentWrong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unblock`
+  String get unblock {
+    return Intl.message(
+      'Unblock',
+      name: 'unblock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can not send Message , You blocked by this user`
+  String get blockMessageToReceiver {
+    return Intl.message(
+      'You can not send Message , You blocked by this user',
+      name: 'blockMessageToReceiver',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `you Blocked this user, to send this user you have to unblock`
+  String get unblockMessage {
+    return Intl.message(
+      'you Blocked this user, to send this user you have to unblock',
+      name: 'unblockMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Privacy`
   String get privacy {
     return Intl.message(
@@ -1545,16 +1735,6 @@ class S {
     return Intl.message(
       'Other',
       name: 'other',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `off`
-  String get off {
-    return Intl.message(
-      'off',
-      name: 'off',
       desc: '',
       args: [],
     );

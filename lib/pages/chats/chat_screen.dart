@@ -291,7 +291,7 @@ class ChatScreen extends StatelessWidget {
                       ? AppText(
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
-                          color: AppColorConstant.appWhite,
+                          color: Theme.of(context).colorScheme.primary,
                         )
                       : AppText(
                           chatViewModel!.getNameFromContact(receiverNumber),

@@ -32,10 +32,8 @@ class GroupNameScreen extends StatelessWidget {
           const Duration(milliseconds: 100),
           () {
             controller = Get.find<GroupController>();
-
             groupNameViewModel!.membersList = Get.arguments;
             logs("length---> ${groupNameViewModel!.membersList.length}");
-
             controller!.update();
           },
         );
@@ -182,7 +180,7 @@ class GroupNameScreen extends StatelessWidget {
 
     List<dynamic>  members= groupNameViewModel!.mobileNo.toSet().toList();
 
-    DatabaseService().addNewMessage(
+    DatabaseService().addNewMessage(type: 'text',
       createdBy: AuthService.auth.currentUser!.phoneNumber!,
         groupName: groupNameViewModel!.groupNameController.text,
         profile: groupNameViewModel!.userProfile,

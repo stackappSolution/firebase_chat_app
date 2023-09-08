@@ -10,13 +10,6 @@ class ChatingPageController extends GetxController {
   ChatingPage? chatingPage;
   ChatingPageViewModal chatingPageViewModal = ChatingPageViewModal();
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    logs("call onInit");
-    super.onInit();
-    ChatingPage.fontSize = '${chatingPageViewModal.fontSizeInitState()}';
-  }
 
 
 }

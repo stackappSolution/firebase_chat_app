@@ -40,8 +40,8 @@ class ChatingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
-    fontSize = '${chatingPageViewModal!.fontSizeInitState()}';
-    //getBlockedUsersList();
+    fontSize = '${chatingPageViewModal!.fontSizeInitState}';
+    logs('fontSize-----------> $fontSize');
     getBlockedList();
 
     return GetBuilder<ChatingPageController>(
@@ -131,6 +131,23 @@ class ChatingPage extends StatelessWidget {
 
                                   logs('data----> ${data.length}');
 
+                                  return (snapshot.data!.docs.isEmpty)
+                                      ? const SizedBox()
+                                      : ListView.builder(
+                                          itemCount: snapshot.data?.docs.length,
+                                          itemBuilder: (context, index) {
+                                            String formattedTime =
+                                                DateFormation()
+                                                    .getChatTimeFormate(
+                                                        data[index]
+                                                            ['timeStamp']);
+
+                                  return AppText(
+                                      S.of(context).somethingWentWrong);
+                                }
+                                if (snapshot.hasData) {
+                                  final data = snapshot.data!.docs;
+                                  logs('data----> ${data.length}');
                                   return (snapshot.data!.docs.isEmpty)
                                       ? const SizedBox()
                                       : ListView.builder(
@@ -275,6 +292,11 @@ class ChatingPage extends StatelessWidget {
                                       }
                                     }),
                               ])
+                        ? buildBlockView(context)
+                        : (chatingPageViewModal!.blockedNumbers.contains(
+                                chatingPageViewModal!.arguments['number']))
+                            ? buildUnblockView(context)
+                            : buildTextFormField(context, controller)
                   ])));
         });
   }
@@ -283,10 +305,94 @@ class ChatingPage extends StatelessWidget {
     chatingPageViewModal!.blockedNumbers =
         await DatabaseService().getBlockedUsers();
     logs('list-------------> ${chatingPageViewModal!.blockedNumbers}');
+  }
 
-    // chatingPageViewModal!.blockedBy = await DatabaseService()
-    //     .getBlockedBy(chatingPageViewModal!.blockedNumbers);
-    // logs('blockedBy===========> ${chatingPageViewModal!.blockedBy}');
+  buildBlockView(BuildContext context) {
+    return Container(
+        width: double.infinity,
+        height: 150.px,
+        color: AppColorConstant.appYellow.withOpacity(0.1),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20.px,
+            ),
+            AppText(
+              S.of(context).blockMessageToReceiver,
+              textAlign: TextAlign.center,
+              fontSize: 12.px,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            SizedBox(
+              height: 20.px,
+            ),
+          ],
+        ));
+  }
+
+  buildTextFormField(BuildContext context, ChatingPageController controller) {
+    return Row(children: [
+      chatingPageViewModal!.buildPopupMenu(context),
+      Expanded(
+          child: Container(
+              margin: EdgeInsets.only(right: 15.px, bottom: 5.px, top: 5.px),
+              decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(35.px)),
+              height: 40.px,
+              child: textFormField(controller, context))),
+    ]);
+  }
+
+  buildUnblockView(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(12.px),
+      width: double.infinity,
+      height: 150.px,
+      color: AppColorConstant.appYellow.withOpacity(0.1),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            height: 20.px,
+          ),
+          AppText(
+            S.of(context).unblockMessage,
+            textAlign: TextAlign.center,
+            fontSize: 12.px,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          SizedBox(
+            height: 20.px,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const AppText(
+                'cancel',
+                color: AppColorConstant.appYellow,
+              ),
+              AppButton(
+                onTap: () {
+                  chatingPageViewModal!.blockedNumbers
+                      .remove(chatingPageViewModal!.arguments['number']);
+                  DatabaseService()
+                      .unblockUser(chatingPageViewModal!.arguments['number']);
+                  controller!.update();
+                },
+                borderRadius: BorderRadius.circular(12.px),
+                height: 35,
+                width: 90.px,
+                color: AppColorConstant.appYellow,
+                stringChild: true,
+                child: AppText(S.of(context).unblock,
+                    color: AppColorConstant.appWhite, fontSize: 12.px),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   Widget buildMessage(
@@ -434,13 +540,6 @@ class ChatingPage extends StatelessWidget {
                         ])))));
   }
 
-  //
-  // getBlockedUsersList() async {
-  //   chatingPageViewModal!.blockedNumbers =
-  //       await DatabaseService().getBlockedUsers();
-  //   logs('blockkkkk-----------> ${chatingPageViewModal!.blockedNumbers}');
-  // }
-
   AppAppBar appBar(
     ChatingPageController controller,
     context,
@@ -518,7 +617,7 @@ class ChatingPage extends StatelessWidget {
                           Get.toNamed(value);
                         },
                         itemBuilder: (context) {
-                          return controller.chatingPageViewModal!.popupMenu;
+                          return controller.chatingPageViewModal.popupMenu;
                         },
                         icon: Icon(Icons.more_vert,
                             color: Theme.of(context).colorScheme.primary,
@@ -532,6 +631,7 @@ class ChatingPage extends StatelessWidget {
             .contains(chatingPageViewModal!.arguments['number']))
         ? null
         : DatabaseService().addNewMessage(
+            type: 'text',
             members: chatingPageViewModal!.arguments['members'],
             massage: message,
             sender: AuthService.auth.currentUser!.phoneNumber!,
@@ -578,10 +678,32 @@ class ChatingPage extends StatelessWidget {
                   cameraButton(),
                   micButton(),
                 ]))),
+          alignLabelWithHint: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10.px),
+          border: const OutlineInputBorder(borderSide: BorderSide.none),
+          hintText: S.of(context).signalMessage,
+          suffixIcon: AppButton(
+              color: AppColorConstant.appTransparent,
+              height: 30.px,
+              stringChild: true,
+              width: 40.px,
+              borderRadius: BorderRadius.circular(40.px),
+              child: controller.chatingPageViewModal.iconChange
+                  ? const Icon(Icons.send, color: AppColorConstant.appBlack)
+                  : Icon(Icons.add,
+                      size: 27.px, color: AppColorConstant.appBlack),
+              onTap: () {
+                if (chatingPageViewModal!.chatController.text.isNotEmpty) {
+                  onSendMessage(chatingPageViewModal!.chatController.text);
+                  controller.update();
+                  chatingPageViewModal!.chatController.clear();
+                }
+              }),
+        ),
         controller: chatingPageViewModal!.chatController);
   }
 
-  AppButton emojiButton() {
+  AppButton micButton() {
     return AppButton(
         onTap: () {},
         margin: EdgeInsets.only(left: 3.px),
@@ -590,33 +712,7 @@ class ChatingPage extends StatelessWidget {
         color: Colors.transparent,
         stringChild: true,
         borderRadius: BorderRadius.circular(27.px),
-        child: Icon(Icons.mood, size: 27.px, color: AppColorConstant.offBlack));
-  }
-
-  AppButton cameraButton() {
-    return AppButton(
-        onTap: () {},
-        margin: EdgeInsets.only(right: 10.px),
-        width: 27.px,
-        height: 27.px,
-        color: Colors.transparent,
-        stringChild: true,
-        borderRadius: BorderRadius.circular(27.px),
-        child: Icon(Icons.camera_alt_outlined,
-            size: 27.px, color: AppColorConstant.offBlack));
-  }
-
-  AppButton micButton() {
-    return AppButton(
-        onTap: () async {},
-        margin: EdgeInsets.only(right: 10.px),
-        width: 27.px,
-        height: 27.px,
-        color: Colors.transparent,
-        stringChild: true,
-        borderRadius: BorderRadius.circular(27.px),
-        child: Icon(Icons.mic_none_outlined,
-            size: 27.px, color: AppColorConstant.offBlack));
+        child: Icon(Icons.mic, size: 27.px, color: AppColorConstant.offBlack));
   }
 
   double? getFontSizeValue(
