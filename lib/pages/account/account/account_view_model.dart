@@ -44,7 +44,7 @@ class AccountViewModel {
     goToChangePhoneScreen();
   }
 
-  pinReminderTap(context, AccountController controller) {
+  pinReminderTap(context, AttachmentController controller) {
     isPinReminderActive = !isPinReminderActive;
     logs("isSwitchActive------$isPinReminderActive");
     if (!isPinReminderActive) {
@@ -195,7 +195,7 @@ class AccountViewModel {
     controller.update();
   }
 
-  registrationLockTap(context, AccountController controller) {
+  registrationLockTap(context, AttachmentController controller) {
     // isRegistrationLockActive = !isRegistrationLockActive;
     logs("isSwitchActive------$isRegistrationLockActive");
     showDialog(

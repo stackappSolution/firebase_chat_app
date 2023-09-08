@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
 
-class AccountController extends GetxController{
+class AttachmentController extends GetxController{
 
 }

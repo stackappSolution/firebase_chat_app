@@ -247,6 +247,9 @@
          "phoneNumber" : "Phone Number",
          "continues" : "Continue"
 
+        "addContact" : "Add contact",
+        "viewContact" : "View contact",
+        "files" : "files",
 
 
 

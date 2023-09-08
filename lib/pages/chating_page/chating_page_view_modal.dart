@@ -1,22 +1,25 @@
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_button.dart';
-import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
-import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:get/get.dart';
 import 'package:signal/controller/chating_page_controller.dart';
+import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
-import 'package:signal/service/database_service.dart';
 import '../../app/app/utills/app_utills.dart';
+import '../../app/widget/app_image_assets.dart';
+import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
+import '../../service/auth_service.dart';
+import '../../service/database_service.dart';
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
@@ -32,8 +35,8 @@ class ChatingPageViewModal {
   String? formatedTime;
   bool isBlocked = false;
   File? selectedImage;
-  List<PlatformFile> videos = [];
-
+  String? userProfile;
+  bool isLoading = false;
 
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
@@ -81,26 +84,51 @@ class ChatingPageViewModal {
     }
   }
 
-  Future<void> pickImageGallery(GetxController controller) async {
+  Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
+      goToAttachmentScreen(selectedImage!.path, members);
+      // uploadImage(selectedImage!);
+      logs(selectedImage.toString());
+      controller.update();
     }
   }
 
-  Future<void> pickImageCamera(GetxController controller) async {
+  Future<void> pickImageCamera(GetxController controller, members) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.camera);
+
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
+      goToAttachmentScreen(selectedImage!.path, members);
+      // uploadImage(selectedImage!);
+      logs(selectedImage.toString());
+      controller.update();
     }
+  }
+
+  uploadImage(File imageUrl) async {
+    isLoading = true;
+    logs("load--> $isLoading");
+    controller!.update();
+    final storage = FirebaseStorage.instance
+        .ref('profile')
+        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child('profile.jpg');
+    await storage.putFile(imageUrl);
+    userProfile = await storage.getDownloadURL();
+    logs("profile........ $userProfile");
+    isLoading = false;
+    logs("load--> $isLoading");
+    controller!.update();
   }
 
   buildPopupMenu(BuildContext context) {
     return PopupMenuButton(
-
+      offset: Offset(-10, kToolbarHeight),
       onSelected: (value) {
         if (value == 0) {
           buildImagePickerMenu(context);
@@ -221,7 +249,7 @@ class ChatingPageViewModal {
         )),
         PopupMenuItem(
             onTap: () {
-              pickImageGallery(controller!);
+              pickImageGallery(controller!, arguments['members']);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,7 +269,7 @@ class ChatingPageViewModal {
             )),
         PopupMenuItem(
             onTap: () {
-              pickImageCamera(controller!);
+              pickImageCamera(controller!, arguments['members']);
             },
             child: Column(
               children: [
@@ -334,9 +362,4 @@ class ChatingPageViewModal {
       controller!.update();
     }
   }
-
-
-
-
-
 }

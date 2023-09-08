@@ -35,6 +35,7 @@ class RouteConstant{
   static const String disappearingScreen = '/disappear';
 
   static const String newMessageScreen = '/NewMessagePage';
+  static const String attachmentScreen = '/attachmentScreen';
 
 
 
