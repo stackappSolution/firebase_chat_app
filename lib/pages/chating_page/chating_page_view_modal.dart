@@ -65,7 +65,7 @@ class ChatingPageViewModal {
   List<PopupMenuEntry<String>> popupMenu = [
     const PopupMenuItem<String>(value: '/appearance', child: Text('Option 1')),
     const PopupMenuItem<String>(value: '/intro', child: Text('Option 2')),
-    const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3')),
+    const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3'))
   ];
 
   bool iconChange = false;
@@ -87,11 +87,10 @@ class ChatingPageViewModal {
       return AppColorConstant.appYellow;
     }
   }
-}
 
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
@@ -104,7 +103,7 @@ class ChatingPageViewModal {
 
   Future<void> pickImageCamera(GetxController controller, members) async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
@@ -230,28 +229,28 @@ class ChatingPageViewModal {
       items: <PopupMenuEntry>[
         PopupMenuItem(
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 15.px,
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 20, top: 5.px),
-              child: AppText(
-                S.of(Get.context!).select,
-                fontWeight: FontWeight.w800,
-                fontSize: 18.px,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5.px),
-              child: Divider(
-                height: 1.px,
-                color: AppColorConstant.appGrey.withOpacity(0.3),
-              ),
-            )
-          ],
-        )),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 15.px,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20, top: 5.px),
+                  child: AppText(
+                    S.of(Get.context!).select,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 18.px,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5.px),
+                  child: Divider(
+                    height: 1.px,
+                    color: AppColorConstant.appGrey.withOpacity(0.3),
+                  ),
+                )
+              ],
+            )),
         PopupMenuItem(
             onTap: () {
               pickImageGallery(controller!, arguments['members']);
