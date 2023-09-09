@@ -12,7 +12,7 @@ import 'package:signal/controller/chat_profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
-import 'package:signal/service/database_service.dart';
+import 'package:signal/service/users_service.dart';
 
 // ignore: must_be_immutable
 class ChatProfileScreen extends StatelessWidget {
@@ -46,7 +46,7 @@ class ChatProfileScreen extends StatelessWidget {
             body: getBody(context, controller),
           ),
           onWillPop: () async {
-            return false;
+            return true;
           },
         );
       },
@@ -326,7 +326,7 @@ class ChatProfileScreen extends StatelessWidget {
                     onTap: () {
                       chatProfileViewModel!.blockedNumbers
                           .add(chatProfileViewModel!.arguments['number']);
-                      DatabaseService().blockUser(
+                      UsersService().blockUser(
                           chatProfileViewModel!.blockedNumbers,
                           chatProfileViewModel!.arguments['number']);
                       Get.back();
@@ -381,7 +381,7 @@ class ChatProfileScreen extends StatelessWidget {
                     onTap: () {
                       chatProfileViewModel!.blockedNumbers
                           .remove(chatProfileViewModel!.arguments['number']);
-                      DatabaseService().unblockUser(
+                      UsersService().unblockUser(
                           chatProfileViewModel!.arguments['number']);
                       controller.update();
                       Get.back();
@@ -408,7 +408,7 @@ class ChatProfileScreen extends StatelessWidget {
 
   getBlockedUsersList() async {
     chatProfileViewModel!.blockedNumbers =
-        await DatabaseService().getBlockedUsers();
+        await UsersService().getBlockedUsers();
     controller!.update();
     logs('blockkkkk-----------> ${chatProfileViewModel!.blockedNumbers}');
   }

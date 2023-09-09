@@ -25,6 +25,7 @@ class RouteConstant{
   static const String inviteMemberScreen = '/invite';
   static const String newGroupsScreen = '/groups';
   static const String groupNameScreen = '/group_name';
+  static const String imageViewScreen = '/image_view';
 
   static const String chatColorWallpaperScreen = '/chat_theme';
   static const String chatColorScreen = '/chat';

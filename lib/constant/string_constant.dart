@@ -8,54 +8,31 @@ class StringConstant {
   static const String selectedFontSize = 'SelectedFontSize';
   static const String setFontSize = 'setFontSize';
   static const String selectFontSize = 'Select Fontsize';
-
-
-
   static const String calls = 'calls';
   static const String block = 'block';
   static const String chats = 'chats';
   static const String settings = 'Settings';
   static const String appearance = 'appearance';
   static const String account = 'Account';
-
-
   static const String weeks = 'weeks';
   static const String week = 'week';
   static const String day = 'day';
   static const String hours = 'hours';
   static const String hour = 'hour';
   static const String minutes = 'minutes';
-
-
-
-
-
-
   static const String photo='photo';
   static const String audio='audio';
   static const String video='video';
   static const String document='document';
   static const String select='select';
-
-
-
-
   static const String addContact='addContact';
   static const String viewContact='viewContact';
   static const String files='files';
-
-
-
-
   static const String blockedUsers = 'blockedUsers';
   static const String addBlockUsers = 'addBlockUsers';
   static const String disappearingMessage = 'disappearingMessage';
   static const String disappearingMessageDescription = 'disappearingMessageDescription';
   static const String blockedUserCannotSendMessage = 'blockedUserCannotSendMessage';
-
-
-
-
   static const String linkedDevice = 'linkedDevice';
   static const String donateToSignal = 'donateToSignal';
   static const String notification = 'notification';
@@ -221,7 +198,5 @@ class StringConstant {
   static const String chooseFromPhotos = 'chooseFromPhotos';
   static const String resetChatColor = 'resetChatColor';
 
-  static const String addContact='addContact';
-  static const String viewContact='viewContact';
-  static const String files='files';
+
 }

@@ -101,4 +101,20 @@ class DateFormation {
 
     return formattedTime;
   }
+
+  getDatetime(int time){
+    int millisecondsSinceEpoch = time; // Example timestamp
+
+    DateTime dateTime =
+    DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
+
+    return dateTime;
+  }
+
+  String headerTimestamp(int timestamp) {
+    final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    return DateFormat('MMM d, y').format(dateTime);
+  }
+
+
 }

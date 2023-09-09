@@ -324,7 +324,7 @@ class ChatScreen extends StatelessWidget {
                                     fontSize: 12.px);
                               },
                             )
-                          : AppText(messageData[0]["message"] ?? "",
+                          : AppText((messageData[0]['messageType']=='image')? 'image': messageData[0]["message"] ?? "",
                               color: AppColorConstant.grey, fontSize: 12.px);
                     },
                   ),

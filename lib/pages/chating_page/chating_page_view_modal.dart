@@ -14,19 +14,21 @@ import 'package:get/get.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/users_service.dart';
 import '../../app/app/utills/app_utills.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
 import '../../service/auth_service.dart';
-import '../../service/database_service.dart';
+
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
 
   Color? chatBubbleColor;
   Color? wallpaperColor;
-  List<dynamic> blockedNumbers = [];
+  int? formattedDate;
+  List<String> blockedNumbers = [];
   Map<String, dynamic> parameter = {};
   Map<String, dynamic> arguments = {};
   String? wallpaperPath;
@@ -37,6 +39,8 @@ class ChatingPageViewModal {
   File? selectedImage;
   String? userProfile;
   bool isLoading = false;
+  List<DateTime> messageTimeStamp=[];
+  ScrollController scrollController =  ScrollController();
 
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
@@ -357,7 +361,7 @@ class ChatingPageViewModal {
     }
     if (value == 3) {
       blockedNumbers.add(arguments['number']);
-      DatabaseService().blockUser(blockedNumbers, arguments['number']);
+      UsersService().blockUser(blockedNumbers, arguments['number']);
 
       controller!.update();
     }

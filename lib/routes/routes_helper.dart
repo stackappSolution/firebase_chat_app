@@ -3,6 +3,7 @@ import 'package:signal/pages/account/change_phone/change_phone_screen.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
+import 'package:signal/pages/chating_page/image_view/image_view.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
 import 'package:signal/pages/chats/chat_theme/chat_wallpaper.dart';
@@ -81,6 +82,7 @@ class RouteHelper {
   static String getChatProfileScreen() => RouteConstant.chatProfileScreen;
 
   static String getPrivacyScreen() => RouteConstant.privacyScreen;
+  static String getImageViewScreen() => RouteConstant.imageViewScreen;
 
   static String getBlockedUsersScreen() => RouteConstant.blockedUsersScreen;
 
@@ -101,6 +103,7 @@ class RouteHelper {
       page: () => SignInPage(),
     ),
     GetPage(name: RouteConstant.settingsScreen, page: () => SettingScreen()),
+    GetPage(name: RouteConstant.imageViewScreen, page: () => ImageView()),
     GetPage(name: RouteConstant.newMessageScreen, page: () => NewMessagePage()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
