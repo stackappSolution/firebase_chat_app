@@ -1,31 +1,33 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/date_formation.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_button.dart';
+import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/modal/message.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
-import 'package:signal/service/notification_api_services.dart';
-
+import 'package:signal/service/users_service.dart';
 import '../../controller/chating_page_controller.dart';
 
+// ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
   ChatingPage({super.key});
 
@@ -34,9 +36,6 @@ class ChatingPage extends StatelessWidget {
   static String? fontSize;
   Stream<QuerySnapshot>? chats;
   ChatingPageController? controller;
-  String? fcmToken;
-  FirebaseMessaging? firebaseMessaging;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +53,9 @@ class ChatingPage extends StatelessWidget {
             const Duration(milliseconds: 0),
                 () async {
               controller = Get.find<ChatingPageController>();
-              logs('arg--> ${chatingPageViewModal!.arguments['number']}');
+              logs('arg--> ${chatingPageViewModal!.arguments}');
 
-              chatingPageViewModal!.isBlocked = await DatabaseService()
+              chatingPageViewModal!.isBlocked = await UsersService()
                   .isBlockedByLoggedInUser(
                   chatingPageViewModal!.arguments['number']);
               logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
@@ -118,154 +117,81 @@ class ChatingPage extends StatelessWidget {
                     )
                         : const SizedBox(),
                     Expanded(
-                      child: (chatingPageViewModal!.arguments['isGroup'] !=
-                          null)
-                          ? StreamBuilder<QuerySnapshot>(
-                        stream: chats,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            return AppText(
-                                S.of(context).somethingWentWrong);
-                          }
-                          if (snapshot.hasData) {
-                            final data = snapshot.data!.docs;
-                            logs('data----> ${data.length}');
-                            return (snapshot.data!.docs.isEmpty)
-                                ? const SizedBox()
-                                : ListView.builder(
-                              itemCount: snapshot.data?.docs.length,
-                              itemBuilder: (context, index) {
-                                String formattedTime =
-                                DateFormation()
-                                    .getChatTimeFormate(
-                                    data[index]
-                                    ['timeStamp']);
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: chats,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              return AppText(S.of(context).somethingWentWrong);
+                            }
+                            if (snapshot.hasData) {
+                              final data = snapshot.data!.docs;
+                              logs('data----> ${data.length}');
+                              final message = snapshot.data!.docs
+                                  .map((doc) => doc.data() as Map<String, dynamic>)
+                                  .toList();
+                              return GroupedListView(
+                                itemBuilder: (context, element) {
 
-                                return buildMessage(
-                                    data[index]['sender'],
-                                    context,
-                                    controller,
-                                    data[index]['message'],
-                                    formattedTime);
-                              },
-                            );
-                          }
-                          return const AppLoader();
-                        },
-                      )
-                          : const SizedBox(),
-                    ),
-                    (chatingPageViewModal!.blockedNumbers.contains(
-                            chatingPageViewModal!.arguments['number']))
-                        ? (chatingPageViewModal!.arguments['number'] !=
-                                AuthService.auth.currentUser!.phoneNumber!)
-                            ? Container(
-                                height: 150.px,
-                                color:
-                                    AppColorConstant.appYellow.withOpacity(0.1),
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 20.px,
-                                    ),
-                                    AppText(
-                                      'You cant send message to block user , To send Message you have to unblock User',
-                                      textAlign: TextAlign.center,
-                                      fontSize: 12.px,
-                                    ),
-                                    SizedBox(
-                                      height: 20.px,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        InkWell(
-                                            onTap: () {
-                                              Get.back();
-                                            },
-                                            child: AppText(S.of(context).cancel,
-                                                color: AppColorConstant
-                                                    .appYellow)),
-                                        SizedBox(
-                                          width: 20.px,
-                                        ),
-                                        InkWell(
-                                            onTap: () {
-                                              chatingPageViewModal!
-                                                  .blockedNumbers
-                                                  .remove(chatingPageViewModal!
-                                                      .arguments['number']);
-                                              DatabaseService().unblockUser(
-                                                  chatingPageViewModal!
-                                                      .arguments['number']);
-                                              Get.back();
-                                              controller.update();
-                                            },
-                                            child: AppButton(
-                                              width: 120.px,
-                                              borderRadius:
-                                                  BorderRadius.circular(12.px),
-                                              height: 35.px,
-                                              color: AppColorConstant.appYellow,
-                                              stringChild: true,
-                                              child: AppText(
-                                                'Unblock',
-                                                color:
-                                                    AppColorConstant.appWhite,
-                                                fontSize: 12.px,
-                                              ),
-                                            ))
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            : const AppText('You Blocked by This user')
-                        : Row(children: [
-                            Expanded(
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                        right: 15.px,
-                                        left: 15.px,
-                                        bottom: 5.px,
-                                        top: 5.px),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black12,
-                                        borderRadius:
-                                            BorderRadius.circular(35.px)),
-                                    height: 40.px,
-                                    child: textFormField(controller, context))),
-                            AppButton(
-                                margin: EdgeInsets.only(right: 15.px),
-                                height: 40.px,
-                                color: AppColorConstant.appWhite,
-                                stringChild: true,
-                                width: 40.px,
-                                borderRadius: BorderRadius.circular(40.px),
-                                child:
-                                    controller.chatingPageViewModal.iconChange
-                                        ? const Icon(Icons.send,
-                                            color: AppColorConstant.appBlack)
-                                        : Icon(Icons.add,
-                                            size: 27.px,
-                                            color: AppColorConstant.appBlack),
-                                onTap: () async {
-                                  if (chatingPageViewModal!
-                                      .chatController.text.isNotEmpty) {
-                                    controller.update();
-                                    Map<String, dynamic> bodyMap = {"useFor": "message"};
-                                    var response =
-                                    ResponseService.PostRestUrl(RestConstant.endpoint, bodyMap);
-                                    logs("response-->$response");
-                                    onSendMessage(chatingPageViewModal!
-                                        .chatController.text);
-                                    chatingPageViewModal!.chatController
-                                        .clear();
+                                  String formattedTime= DateFormation().getChatTimeFormate(element['messageTimestamp']);
+
+                                  DateTime dateTime = DateFormation()
+                                      .getDatetime(element['messageTimestamp']);
+
+                                  chatingPageViewModal!.messageTimeStamp
+                                      .add(dateTime);
+
+                                  return buildMessage(
+                                      Message(
+                                          message: element['message'],
+                                          isSender: element['isSender'],
+                                          messageTimestamp: formattedTime,
+                                          messageType: element['messageType'],
+                                          sender: element['sender']),
+                                      context,
+                                      controller);
+                                },
+                                reverse: true,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                order: GroupedListOrder.DESC,
+                                useStickyGroupSeparators: true,
+                                floatingHeader: true,
+                                elements: message,
+                                groupBy: (element) {
+                                  String formatDate(DateTime dateTime) {
+                                    return DateFormat('MMM d, y').format(dateTime);
                                   }
-                                }),
-                          ])
+                                  var timestamp = element['messageTimestamp'];
+                                  final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+                                  return formatDate(date);
+                                },
+                                groupHeaderBuilder: (value) {
+                                  var timestamp = value['messageTimestamp'];
+                                  String formatDate =DateFormation().headerTimestamp(timestamp);
+                                  return Container(
+                                      margin: EdgeInsets.only(top: 5.px),
+                                      alignment: Alignment.center,
+                                      height: 25.px,
+                                      child: Container(
+                                          padding: EdgeInsets.all(5.px),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(5.px),
+                                              color: AppColorConstant.appYellow),
+                                          alignment: Alignment.center,
+                                          height: 25.px,
+                                          width: 100.px,
+                                          child: Text(
+                                              formatDate,
+                                              style: const TextStyle(
+                                                  color:
+                                                  AppColorConstant.appWhite))));
+                                },
+                              );
+                            }
+                            return const AppLoader();
+                          },
+                        )),
                     (chatingPageViewModal!.isBlocked)
                         ? buildBlockView(context)
                         : (chatingPageViewModal!.blockedNumbers.contains(
@@ -278,7 +204,7 @@ class ChatingPage extends StatelessWidget {
 
   getBlockedList() async {
     chatingPageViewModal!.blockedNumbers =
-    await DatabaseService().getBlockedUsers();
+    await UsersService().getBlockedUsers();
     logs('list-------------> ${chatingPageViewModal!.blockedNumbers}');
   }
 
@@ -351,7 +277,7 @@ class ChatingPage extends StatelessWidget {
                 onTap: () {
                   chatingPageViewModal!.blockedNumbers
                       .remove(chatingPageViewModal!.arguments['number']);
-                  DatabaseService()
+                  UsersService()
                       .unblockUser(chatingPageViewModal!.arguments['number']);
                   controller!.update();
                 },
@@ -371,14 +297,15 @@ class ChatingPage extends StatelessWidget {
   }
 
   Widget buildMessage(
-      String sender,
-      context,
-      ChatingPageController controller,
-      String chatMessage,
-      String timeStamp,
-      ) {
+      Message message, BuildContext context, ChatingPageController controller) {
+
+
+
+
+
+
     return Slidable(
-        child: (sender == AuthService.auth.currentUser!.phoneNumber!)
+        child: (message.sender == AuthService.auth.currentUser!.phoneNumber)
             ? (Slidable(
             endActionPane: ActionPane(
                 extentRatio: fontSize == StringConstant.small
@@ -402,9 +329,10 @@ class ChatingPage extends StatelessWidget {
                                   normal: 18.px),
                               backgroundColor: AppColorConstant.appYellow)))
                 ]),
-            child: Container(
-                margin:
-                EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
+            child: (message.messageType == 'text')
+                ? Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: 4.px, horizontal: 8.px),
                 alignment: Alignment.centerRight,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -420,7 +348,7 @@ class ChatingPage extends StatelessWidget {
                           alignment: Alignment.topRight,
                           backGroundColor:
                           chatingPageViewModal!.chatBubbleColor,
-                          child: AppText(chatMessage,
+                          child: AppText(message.message,
                               color: AppColorConstant.appWhite,
                               fontSize: getFontSizeValue(
                                   small: 10.px,
@@ -428,15 +356,45 @@ class ChatingPage extends StatelessWidget {
                                   extraLarge: 25.px,
                                   normal: 15.px))),
                       Padding(
-                          padding: EdgeInsets.only(right: 5.px, top: 3.px),
-                          child: AppText(timeStamp.toString(),
-                              color: Theme.of(context).colorScheme.primary,
+                          padding:
+                          EdgeInsets.only(right: 5.px, top: 3.px),
+                          child: AppText(
+                              message.messageTimestamp.toString(),
+                              color:
+                              Theme.of(context).colorScheme.primary,
                               fontSize: getFontSizeValue(
                                   small: 8.px,
                                   large: 15.px,
                                   extraLarge: 20.px,
                                   normal: 12.px)))
-                    ]))))
+                    ]))
+                : Align(
+              alignment: Alignment.topRight,
+              child: InkWell(
+                onTap: () {
+                  Get.toNamed(RouteHelper.getImageViewScreen(),
+                      arguments: {
+                        'image': message.message,
+                        'name':
+                        chatingPageViewModal!.arguments['name']
+                      });
+                },
+                child: Container(
+                  margin: EdgeInsets.all(10.px),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColorConstant.appYellow,
+                    ),
+                    borderRadius: BorderRadius.circular(12.px),
+                  ),
+                  height: 200.px,
+                  width: 150.px,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12.px),
+                      child: AppImageAsset(image: message.message)),
+                ),
+              ),
+            )))
             : (Slidable(
             startActionPane: ActionPane(
                 extentRatio: fontSize == StringConstant.small
@@ -453,18 +411,32 @@ class ChatingPage extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       child: Padding(
                           padding: EdgeInsets.only(bottom: 10.px),
-                          child: CircleAvatar(
-                              radius: getFontSizeValue(
-                                  small: 15.px,
-                                  large: 22.px,
-                                  extraLarge: 28.px,
-                                  normal: 18.px),
-                              backgroundColor:
-                              chatingPageViewModal!.chatBubbleColor)))
+                          child:  CircleAvatar(
+                            radius: getFontSizeValue(
+                                small: 15.px,
+                                large: 22.px,
+                                extraLarge: 28.px,
+                                normal: 18.px),
+                            backgroundColor:
+                            chatingPageViewModal!.chatBubbleColor,
+                            child: AppText(
+                              (chatingPageViewModal!.arguments['isGroup'] != false)
+                                  ? chatingPageViewModal!.arguments['groupName']
+                                  .substring(0, 1)
+                                  .toUpperCase()
+                                  : chatingPageViewModal!.arguments['name']
+                                  .substring(0, 1)
+                                  .toUpperCase(),
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 18.px,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )))
                 ]),
-            child: Container(
-                margin:
-                EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
+            child: (message.messageType == 'text')
+                ? Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: 4.px, horizontal: 8.px),
                 alignment: Alignment.centerLeft,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -484,11 +456,12 @@ class ChatingPage extends StatelessWidget {
                               ? Column(
                             children: [
                               AppText(
-                                sender,
+                                message.sender,
                                 fontSize: 10.px,
                               ),
-                              AppText(chatMessage,
-                                  color: AppColorConstant.appBlack,
+                              AppText(message.message,
+                                  color:
+                                  AppColorConstant.appBlack,
                                   fontSize: getFontSizeValue(
                                       small: 10.px,
                                       large: 20.px,
@@ -496,7 +469,7 @@ class ChatingPage extends StatelessWidget {
                                       normal: 15.px))
                             ],
                           )
-                              : AppText(chatMessage,
+                              : AppText(message.message,
                               color: AppColorConstant.appWhite,
                               fontSize: getFontSizeValue(
                                   small: 10.px,
@@ -504,15 +477,35 @@ class ChatingPage extends StatelessWidget {
                                   extraLarge: 25.px,
                                   normal: 15.px))),
                       Padding(
-                          padding: EdgeInsets.only(left: 5.px, top: 3.px),
-                          child: AppText(timeStamp.toString(),
-                              color: Theme.of(context).colorScheme.primary,
+                          padding:
+                          EdgeInsets.only(left: 5.px, top: 3.px),
+                          child: AppText(
+                              message.messageTimestamp.toString(),
+                              color:
+                              Theme.of(context).colorScheme.primary,
                               fontSize: getFontSizeValue(
                                   small: 8.px,
                                   large: 15.px,
                                   extraLarge: 20.px,
                                   normal: 12.px)))
-                    ])))));
+                    ]))
+                : Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                margin: EdgeInsets.all(10.px),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColorConstant.appYellow,
+                  ),
+                  borderRadius: BorderRadius.circular(12.px),
+                ),
+                height: 200.px,
+                width: 150.px,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.px),
+                    child: AppImageAsset(image: message.message)),
+              ),
+            ))));
   }
 
   AppAppBar appBar(
@@ -603,10 +596,11 @@ class ChatingPage extends StatelessWidget {
         sender: AuthService.auth.currentUser!.phoneNumber!,
         isGroup: false);
     logs('message---> $message');
+
     controller!.update();
   }
 
-  textFormField(ChatingPageController controller, BuildContext context)  {
+  textFormField(ChatingPageController controller, BuildContext context) {
     return TextFormField(
         style: TextStyle(color: Theme.of(context).colorScheme.primary),
         maxLines: null,

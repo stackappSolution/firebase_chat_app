@@ -1,14 +1,9 @@
 import 'package:signal/pages/settings/privacy/blocked/blocked_users_screen.dart';
 
-class BlockedUsersViewModel{
+class BlockedUsersViewModel {
   BlockedUsersScreen? blockedUsersScreen;
 
-
-
-  List<dynamic> blockedUsersList=[];
+  List<String> blockedUsersList = [];
 
   BlockedUsersViewModel(this.blockedUsersScreen);
-
-
-
 }

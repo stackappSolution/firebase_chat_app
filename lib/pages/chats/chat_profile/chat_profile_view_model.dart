@@ -13,7 +13,7 @@ class ChatProfileViewModel{
   ChatProfileController? controller;
 
   Map<String,dynamic> arguments= {};
-  List<dynamic> blockedNumbers=[];
+  List<String> blockedNumbers=[];
   List<dynamic> addBlockNumbers = [];
   ChatProfileViewModel(this.chatProfileScreen){
     Future.delayed(const Duration(milliseconds: 1),() {

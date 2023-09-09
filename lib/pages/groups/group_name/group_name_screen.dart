@@ -185,6 +185,7 @@ class GroupNameScreen extends StatelessWidget {
         groupName: groupNameViewModel!.groupNameController.text,
         profile: groupNameViewModel!.userProfile,
         members: members,
+
         isGroup: true);
 
   }

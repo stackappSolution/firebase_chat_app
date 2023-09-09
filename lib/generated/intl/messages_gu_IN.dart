@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "account": MessageLookupByLibrary.simpleMessage("એકાઉન્ટ"),
         "addBlockUsers":
             MessageLookupByLibrary.simpleMessage("અવરોધિત વપરાશકર્તા ઉમેરો"),
+        "addContact": MessageLookupByLibrary.simpleMessage("સંપર્ક ઉમેરો"),
         "addRemoveMember": MessageLookupByLibrary.simpleMessage(
             "તમે આ જૂથ બનાવ્યા પછી મિત્રોને ઉમેરી અથવા આમંત્રિત કરી શકો છો"),
         "advance": MessageLookupByLibrary.simpleMessage("એડવાન્સ"),
@@ -114,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "extraLarge": MessageLookupByLibrary.simpleMessage("વધારાનું મોટું"),
         "featureRequest": MessageLookupByLibrary.simpleMessage("સુવિધા વિનંતી"),
         "feedback": MessageLookupByLibrary.simpleMessage("પ્રતિભાવ"),
+        "files": MessageLookupByLibrary.simpleMessage("ફાઈલો"),
         "fingerprintTransfer": MessageLookupByLibrary.simpleMessage(
             "ફંડ ટ્રાન્સફર કરવા માટે Android સ્ક્રીન લૉક અથવા ફિંગરપ્રિન્ટની જરૂર છે"),
         "firstName": MessageLookupByLibrary.simpleMessage("પ્રથમ નામ (જરૂરી)"),
@@ -267,6 +269,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("અમે મોકલેલ કોડ દાખલ કરો"),
         "version": MessageLookupByLibrary.simpleMessage("આવૃત્તિ"),
         "video": MessageLookupByLibrary.simpleMessage("વિડિયો"),
+        "viewContact": MessageLookupByLibrary.simpleMessage("સંપર્ક જુઓ"),
         "viewSafetyNumbers":
             MessageLookupByLibrary.simpleMessage("સુરક્ષા નંબરો જુઓ"),
         "warning": MessageLookupByLibrary.simpleMessage("ચેતવણી"),

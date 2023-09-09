@@ -13,24 +13,22 @@ import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:get/get.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/routes/app_navigation.dart';
+import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/users_service.dart';
 import '../../app/app/utills/app_utills.dart';
-import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_image_assets.dart';
-import '../../app/widget/app_text.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
-import '../../generated/l10n.dart';
 import '../../service/auth_service.dart';
-import 'package:path_provider/path_provider.dart';
 
-import '../../service/database_service.dart';
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
 
   Color? chatBubbleColor;
   Color? wallpaperColor;
-  List<dynamic> blockedNumbers = [];
+  int? formattedDate;
+  List<String> blockedNumbers = [];
   Map<String, dynamic> parameter = {};
   Map<String, dynamic> arguments = {};
   String? wallpaperPath;
@@ -41,6 +39,8 @@ class ChatingPageViewModal {
   File? selectedImage;
   String? userProfile;
   bool isLoading = false;
+  List<DateTime> messageTimeStamp=[];
+  ScrollController scrollController =  ScrollController();
 
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
@@ -65,7 +65,7 @@ class ChatingPageViewModal {
   List<PopupMenuEntry<String>> popupMenu = [
     const PopupMenuItem<String>(value: '/appearance', child: Text('Option 1')),
     const PopupMenuItem<String>(value: '/intro', child: Text('Option 2')),
-    const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3')),
+    const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3'))
   ];
 
   bool iconChange = false;
@@ -87,15 +87,14 @@ class ChatingPageViewModal {
       return AppColorConstant.appYellow;
     }
   }
-}
 
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(selectedImage!.path,members);
+      goToAttachmentScreen(selectedImage!.path, members);
       // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
@@ -104,11 +103,11 @@ class ChatingPageViewModal {
 
   Future<void> pickImageCamera(GetxController controller, members) async {
     final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(selectedImage!.path,members);
+      goToAttachmentScreen(selectedImage!.path, members);
       // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
@@ -230,31 +229,31 @@ class ChatingPageViewModal {
       items: <PopupMenuEntry>[
         PopupMenuItem(
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 15.px,
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 20, top: 5.px),
-              child: AppText(
-                S.of(Get.context!).select,
-                fontWeight: FontWeight.w800,
-                fontSize: 18.px,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5.px),
-              child: Divider(
-                height: 1.px,
-                color: AppColorConstant.appGrey.withOpacity(0.3),
-              ),
-            )
-          ],
-        )),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 15.px,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 20, top: 5.px),
+                  child: AppText(
+                    S.of(Get.context!).select,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 18.px,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5.px),
+                  child: Divider(
+                    height: 1.px,
+                    color: AppColorConstant.appGrey.withOpacity(0.3),
+                  ),
+                )
+              ],
+            )),
         PopupMenuItem(
             onTap: () {
-              pickImageGallery(controller!,arguments['members']);
+              pickImageGallery(controller!, arguments['members']);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,7 +273,7 @@ class ChatingPageViewModal {
             )),
         PopupMenuItem(
             onTap: () {
-              pickImageCamera(controller!,arguments['members']);
+              pickImageCamera(controller!, arguments['members']);
             },
             child: Column(
               children: [
@@ -294,9 +293,7 @@ class ChatingPageViewModal {
   buildNavigationMenu(BuildContext context) {
     return PopupMenuButton(
       onSelected: (value) {
-        if (value == 2) {
-
-        }
+        onSelectItem(value);
       },
       elevation: 0.5,
       position: PopupMenuPosition.under,
@@ -313,33 +310,60 @@ class ChatingPageViewModal {
         return [
           PopupMenuItem(
               value: 0,
-              child: Row(children: [ AppText("S.of(Get.context!).addContact"),Icon(Icons.add)],)
-          ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).addContact),
+                  const Icon(Icons.add)
+                ],
+              )),
           PopupMenuItem(
-              value: 1, child: Row(
-            children: [
-              AppText("S.of(Get.context!).viewContact"),
-              const Icon(Icons.remove_red_eye),
-            ],
-          )),
-          PopupMenuItem(value: 2, child: Row(
-            children: [
-              AppText("S.of(Get.context!).files"),
-              const Icon(Icons.file_copy_sharp),
-            ],
-          )),
+              value: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).viewContact),
+                  const Icon(Icons.remove_red_eye_outlined),
+                ],
+              )),
           PopupMenuItem(
-              value: 3, child: Row(
-            children: [
-              AppText(S.of(Get.context!).block),
-              const Icon(Icons.block),
-            ],
-          )),
+              value: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).files),
+                  const Icon(Icons.file_copy_outlined),
+                ],
+              )),
+          PopupMenuItem(
+              value: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).block),
+                  const Icon(Icons.block),
+                ],
+              )),
         ];
       },
     );
   }
 
+  onSelectItem(value) {
+    if (value == 1) {
+      Get.toNamed(RouteHelper.getChatProfileScreen(), arguments: {
+        'name': arguments['name'],
+        'number': arguments['number'],
+        'id': arguments['id'],
+        'isGroup': arguments['isGroup'],
+        'members': arguments['members'],
+      });
+    }
+    if (value == 3) {
+      blockedNumbers.add(arguments['number']);
+      UsersService().blockUser(blockedNumbers, arguments['number']);
 
-
+      controller!.update();
+    }
+  }
 }
