@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -20,9 +22,10 @@ import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
+import 'package:signal/service/notification_api_services.dart';
+
 import '../../controller/chating_page_controller.dart';
 
-// ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
   ChatingPage({super.key});
 
@@ -31,6 +34,9 @@ class ChatingPage extends StatelessWidget {
   static String? fontSize;
   Stream<QuerySnapshot>? chats;
   ChatingPageController? controller;
+  String? fcmToken;
+  FirebaseMessaging? firebaseMessaging;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +156,116 @@ class ChatingPage extends StatelessWidget {
                       )
                           : const SizedBox(),
                     ),
+                    (chatingPageViewModal!.blockedNumbers.contains(
+                            chatingPageViewModal!.arguments['number']))
+                        ? (chatingPageViewModal!.arguments['number'] !=
+                                AuthService.auth.currentUser!.phoneNumber!)
+                            ? Container(
+                                height: 150.px,
+                                color:
+                                    AppColorConstant.appYellow.withOpacity(0.1),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 20.px,
+                                    ),
+                                    AppText(
+                                      'You cant send message to block user , To send Message you have to unblock User',
+                                      textAlign: TextAlign.center,
+                                      fontSize: 12.px,
+                                    ),
+                                    SizedBox(
+                                      height: 20.px,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: AppText(S.of(context).cancel,
+                                                color: AppColorConstant
+                                                    .appYellow)),
+                                        SizedBox(
+                                          width: 20.px,
+                                        ),
+                                        InkWell(
+                                            onTap: () {
+                                              chatingPageViewModal!
+                                                  .blockedNumbers
+                                                  .remove(chatingPageViewModal!
+                                                      .arguments['number']);
+                                              DatabaseService().unblockUser(
+                                                  chatingPageViewModal!
+                                                      .arguments['number']);
+                                              Get.back();
+                                              controller.update();
+                                            },
+                                            child: AppButton(
+                                              width: 120.px,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.px),
+                                              height: 35.px,
+                                              color: AppColorConstant.appYellow,
+                                              stringChild: true,
+                                              child: AppText(
+                                                'Unblock',
+                                                color:
+                                                    AppColorConstant.appWhite,
+                                                fontSize: 12.px,
+                                              ),
+                                            ))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            : const AppText('You Blocked by This user')
+                        : Row(children: [
+                            Expanded(
+                                child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: 15.px,
+                                        left: 15.px,
+                                        bottom: 5.px,
+                                        top: 5.px),
+                                    decoration: BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius:
+                                            BorderRadius.circular(35.px)),
+                                    height: 40.px,
+                                    child: textFormField(controller, context))),
+                            AppButton(
+                                margin: EdgeInsets.only(right: 15.px),
+                                height: 40.px,
+                                color: AppColorConstant.appWhite,
+                                stringChild: true,
+                                width: 40.px,
+                                borderRadius: BorderRadius.circular(40.px),
+                                child:
+                                    controller.chatingPageViewModal.iconChange
+                                        ? const Icon(Icons.send,
+                                            color: AppColorConstant.appBlack)
+                                        : Icon(Icons.add,
+                                            size: 27.px,
+                                            color: AppColorConstant.appBlack),
+                                onTap: () async {
+                                  if (chatingPageViewModal!
+                                      .chatController.text.isNotEmpty) {
+                                    controller.update();
+                                    Map<String, dynamic> bodyMap = {"useFor": "message"};
+                                    var response =
+                                    ResponseService.PostRestUrl(RestConstant.endpoint, bodyMap);
+                                    logs("response-->$response");
+                                    onSendMessage(chatingPageViewModal!
+                                        .chatController.text);
+                                    chatingPageViewModal!.chatController
+                                        .clear();
+                                  }
+                                }),
+                          ])
                     (chatingPageViewModal!.isBlocked)
                         ? buildBlockView(context)
                         : (chatingPageViewModal!.blockedNumbers.contains(
@@ -487,11 +603,10 @@ class ChatingPage extends StatelessWidget {
         sender: AuthService.auth.currentUser!.phoneNumber!,
         isGroup: false);
     logs('message---> $message');
-
     controller!.update();
   }
 
-  textFormField(ChatingPageController controller, BuildContext context) {
+  textFormField(ChatingPageController controller, BuildContext context)  {
     return TextFormField(
         style: TextStyle(color: Theme.of(context).colorScheme.primary),
         maxLines: null,

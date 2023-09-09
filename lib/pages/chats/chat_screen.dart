@@ -18,7 +18,6 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
-
 import '../../app/app/utills/date_formation.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -291,7 +290,7 @@ class ChatScreen extends StatelessWidget {
                       ? AppText(
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: AppColorConstant.appWhite,
                         )
                       : AppText(
                           chatViewModel!.getNameFromContact(receiverNumber),
