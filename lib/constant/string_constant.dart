@@ -24,7 +24,7 @@ class StringConstant {
   static const String inviteFriends = 'inviteFriends';
   static const String gujarati = 'gujarati';
   static const String english = 'english';
-  static const String signal = 'Signal';
+  static const String signal = 'Sign In';
   static const String search = 'Search';
   static const String yesterday = 'Yesterday';
   static const String theme = 'theme';

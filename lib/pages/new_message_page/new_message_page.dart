@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textForm_field.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -12,12 +13,12 @@ import 'package:signal/pages/new_message_page/new_message_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
-import 'package:signal/service/database_helper.dart';
 
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
 
   NewMessageViewModel? newMessageViewModel;
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,8 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
-        DataBaseHelper.createDB();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
-        getNumbers();
-        onSearchContacts();
       },
       builder: (NewMessageController controller) {
         return SafeArea(
@@ -43,7 +41,7 @@ class NewMessagePage extends StatelessWidget {
     );
   }
 
-  buildAppBar(BuildContext context) => AppBar(
+  buildAppBar(BuildContext context) => AppAppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         title: AppText(
           S.of(context).newMessage,
@@ -56,18 +54,17 @@ class NewMessagePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 10.px),
             Padding(
-              padding: EdgeInsets.all(20.px),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: SizedBox(
                 height: 50.px,
                 child:AppTextFormField(
                   onChanged: (value) {
-                    newMessageViewModel!.textController.text;
-                    filterContacts();
-                    newMessageViewModel!.newMessageController!.isSearch(true);
-                    newMessageViewModel!.newMessageController!.setFilterText(value);
+                    newMessageViewModel!.searchController.text;
+                    newMessageViewModel!.filterContacts(value);
                   },
-                  controller: newMessageViewModel!.textController,
+                  controller: newMessageViewModel!.searchController,
                   suffixIcon: InkWell(
                     onTap: () {
                       newMessageViewModel!.toggleIcon();
@@ -87,6 +84,7 @@ class NewMessagePage extends StatelessWidget {
                 )
               ),
             ),
+            SizedBox(height: 15.px,),
             Padding(
               padding: EdgeInsets.only(top: 8.px),
               child: ListTile(
@@ -130,11 +128,13 @@ class NewMessagePage extends StatelessWidget {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
-      itemCount: newMessageViewModel!.isSerching == true
-          ? newMessageViewModel!.filterContacts.length
+      itemCount: newMessageViewModel!.isSearching == true
+          ? newMessageViewModel!.filteredContacts.length
           : newMessageViewModel!.contacts.length,
       itemBuilder: (context, index) {
-        final Contact contact = newMessageViewModel!.contacts[index];
+        final Contact contact = newMessageViewModel!.isSearching
+            ? newMessageViewModel!.filteredContacts[index]
+            : newMessageViewModel!.contacts[index];
         String? mobileNumber = contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
@@ -142,7 +142,6 @@ class NewMessagePage extends StatelessWidget {
           margin: EdgeInsets.only(top: 5.px),
           child: InkWell(
             onTap: () {
-              onSearchContacts();
               goToChatingScreen();
               newMessageViewModel!.newMessageController!.update();
             },
@@ -194,42 +193,4 @@ class NewMessagePage extends StatelessWidget {
     );
   }
 
-  getNumbers() async {
-    newMessageViewModel!.mobileNumbers =
-        await newMessageViewModel!.getMobileNumbers();
-    logs('phones----> ${newMessageViewModel!.mobileNumbers}');
-  }
-  onSearchContacts() {
-    newMessageViewModel!.filterContacts =
-        newMessageViewModel!.contacts.where((contact) {
-          final lowerCaseQuery = newMessageViewModel!
-              .newMessageController!.filteredValue
-              .toLowerCase();
-          return contact.displayName!.toLowerCase().contains(
-              lowerCaseQuery) ||
-              contact.phones!.any(
-                      (phone) =>
-                      phone.value!.toLowerCase().contains(
-                          lowerCaseQuery));
-        }).toList();
-  }
-
-  Future<void>filterContacts() async {
-    final contacts = await newMessageViewModel!.getAllContacts();
-    final searchTerm = newMessageViewModel!.textController.text.toLowerCase();
-    if (contacts != null && searchTerm.isNotEmpty) {
-      newMessageViewModel!.contacts = contacts.where((contact) {
-        final displayName = contact.displayName?.toLowerCase() ?? '';
-        final phones = contact.phones ?? [];
-        bool nameMatch = displayName.contains(searchTerm);
-        bool phoneMatch = phones.any((phone) =>
-        phone.value?.toLowerCase().contains(searchTerm) ?? false);
-
-        return nameMatch || phoneMatch;
-      }).toList();
-    } else {
-      newMessageViewModel!.contacts = [];
-    }
-    newMessageViewModel!.newMessageController!.update();
-  }
 }

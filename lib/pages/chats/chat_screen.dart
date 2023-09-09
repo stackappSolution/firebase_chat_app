@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/app/app/utills/date_formation.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_loader.dart';
@@ -16,8 +17,6 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
-
-
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -215,8 +214,10 @@ class ChatScreen extends StatelessWidget {
             receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
             String receiverNumber =
                 receiver.join("").toString().trim().removeAllWhitespace;
-            String firstLetter =
-                chatViewModel!.getNameFromContact(receiverNumber).toString().substring(0,1);
+            String firstLetter = chatViewModel!
+                .getNameFromContact(receiverNumber)
+                .toString()
+                .substring(0, 1);
             return Container(
                 margin: EdgeInsets.all(10.px),
                 child: ListTile(
@@ -238,43 +239,6 @@ class ChatScreen extends StatelessWidget {
                       'number': receiverNumber,
                     });
                   },
-                  // trailing: StreamBuilder(
-                  //   stream: controller.getLastMessage(documents[index]['id']),
-                  //   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //     if (snapshot.hasError) {
-                  //       return AppText('Error: ${snapshot.error}');
-                  //     }
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return const AppText('');
-                  //     }
-                  //     final data = snapshot.data!.docs;
-                  //     return AppText(
-                  //         DateFormation.formatTimestamp(data[0]["timeStamp"]),
-                  //         color: AppColorConstant.grey,
-                  //         fontSize: 12.px);
-                  //   },
-                  // ),
-                  leading: CircleAvatar(
-                    maxRadius: 30.px,
-                    backgroundColor:
-                        AppColorConstant.appYellow.withOpacity(0.8),
-                    child: (isGroup)
-                        ? AppText(
-                            documents[index]['groupName']
-                                    .substring(0, 1)
-                                    .toUpperCase() ??
-                                "",
-                            color: AppColorConstant.appWhite,
-                            fontSize: 22.px,
-                          )
-                        : AppText(
-                            documents[index]['id']
-                                    .substring(0, 1)
-                                    .toUpperCase() ??
-                                "",
-                            color: AppColorConstant.appWhite,
-                            fontSize: 22.px,
-                          ),
                   trailing: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -314,16 +278,16 @@ class ChatScreen extends StatelessWidget {
                               fontSize: 22.px,
                             ),
                     ),
-
                   ),
                   title: (isGroup)
                       ? AppText(
                           documents[index]['groupName'] ?? "",
                           fontSize: 15.px,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: AppColorConstant.appWhite,
                         )
                       : AppText(
-                          chatViewModel!.getNameFromContact(receiverNumber)),
+                          chatViewModel!.getNameFromContact(receiverNumber),
+                          color: Theme.of(context).colorScheme.primary),
                   subtitle: StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -358,7 +322,7 @@ class ChatScreen extends StatelessWidget {
                               color: AppColorConstant.grey, fontSize: 12.px);
                     },
                   ),
-          ));
+                ));
           },
         );
       },

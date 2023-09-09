@@ -42,7 +42,7 @@ class ChatingPageViewModal {
   List<PopupMenuEntry<String>> popupMenu = [
     const PopupMenuItem<String>(value: '/appearance', child: Text('Option 1')),
     const PopupMenuItem<String>(value: '/intro', child: Text('Option 2')),
-    const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3'))
+    const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3')),
   ];
 
   bool iconChange = false;
