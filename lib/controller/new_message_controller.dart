@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-
 import '../app/app/utills/app_utills.dart';
+
+
 
 class NewMessageController extends GetxController {
   RxBool isSearch = false.obs;
@@ -41,6 +42,5 @@ class NewMessageController extends GetxController {
   getUserData(String number) {
     return userTable.where('phone').snapshots();
   }
-
 
 }
