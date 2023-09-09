@@ -222,10 +222,11 @@ class DatabaseService {
         .contains(AuthService.auth.currentUser!.phoneNumber!);
   }
 
-  //==========================Upload Image on Storage=================================
+  //========================== Upload Image on Storage =================================
 
   static String imageURL = "";
   static uploadImage(File imageUrl) async {
+    String imageURL = "";
     final storage = FirebaseStorage.instance
         .ref('images')
         .child(AuthService.auth.currentUser!.phoneNumber!)
@@ -235,7 +236,18 @@ class DatabaseService {
     logs("Image URL ------ > $imageURL");
   }
 
+ //========================== Upload Audio on Storage =================================
 
+  static String audioURL = "";
+  static uploadAudio(File url, controller) async {
+    final storage = FirebaseStorage.instance
+        .ref('audio')
+        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child('sentAudio.mp3');
+    await storage.putFile(url);
+    audioURL = await storage.getDownloadURL();
+    controller.update();
+  }
 
 
 }

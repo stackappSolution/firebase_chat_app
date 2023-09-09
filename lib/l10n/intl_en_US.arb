@@ -13,7 +13,7 @@
         "gujarati" : "Gujarati",
         "english" : "English",
         "yourProfile" : "Your Profile",
-        "profileAreVisible": "Profiles Are Visible To People You Message,Contacts, and Groups.",
+        "profileAreVisible": "Profiles Are Visible To People You Message, Contacts And Groups.",
         "firstName":"First Name ( Required )",
         "lastName": "Last Name ( Required )",
         "next":"Next",
@@ -65,7 +65,7 @@
         "video" : "Video",
         "audio" : "Audio",
         "firstName" : "First Name ( Required )",
-        "lastName" : "Last Name",
+        "lastName" : "Last Name ( Optional )",
         "next" : "Next",
         "choose" : "Choose",
         "cancel" : "Cancel",
@@ -78,7 +78,7 @@
         "incognitoKeyboard" : "Incognito Keyboard",
         "turnOnRegistration" : "Turn On Registration Lock?",
         "colorIsOnlyVisibleYou" : "Color is only visible you",
-        "profileAreVisible" : "Profiles Are Visible To People, Your Message,Contacts and Groups.",
+        "profileAreVisible" : "Profiles Are Visible To People, Your Message, Contacts and Groups.",
 
 
 

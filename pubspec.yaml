@@ -52,6 +52,10 @@ dependencies:
   #serchField
   flutter_typeahead: ^4.6.2
 
+  #audio
+  on_audio_query: ^2.9.0
+  audioplayers: ^5.1.0
+  file_picker: ^5.5.0
 
 
   # Fetch server data & State management :

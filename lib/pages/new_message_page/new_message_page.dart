@@ -16,10 +16,13 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 
+import '../../app/widget/app_app_bar.dart';
+
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
 
   NewMessageViewModel? newMessageViewModel;
+  NewMessageController? newMessageController;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +31,11 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
+        Future.delayed(const Duration(milliseconds: 0), () async {
+          newMessageController = Get.find<NewMessageController>();
+          newMessageController!.getUserPhoneList();
+
+        });
         DataBaseHelper.createDB();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
@@ -36,32 +44,20 @@ class NewMessagePage extends StatelessWidget {
       builder: (NewMessageController controller) {
         return SafeArea(
             child: Scaffold(
-              backgroundColor: Theme
-                  .of(context)
-                  .colorScheme
-                  .background,
-              appBar: buildAppBar(context),
-              body: buildSearchBar(context, controller),
-            ));
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: buildAppBar(context),
+          body: buildSearchBar(context, controller),
+        ));
       },
     );
   }
 
-  buildAppBar(BuildContext context) =>
-      AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .background,
+  buildAppBar(BuildContext context) => AppAppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: AppText(
-          S
-              .of(context)
-              .newMessage,
+          S.of(context).newMessage,
           fontSize: 20.px,
-          color: Theme
-              .of(context)
-              .colorScheme
-              .primary,
+          color: Theme.of(context).colorScheme.primary,
         ),
       );
 
@@ -81,8 +77,8 @@ class NewMessagePage extends StatelessWidget {
                       newMessageViewModel!.newMessageController!.isSearch(true);
                       newMessageViewModel!.newMessageController!
                           .setFilterText('');
-                      newMessageViewModel!.newMessageController!.setFilterText(
-                          value);
+                      newMessageViewModel!.newMessageController!
+                          .setFilterText(value);
                     },
                     controller: newMessageViewModel!.textController,
                     suffixIcon: InkWell(
@@ -95,52 +91,39 @@ class NewMessagePage extends StatelessWidget {
                           : const Icon(Icons.keyboard),
                     ),
                     keyboardType: newMessageViewModel!.getKeyboardType(),
-                    hintText: S
-                        .of(context)
-                        .search,
+                    hintText: S.of(context).search,
                     style: TextStyle(
                       fontSize: 22.px,
                       fontWeight: FontWeight.w400,
                     ),
                     fontSize: 20.px,
-                  )
-              ),
+                  )),
             ),
             Padding(
               padding: EdgeInsets.only(top: 8.px),
               child: ListTile(
                   onTap: () {
-                    Get.toNamed(RouteHelper.getNewGroupScreen());
+                    goToNewGroupScreen();
                   },
                   title: AppText(
-                    S
-                        .of(context)
-                        .newGroup,
-                    fontSize: 18.px,
-                    color: Theme
-                        .of(context)
-                        .colorScheme
-                        .primary,
+                    S.of(context).newGroup,
+                    fontSize: 16.px,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   leading: CircleAvatar(
-                    radius: 30.px,
+                    radius: 20.px,
                     backgroundColor:
-                    AppColorConstant.appYellow.withOpacity(0.5),
-                    child: const Icon(Icons.group,
-                        color: AppColorConstant.appBlack),
+                        AppColorConstant.appYellow.withOpacity(0.5),
+                    child: Icon(Icons.group,
+                        color: AppColorConstant.appBlack, size: 17.px),
                   )),
             ),
             Padding(
               padding: EdgeInsets.all(20.px),
               child: AppText(
-                S
-                    .of(context)
-                    .contacts,
-                fontSize: 22.px,
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary,
+                S.of(context).contacts,
+                fontSize: 14.px,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
             buildContactList(context, controller),
@@ -165,84 +148,125 @@ class NewMessagePage extends StatelessWidget {
       itemBuilder: (context, index) {
         final Contact contact = newMessageViewModel!.contacts[index];
         String? mobileNumber =
-        contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
-        logs(mobileNumber
-            .toString()
-            .trim()
-            .removeAllWhitespace);
+            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        logs(mobileNumber.toString().trim().removeAllWhitespace);
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
-        return Container(
-          margin: EdgeInsets.only(top: 5.px),
-          child: InkWell(
-            onTap: () {
-              goToChatingScreen();
-              newMessageViewModel!.newMessageController!.update();
-            },
-            child: ListTile(
-              onTap: () async {
-                newMessageViewModel!.isThisUserExist =
-                await controller.doesUserExist(
-                    mobileNumber
-                        .toString()
-                        .trim()
-                        .removeAllWhitespace);
-                if (newMessageViewModel!.isThisUserExist &&
-                    mobileNumber
-                        .toString()
-                        .trim()
-                        .removeAllWhitespace !=
-                        AuthService.auth.currentUser!.phoneNumber) {
-                  Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
-                    'members': [
-                      AuthService.auth.currentUser!.phoneNumber!,
-                      mobileNumber
-                          .toString()
-                          .removeAllWhitespace
-                          .trim()
-                    ],
-                    'name': displayName,
-                    'number':
-                    mobileNumber
-                        .toString()
-                        .trim()
-                        .removeAllWhitespace,
-                    'isGroup': false,
-                  });
-                } else {
-                  Get.toNamed(RouteHelper.getInviteMemberScreen(), parameters: {
-                    'firstLetter': firstLetter,
-                    'displayName': displayName,
-                    'phoneNo': mobileNumber
-                  });
-                }
-              },
-              leading: InkWell(
+
+
+        return StreamBuilder(
+          stream: controller.getUserData(
+              mobileNumber.toString().trim().removeAllWhitespace),
+          builder:
+              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const AppText('');
+            }
+            if (snapshot.connectionState ==
+                ConnectionState.waiting) {
+              return const AppText('');
+            }
+            final data = snapshot.data!.docs;
+            logs("data---- ${data[0]["phone"]}");
+
+
+            return (controller.userList.contains(mobileNumber.toString().trim().removeAllWhitespace))?Container(
+              margin: EdgeInsets.only(top: 5.px),
+              child: InkWell(
                 onTap: () {
-                  Get.toNamed(RouteHelper.getChatProfileScreen());
+                  newMessageViewModel!.isLoading = true;
+                  controller.update();
+                  goToChatingScreen();
+                  controller.update();
                 },
-                child: CircleAvatar(
-                    maxRadius: 30.px,
-                    backgroundColor:
-                    AppColorConstant.appYellow.withOpacity(0.8),
-                    child: AppText(
-                      firstLetter,
-                      color: AppColorConstant.appWhite,
-                      fontSize: 22.px,
-                    )),
+                child: Column(
+                  // AppText(firstLetter),
+                  children: [
+                    ListTile(
+                      onTap: () async {
+                        newMessageViewModel!.isThisUserExist =
+                        await controller.doesUserExist(
+                            mobileNumber.toString().trim().removeAllWhitespace);
+                        if (newMessageViewModel!.isThisUserExist &&
+                            mobileNumber.toString().trim().removeAllWhitespace !=
+                                AuthService.auth.currentUser!.phoneNumber) {
+                          Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
+                            'members': [
+                              AuthService.auth.currentUser!.phoneNumber!,
+                              mobileNumber.toString().removeAllWhitespace.trim()
+                            ],
+                            'name': displayName,
+                            'number':
+                            mobileNumber.toString().trim().removeAllWhitespace,
+                            'isGroup': false,
+                          });
+                        } else {
+                          Get.toNamed(RouteHelper.getInviteMemberScreen(),
+                              parameters: {
+                                'firstLetter': firstLetter,
+                                'displayName': displayName,
+                                'phoneNo': mobileNumber
+                              });
+                        }
+                      },
+                      leading: InkWell(
+                          onTap: () {
+                            Get.toNamed(RouteHelper.getChatProfileScreen());
+                          },
+                          child: StreamBuilder(
+                         //   stream: controller.getProfile("+911234567890"),
+
+                            stream: controller.getUserData(
+                                mobileNumber.toString().trim().removeAllWhitespace),
+                            builder:
+                                (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return const AppText('');
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const AppText('');
+                              }
+                              final data = snapshot.data!.docs;
+                              //data[0]["photoUrl"].toString().contains("https://")
+                              return (false)
+                                  ? Container(
+                                height: 48.px,
+                                width: 48.px,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image:
+                                        NetworkImage(data[0]["photoUrl"]),
+                                        fit: BoxFit.cover)),
+                              )
+                                  :   CircleAvatar(
+                                  maxRadius: 20.px,
+                                  backgroundColor:
+                                  AppColorConstant.appYellow.withOpacity(0.8),
+                                  child: AppText(
+                                    firstLetter,
+                                    color: AppColorConstant.appWhite,
+                                    fontSize: 20.px,
+                                  ));
+                            },
+                          )
+
+
+                      ),
+                      title: AppText(
+                        displayName,
+                        fontSize: 15.px,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      subtitle: AppText(mobileNumber!,
+                          color: AppColorConstant.grey, fontSize: 12.px),
+                    ),
+                  ],
+                ),
               ),
-              title: AppText(
-                displayName,
-                fontSize: 15.px,
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary,
-              ),
-              subtitle: AppText(mobileNumber!,
-                  color: AppColorConstant.grey, fontSize: 12.px),
-            ),
-          ),
+            ):Container();
+          },
         );
       },
     );
@@ -250,7 +274,7 @@ class NewMessagePage extends StatelessWidget {
 
   getNumbers() async {
     newMessageViewModel!.mobileNumbers =
-    await newMessageViewModel!.getMobileNumbers();
+        await newMessageViewModel!.getMobileNumbers();
     logs('phones----> ${newMessageViewModel!.mobileNumbers}');
   }
 
@@ -280,7 +304,7 @@ class NewMessagePage extends StatelessWidget {
     if (newMessageViewModel!.textController.text.isNotEmpty) {
       newMessageViewModel!.contacts.retainWhere((contact) {
         String serchterm =
-        newMessageViewModel!.textController.text.toLowerCase();
+            newMessageViewModel!.textController.text.toLowerCase();
         String contactName = contact.displayName!.toLowerCase();
         return contactName.contains(serchterm);
       });

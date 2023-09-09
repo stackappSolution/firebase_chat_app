@@ -11,10 +11,10 @@ class ThemeUtil {
   static ThemeMode selectedTheme = ThemeMode.system;
   static bool isDark = false;
 
-  static Future loadThemeMode() async {
+  static Future loadThemeMode() {
     final controller = Get.put(AppearanceController());
 
-    return await ThemeUtil.getThemeMode().then((value) {
+    return ThemeUtil.getThemeMode().then((value) {
       selectedTheme = value;
       logs("loadThemeMode----> $value");
       if (selectedTheme == ThemeMode.dark) {
@@ -25,14 +25,13 @@ class ThemeUtil {
         controller.update();
       }
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        //systemNavigationBarColor: AppColorConstant.appWhite, // navigation bar color
         statusBarColor: (ThemeUtil.isDark)
             ? AppColorConstant.darkPrimary
             : AppColorConstant.appWhite,
         statusBarBrightness:
-        (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
+            (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
       ));
-      logs("loadThemeMode Is Dark----> $isDark");
+      logs("loadThemeMode IsDark?----> $isDark");
     });
   }
 
@@ -45,22 +44,18 @@ class ThemeUtil {
 
 class Themes {
   static ThemeData darkTheme = ThemeData(
-
       appBarTheme:
           const AppBarTheme(backgroundColor: AppColorConstant.appBlack),
       brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
         background: AppColorConstant.darkPrimary,
         primary: AppColorConstant.appWhite,
-
-
         secondary: AppColorConstant.darkSecondary,
       ));
 
   static ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
       appBarTheme: const AppBarTheme(
-
           iconTheme: IconThemeData(color: AppColorConstant.appBlack),
           titleTextStyle: TextStyle(color: AppColorConstant.appBlack)),
       colorScheme: const ColorScheme.light(
@@ -69,6 +64,3 @@ class Themes {
         secondary: AppColorConstant.darkSecondary,
       ));
 }
-
-
-
