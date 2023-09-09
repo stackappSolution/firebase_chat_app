@@ -10,6 +10,7 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/privacy/privacy_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/database_service.dart';
+import 'package:signal/service/users_service.dart';
 
 // ignore: must_be_immutable
 class PrivacyScreen extends StatelessWidget {
@@ -27,6 +28,7 @@ class PrivacyScreen extends StatelessWidget {
         Get.find<SettingsController>();
       },);
       getBlockedContacts();
+      privacyViewModel!.secureScreen();
     },
       init: SettingsController(),
       builder: (controller) {
@@ -331,7 +333,7 @@ class PrivacyScreen extends StatelessWidget {
 
   getBlockedContacts() async {
     privacyViewModel!.blockedNumbers =
-        await DatabaseService().getBlockedUsers();
+        await UsersService().getBlockedUsers();
           controller!.update();
     logs('list-------------> ${privacyViewModel!.blockedNumbers.length}');
   }

@@ -4,53 +4,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/modal/message.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
-  final users = FirebaseFirestore.instance
-      .collection('users')
-      .doc(AuthService.auth.currentUser?.uid);
+
   String documentId = '';
   static FirebaseAuth auth = FirebaseAuth.instance;
 
-  //==========================addUsers=======================================
-
-  Future<String?> addUser(
-      {required String firstName,
-      String? lastName,
-      required String photo,
-      required String phone,
-      required String fcmToken}) async {
-    try {
-      users.set({
-        'id': AuthService.auth.currentUser!.uid,
-        'firstName': firstName,
-        'lastName': lastName,
-        'photoUrl': photo,
-        'phone': phone,
-        'fcmToken': fcmToken,
-      });
-      return 'success';
-    } catch (e) {
-      return 'Error adding user';
-    }
-  }
-
-  //================================getUsers================================
-
-  getUserStream() {
-    final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
-        .collection('users')
-        .where('id', isNotEqualTo: AuthService.auth.currentUser?.uid)
-        .snapshots();
-    return usersStream;
-  }
 
   //================================addNewMessage============================
 
-  addNewMessage({
+  void addNewMessage({
     String? type,
     String? createdBy,
     String? profile,
@@ -109,7 +76,7 @@ class DatabaseService {
 
   //===============================addChatMessage=============================
 
-  addChatMessages({
+  void addChatMessages({
     String? type,
     List<dynamic>? members,
     String? message,
@@ -128,76 +95,32 @@ class DatabaseService {
         .collection('rooms')
         .doc(querySnapshot.docs.first.id)
         .collection('chats')
-        .add({
-      'message': message,
-      'sender': sender,
-      'timeStamp': DateTime.now().millisecondsSinceEpoch,
-      'messageType': type,
-    });
+        .add(Message(
+                message: message!,
+                isSender: true,
+                messageTimestamp: DateTime.now().millisecondsSinceEpoch,
+                messageType: type!,
+                sender: sender!)
+            .toJson());
   }
 
   //=============================getChats====================================
 
-  getChatStream(String id) {
+  Stream<QuerySnapshot<Object?>> getChatStream(String id) {
     final Stream<QuerySnapshot> chatStream = FirebaseFirestore.instance
         .collection('rooms')
         .doc(id)
         .collection('chats')
-        .orderBy('timeStamp', descending: false)
+        .orderBy('messageTimestamp', descending: false)
         .snapshots();
     return chatStream;
   }
 
-  //===========================blockUsers=====================================
 
-  Future<void> blockUser(List<dynamic> phoneNo, String receiver) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber!)
-        .get();
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(querySnapshot.docs.first.id)
-        .update({'blockedNumbers': FieldValue.arrayUnion(phoneNo)});
-  }
-
-  //============================getBlockedUsersList===========================
-
-  Future<List<dynamic>> getBlockedUsers() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber!)
-        .get();
-    final userDoc = FirebaseFirestore.instance
-        .collection('users')
-        .doc(querySnapshot.docs.first.id);
-
-    final userSnapshot = await userDoc.get();
-    final blockedUsers = userSnapshot['blockedNumbers'];
-
-    return blockedUsers;
-  }
-
-  //============================unBlockUser==================================
-
-  Future<void> unblockUser(String unBlockedNumber) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber!)
-        .get();
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(querySnapshot.docs.first.id)
-        .update({
-      'blockedNumbers': FieldValue.arrayRemove([unBlockedNumber]),
-    });
-  }
 
   //==============================getChatRoomId===============================
 
-  getChatRoomId(List<dynamic> conversationId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getChatRoomId(List<dynamic> conversationId) async {
     final snapshots = await FirebaseFirestore.instance
         .collection('rooms')
         .where('members', isEqualTo: conversationId)
@@ -248,6 +171,5 @@ class DatabaseService {
     audioURL = await storage.getDownloadURL();
     controller.update();
   }
-
 
 }

@@ -16,6 +16,7 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 
 import 'package:signal/service/database_service.dart';
+import 'package:signal/service/users_service.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/validation.dart';
@@ -212,7 +213,7 @@ class ProfileViewModel {
   }
 
   onSaveProfile(String firstName, String lastName, String phoneNo) {
-    DatabaseService()
+    UsersService()
         .addUser(
           firstName: firstName,
           lastName: lastName,

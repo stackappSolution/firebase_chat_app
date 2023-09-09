@@ -1460,6 +1460,36 @@ class S {
     );
   }
 
+  /// `Add contact`
+  String get addContact {
+    return Intl.message(
+      'Add contact',
+      name: 'addContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View contact`
+  String get viewContact {
+    return Intl.message(
+      'View contact',
+      name: 'viewContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `files`
+  String get files {
+    return Intl.message(
+      'files',
+      name: 'files',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Something went wrong`
   String get somethingWentWrong {
     return Intl.message(

@@ -51,11 +51,15 @@ class ChatColorScreen extends StatelessWidget {
   }
 
   getBody(BuildContext context) {
-    return ListView(
-      children: [
-        buildDemoChatView(context),
-        buildColorsGridView(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          buildDemoChatView(context),
+          buildColorsGridView(),
+          buildSaveButton(context),
+          SizedBox(height: 12.px,),
+        ],
+      ),
     );
   }
 
@@ -163,4 +167,30 @@ class ChatColorScreen extends StatelessWidget {
       return Colors.black;
     }
   }
+
+
+
+
+  buildSaveButton(BuildContext context){
+    return  Container(
+     // margin: EdgeInsets.all(12.px),
+      alignment: Alignment.center,
+      height: 35.px,
+      width: 110.px,
+      decoration: BoxDecoration(
+          color: AppColorConstant.appWhite,
+          borderRadius: BorderRadius.circular(12.px),
+          border: Border.all(color: AppColorConstant.grey, width: 2.px)),
+      child: InkWell(
+          onTap: () {
+            setStringValue(chatColor, selectedColor.value.toRadixString(16));
+            logs("selected Color--> $selectedColor");
+            controller!.update();
+            Get.back();
+          },
+          child: const AppText('Save',color: AppColorConstant.appBlack,)),
+    );
+  }
+
+
 }

@@ -34,6 +34,7 @@ dependencies:
   # Image View :
   flutter_svg: ^2.0.7
   cached_network_image: ^3.2.3
+  photo_view: ^0.14.0
 
   #shimmer effect
   shimmer: ^3.0.0
@@ -57,6 +58,10 @@ dependencies:
   audioplayers: ^5.1.0
   file_picker: ^5.5.0
 
+  # file
+  file_picker: ^5.5.0
+
+
 
   # Fetch server data & State management :
   get: ^4.6.5
@@ -66,6 +71,10 @@ dependencies:
   # contact numbers
   contacts_service: ^0.6.3
 
+
+
+  # screenshot disable
+  flutter_windowmanager: ^0.2.0
 
   # permissions
   permission_handler: ^10.4.3

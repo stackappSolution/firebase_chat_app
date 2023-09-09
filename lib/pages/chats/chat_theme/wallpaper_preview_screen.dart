@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -190,13 +189,13 @@ class WallpaperPreviewScreen extends StatelessWidget {
   onSetWallpaper() {
     if (parameter['image'] != null) {
       setStringValue(wallpaper, parameter['image']);
-      Get.offNamedUntil(RouteHelper.getChattingScreen(),
-          ModalRoute.withName(RouteHelper.getHomeScreen()));
+      Get.offAll(RouteHelper.getChattingScreen());
+
       setStringValue(
           wallPaperColor, const Color(0xFFFFFFFF).value.toRadixString(16));
     } else {
-      Get.offNamedUntil(RouteHelper.getChattingScreen(),
-          ModalRoute.withName(RouteHelper.getHomeScreen()));
+      Get.offAll(RouteHelper.getChattingScreen());
+
       setStringValue(wallpaper, '');
     }
   }

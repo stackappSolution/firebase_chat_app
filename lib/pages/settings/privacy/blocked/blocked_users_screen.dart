@@ -9,7 +9,9 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/privacy/blocked/blocked_users_view_model.dart';
 import 'package:signal/service/database_service.dart';
+import 'package:signal/service/users_service.dart';
 
+// ignore: must_be_immutable
 class BlockedUsersScreen extends StatelessWidget {
   BlockedUsersScreen({Key? key}) : super(key: key);
 
@@ -102,7 +104,7 @@ class BlockedUsersScreen extends StatelessWidget {
 
   getBlockedUsersList() async {
     blockedUsersViewModel!.blockedUsersList =
-        await DatabaseService().getBlockedUsers();
+        await UsersService().getBlockedUsers();
     controller!.update();
     logs('blockkkkk-----------> ${blockedUsersViewModel!.blockedUsersList}');
   }

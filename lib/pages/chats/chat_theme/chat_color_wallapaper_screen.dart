@@ -15,25 +15,39 @@ class ChatColorWallpaperScreen extends StatelessWidget {
   ChatColorWallpaperScreen({Key? key}) : super(key: key);
 
   SettingsController? controller;
+  Color? chatBubbleColor;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SettingsController>(
-      didChangeDependencies: (state) {
+      didChangeDependencies: (state) async {
         Future.delayed(
-          const Duration(milliseconds: 100),
+          const Duration(milliseconds: 0),
           () async {
-            Future<String?> chatTheme = getStringValue(chatColor);
-            String? result = await chatTheme;
-            logs("default--> $result");
-          },
+            controller = Get.find<SettingsController>();
+            chatBubbleColor = await getChatBubbleColor();
+            logs('chatColor----> $chatBubbleColor');
+            controller!.update();
+          }
         );
+
       },
       init: SettingsController(),
-      initState: (state) {},
+      initState: (state) async {
+        Future.delayed(
+            const Duration(milliseconds: 0),
+                () async {
+              controller = Get.find<SettingsController>();
+              chatBubbleColor = await getChatBubbleColor();
+              logs('chatColor----> $chatBubbleColor');
+              controller!.update();
+            }
+        );
+
+      },
       builder: (controller) {
         return Scaffold(
-          backgroundColor:Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppbar(context),
           body: getBody(context),
         );
@@ -43,7 +57,10 @@ class ChatColorWallpaperScreen extends StatelessWidget {
 
   getAppbar(BuildContext context) {
     return AppAppBar(
-      title: AppText(S.of(context).chatColorAndWallpaper,color:Theme.of(context).colorScheme.primary ,),
+      title: AppText(
+        S.of(context).chatColorAndWallpaper,
+        color: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 
@@ -68,18 +85,20 @@ class ChatColorWallpaperScreen extends StatelessWidget {
             onTap: () {
               Get.toNamed(RouteHelper.getChatColorScreen());
             },
-            title: AppText(S.of(context).chatColor,color: Theme.of(context).colorScheme.primary),
+            title: AppText(S.of(context).chatColor,
+                color: Theme.of(context).colorScheme.primary),
             trailing: Container(
               height: 20.px,
               width: 20.px,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: AppColorConstant.appYellow),
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: chatBubbleColor),
             )),
         ListTile(
           onTap: () {
             buildChatResetDialog(context);
           },
-          title: AppText(S.of(context).resetChatColor,color: Theme.of(context).colorScheme.primary),
+          title: AppText(S.of(context).resetChatColor,
+              color: Theme.of(context).colorScheme.primary),
         ),
       ],
     );
@@ -93,10 +112,12 @@ class ChatColorWallpaperScreen extends StatelessWidget {
           onTap: () {
             Get.toNamed(RouteHelper.getChatWallpaperScreen());
           },
-          title: AppText(S.of(Get.context!).setWallpaper,color: Theme.of(context).colorScheme.primary),
+          title: AppText(S.of(Get.context!).setWallpaper,
+              color: Theme.of(context).colorScheme.primary),
         ),
         ListTile(
-          title: AppText(S.of(Get.context!).darkModeWallpaper,color: Theme.of(context).colorScheme.primary),
+          title: AppText(S.of(Get.context!).darkModeWallpaper,
+              color: Theme.of(context).colorScheme.primary),
           trailing: Switch(
             value: false,
             onChanged: (value) {},
@@ -106,7 +127,8 @@ class ChatColorWallpaperScreen extends StatelessWidget {
           onTap: () {
             buildResetDialog(Get.context!);
           },
-          title: AppText(S.of(Get.context!).resetWallpaper,color: Theme.of(context).colorScheme.primary),
+          title: AppText(S.of(Get.context!).resetWallpaper,
+              color: Theme.of(context).colorScheme.primary),
         ),
       ],
     );
@@ -121,14 +143,14 @@ class ChatColorWallpaperScreen extends StatelessWidget {
           actionsPadding:
               EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
           backgroundColor: Theme.of(context).colorScheme.background,
-          title:  AppText(S.of(context).resetWallpaper),
+          title: AppText(S.of(context).resetWallpaper),
           actions: [
             InkWell(
                 onTap: () {
                   Get.back();
                 },
-                child:
-                     AppText(S.of(context).cancel, color: AppColorConstant.appYellow)),
+                child: AppText(S.of(context).cancel,
+                    color: AppColorConstant.appYellow)),
             SizedBox(
               width: 20.px,
             ),
@@ -138,7 +160,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
                     const Color(0xFFFFFFFF).value.toRadixString(16));
                 Get.back();
               },
-              child:  AppText(
+              child: AppText(
                 S.of(context).reset,
                 color: AppColorConstant.appYellow,
               ),
@@ -158,14 +180,15 @@ class ChatColorWallpaperScreen extends StatelessWidget {
           actionsPadding:
               EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
           backgroundColor: Theme.of(context).colorScheme.background,
-          title:  AppText(S.of(context).resetWallpaper,color: Theme.of(context).colorScheme.primary),
+          title: AppText(S.of(context).resetWallpaper,
+              color: Theme.of(context).colorScheme.primary),
           actions: [
             InkWell(
                 onTap: () {
                   Get.back();
                 },
-                child:
-                     AppText(S.of(context).cancel, color: AppColorConstant.appYellow)),
+                child: AppText(S.of(context).cancel,
+                    color: AppColorConstant.appYellow)),
             SizedBox(
               width: 20.px,
             ),
@@ -176,7 +199,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
                 setStringValue(wallpaper, '');
                 Get.back();
               },
-              child:  AppText(
+              child: AppText(
                 S.of(context).reset,
                 color: AppColorConstant.appYellow,
               ),
@@ -185,5 +208,14 @@ class ChatColorWallpaperScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  getChatBubbleColor() async {
+    final colorCode = await getStringValue(chatColor);
+    if (colorCode != null) {
+      return Color(int.parse(colorCode, radix: 16));
+    } else {
+      return AppColorConstant.appYellow;
+    }
   }
 }
