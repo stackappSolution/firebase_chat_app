@@ -52,7 +52,6 @@ class AppColorConstant {
   static const Color extraDarkSky = Color(0xFF0d65b7);
   static const Color extraLightSky = Color(0xFF3d7eba);
 
-
   static Color hex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
