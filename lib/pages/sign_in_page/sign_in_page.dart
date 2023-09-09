@@ -265,6 +265,34 @@ class SignInPage extends StatelessWidget {
                             S.of(context).continues,
                             fontSize: 22.px,
                             color: AppColorConstant.appWhite,
+                                      "verification------->${AuthService.verificationID}");
+                                }
+                                try {
+                                  await auth.verifyPhoneNumber(
+                                    phoneNumber: "$countryCode$phoneNumber",
+                                    timeout: const Duration(seconds: 60),
+                                    verificationCompleted: verified,
+                                    verificationFailed: verificationFailed,
+                                    codeSent: smsSent,
+                                    codeAutoRetrievalTimeout:
+                                        autoRetrievalTimeout,
+                                  );
+                                  signInViewModel.otpSend = true;
+                                  controller.update();
+                                } catch (e) {
+                                  // Handle any errors that may occur during OTP verification
+                                  logs("Error: $e");
+                                  signInViewModel.otpSend = false;
+                                  controller
+                                      .update();
+                                  controller.update(); // Reset the sending OTP state
+                                }
+
+                              },
+                        style: ButtonStyle(
+                          shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.px)),
                           ),
                         ),
                       ),

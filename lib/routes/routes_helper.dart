@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:signal/pages/account/change_phone/change_phone_screen.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
+import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
@@ -91,6 +92,7 @@ class RouteHelper {
   static String getInviteMemberScreen() => RouteConstant.inviteMemberScreen;
   static String getNewGroupScreen() => RouteConstant.newGroupsScreen;
   static String getGroupNameScreen() => RouteConstant.groupNameScreen;
+  static String getAttachmentScreen() => RouteConstant.attachmentScreen;
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
@@ -120,7 +122,7 @@ class RouteHelper {
         name: RouteConstant.wallpaperPreviewScreen,
         page: () => WallpaperPreviewScreen()),
     GetPage(
-        name: RouteConstant.privacyScreen, page: () => const PrivacyScreen()),
+        name: RouteConstant.privacyScreen, page: () =>  PrivacyScreen()),
     GetPage(
         name: RouteConstant.blockedUsersScreen,
         page: () =>  BlockedUsersScreen()),
@@ -272,5 +274,7 @@ class RouteHelper {
         name: RouteConstant.licensesScreen, page: () => const LicensesScreen()),
     GetPage(
         name: RouteConstant.chatProfileScreen, page: () => ChatProfileScreen()),
+    GetPage(
+        name: RouteConstant.attachmentScreen, page: () => AttachmentScreen()),
   ];
 }

@@ -18,6 +18,8 @@ class NewMessageViewModel {
   TextEditingController searchController = TextEditingController();
   bool isSearching = false;
   List<String> mobileNumbers = [];
+  bool isThisUserExist = false;
+
 
   NewMessageViewModel(this.newMessagePage) {
     Future.delayed(

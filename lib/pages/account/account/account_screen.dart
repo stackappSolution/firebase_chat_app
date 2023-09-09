@@ -22,8 +22,8 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     accountViewModel ?? (accountViewModel = AccountViewModel(this));
 
-    return GetBuilder<AccountController>(
-      init: AccountController(),
+    return GetBuilder<AttachmentController>(
+      init: AttachmentController(),
       builder: (controller) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -46,7 +46,7 @@ class AccountScreen extends StatelessWidget {
 
   getBody(
     context,
-    AccountController controller,
+    AttachmentController controller,
   ) {
     Color primaryTheme = Theme.of(context).colorScheme.primary;
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;

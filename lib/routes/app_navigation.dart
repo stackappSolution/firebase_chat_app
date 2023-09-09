@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:signal/routes/routes_helper.dart';
 
@@ -67,4 +69,11 @@ goToChatingScreen() {
 
 goToNewMessageScreen() {
   Get.toNamed(RouteHelper.getNewMessageScreen());
+}
+
+goToAttachmentScreen(selectedImage, members) {
+  Get.toNamed(RouteHelper.getAttachmentScreen(), arguments: {
+    "image": selectedImage,
+    "members": members,
+  },);
 }

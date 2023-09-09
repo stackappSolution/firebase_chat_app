@@ -6,6 +6,7 @@ import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/diappearing_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/privacy/disappear/disappear_view_model.dart';
 
 // ignore: must_be_immutable
@@ -34,7 +35,7 @@ class DisappearScreen extends StatelessWidget {
   getAppbar(BuildContext context) {
     return AppAppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
-      title: AppText('Disappearing Messages',
+      title: AppText(S.of(context).disappearingMessages,
           fontSize: 18.px, color: Theme.of(context).colorScheme.primary),
     );
   }
@@ -45,17 +46,17 @@ class DisappearScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(15.px),
           child: AppText(
-            'When enabled,new messages sent and received in new chats started by you will disappear after they have been seen.',
+            S.of(context).disappearingDescription,
             fontSize: 12.px,
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        buildSelectionView(controller),
+        buildSelectionView(controller,context),
       ],
     );
   }
 
-  buildSelectionView(DisappearingController controller) {
+  buildSelectionView(DisappearingController controller,BuildContext context) {
     return ListView(
       shrinkWrap: true,
       children: [
@@ -66,7 +67,8 @@ class DisappearScreen extends StatelessWidget {
           onChanged: (value) {
           controller.updateSelectedValue(value!);
           },
-          title: const AppText('off'),
+          title:
+          AppText(S.of(context).off),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
@@ -75,7 +77,7 @@ class DisappearScreen extends StatelessWidget {
           onChanged: (value) {
           controller.updateSelectedValue(value!);
           },
-          title: const AppText('4 weeks'),
+          title:  AppText('4 ${S.of(context).weeks}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
@@ -84,7 +86,7 @@ class DisappearScreen extends StatelessWidget {
           onChanged: (value) {
             controller.updateSelectedValue(value!);
           },
-          title: const AppText('1 week'),
+          title:  AppText('1${S.of(context).week}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
@@ -93,7 +95,7 @@ class DisappearScreen extends StatelessWidget {
           onChanged: (value) {
            controller.updateSelectedValue(value!);
           },
-          title: const AppText('1 day'),
+          title:  AppText('1 ${S.of(context).day}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
@@ -102,7 +104,7 @@ class DisappearScreen extends StatelessWidget {
           onChanged: (value) {
            controller.updateSelectedValue(value!);
           },
-          title: const AppText('8 hours'),
+          title:  AppText('8 ${S.of(context).hours}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
@@ -111,7 +113,7 @@ class DisappearScreen extends StatelessWidget {
           onChanged: (value) {
           controller.updateSelectedValue(value!);
           },
-          title: const AppText('1 hour'),
+          title:  AppText('1 ${S.of(context).hour}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
@@ -120,7 +122,7 @@ class DisappearScreen extends StatelessWidget {
           onChanged: (value) {
            controller.updateSelectedValue(value!);
           },
-          title: const AppText('5 minutes'),
+          title:  AppText('5 ${S.of(context).minutes}'),
         ),
       ],
     );

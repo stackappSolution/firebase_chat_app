@@ -20,6 +20,7 @@ class ChatViewModel {
 
   final Stream<QuerySnapshot> usersStream = DatabaseService().getUserStream();
   List<DocumentSnapshot> data = [];
+  List timeStamp = [];
   ContactController? controller;
 
   ChatViewModel(this.chatScreen) {
@@ -32,7 +33,6 @@ class ChatViewModel {
   }
 
   Future<void> getPermission() async {
-
     final PermissionStatus permissionStatus = await Permission.contacts.status;
 
     if (permissionStatus.isGranted) {
@@ -63,13 +63,19 @@ class ChatViewModel {
     controller!.update();
   }
 
+
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
-      if (contact["contact"].toString().trim().removeAllWhitespace == number) {
+      if (contact["contact"]
+          .toString()
+          .trim()
+          .removeAllWhitespace == number) {
         return contact["name"] ?? "";
       }
     }
-    return "Wait";
+    return "Not Saved Yet";
   }
+}
+
 
 }

@@ -38,8 +38,9 @@ dependencies:
   #shimmer effect
   shimmer: ^3.0.0
 
-  #image Picker :
+  #image Picker & cropper :
   image_picker: ^1.0.2
+  image_cropper: ^5.0.0
 
   #slidable massge :
   flutter_slidable: ^3.0.0
@@ -78,6 +79,9 @@ dependencies:
 
   #flutter Notification
   flutter_local_notifications: ^15.1.1
+
+  # notification
+  firebase_messaging: ^14.6.7
 
   #sqflite Database
   sqflite: ^2.3.0

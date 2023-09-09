@@ -21,9 +21,11 @@ class ChatProfileScreen extends StatelessWidget {
   ChatProfileViewModel? chatProfileViewModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     chatProfileViewModel ?? (chatProfileViewModel = ChatProfileViewModel(this));
-
+    getBlockedUsersList();
     return GetBuilder<ChatProfileController>(
       init: ChatProfileController(),
       initState: (state) {
@@ -35,8 +37,6 @@ class ChatProfileScreen extends StatelessWidget {
             controller = Get.find<ChatProfileController>();
           },
         );
-        getBlockedUsersList();
-
       },
       builder: (controller) {
         return WillPopScope(
@@ -62,7 +62,7 @@ class ChatProfileScreen extends StatelessWidget {
               'number': chatProfileViewModel!.arguments['number'],
               'id': chatProfileViewModel!.arguments['id'],
               'isGroup': chatProfileViewModel!.arguments['isGroup'],
-              'members' : chatProfileViewModel!.arguments['members'],
+              'members': chatProfileViewModel!.arguments['members'],
             });
           },
           icon: const Icon(Icons.arrow_back_outlined)),
@@ -108,11 +108,15 @@ class ChatProfileScreen extends StatelessWidget {
           child: CircleAvatar(
             maxRadius: 40.px,
             backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
-            child: AppText(chatProfileViewModel!.arguments['name'].substring(0, 1)
-        .toUpperCase(), fontSize: 30.px),
+            child: AppText(
+                chatProfileViewModel!.arguments['name']
+                    .substring(0, 1)
+                    .toUpperCase(),
+                fontSize: 30.px),
           ),
         ),
-        AppText(chatProfileViewModel!.arguments['name'], fontSize: 25.px),
+        AppText(chatProfileViewModel!.arguments['name'],
+            fontSize: 25.px, color: Theme.of(context).colorScheme.primary),
         AppText(
           '${chatProfileViewModel!.arguments['number']}',
           fontSize: 15.px,
@@ -144,6 +148,7 @@ class ChatProfileScreen extends StatelessWidget {
             AppText(
               S.of(context).video,
               fontSize: 15,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ],
         ),
@@ -151,8 +156,8 @@ class ChatProfileScreen extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                chatProfileViewModel!.launchPhoneURL(
-                    chatProfileViewModel!.arguments['number']);
+                chatProfileViewModel!
+                    .launchPhoneURL(chatProfileViewModel!.arguments['number']);
               },
               child: Container(
                   height: 50.px,
@@ -167,10 +172,8 @@ class ChatProfileScreen extends StatelessWidget {
                     ),
                   )),
             ),
-            AppText(
-              S.of(context).audio,
-              fontSize: 15,
-            ),
+            AppText(S.of(context).audio,
+                fontSize: 15, color: Theme.of(context).colorScheme.primary),
           ],
         ),
         Column(
@@ -234,10 +237,10 @@ class ChatProfileScreen extends StatelessWidget {
         width: 50.px,
         padding: EdgeInsets.all(12.px),
         child: AppImageAsset(
-          height: 10.px,
-          width: 10.px,
-          image: image,
-        ),
+            height: 10.px,
+            width: 10.px,
+            image: image,
+            color: Theme.of(context).colorScheme.primary),
       ),
     );
   }
@@ -261,7 +264,9 @@ class ChatProfileScreen extends StatelessWidget {
   }
 
   buildBlockUser(BuildContext context, ChatProfileController controller) {
-    return (controller.blockedUsers.contains(chatProfileViewModel!.arguments['number']))
+    controller.update();
+    return (chatProfileViewModel!.blockedNumbers
+            .contains(chatProfileViewModel!.arguments['number']))
         ? Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
             child: ListTile(
@@ -269,16 +274,19 @@ class ChatProfileScreen extends StatelessWidget {
                 buildUnBlockDialog(context, controller);
                 controller.update();
               },
-              title: const AppText(color: AppColorConstant.appBlack, 'unBlock'),
-              leading: const Icon(Icons.block_flipped,
-                  color: AppColorConstant.appBlack),
+              title: AppText(
+                  color: Theme.of(context).colorScheme.primary, 'unBlock'),
+              leading: Icon(
+                Icons.block_flipped,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           )
         : Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
             child: ListTile(
               onTap: () {
-                buildBlockDialog(context);
+                buildBlockDialog(context, controller);
                 controller.update();
               },
               title: AppText(
@@ -290,7 +298,7 @@ class ChatProfileScreen extends StatelessWidget {
           );
   }
 
-  buildBlockDialog(BuildContext context) {
+  buildBlockDialog(BuildContext context, ChatProfileController controller) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -316,9 +324,13 @@ class ChatProfileScreen extends StatelessWidget {
                 ),
                 InkWell(
                     onTap: () {
-                      controller!.blockUser(
+                      chatProfileViewModel!.blockedNumbers
+                          .add(chatProfileViewModel!.arguments['number']);
+                      DatabaseService().blockUser(
+                          chatProfileViewModel!.blockedNumbers,
                           chatProfileViewModel!.arguments['number']);
                       Get.back();
+                      controller.update();
                     },
                     child: AppButton(
                       width: 80.px,
@@ -353,7 +365,8 @@ class ChatProfileScreen extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
               backgroundColor: Theme.of(context).colorScheme.background,
               title: AppText(
-                  'Are you sure you want to unblock ${chatProfileViewModel!.arguments['number']}?'),
+                  'Are you sure you want to unblock ${chatProfileViewModel!.arguments['number']}?',
+                  color: Theme.of(context).colorScheme.primary),
               actions: [
                 InkWell(
                     onTap: () {
@@ -366,8 +379,12 @@ class ChatProfileScreen extends StatelessWidget {
                 ),
                 InkWell(
                     onTap: () {
-                     controller.unBlockUser(chatProfileViewModel!.arguments['number']);
-                     Get.back();
+                      chatProfileViewModel!.blockedNumbers
+                          .remove(chatProfileViewModel!.arguments['number']);
+                      DatabaseService().unblockUser(
+                          chatProfileViewModel!.arguments['number']);
+                      controller.update();
+                      Get.back();
                     },
                     child: AppButton(
                       width: 80.px,
@@ -395,6 +412,4 @@ class ChatProfileScreen extends StatelessWidget {
     controller!.update();
     logs('blockkkkk-----------> ${chatProfileViewModel!.blockedNumbers}');
   }
-
-
 }
