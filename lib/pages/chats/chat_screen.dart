@@ -175,7 +175,6 @@ class ChatScreen extends StatelessWidget {
         if (value == 2) {
           goToSettingPage();
         }
-
       },
       elevation: 0.5,
       position: PopupMenuPosition.under,
@@ -217,158 +216,189 @@ class ChatScreen extends StatelessWidget {
         }
         final documents = snapshot.data!.docs;
 
-        return ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: snapshot.data!.docs.length,
-          itemBuilder: (context, index) {
-            bool isGroup = documents[index]['isGroup'];
-            List receiver = documents[index]["members"];
-            receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
-            String receiverNumber =
-                receiver.join("").toString().trim().removeAllWhitespace;
-            String firstLetter = chatViewModel!
-                .getNameFromContact(receiverNumber)
-                .toString()
-                .substring(0, 1);
-            controller.getTimeStamp(documents[index]["id"]);
+        return (documents.length == 0)
+            ? ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  bool isGroup = documents[index]['isGroup'];
+                  List receiver = documents[index]["members"];
+                  receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
+                  String receiverNumber =
+                      receiver.join("").toString().trim().removeAllWhitespace;
+                  String firstLetter = chatViewModel!
+                      .getNameFromContact(receiverNumber)
+                      .toString()
+                      .substring(0, 1);
+                  controller.getTimeStamp(documents[index]["id"]);
 
-            return Container(
-                margin: EdgeInsets.all(10.px),
-                child: ListTile(
-                  onTap: () {
-                    Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
-                      'groupProfile': (documents[index]['isGroup'])
-                          ? documents[index]['groupProfile']
-                          : '',
-                      'isGroup': (documents[index]['isGroup']) ? true : false,
-                      'groupName': (documents[index]['isGroup'])
-                          ? documents[index]['groupName']
-                          : '',
-                      'createdBy': (documents[index]['isGroup'])
-                          ? documents[index]['createdBy']
-                          : '',
-                      'id': documents[index]['id'],
-                      'members': documents[index]['members'],
-                      'name': chatViewModel!.getNameFromContact(receiverNumber),
-                      'number': receiverNumber,
-                    });
-                  },
-                  trailing:
-                  StreamBuilder(
-                    stream: controller.getLastMessage(documents[index]['id']),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return const AppText('');
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const AppText('');
-                      }
-                      final data = snapshot.data!.docs;
-                      return AppText(
-                          DateFormation.formatTimestamp(data[0]["timeStamp"]),
-                          color: AppColorConstant.grey,
-                          fontSize: 12.px);
-                    },
-                  ),
-                  leading: InkWell(
-                      onTap: () {
-                      },
-                      child: (isGroup)
-                          ? CircleAvatar(
-                              maxRadius: 22.px,
-                              backgroundColor:
-                                  AppColorConstant.appYellow.withOpacity(0.8),
-                              child: AppText(
-                                firstLetter,
+                  return Container(
+                      margin: EdgeInsets.all(10.px),
+                      child: ListTile(
+                        onTap: () {
+                          Get.toNamed(RouteHelper.getChattingScreen(),
+                              arguments: {
+                                'groupProfile': (documents[index]['isGroup'])
+                                    ? documents[index]['groupProfile']
+                                    : '',
+                                'isGroup': (documents[index]['isGroup'])
+                                    ? true
+                                    : false,
+                                'groupName': (documents[index]['isGroup'])
+                                    ? documents[index]['groupName']
+                                    : '',
+                                'createdBy': (documents[index]['isGroup'])
+                                    ? documents[index]['createdBy']
+                                    : '',
+                                'id': documents[index]['id'],
+                                'members': documents[index]['members'],
+                                'name': chatViewModel!
+                                    .getNameFromContact(receiverNumber),
+                                'number': receiverNumber,
+                              });
+                        },
+                        trailing: StreamBuilder(
+                          stream:
+                              controller.getLastMessage(documents[index]['id']),
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              return const AppText('');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const AppText('');
+                            }
+                            final data = snapshot.data!.docs;
+                            return AppText(
+                                DateFormation.formatTimestamp(
+                                    data[0]["timeStamp"]),
+                                color: AppColorConstant.grey,
+                                fontSize: 12.px);
+                          },
+                        ),
+                        leading: InkWell(
+                            onTap: () {},
+                            child: (isGroup)
+                                ? CircleAvatar(
+                                    maxRadius: 22.px,
+                                    backgroundColor: AppColorConstant.appYellow
+                                        .withOpacity(0.8),
+                                    child: AppText(
+                                      firstLetter,
+                                      color: AppColorConstant.appWhite,
+                                      fontSize: 24.px,
+                                    ),
+                                  )
+                                : StreamBuilder(
+                                    stream:
+                                        controller.getUserName(receiverNumber),
+                                    builder: (context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return const AppText('');
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const AppText('');
+                                      }
+                                      final data = snapshot.data!.docs;
+                                      return (data[0]["photoUrl"]
+                                              .toString()
+                                              .contains("https://"))
+                                          ? Container(
+                                              height: 48.px,
+                                              width: 48.px,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          data[0]["photoUrl"]),
+                                                      fit: BoxFit.cover)),
+                                            )
+                                          : CircleAvatar(
+                                              maxRadius: 24.px,
+                                              backgroundColor: AppColorConstant
+                                                  .appYellow
+                                                  .withOpacity(0.8),
+                                              child: AppText(
+                                                firstLetter,
+                                                color:
+                                                    AppColorConstant.appWhite,
+                                                fontSize: 22.px,
+                                              ),
+                                            );
+                                    },
+                                  )),
+                        title: (isGroup)
+                            ? AppText(
+                                documents[index]['groupName'] ?? "",
+                                fontSize: 15.px,
                                 color: AppColorConstant.appWhite,
-                                fontSize: 24.px,
-                              ),
-                            )
-                          : StreamBuilder(
-                              stream: controller.getUserName(receiverNumber),
-                              builder: (context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return const AppText('');
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const AppText('');
-                                }
-                                final data = snapshot.data!.docs;
-                                return (data[0]["photoUrl"]
-                                        .toString()
-                                        .contains("https://"))
-                                    ? Container(
-                                        height: 48.px,
-                                        width: 48.px,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    data[0]["photoUrl"]),
-                                                fit: BoxFit.cover)),
-                                      )
-                                    : CircleAvatar(
-                                        maxRadius: 24.px,
-                                        backgroundColor: AppColorConstant
-                                            .appYellow
-                                            .withOpacity(0.8),
-                                        child: AppText(
-                                          firstLetter,
-                                          color: AppColorConstant.appWhite,
-                                          fontSize: 22.px,
-                                        ),
-                                      );
-                              },
-                            )),
-                  title: (isGroup)
-                      ? AppText(
-                          documents[index]['groupName'] ?? "",
-                          fontSize: 15.px,
-                          color: AppColorConstant.appWhite,
-                        )
-                      : AppText(
-                          chatViewModel!.getNameFromContact(receiverNumber),
-                          color: Theme.of(context).colorScheme.primary),
-                  subtitle: StreamBuilder(
-                    stream: controller.getLastMessage(documents[index]['id']),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return const AppText('');
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const AppText('');
-                      }
-                      final messageData = snapshot.data!.docs;
-                      return (isGroup)
-                          ? StreamBuilder(
-                              stream: controller
-                                  .getUserName(messageData[0]["sender"]),
-                              builder: (context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return const AppText('');
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const AppText('');
-                                }
-                                final data = snapshot.data!.docs;
-                                return AppText(
-                                    "${data[0]["firstName"]} | ${messageData[0]["message"]}",
+                              )
+                            : AppText(
+                                chatViewModel!
+                                    .getNameFromContact(receiverNumber),
+                                color: Theme.of(context).colorScheme.primary),
+                        subtitle: StreamBuilder(
+                          stream:
+                              controller.getLastMessage(documents[index]['id']),
+                          builder:
+                              (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              return const AppText('');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const AppText('');
+                            }
+                            final messageData = snapshot.data!.docs;
+                            return (isGroup)
+                                ? StreamBuilder(
+                                    stream: controller
+                                        .getUserName(messageData[0]["sender"]),
+                                    builder: (context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return const AppText('');
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const AppText('');
+                                      }
+                                      final data = snapshot.data!.docs;
+                                      return AppText(
+                                          "${data[0]["firstName"]} | ${messageData[0]["message"]}",
+                                          color: AppColorConstant.grey,
+                                          fontSize: 12.px);
+                                    },
+                                  )
+                                : AppText(
+                                    messageData[0]["message"] ?? "",
                                     color: AppColorConstant.grey,
-                                    fontSize: 12.px);
-                              },
-                            )
-                          : AppText(messageData[0]["message"] ?? "",
-                              color: AppColorConstant.grey, fontSize: 12.px,maxLines: 2,overflow:  TextOverflow.ellipsis,);
-                    },
-                  ),
-                ));
-          },
-        );
+                                    fontSize: 12.px,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  );
+                          },
+                        ),
+                      ));
+                },
+              )
+            : Container(
+                margin: EdgeInsets.all(20.px),
+                alignment: Alignment.center,
+                height: 100.px,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10.px))
+                ),
+                child: AppText(
+                  "Lets Chat",
+                  color: AppColorConstant.yellowLight,fontSize: 25.px,
+                ),
+              );
       },
     );
   }

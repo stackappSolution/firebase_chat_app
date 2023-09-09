@@ -40,6 +40,7 @@ class ChatingPageViewModal {
   File? selectedAudio;
   String? userProfile;
   bool isLoading = false;
+  bool iconChange = false;
 
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
@@ -67,7 +68,6 @@ class ChatingPageViewModal {
     const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3')),
   ];
 
-  bool iconChange = false;
 
   Future<Color> getWallpaperColor() async {
     final colorCode = await getStringValue(wallPaperColor);
@@ -86,7 +86,7 @@ class ChatingPageViewModal {
       return AppColorConstant.appYellow;
     }
   }
-}
+
 
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
