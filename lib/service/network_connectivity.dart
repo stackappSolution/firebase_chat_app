@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/constant/string_constant.dart';
-
 import '../app/widget/app_alert_dialog.dart';
 import '../app/widget/app_button.dart';
 import '../app/widget/app_text.dart';
@@ -108,6 +106,5 @@ class NetworkConnectivity {
           : null;
     });
   }
-
   void disposeStream() => controller.close();
 }

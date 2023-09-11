@@ -177,7 +177,7 @@ class ChatColorScreen extends StatelessWidget {
       Get.off(ChatColorWallpaperScreen());
     },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 100.px),
+        margin: EdgeInsets.symmetric(horizontal: 100.px,vertical: 10.px),
         alignment: Alignment.center,
         height: 35.px,
         width: 110.px,

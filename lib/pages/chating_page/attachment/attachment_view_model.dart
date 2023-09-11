@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,7 +30,7 @@ class AttachmentViewModel {
   AttachmentViewModel(this.attachmentScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
-      () {
+          () {
         controller = Get.find<ChatingPageController>();
       },
     );

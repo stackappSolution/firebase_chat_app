@@ -9,7 +9,6 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/privacy/privacy_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
-import 'package:signal/service/database_service.dart';
 import 'package:signal/service/users_service.dart';
 
 // ignore: must_be_immutable

@@ -11,11 +11,9 @@ import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
-import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 import '../../constant/app_asset.dart';
 

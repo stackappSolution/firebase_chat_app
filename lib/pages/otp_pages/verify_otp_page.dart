@@ -132,7 +132,7 @@ class VerifyOtpPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: verifyOtpViewModel!.isValidOTP != true
                       ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 45.px),
+                          padding: EdgeInsets.symmetric(horizontal: 50.px),
                           child: AppElevatedButton(
                               buttonColor:
                                   AppColorConstant.appYellow.withOpacity(0.5),
@@ -143,7 +143,7 @@ class VerifyOtpPage extends StatelessWidget {
                               )),
                         )
                       : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 45.px),
+                        padding: EdgeInsets.symmetric(horizontal: 60.px),
                         child: AppElevatedButton(
                             onPressed: () async {
                               verifyOtpViewModel!.isLoading = true;

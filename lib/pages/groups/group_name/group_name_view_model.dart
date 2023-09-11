@@ -11,7 +11,6 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/service/auth_service.dart';

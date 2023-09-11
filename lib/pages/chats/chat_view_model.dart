@@ -6,10 +6,10 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/service/database_helper.dart';
-import 'package:signal/service/users_service.dart';
-
 
 import '../../service/users_service.dart';
+
+import 'package:signal/service/users_service.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;
@@ -76,6 +76,6 @@ class ChatViewModel {
     }
     return "Not Saved Yet";
   }
-
 }
+
 
