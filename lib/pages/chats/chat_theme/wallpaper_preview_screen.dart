@@ -194,7 +194,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
       setStringValue(
           wallPaperColor, const Color(0xFFFFFFFF).value.toRadixString(16));
     } else {
-      Get.offAll(RouteHelper.getChattingScreen());
+      Get.off(RouteHelper.getChattingScreen());
 
       setStringValue(wallpaper, '');
     }

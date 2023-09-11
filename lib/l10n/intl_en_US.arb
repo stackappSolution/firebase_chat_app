@@ -100,6 +100,7 @@
         "ifYouForgetYourPIN" : "If You Forget Yor Pin When Registering with Signal Again, You Will be Locked Out Your AccountFor 7 days.",
         "warning" : "Warning",
         "camera" : "Camera",
+        "save" : "Save",
         "gallery" : "Gallery",
         "pinReminders" : "PIN Reminders",
         "chaAppPin" : "Chat App PIN",
@@ -172,9 +173,7 @@
 
 
 
-         "addContact" : "Add contact",
-         "viewContact" : "View contact",
-         "files" : "Files",
+
 
 
 
@@ -249,7 +248,7 @@
 
         "addContact" : "Add contact",
         "viewContact" : "View contact",
-        "files" : "files",
+        "files" : "Files"
 
 
 

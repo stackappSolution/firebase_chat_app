@@ -10,11 +10,9 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_screen.dart';
-import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
-
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/theme_util.dart';
-import '../chating_page/chating_page.dart';
+
 
 class AppearanceViewModel {
   AppearanceScreen? appearanceScreen;
@@ -24,7 +22,7 @@ class AppearanceViewModel {
   String? selectedFontSize;
   AppearanceController? controller;
   String? saveFontSize;
-  Locale? locale;
+  Locale locale= Locale(Get.deviceLocale!.languageCode);
 
   AppearanceViewModel(this.appearanceScreen) {
     Future.delayed(
