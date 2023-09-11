@@ -19,7 +19,7 @@ class AttachmentViewModel {
   Map<String, dynamic> argument = {};
   dynamic selectedImage = "";
   CroppedFile? croppedFile;
-  String? imageURL;
+  String imageURL='';
   ChatingPageController? controller;
   bool isLoading = false;
 
@@ -35,11 +35,6 @@ class AttachmentViewModel {
         controller = Get.find<ChatingPageController>();
       },
     );
-  }
-
-  void imageButtonTap(AttachmentController controller) {
-    onSendMessage("image", controller);
-    Get.back;
   }
 
   void imageCrop(BuildContext context, AttachmentController controller) async {
@@ -77,19 +72,6 @@ class AttachmentViewModel {
     } else {
       logs("Please select Image");
     }
-  }
-
-  onSendMessage(String msgType, AttachmentController controller) async {
-    DatabaseService.uploadImage(File(selectedImage));
-    DatabaseService().addNewMessage(
-        type: msgType,
-        members: argument['members'],
-        massage: imageURL,
-        sender: AuthService.auth.currentUser!.phoneNumber!,
-        isGroup: false);
-    logs('message---> $imageURL');
-
-    controller.update();
   }
 
   void initAudioPlayer() {
@@ -131,5 +113,21 @@ class AttachmentViewModel {
     logs("load--> $isLoading");
     controller!.update();
     Get.back();
+  }
+
+  onSendMessage(String msgType, AttachmentController controller,message) async {
+    uploadImage(File(selectedImage));
+    DatabaseService().addNewMessage(
+        type: msgType,
+        members: argument['members'],
+        massage: message,
+        sender: AuthService.auth.currentUser!.phoneNumber!,
+        isGroup: false);
+    logs('message---> $imageURL');
+    controller.update();
+  }
+
+  void imageButtonTap(AttachmentController controller) {
+    onSendMessage("image", controller,imageURL);
   }
 }

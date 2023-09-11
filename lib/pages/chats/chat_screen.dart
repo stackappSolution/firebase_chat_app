@@ -14,10 +14,12 @@ import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
 
+
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
+
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
