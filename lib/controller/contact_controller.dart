@@ -10,6 +10,9 @@ class ContactController extends GetxController {
   RxString filteredValue = ''.obs;
   bool isLoading = true;
 
+  final rooms = FirebaseFirestore.instance.collection("rooms");
+  final users = FirebaseFirestore.instance.collection("users");
+
   void setSearch(bool value) {
     isSearch.value = value;
     update();
@@ -21,39 +24,31 @@ class ContactController extends GetxController {
   }
 
   getLastMessage(id) {
-    return FirebaseFirestore.instance
-        .collection("rooms")
+    logs(id);
+    return rooms
         .doc(id)
         .collection("chats")
-        .orderBy("timeStamp", descending: true)
+        .orderBy("messageTimestamp", descending: true)
         .limit(1)
         .snapshots();
   }
 
   getUserName(number) {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .where('phone', isEqualTo:number)
-        .snapshots();
+    return users.where('phone', isEqualTo: number).snapshots();
   }
 
   getMyChatContactList(number) {
-    return FirebaseFirestore.instance
-        .collection('rooms')
-        .where('members', arrayContains: number)
-        .snapshots();
+    return rooms.where('members', arrayContains: number).snapshots();
   }
-  getTimeStamp(id)
-  async {
-    final  data = await FirebaseFirestore.instance
-        .collection("rooms")
+
+  getTimeStamp(id) async {
+    final data = await rooms
         .doc(id)
         .collection("chats")
-        .orderBy("timeStamp", descending: true)
+        .orderBy("messageTimestamp", descending: true)
         .limit(1)
         .get();
     final docs = data.docs;
-    logs("time Stamp --- > ${docs[0]["timeStamp"]}");
+    logs("time Stamp --- > ${docs[0]["messageTimestamp"]}");
   }
 }
-

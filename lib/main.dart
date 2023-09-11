@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
@@ -13,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/generated/l10n.dart';
 
+import 'constant/color_constant.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,9 +24,15 @@ Future<void> main() async {
   NotificationService.instance.initialize();
   FirebaseAuth auth = FirebaseAuth.instance;
   SharedPreferences.getInstance();
-
-  String? token = await FirebaseMessaging.instance.getToken();
-  logs('Token---------------------> $token');
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: (ThemeUtil.isDark)
+        ? AppColorConstant.darkPrimary
+        : AppColorConstant.appWhite,
+    statusBarBrightness:
+    (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
+  ));
+  // String? token = await FirebaseMessaging.instance.getToken();
+  // logs('Token---------------------> $token');
 
 
   runApp(const MyApp());

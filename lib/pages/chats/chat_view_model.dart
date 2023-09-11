@@ -8,6 +8,8 @@ import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/service/database_helper.dart';
 import 'package:signal/service/database_service.dart';
 
+import '../../service/users_service.dart';
+
 
 
 class ChatViewModel {
@@ -18,7 +20,7 @@ class ChatViewModel {
   String string = '';
   bool isConnected = false;
 
-  final Stream<QuerySnapshot> usersStream = DatabaseService().getUserStream();
+  final Stream<QuerySnapshot> usersStream = UsersService.getUserStream();
   List<DocumentSnapshot> data = [];
   List timeStamp = [];
   ContactController? controller;

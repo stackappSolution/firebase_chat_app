@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../app/app/utills/app_utills.dart';
 
 
-
 class NewMessageController extends GetxController {
   RxBool isSearch = false.obs;
   List userList = [];
@@ -29,18 +28,17 @@ class NewMessageController extends GetxController {
   }
 
   Future getUserPhoneList() async {
-    userList = [];
     final data = await userTable.where('phone').get();
     data.docs.forEach((element) {
       userList.add(element["phone"]);
     });
+    logs("getUserPhoneList=== ${userList}");
   }
-  getProfile(String number) async {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getProfile(String number) {
     return userTable.where('phone', isEqualTo: number).snapshots();
   }
 
-  getUserData(String number) {
+  Stream<QuerySnapshot<Map<String, dynamic>>>  getUserData(String number) {
     return userTable.where('phone').snapshots();
   }
-
 }

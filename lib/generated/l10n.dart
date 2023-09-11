@@ -183,7 +183,7 @@ class S {
   /// `Profiles Are Visible To People, Your Message,Contacts and Groups.`
   String get profileAreVisible {
     return Intl.message(
-      'Profiles Are Visible To People, Your Message, Contacts and Groups.',
+      'Profiles Are Visible To People, Your Message,Contacts and Groups.',
       name: 'profileAreVisible',
       desc: '',
       args: [],

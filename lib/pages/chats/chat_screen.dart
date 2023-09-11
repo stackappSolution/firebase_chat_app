@@ -215,8 +215,7 @@ class ChatScreen extends StatelessWidget {
           return const AppLoader();
         }
         final documents = snapshot.data!.docs;
-
-        return (documents.length == 0)
+        return (documents.length != null)
             ? ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
@@ -231,7 +230,6 @@ class ChatScreen extends StatelessWidget {
                       .getNameFromContact(receiverNumber)
                       .toString()
                       .substring(0, 1);
-                  controller.getTimeStamp(documents[index]["id"]);
 
                   return Container(
                       margin: EdgeInsets.all(10.px),
@@ -260,7 +258,7 @@ class ChatScreen extends StatelessWidget {
                         },
                         trailing: StreamBuilder(
                           stream:
-                              controller.getLastMessage(documents[index]['id']),
+                              controller.getLastMessage(documents[0]['id']),
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
@@ -273,7 +271,8 @@ class ChatScreen extends StatelessWidget {
                             final data = snapshot.data!.docs;
                             return AppText(
                                 DateFormation.formatTimestamp(
-                                    data[0]["timeStamp"]),
+                                    data[0]["messageTimestamp"]),
+
                                 color: AppColorConstant.grey,
                                 fontSize: 12.px);
                           },

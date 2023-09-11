@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_button.dart';
@@ -22,7 +20,6 @@ import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
 import '../../service/auth_service.dart';
-import '../../service/database_service.dart';
 
 
 class ChatingPageViewModal {
@@ -40,10 +37,8 @@ class ChatingPageViewModal {
   String? formatedTime;
   bool isBlocked = false;
   File? selectedImage;
-  File? selectedAudio;
   String? userProfile;
   bool isLoading = false;
-  bool iconChange = false;
   List<DateTime> messageTimeStamp=[];
   ScrollController scrollController =  ScrollController();
 
@@ -73,6 +68,7 @@ class ChatingPageViewModal {
     const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3'))
   ];
 
+  bool iconChange = false;
 
   Future<Color> getWallpaperColor() async {
     final colorCode = await getStringValue(wallPaperColor);
@@ -91,7 +87,6 @@ class ChatingPageViewModal {
       return AppColorConstant.appYellow;
     }
   }
-
 
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
@@ -137,7 +132,7 @@ class ChatingPageViewModal {
 
   buildPopupMenu(BuildContext context) {
     return PopupMenuButton(
-      offset: const Offset(-10, kToolbarHeight),
+      offset: Offset(-10, kToolbarHeight),
       onSelected: (value) {
         if (value == 0) {
           buildImagePickerMenu(context);
@@ -183,10 +178,7 @@ class ChatingPageViewModal {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InkWell(onTap: () {
-                    getPermission(context,controller!);
-                    Get.back();
-                  },child: AppText(S.of(Get.context!).audio)),
+                  AppText(S.of(Get.context!).audio),
                   Padding(
                     padding: EdgeInsets.only(top: 5.px),
                     child: Divider(
@@ -225,23 +217,6 @@ class ChatingPageViewModal {
       },
     );
   }
-
-  Future<void> getPermission(
-      BuildContext context, GetxController controller) async {
-    await Permission.audio.request();
-    await Permission.storage.request();
-    logs(
-        "permissionStorage ---- >${await Permission.audio.status.isGranted}");
-    logs("permissionCamera ---- >${await Permission.camera.status.isGranted}");
-    if (await Permission.audio.status.isGranted ||
-        await Permission.storage.status.isGranted) {
-      pickMp3File(controller);
-    } else {
-      await Permission.storage.request();
-      await Permission.audio.request();
-    }
-  }
-
 
   buildImagePickerMenu(BuildContext context) {
     showMenu(
@@ -318,8 +293,6 @@ class ChatingPageViewModal {
   buildNavigationMenu(BuildContext context) {
     return PopupMenuButton(
       onSelected: (value) {
-        if (value == 2) {
-        }
         onSelectItem(value);
       },
       elevation: 0.5,
@@ -376,42 +349,6 @@ class ChatingPageViewModal {
     );
   }
 
-  Future<void> pickMp3File(GetxController controller) async {
-
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['mp3'],
-    );
-
-    if (result != null) {
-      PlatformFile file = result.files.first;
-      if (file.path != null) {
-        selectedAudio = File(file.path!);
-      } else {
-        logs("Audio Selection Empty");
-      }
-      onSendAudio(DatabaseService.audioURL,"audio",controller);
-      controller.update();
-      logs('Selected MP3 file: ${file.name}');
-    } else {
-      logs('User canceled file picking');
-    }
-  }
-
-  onSendAudio(message, msgType,  controller) async {
-      await DatabaseService.uploadAudio(selectedAudio!,controller);
-      logs("message-----$message");
-      DatabaseService().addNewMessage(
-          type: msgType,
-          members: arguments['members'],
-          massage: message,
-          sender: AuthService.auth.currentUser!.phoneNumber!,
-          isGroup: false);
-
-      controller!.update();
-
-  }
-}
   onSelectItem(value) {
     if (value == 1) {
       Get.toNamed(RouteHelper.getChatProfileScreen(), arguments: {

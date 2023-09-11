@@ -4,16 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/modal/message.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
-
   String documentId = '';
   static FirebaseAuth auth = FirebaseAuth.instance;
-
 
   //================================addNewMessage============================
 
@@ -116,11 +115,10 @@ class DatabaseService {
     return chatStream;
   }
 
-
-
   //==============================getChatRoomId===============================
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getChatRoomId(List<dynamic> conversationId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getChatRoomId(
+      List<dynamic> conversationId) async {
     final snapshots = await FirebaseFirestore.instance
         .collection('rooms')
         .where('members', isEqualTo: conversationId)
@@ -148,10 +146,12 @@ class DatabaseService {
   //========================== Upload Image on Storage =================================
 
   static String imageURL = "";
-  static uploadImage(File imageUrl) async {
+
+  static void uploadImage(File imageUrl) async {
     String imageURL = "";
     final storage = FirebaseStorage.instance
-        .ref('images')
+        .ref('chat')
+        .child("images")
         .child(AuthService.auth.currentUser!.phoneNumber!)
         .child('sentImage.jpg');
     await storage.putFile(imageUrl);
@@ -159,17 +159,18 @@ class DatabaseService {
     logs("Image URL ------ > $imageURL");
   }
 
- //========================== Upload Audio on Storage =================================
+  //========================== Upload Audio on Storage =================================
 
   static String audioURL = "";
-  static uploadAudio(File url, controller) async {
+
+  static void uploadAudio(File url,ChatingPageController controller) async {
     final storage = FirebaseStorage.instance
-        .ref('audio')
+        .ref('chat')
+        .child("audio")
         .child(AuthService.auth.currentUser!.phoneNumber!)
         .child('sentAudio.mp3');
     await storage.putFile(url);
     audioURL = await storage.getDownloadURL();
     controller.update();
   }
-
 }
