@@ -40,10 +40,11 @@ class NewGroupScreen extends StatelessWidget {
             child: Column(children: [
               SizedBox(
                 height: 40.px,
-                child: AppTextFormField(onChanged: (value) {
-                  newGroupViewModel!.searchController.text;
-                  newGroupViewModel!.filterContacts(value);
-                },
+                child: AppTextFormField(
+                  onChanged: (value) {
+                    newGroupViewModel!.searchController.text;
+                    newGroupViewModel!.filterContacts(value);
+                  },
                   controller: newGroupViewModel!.searchController,
                   keyboardType: newGroupViewModel!.getKeyboardType(),
                   decoration: InputDecoration(
@@ -96,7 +97,8 @@ class NewGroupScreen extends StatelessWidget {
                                     fontSize: 12.px),
                                 IconButton(
                                     onPressed: () {
-                                      newGroupViewModel!.groupMembers.remove(contact);
+                                      newGroupViewModel!.groupMembers
+                                          .remove(contact);
                                       controller.update();
                                     },
                                     icon: Icon(
@@ -124,9 +126,9 @@ class NewGroupScreen extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(12.px),
                   child: ListView.builder(
-                     itemCount: newGroupViewModel!.isSearching == true
-                  ? newGroupViewModel!.filteredContacts.length
-                      : newGroupViewModel!.contacts.length,
+                    itemCount: newGroupViewModel!.isSearching == true
+                        ? newGroupViewModel!.filteredContacts.length
+                        : newGroupViewModel!.contacts.length,
                     itemBuilder: (context, index) {
                       final Contact contact = newGroupViewModel!.isSearching
                           ? newGroupViewModel!.filteredContacts[index]
@@ -137,10 +139,6 @@ class NewGroupScreen extends StatelessWidget {
                       String? displayName = contact.displayName ?? 'unknown';
                       String firstLetter =
                           displayName.substring(0, 1).toUpperCase();
-                      newGroupViewModel!.isChecked = List.filled(
-
-                      newGroupViewModel!.items = newGroupViewModel!.contacts;
-
                       newGroupViewModel!.selectedItems = List.filled(
                           newGroupViewModel!.contacts.length, false);
                       return Container(
@@ -181,62 +179,30 @@ class NewGroupScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(right: 0.px),
-                                  child: CustomCheckbox(
-                                    value: newGroupViewModel!.isChecked[index],
-                                    onChanged: (value) {
-                                      newGroupViewModel!.isChecked[index] = value!;
-                                      logs('isChecked-----> ${newGroupViewModel!.isChecked}');
-
-                                      if (newGroupViewModel!.isChecked[index]) {
-                                        newGroupViewModel!.groupMembers.add(contact);
-                                      }
-                                      else{
-                                        newGroupViewModel!.groupMembers.remove(contact);
-                                        controller.update();
-                                      }
-                                      logs('members---> ${newGroupViewModel!.groupMembers.length}');
-                                      controller.update();
-                                    },
-                                  )
-                                  child: Checkbox(
-                                    side: const BorderSide(
-                                        width: 1,
-                                        color: AppColorConstant.blackOff),
-                                    value:
-                                        newGroupViewModel!.selectedItems[index],
-
-                                    onChanged: (value) {
-                                      newGroupViewModel!.selectedItems[index] =
-                                          value!;
-
-                                      logs('isChecked-----> ${ newGroupViewModel!.selectedItems[index]}');
-
-                                      if (newGroupViewModel!
-                                              .selectedItems[index] ==
-                                          true) {
-                                        newGroupViewModel!.groupMembers
-                                            .add(contact);
-                                        controller.update();
-                                      }
-                                      else{
-                                        newGroupViewModel!.groupMembers
-                                            .remove(contact);
-                                        controller.update();
-                                      }
-
-                                      logs(
-                                          'members---> ${newGroupViewModel!.groupMembers.length}');
-                                    },
-                                    checkColor: Colors.white,
-                                    activeColor: AppColorConstant.appYellow,
-                                    tristate: false,
-                                    visualDensity: VisualDensity.compact,
-                                    shape: const CircleBorder(),
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                ),
+                                    padding: EdgeInsets.only(right: 0.px),
+                                    child: CustomCheckbox(
+                                      value: newGroupViewModel!
+                                          .selectedItems[index],
+                                      onChanged: (value) {
+                                        newGroupViewModel!.selectedItems[index] =
+                                        value!;
+                                        logs('isChecked-----> ${ newGroupViewModel!.selectedItems[index]}');
+                                        if (newGroupViewModel!
+                                            .selectedItems[index] ==
+                                            true) {
+                                          newGroupViewModel!.groupMembers
+                                              .add(contact);
+                                          controller.update();
+                                        }
+                                        else{
+                                          newGroupViewModel!.groupMembers
+                                              .remove(contact);
+                                          controller.update();
+                                        }
+                                        logs(
+                                            'members---> ${newGroupViewModel!.groupMembers.length}');
+                                      },
+                                    )),
                               ],
                             ),
                           )

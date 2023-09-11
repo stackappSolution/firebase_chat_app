@@ -17,6 +17,7 @@ class NewGroupViewModel {
   bool isIcon = true;
   TextEditingController searchController = TextEditingController();
   bool isSearching = false;
+  bool isChecked = false;
 
 
   NewGroupViewModel(this.newGroupScreen) {

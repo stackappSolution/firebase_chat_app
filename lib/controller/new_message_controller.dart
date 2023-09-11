@@ -27,14 +27,6 @@ class NewMessageController extends GetxController {
     return data.docs.isNotEmpty;
   }
 
-  Future<bool> doesUserExist(String phoneNumber) async {
-    final data = await FirebaseFirestore.instance
-        .collection('users')
-        .where('phone', isEqualTo: phoneNumber)
-        .get();
-    return data.docs.isNotEmpty;
-  }
-}
   Future getUserPhoneList() async {
     if(userList.isEmpty)
     {
