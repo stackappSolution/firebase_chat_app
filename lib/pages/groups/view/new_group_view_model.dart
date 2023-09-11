@@ -8,7 +8,8 @@ import 'package:signal/pages/groups/view/new_group_screen.dart';
 class NewGroupViewModel {
   NewGroupScreen? newGroupScreen;
   GroupController? controller;
-  List<bool> isChecked = [];
+  List<Contact> items = [];
+  List<bool> selectedItems = [];
   List<Contact> contacts = [];
   List groupMembers = [];
 

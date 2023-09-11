@@ -13,6 +13,10 @@ import 'package:signal/pages/appearance/appearance_screen.dart';
 
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/theme_util.dart';
+import 'package:signal/routes/routes_helper.dart';
+import '../../app/app/utills/app_utills.dart';
+import '../../app/app/utills/theme_util.dart';
+
 
 class AppearanceViewModel {
   AppearanceScreen? appearanceScreen;
@@ -22,7 +26,7 @@ class AppearanceViewModel {
   String? selectedFontSize;
   AppearanceController? controller;
   String? saveFontSize;
-  Locale? locale;
+  Locale locale= Locale(Get.deviceLocale!.languageCode);
 
   AppearanceViewModel(this.appearanceScreen) {
     Future.delayed(
@@ -427,7 +431,9 @@ class AppearanceViewModel {
         }
         break;
       case 3:
-        {}
+        {
+          Get.toNamed(RouteHelper.getChatColorWallpaperScreen());
+        }
         break;
       case 5:
         {

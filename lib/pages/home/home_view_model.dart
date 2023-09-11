@@ -16,5 +16,7 @@ class HomeViewModel {
       Get.updateLocale(Locale(localeKey));
       logs('key---> $localeKey');
     }
+    localeKey= Get.deviceLocale!.languageCode;
+    Get.updateLocale(Locale(localeKey));
   }
 }

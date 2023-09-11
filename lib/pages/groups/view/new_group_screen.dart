@@ -135,7 +135,9 @@ class NewGroupScreen extends StatelessWidget {
                       String firstLetter =
                           displayName.substring(0, 1).toUpperCase();
 
-                      newGroupViewModel!.isChecked = List.filled(
+                      newGroupViewModel!.items = newGroupViewModel!.contacts;
+
+                      newGroupViewModel!.selectedItems = List.filled(
                           newGroupViewModel!.contacts.length, false);
 
                       return Container(
@@ -181,17 +183,25 @@ class NewGroupScreen extends StatelessWidget {
                                     side: const BorderSide(
                                         width: 1,
                                         color: AppColorConstant.blackOff),
-                                    value: newGroupViewModel!.isChecked[index],
-                                    onChanged: (value) {
-                                      newGroupViewModel!.isChecked[index] =
-                                          value!;
-                                      logs(
-                                          'isChecked-----> ${newGroupViewModel!.isChecked}');
+                                    value:
+                                        newGroupViewModel!.selectedItems[index],
 
-                                      if (newGroupViewModel!.isChecked[index] ==
+                                    onChanged: (value) {
+                                      newGroupViewModel!.selectedItems[index] =
+                                          value!;
+
+                                      logs('isChecked-----> ${ newGroupViewModel!.selectedItems[index]}');
+
+                                      if (newGroupViewModel!
+                                              .selectedItems[index] ==
                                           true) {
                                         newGroupViewModel!.groupMembers
                                             .add(contact);
+                                        controller.update();
+                                      }
+                                      else{
+                                        newGroupViewModel!.groupMembers
+                                            .remove(contact);
                                         controller.update();
                                       }
 
@@ -199,7 +209,7 @@ class NewGroupScreen extends StatelessWidget {
                                           'members---> ${newGroupViewModel!.groupMembers.length}');
                                     },
                                     checkColor: Colors.white,
-                                    activeColor: Colors.blue,
+                                    activeColor: AppColorConstant.appYellow,
                                     tristate: false,
                                     visualDensity: VisualDensity.compact,
                                     shape: const CircleBorder(),

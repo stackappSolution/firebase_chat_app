@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
+
 class NotificationService {
   NotificationService._privateConstructor();
 
@@ -91,11 +92,11 @@ class NotificationService {
     const NotificationDetails platformChannelSpecifics =
     NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-      0,
-      'Sender Message',
-      messageText,
-      platformChannelSpecifics,
-      payload: fcmToken
+        0,
+        'Sender Message',
+        messageText,
+        platformChannelSpecifics,
+        payload: fcmToken
     );
   }
   void _showReceiverNotification(String messageText) async {
@@ -108,10 +109,10 @@ class NotificationService {
     const NotificationDetails platformChannelSpecifics =
     NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-      0,
-      'Receiver Message',
-      messageText,
-      platformChannelSpecifics,
+        0,
+        'Receiver Message',
+        messageText,
+        platformChannelSpecifics,
         payload: fcmToken
     );
   }

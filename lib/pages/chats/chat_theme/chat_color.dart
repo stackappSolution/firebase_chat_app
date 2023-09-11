@@ -6,8 +6,11 @@ import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
+import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
+import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
 class ChatColorScreen extends StatelessWidget {
@@ -22,7 +25,7 @@ class ChatColorScreen extends StatelessWidget {
       init: SettingsController(),
       initState: (state) {
         Future.delayed(
-          const Duration(milliseconds: 100),
+          const Duration(milliseconds: 0),
           () async {
             controller = Get.find<SettingsController>();
             selectedColor = await getChatBubbleColor();
@@ -35,6 +38,7 @@ class ChatColorScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppBar(context),
           body: getBody(context),
+          bottomNavigationBar: buildSaveButton(context),
         );
       },
     );
@@ -51,23 +55,19 @@ class ChatColorScreen extends StatelessWidget {
   }
 
   getBody(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          buildDemoChatView(context),
-          buildColorsGridView(),
-          buildSaveButton(context),
-          SizedBox(height: 12.px,),
-        ],
-      ),
+    return ListView(
+      children: [
+        buildDemoChatView(context),
+        buildColorsGridView(),
+      ],
     );
   }
 
   buildDemoChatView(BuildContext context) {
     return Container(
-      height: 170.px,
+      height: 150.px,
       width: double.infinity,
-      color:AppColorConstant.grey,
+      color: AppColorConstant.grey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -79,7 +79,7 @@ class ChatColorScreen extends StatelessWidget {
                 height: 40.px,
                 width: 230.px,
                 decoration: BoxDecoration(
-                    color:  Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.circular(12.px)),
                 child: AppText(S.of(context).colorIsOnlyVisibleYou)),
           ),
@@ -105,6 +105,7 @@ class ChatColorScreen extends StatelessWidget {
 
   buildColorsGridView() {
     List<Color> chatColors = [
+      AppColorConstant.appYellow,
       AppColorConstant.darkBlue,
       AppColorConstant.darkPink,
       AppColorConstant.darkOrange,
@@ -119,8 +120,7 @@ class ChatColorScreen extends StatelessWidget {
       AppColorConstant.pink,
       AppColorConstant.lightSky,
       AppColorConstant.purple,
-      AppColorConstant.darkPink,
-      AppColorConstant.darkGreen,
+
       AppColorConstant.red,
     ];
 
@@ -168,29 +168,32 @@ class ChatColorScreen extends StatelessWidget {
     }
   }
 
+  buildSaveButton(BuildContext context) {
+    return InkWell(onTap: () {
+      setStringValue(chatColor, selectedColor.value.toRadixString(16));
+      logs("selected Color--> $selectedColor");
+      controller!.update();
+      Get.back();
+      Get.off(ChatColorWallpaperScreen());
+    },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 100.px),
+        alignment: Alignment.center,
+        height: 35.px,
+        width: 110.px,
+        decoration: BoxDecoration(
+            color: AppColorConstant.appWhite,
+            borderRadius: BorderRadius.circular(12.px),
+            border: Border.all(color: AppColorConstant.grey, width: 2.px)),
 
-
-
-  buildSaveButton(BuildContext context){
-    return  Container(
-     // margin: EdgeInsets.all(12.px),
-      alignment: Alignment.center,
-      height: 35.px,
-      width: 110.px,
-      decoration: BoxDecoration(
-          color: AppColorConstant.appWhite,
-          borderRadius: BorderRadius.circular(12.px),
-          border: Border.all(color: AppColorConstant.grey, width: 2.px)),
-      child: InkWell(
-          onTap: () {
-            setStringValue(chatColor, selectedColor.value.toRadixString(16));
-            logs("selected Color--> $selectedColor");
-            controller!.update();
-            Get.back();
-          },
-          child: const AppText('Save',color: AppColorConstant.appBlack,)),
+            child: const AppText(
+              StringConstant.save,
+              color: AppColorConstant.appBlack,
+            ),
+      ),
     );
   }
-
-
 }
+
+
+
