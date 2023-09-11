@@ -10,7 +10,6 @@ import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../app/widget/app_text.dart';
 import '../../constant/color_constant.dart';
-import '../../constant/string_constant.dart';
 import '../../controller/intro_page_controller.dart';
 import '../../service/network_connectivity.dart';
 import 'package:connectivity/connectivity.dart';
