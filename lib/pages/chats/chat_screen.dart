@@ -131,7 +131,7 @@ class ChatScreen extends StatelessWidget {
               goToSettingPage();
             },
             child: Padding(
-              padding: EdgeInsets.all(7.0.px),
+              padding: EdgeInsets.only(left: 13.px,right: 7.px,top: 7.px,bottom: 7.px),
               child: CircleAvatar(
                 backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
                 child: AppText('S',

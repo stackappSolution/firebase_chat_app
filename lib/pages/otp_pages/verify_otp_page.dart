@@ -43,16 +43,6 @@ class VerifyOtpPage extends StatelessWidget {
       Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppColorConstant.appWhite.withOpacity(0.1),
-              AppColorConstant.appYellow.withOpacity(0.1),
-            ],
-          ),
-        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

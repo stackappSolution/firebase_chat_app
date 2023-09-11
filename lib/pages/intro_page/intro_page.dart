@@ -10,7 +10,6 @@ import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../app/widget/app_text.dart';
 import '../../constant/color_constant.dart';
-import '../../constant/string_constant.dart';
 import '../../controller/intro_page_controller.dart';
 import '../../service/network_connectivity.dart';
 import 'package:connectivity/connectivity.dart';
@@ -47,16 +46,19 @@ class IntroPage extends StatelessWidget {
                 textWelcome(context),
                 const Spacer(),
                 termsPrivacyPolicy(context),
-                AppElevatedButton(
-                  buttonRadius: 10.px,
-                  onPressed: () => Get.to(goToSignInPage()),
-                  buttonColor: AppColorConstant.appYellow,
-                  buttonHeight: 50.px,
-                  buttonWidth: 200.px,
-                  widget: AppText(
-                    S.of(context).getStarted,
-                    color: AppColorConstant.appWhite,
-                    fontSize: 20.px,
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: AppElevatedButton(
+                    buttonRadius: 10.px,
+                    onPressed: () => Get.to(goToSignInPage()),
+                    buttonColor: AppColorConstant.appYellow,
+                    buttonHeight: 50.px,
+                    buttonWidth: 200.px,
+                    widget: AppText(
+                      S.of(context).getStarted,
+                      color: AppColorConstant.appWhite,
+                      fontSize: 20.px,
+                    ),
                   ),
                 ),
                 transferOrRestoreAccount(context),

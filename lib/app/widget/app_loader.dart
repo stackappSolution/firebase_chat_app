@@ -7,7 +7,7 @@ class AppLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(padding: EdgeInsets.only(top: 200.px),
+    return Container(height: double.infinity,width: double.infinity,
       alignment: Alignment.center,
       color: Theme.of(context).colorScheme.background.withOpacity(0.5),
       child: const Center(child: CircularProgressIndicator(color: AppColorConstant.appYellow,)),
