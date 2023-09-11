@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
@@ -8,7 +9,7 @@ import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/service/database_helper.dart';
 import 'package:signal/service/database_service.dart';
 
-
+import '../../service/users_service.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;
@@ -18,7 +19,7 @@ class ChatViewModel {
   String string = '';
   bool isConnected = false;
 
-  final Stream<QuerySnapshot> usersStream = DatabaseService().getUserStream();
+  final Stream<QuerySnapshot> usersStream = UsersService.getUserStream();
   List<DocumentSnapshot> data = [];
   List timeStamp = [];
   ContactController? controller;
@@ -26,7 +27,7 @@ class ChatViewModel {
   ChatViewModel(this.chatScreen) {
     Future.delayed(
       const Duration(milliseconds: 20),
-          () {
+      () {
         controller = Get.find<ContactController>();
       },
     );
@@ -39,7 +40,7 @@ class ChatViewModel {
       fetchContacts();
     } else {
       final PermissionStatus requestResult =
-      await Permission.contacts.request();
+          await Permission.contacts.request();
 
       if (requestResult.isGranted) {
         fetchContacts();
@@ -63,19 +64,13 @@ class ChatViewModel {
     controller!.update();
   }
 
-
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
-      if (contact["contact"]
-          .toString()
-          .trim()
-          .removeAllWhitespace == number) {
+      if (contact["contact"].toString().trim().removeAllWhitespace == number) {
         return contact["name"] ?? "";
       }
     }
     return "Not Saved Yet";
   }
-}
-
 
 }

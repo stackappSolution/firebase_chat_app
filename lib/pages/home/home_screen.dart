@@ -62,20 +62,26 @@ buildBottomBar(HomeScreenController controller,BuildContext context) {
       items: [
         BottomNavigationBarItem(
             label: S.of(Get.context!).chats,backgroundColor:  Theme.of(context).colorScheme.primary,
-            icon: AppImageAsset(
-                height: 28.px,
-                width: 28.px,
-                image: (controller.tabIndex == 0)
-                    ? AppAsset.chat
-                    : AppAsset.chatOutline)),
+            icon: Padding(
+              padding: EdgeInsets.only(bottom: 5.px),
+              child: AppImageAsset(
+                  height: 23.px,
+                  width: 243.px,
+                  image: (controller.tabIndex == 0)
+                      ? AppAsset.chat
+                      : AppAsset.chatOutline),
+            )),
         BottomNavigationBarItem(
             label: S.of(Get.context!).calls,
-            icon: AppImageAsset(
-                height: 28.px,
-                width: 28.px,
-                image: (controller.tabIndex == 1)
-                    ? AppAsset.phone
-                    : AppAsset.phoneOutline))
+            icon: Padding(
+              padding: EdgeInsets.only(bottom: 5.px),
+              child: AppImageAsset(
+                  height: 23.px,
+                  width: 23.px,
+                  image: (controller.tabIndex == 1)
+                      ? AppAsset.phone
+                      : AppAsset.phoneOutline),
+            ))
       ]);
 }
 

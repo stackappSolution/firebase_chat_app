@@ -45,7 +45,7 @@ class StringConstant {
   static const String yesterday = 'Yesterday';
   static const String theme = 'theme';
   static const String yourProfile = 'yourProfile';
-  static const String profileAreVisible = 'profileAreVisible';
+  static const String profileAreVisible = 'profilesAreVisible';
   static const String firstName = 'firstName';
   static const String lastName = 'lastName';
   static const String next = 'next';

@@ -46,12 +46,12 @@ class SignInPage extends StatelessWidget {
   }
 
   Container buildsignInPage(
-    String countryCode,
-    String phoneNumber,
-    BuildContext context,
-    SignInController controller,
-    SignInViewModel signInViewModel,
-  ) =>
+      String countryCode,
+      String phoneNumber,
+      BuildContext context,
+      SignInController controller,
+      SignInViewModel signInViewModel,
+      ) =>
       Container(
         height: double.infinity,
         width: double.infinity,
@@ -107,7 +107,7 @@ class SignInPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(13.px)),
                     child: CountryCodePicker(
                       dialogBackgroundColor:
-                          Theme.of(context).colorScheme.background,
+                      Theme.of(context).colorScheme.background,
                       showFlag: false,
                       showFlagDialog: true,
                       onChanged: (country) {
@@ -131,7 +131,7 @@ class SignInPage extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.px),
                               color:
-                                  AppColorConstant.appYellow.withOpacity(0.1)),
+                              AppColorConstant.appYellow.withOpacity(0.1)),
                           height: 50.px,
                           margin: EdgeInsets.only(left: 10.px, right: 10.px),
                           child: AppTextFormField(
@@ -180,122 +180,92 @@ class SignInPage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: signInViewModel.isValidNumber != true
                     ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 45.px),
-                        child: AppElevatedButton(
-                          isBorderShape: true,
-                          buttonColor:
-                              AppColorConstant.appYellow.withOpacity(0.5),
-                          buttonHeight: 50,
-                          widget: AppText(
-                            S.of(context).continues,
-                            fontSize: 22,
-                            color: AppColorConstant.appWhite,
-                          ),
-                        ),
-                      )
+                  padding: EdgeInsets.symmetric(horizontal: 45.px),
+                  child: AppElevatedButton(
+                    isBorderShape: true,
+                    buttonColor:
+                    AppColorConstant.appYellow.withOpacity(0.5),
+                    buttonHeight: 50,
+                    widget: AppText(
+                      S.of(context).continues,
+                      fontSize: 22,
+                      color: AppColorConstant.appWhite,
+                    ),
+                  ),
+                )
                     : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 45.px),
-                        child: AppElevatedButton(
-                          onPressed: signInViewModel.otpSend
-                              ? null
-                              : () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  pref.setString("MobileNumber", phoneNumber);
-                                  logs(
-                                      "entred contact IS------------->   $countryCode$phoneNumber");
+                  padding: EdgeInsets.symmetric(horizontal: 45.px),
+                  child: AppElevatedButton(
+                      onPressed: signInViewModel.otpSend
+                          ? null
+                          : () async {
+                        SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                        pref.setString("MobileNumber", phoneNumber);
+                        logs(
+                            "entred contact IS------------->   $countryCode$phoneNumber");
 
-                                  verified(AuthCredential authResult) async {
-                                    await auth.signInWithCredential(authResult);
-                                  }
+                        verified(AuthCredential authResult) async {
+                          await auth.signInWithCredential(authResult);
+                        }
 
-                                  verificationFailed(
-                                      FirebaseAuthException authException) {
-                                    logs(authException.message.toString());
-                                  }
+                        verificationFailed(
+                            FirebaseAuthException authException) {
+                          logs(authException.message.toString());
+                        }
 
-                                  smsSent(String verificationId,
-                                      [int? forceResendingToken]) {
-                                    AuthService.verificationID = verificationId;
-                                    logs("OTP Sent to your phone");
-                                    goToVerifyPage(
-                                        phonenumber: phoneNumber.toString(),
-                                        verificationId:
-                                            AuthService.verificationID,
-                                        selectedCountry: selectedCountry);
-                                    logs(
-                                        "verification id ----->${AuthService.verificationID}");
-                                  }
+                        smsSent(String verificationId,
+                            [int? forceResendingToken]) {
+                          AuthService.verificationID = verificationId;
+                          logs("OTP Sent to your phone");
+                          goToVerifyPage(
+                              phonenumber: phoneNumber.toString(),
+                              verificationId:
+                              AuthService.verificationID,
+                              selectedCountry: selectedCountry);
+                          logs(
+                              "verification id ----->${AuthService.verificationID}");
+                        }
 
-                                  autoRetrievalTimeout(String verificationId) {
-                                    controller.update();
-                                    logs(
-                                        "verification------->${AuthService.verificationID}");
-                                  }
-                                  try {
-                                    await auth.verifyPhoneNumber(
-                                      phoneNumber: "$countryCode$phoneNumber",
-                                      timeout: const Duration(seconds: 60),
-                                      verificationCompleted: verified,
-                                      verificationFailed: verificationFailed,
-                                      codeSent: smsSent,
-                                      codeAutoRetrievalTimeout:
-                                          autoRetrievalTimeout,
-                                    );
-                                    signInViewModel.otpSend = true;
-                                    controller.update();
-                                  } catch (e) {
-                                    // Handle any errors that may occur during OTP verification
-                                    logs("Error: $e");
-                                    signInViewModel.otpSend = false;
-                                    controller.update();
-                                    controller
-                                        .update(); // Reset the sending OTP state
-                                  }
-                                  var data;
-                                  if (data.passParameter['id'] != null) {}
-                                },
-                          buttonColor: AppColorConstant.appYellow,
-                          buttonHeight: 50.px,
-                          isBorderShape: true,
-                          widget: signInViewModel.otpSend
-                              ? const CircularProgressIndicator(
-                            color: AppColorConstant.appWhite,
-                          ):AppText(
-                            S.of(context).continues,
-                            fontSize: 22.px,
-                            color: AppColorConstant.appWhite,
-                                      "verification------->${AuthService.verificationID}");
-                                }
-                                try {
-                                  await auth.verifyPhoneNumber(
-                                    phoneNumber: "$countryCode$phoneNumber",
-                                    timeout: const Duration(seconds: 60),
-                                    verificationCompleted: verified,
-                                    verificationFailed: verificationFailed,
-                                    codeSent: smsSent,
-                                    codeAutoRetrievalTimeout:
-                                        autoRetrievalTimeout,
-                                  );
-                                  signInViewModel.otpSend = true;
-                                  controller.update();
-                                } catch (e) {
-                                  // Handle any errors that may occur during OTP verification
-                                  logs("Error: $e");
-                                  signInViewModel.otpSend = false;
-                                  controller
-                                      .update();
-                                  controller.update(); // Reset the sending OTP state
-                                }
-
-                              },
-                        style: ButtonStyle(
-                          shape: MaterialStatePropertyAll(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.px)),
-                          ),
-                        ),
-                      ),
+                        autoRetrievalTimeout(String verificationId) {
+                          controller.update();
+                          logs(
+                              "verification------->${AuthService.verificationID}");
+                        }
+                        try {
+                          await auth.verifyPhoneNumber(
+                            phoneNumber: "$countryCode$phoneNumber",
+                            timeout: const Duration(seconds: 60),
+                            verificationCompleted: verified,
+                            verificationFailed: verificationFailed,
+                            codeSent: smsSent,
+                            codeAutoRetrievalTimeout:
+                            autoRetrievalTimeout,
+                          );
+                          signInViewModel.otpSend = true;
+                          controller.update();
+                        } catch (e) {
+                          // Handle any errors that may occur during OTP verification
+                          logs("Error: $e");
+                          signInViewModel.otpSend = false;
+                          controller.update();
+                          controller
+                              .update(); // Reset the sending OTP state
+                        }
+                        var data;
+                        if (data.passParameter['id'] != null) {}
+                      },
+                      buttonColor: AppColorConstant.appYellow,
+                      buttonHeight: 50.px,
+                      isBorderShape: true,
+                      widget: signInViewModel.otpSend
+                          ? const CircularProgressIndicator(
+                        color: AppColorConstant.appWhite,
+                      ):AppText(
+                        S.of(context).continues,
+                        fontSize: 22.px,
+                        color: AppColorConstant.appWhite,)),
+                ),
               ),
             ],
           ),

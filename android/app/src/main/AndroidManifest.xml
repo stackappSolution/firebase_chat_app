@@ -8,6 +8,19 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Android 12 or below  -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <!-- Android 13 or greater  -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+
+
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
