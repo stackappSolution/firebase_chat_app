@@ -8,6 +8,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
@@ -21,29 +22,21 @@ class ChatColorWallpaperScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<SettingsController>(
       didChangeDependencies: (state) async {
-        Future.delayed(
-          const Duration(milliseconds: 0),
-          () async {
-            controller = Get.find<SettingsController>();
-            chatBubbleColor = await getChatBubbleColor();
-            logs('chatColor----> $chatBubbleColor');
-            controller!.update();
-          }
-        );
-
+        Future.delayed(const Duration(milliseconds: 0), () async {
+          controller = Get.find<SettingsController>();
+          chatBubbleColor = await getChatBubbleColor();
+          logs('chatColor----> $chatBubbleColor');
+          controller!.update();
+        });
       },
       init: SettingsController(),
       initState: (state) async {
-        Future.delayed(
-            const Duration(milliseconds: 0),
-                () async {
-              controller = Get.find<SettingsController>();
-              chatBubbleColor = await getChatBubbleColor();
-              logs('chatColor----> $chatBubbleColor');
-              controller!.update();
-            }
-        );
-
+        Future.delayed(const Duration(milliseconds: 0), () async {
+          controller = Get.find<SettingsController>();
+          chatBubbleColor = await getChatBubbleColor();
+          logs('chatColor----> $chatBubbleColor');
+          controller!.update();
+        });
       },
       builder: (controller) {
         return Scaffold(
@@ -82,7 +75,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
       shrinkWrap: true,
       children: [
         ListTile(
-            onTap: () {
+            onTap: () async {
               Get.toNamed(RouteHelper.getChatColorScreen());
             },
             title: AppText(S.of(context).chatColor,
@@ -148,6 +141,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
             InkWell(
                 onTap: () {
                   Get.back();
+
                 },
                 child: AppText(S.of(context).cancel,
                     color: AppColorConstant.appYellow)),
@@ -158,6 +152,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
               onTap: () {
                 setStringValue(wallPaperColor,
                     const Color(0xFFFFFFFF).value.toRadixString(16));
+                controller!.update();
                 Get.back();
               },
               child: AppText(
@@ -180,7 +175,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
           actionsPadding:
               EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
           backgroundColor: Theme.of(context).colorScheme.background,
-          title: AppText(S.of(context).resetWallpaper,
+          title: AppText(S.of(context).resetChatColor,
               color: Theme.of(context).colorScheme.primary),
           actions: [
             InkWell(
@@ -198,6 +193,9 @@ class ChatColorWallpaperScreen extends StatelessWidget {
                     chatColor, const Color(0xFFf69533).value.toRadixString(16));
                 setStringValue(wallpaper, '');
                 Get.back();
+                Get.off(ChatColorWallpaperScreen());
+
+                controller!.update();
               },
               child: AppText(
                 S.of(context).reset,

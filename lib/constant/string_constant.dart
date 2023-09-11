@@ -159,6 +159,7 @@ class StringConstant {
   static const String phoneNumberDoesNot = 'phoneNumberDoesNot';
   static const String checkAgainYourNumber = 'checkAgainYourNumber';
   static const String ok = 'ok';
+  static const String save = 'save';
   static const String presets = 'presets';
   static const String payment = 'payment';
   static const String advance = 'advance';

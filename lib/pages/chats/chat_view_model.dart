@@ -9,6 +9,7 @@ import 'package:signal/service/database_helper.dart';
 
 import '../../service/users_service.dart';
 
+import 'package:signal/service/users_service.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;
@@ -18,7 +19,11 @@ class ChatViewModel {
   String string = '';
   bool isConnected = false;
 
+
+
+
   final Stream<QuerySnapshot> usersStream = UsersService.getUserStream();
+
   List<DocumentSnapshot> data = [];
   List timeStamp = [];
   ContactController? controller;
@@ -72,4 +77,5 @@ class ChatViewModel {
     return "Not Saved Yet";
   }
 }
+
 

@@ -138,6 +138,10 @@ class NewGroupScreen extends StatelessWidget {
                       String firstLetter =
                           displayName.substring(0, 1).toUpperCase();
                       newGroupViewModel!.isChecked = List.filled(
+
+                      newGroupViewModel!.items = newGroupViewModel!.contacts;
+
+                      newGroupViewModel!.selectedItems = List.filled(
                           newGroupViewModel!.contacts.length, false);
                       return Container(
                         margin: EdgeInsets.only(top: 10.px),
@@ -195,6 +199,43 @@ class NewGroupScreen extends StatelessWidget {
                                       controller.update();
                                     },
                                   )
+                                  child: Checkbox(
+                                    side: const BorderSide(
+                                        width: 1,
+                                        color: AppColorConstant.blackOff),
+                                    value:
+                                        newGroupViewModel!.selectedItems[index],
+
+                                    onChanged: (value) {
+                                      newGroupViewModel!.selectedItems[index] =
+                                          value!;
+
+                                      logs('isChecked-----> ${ newGroupViewModel!.selectedItems[index]}');
+
+                                      if (newGroupViewModel!
+                                              .selectedItems[index] ==
+                                          true) {
+                                        newGroupViewModel!.groupMembers
+                                            .add(contact);
+                                        controller.update();
+                                      }
+                                      else{
+                                        newGroupViewModel!.groupMembers
+                                            .remove(contact);
+                                        controller.update();
+                                      }
+
+                                      logs(
+                                          'members---> ${newGroupViewModel!.groupMembers.length}');
+                                    },
+                                    checkColor: Colors.white,
+                                    activeColor: AppColorConstant.appYellow,
+                                    tristate: false,
+                                    visualDensity: VisualDensity.compact,
+                                    shape: const CircleBorder(),
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
                                 ),
                               ],
                             ),

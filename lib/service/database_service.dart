@@ -143,27 +143,11 @@ class DatabaseService {
         .contains(AuthService.auth.currentUser!.phoneNumber!);
   }
 
-  //========================== Upload Image on Storage =================================
-
-  static String imageURL = "";
-
-  static void uploadImage(File imageUrl) async {
-    String imageURL = "";
-    final storage = FirebaseStorage.instance
-        .ref('chat')
-        .child("images")
-        .child(AuthService.auth.currentUser!.phoneNumber!)
-        .child('sentImage.jpg');
-    await storage.putFile(imageUrl);
-    imageURL = await storage.getDownloadURL();
-    logs("Image URL ------ > $imageURL");
-  }
-
   //========================== Upload Audio on Storage =================================
 
   static String audioURL = "";
 
-  static void uploadAudio(File url,ChatingPageController controller) async {
+  static void uploadAudio(File url, ChatingPageController controller) async {
     final storage = FirebaseStorage.instance
         .ref('chat')
         .child("audio")
@@ -173,4 +157,10 @@ class DatabaseService {
     audioURL = await storage.getDownloadURL();
     controller.update();
   }
+
+
+
+
+
+
 }

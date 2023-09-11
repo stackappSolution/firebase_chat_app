@@ -10,6 +10,7 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/chat_profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
@@ -46,6 +47,15 @@ class ChatProfileScreen extends StatelessWidget {
             body: getBody(context, controller),
           ),
           onWillPop: () async {
+            Get.back();
+            Get.offAndToNamed(RouteHelper.getChattingScreen(), arguments: {
+              'name': chatProfileViewModel!.arguments['name'],
+              'number': chatProfileViewModel!.arguments['number'],
+              'id': chatProfileViewModel!.arguments['id'],
+              'isGroup': chatProfileViewModel!.arguments['isGroup'],
+              'members': chatProfileViewModel!.arguments['members'],
+            });
+
             return true;
           },
         );
@@ -57,7 +67,8 @@ class ChatProfileScreen extends StatelessWidget {
     return AppAppBar(
       leading: IconButton(
           onPressed: () {
-            Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
+            Get.back();
+            Get.off(ChatingPage(), arguments: {
               'name': chatProfileViewModel!.arguments['name'],
               'number': chatProfileViewModel!.arguments['number'],
               'id': chatProfileViewModel!.arguments['id'],
