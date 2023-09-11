@@ -300,13 +300,12 @@ class ChatingPage extends StatelessWidget {
       ),
     );
   }
-
   Widget buildMessage(
       Message message, BuildContext context, ChatingPageController controller) {
     logs('message---------> ${message.message}');
 
     return Slidable(
-        child: (message.sender == AuthService.auth.currentUser!.phoneNumber)
+        child: (message.isSender == AuthService.auth.currentUser!.phoneNumber)
             ? (Slidable(
                 endActionPane: ActionPane(
                     extentRatio: fontSize == StringConstant.small
@@ -446,6 +445,58 @@ class ChatingPage extends StatelessWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              AppText(
+                                message.sender,
+                                fontSize: 10.px,
+                              ),
+                              AppText(message.message,
+                                  color:
+                                  AppColorConstant.appBlack,
+                                  fontSize: getFontSizeValue(
+                                      small: 10.px,
+                                      large: 20.px,
+                                      extraLarge: 25.px,
+                                      normal: 15.px))
+                            ],
+                          )
+                              : AppText(message.message,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: getFontSizeValue(
+                                  small: 10.px,
+                                  large: 20.px,
+                                  extraLarge: 25.px,
+                                  normal: 15.px))),
+                      Padding(
+                          padding:
+                          EdgeInsets.only(left: 5.px, top: 3.px),
+                          child: AppText(
+                              message.messageTimestamp.toString(),
+                              color:
+                              Theme.of(context).colorScheme.primary,
+                              fontSize: getFontSizeValue(
+                                  small: 8.px,
+                                  large: 15.px,
+                                  extraLarge: 20.px,
+                                  normal: 12.px)))
+                    ]))
+                : Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                margin: EdgeInsets.all(10.px),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColorConstant.appYellow,
+                  ),
+                  borderRadius: BorderRadius.circular(12.px),
+                ),
+                height: 200.px,
+                width: 150.px,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.px),
+                    child: AppImageAsset(image: message.message)),
+                ),
+              ),
+            )));
                               ChatBubble(
                                   elevation: 0,
                                   margin: EdgeInsets.only(right: 100.px),
@@ -616,10 +667,10 @@ class ChatingPage extends StatelessWidget {
         cursorColor: AppColorConstant.offBlack,
         onChanged: (value) {
           if (chatingPageViewModal!.chatController.text == '') {
-            controller.chatingPageViewModal!.iconChange = false;
+            controller.chatingPageViewModal.iconChange = false;
             controller.update();
           } else {
-            controller.chatingPageViewModal!.iconChange = true;
+            controller.chatingPageViewModal.iconChange = true;
             controller.update();
           }
         },

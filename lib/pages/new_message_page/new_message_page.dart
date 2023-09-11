@@ -43,22 +43,22 @@ class NewMessagePage extends StatelessWidget {
         controller.getUserPhoneList();
         return SafeArea(
             child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: buildAppBar(context),
-          body: buildSearchBar(context, controller),
-        ));
+              backgroundColor: Theme.of(context).colorScheme.background,
+              appBar: buildAppBar(context),
+              body: buildSearchBar(context, controller),
+            ));
       },
     );
   }
 
   buildAppBar(BuildContext context) => AppAppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        title: AppText(
-          S.of(context).newMessage,
-          fontSize: 20.px,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      );
+    backgroundColor: Theme.of(context).colorScheme.background,
+    title: AppText(
+      S.of(context).newMessage,
+      fontSize: 20.px,
+      color: Theme.of(context).colorScheme.primary,
+    ),
+  );
 
   buildSearchBar(BuildContext context, NewMessageController controller) =>
       SingleChildScrollView(
@@ -112,7 +112,7 @@ class NewMessagePage extends StatelessWidget {
                   leading: CircleAvatar(
                     radius: 20.px,
                     backgroundColor:
-                        AppColorConstant.appYellow.withOpacity(0.5),
+                    AppColorConstant.appYellow.withOpacity(0.5),
                     child: Icon(Icons.group,
                         color: AppColorConstant.appBlack, size: 17.px),
                   )),
@@ -149,7 +149,7 @@ class NewMessagePage extends StatelessWidget {
             ? newMessageViewModel!.filteredContacts[index]
             : newMessageViewModel!.contacts[index];
         String? mobileNumber =
-            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+        contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
 
         logs(mobileNumber.toString().trim().removeAllWhitespace);
         String? displayName = contact.displayName ?? 'unknown';
@@ -169,117 +169,117 @@ class NewMessagePage extends StatelessWidget {
 
             logs("user List ${controller.userList}");
             return (controller.userList.contains(
-                    mobileNumber.toString().trim().removeAllWhitespace))
+                mobileNumber.toString().trim().removeAllWhitespace))
                 ? Container(
-                    margin: EdgeInsets.only(top: 5.px),
-                    child: InkWell(
-                      onTap: () {
-                        newMessageViewModel!.isLoading = true;
-                        controller.update();
-                        goToChatingScreen();
-                        controller.update();
-                      },
-                      child: Column(
-                        // AppText(firstLetter),
-                        children: [
-                          ListTile(
-                            onTap: () async {
-                              newMessageViewModel!.isThisUserExist =
-                                  await controller.doesUserExist(mobileNumber
-                                      .toString()
-                                      .trim()
-                                      .removeAllWhitespace);
-                              if (newMessageViewModel!.isThisUserExist &&
+              margin: EdgeInsets.only(top: 5.px),
+              child: InkWell(
+                onTap: () {
+                  newMessageViewModel!.isLoading = true;
+                  controller.update();
+                  goToChatingScreen();
+                  controller.update();
+                },
+                child: Column(
+                  // AppText(firstLetter),
+                  children: [
+                    ListTile(
+                      onTap: () async {
+                        newMessageViewModel!.isThisUserExist =
+                        await controller.doesUserExist(mobileNumber
+                            .toString()
+                            .trim()
+                            .removeAllWhitespace);
+                        if (newMessageViewModel!.isThisUserExist &&
+                            mobileNumber
+                                .toString()
+                                .trim()
+                                .removeAllWhitespace !=
+                                AuthService
+                                    .auth.currentUser!.phoneNumber) {
+                          Get.toNamed(RouteHelper.getChattingScreen(),
+                              arguments: {
+                                'members': [
+                                  AuthService
+                                      .auth.currentUser!.phoneNumber!,
                                   mobileNumber
-                                          .toString()
-                                          .trim()
-                                          .removeAllWhitespace !=
-                                      AuthService
-                                          .auth.currentUser!.phoneNumber) {
-                                Get.toNamed(RouteHelper.getChattingScreen(),
-                                    arguments: {
-                                      'members': [
-                                        AuthService
-                                            .auth.currentUser!.phoneNumber!,
-                                        mobileNumber
-                                            .toString()
-                                            .removeAllWhitespace
-                                            .trim()
-                                      ],
-                                      'name': displayName,
-                                      'number': mobileNumber
-                                          .toString()
-                                          .trim()
-                                          .removeAllWhitespace,
-                                      'isGroup': false,
-                                    });
-                              } else {
-                                Get.toNamed(RouteHelper.getInviteMemberScreen(),
-                                    parameters: {
-                                      'firstLetter': firstLetter,
-                                      'displayName': displayName,
-                                      'phoneNo': mobileNumber
-                                    });
-                              }
-                            },
-                            leading: InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                      RouteHelper.getChatProfileScreen());
-                                },
-                                child: StreamBuilder(
-                                  //   stream: controller.getProfile("+911234567890"),
-
-                                  stream: controller.getUserData(mobileNumber
                                       .toString()
+                                      .removeAllWhitespace
                                       .trim()
-                                      .removeAllWhitespace),
-                                  builder: (context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (snapshot.hasError) {
-                                      return const AppText('');
-                                    }
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const AppText('');
-                                    }
-                                    final data = snapshot.data!.docs;
-                                    //data[0]["photoUrl"].toString().contains("https://")
-                                    return (false)
-                                        ? Container(
-                                            height: 48.px,
-                                            width: 48.px,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        data[0]["photoUrl"]),
-                                                    fit: BoxFit.cover)),
-                                          )
-                                        : CircleAvatar(
-                                            maxRadius: 20.px,
-                                            backgroundColor: AppColorConstant
-                                                .appYellow
-                                                .withOpacity(0.8),
-                                            child: AppText(
-                                              firstLetter,
-                                              color: AppColorConstant.appWhite,
-                                              fontSize: 20.px,
-                                            ));
-                                  },
-                                )),
-                            title: AppText(
-                              displayName,
-                              fontSize: 15.px,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            subtitle: AppText(mobileNumber!,
-                                color: AppColorConstant.grey, fontSize: 12.px),
-                          ),
-                        ],
+                                ],
+                                'name': displayName,
+                                'number': mobileNumber
+                                    .toString()
+                                    .trim()
+                                    .removeAllWhitespace,
+                                'isGroup': false,
+                              });
+                        } else {
+                          Get.toNamed(RouteHelper.getInviteMemberScreen(),
+                              parameters: {
+                                'firstLetter': firstLetter,
+                                'displayName': displayName,
+                                'phoneNo': mobileNumber
+                              });
+                        }
+                      },
+                      leading: InkWell(
+                          onTap: () {
+                            Get.toNamed(
+                                RouteHelper.getChatProfileScreen());
+                          },
+                          child: StreamBuilder(
+                            //   stream: controller.getProfile("+911234567890"),
+
+                            stream: controller.getUserData(mobileNumber
+                                .toString()
+                                .trim()
+                                .removeAllWhitespace),
+                            builder: (context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return const AppText('');
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const AppText('');
+                              }
+                              final data = snapshot.data!.docs;
+                              //data[0]["photoUrl"].toString().contains("https://")
+                              return (false)
+                                  ? Container(
+                                height: 48.px,
+                                width: 48.px,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            data[0]["photoUrl"]),
+                                        fit: BoxFit.cover)),
+                              )
+                                  : CircleAvatar(
+                                  maxRadius: 20.px,
+                                  backgroundColor: AppColorConstant
+                                      .appYellow
+                                      .withOpacity(0.8),
+                                  child: AppText(
+                                    firstLetter,
+                                    color: AppColorConstant.appWhite,
+                                    fontSize: 20.px,
+                                  ));
+                            },
+                          )),
+                      title: AppText(
+                        displayName,
+                        fontSize: 15.px,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
+                      subtitle: AppText(mobileNumber!,
+                          color: AppColorConstant.grey, fontSize: 12.px),
                     ),
-                  )
+                  ],
+                ),
+              ),
+            )
                 : Container();
           },
         );

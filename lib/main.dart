@@ -22,7 +22,6 @@ Future<void> main() async {
   await ThemeUtil.loadThemeMode();
   await NotificationService.instance.initializeNotification();
   NotificationService.instance.initialize();
-  FirebaseAuth auth = FirebaseAuth.instance;
   SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: (ThemeUtil.isDark)
@@ -74,8 +73,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-
-
-
-
 }

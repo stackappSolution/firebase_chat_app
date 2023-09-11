@@ -4,7 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/chanage_phone_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/account/change_phone/change_phone_screen.dart';

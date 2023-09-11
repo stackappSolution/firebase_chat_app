@@ -28,11 +28,15 @@ class NewMessageController extends GetxController {
   }
 
   Future getUserPhoneList() async {
-    final data = await userTable.where('phone').get();
-    data.docs.forEach((element) {
-      userList.add(element["phone"]);
-    });
-    logs("getUserPhoneList=== ${userList}");
+    if(userList.isEmpty)
+    {
+      final data = await userTable.where('phone').get();
+      data.docs.forEach((element) {
+        userList.add(element["phone"]);
+      });
+      logs("getUserPhoneList=== ${userList}");
+    }
+
   }
   Stream<QuerySnapshot<Map<String, dynamic>>> getProfile(String number) {
     return userTable.where('phone', isEqualTo: number).snapshots();

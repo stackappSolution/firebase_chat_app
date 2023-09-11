@@ -1,6 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:signal/modal/user_model.dart';
-import 'package:signal/service/auth_service.dart';
+
+import '../modal/user_model.dart';
+import 'auth_service.dart';
 
 class UsersService {
   static final users = FirebaseFirestore.instance.collection('users');

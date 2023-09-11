@@ -14,8 +14,6 @@ import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
-
-import 'package:signal/service/database_service.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../app/app/utills/app_utills.dart';
