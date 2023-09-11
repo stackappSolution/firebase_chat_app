@@ -183,7 +183,7 @@ class S {
   /// `Profiles Are Visible To People, Your Message,Contacts and Groups.`
   String get profileAreVisible {
     return Intl.message(
-      'Profiles Are Visible To People, Your Message,Contacts and Groups.',
+      'Profiles Are Visible To People, Your Message, Contacts and Groups.',
       name: 'profileAreVisible',
       desc: '',
       args: [],
@@ -1483,8 +1483,8 @@ class S {
   /// `files`
   String get files {
     return Intl.message(
-      'files',
-      name: 'files',
+      'Files',
+      name: 'Files',
       desc: '',
       args: [],
     );

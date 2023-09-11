@@ -87,4 +87,16 @@ class UsersService {
       'blockedNumbers': FieldValue.arrayRemove([unBlockedNumber]),
     });
   }
+
+  static Future getUserData() async {
+    QuerySnapshot querySnapshot = await users
+        .where('id', isNotEqualTo: AuthService.auth.currentUser?.uid)
+        .get();
+
+    final userDoc = users.doc(querySnapshot.docs.first.id);
+
+    final userSnapshot = await userDoc.get();
+    final userName = userSnapshot['firstName'];
+    return userName;
+  }
 }
