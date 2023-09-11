@@ -56,7 +56,6 @@ dependencies:
   #audio
   on_audio_query: ^2.9.0
   audioplayers: ^5.1.0
-  file_picker: ^5.5.0
 
   # file
   file_picker: ^5.5.0
@@ -129,24 +128,7 @@ flutter:
   fonts:
     - family: poppins
       fonts:
-#        - asset: assets/fonts/poppins/Poppins-Black.ttf
-#        - asset: assets/fonts/poppins/Poppins-BlackItalic.ttf
-#        - asset: assets/fonts/poppins/Poppins-Bold.ttf
-#        - asset: assets/fonts/poppins/Poppins-BoldItalic.ttf
-#        - asset: assets/fonts/poppins/Poppins-ExtraBold.ttf
-#        - asset: assets/fonts/poppins/Poppins-ExtraBoldItalic.ttf
-#        - asset: assets/fonts/poppins/Poppins-ExtraLight.ttf
-#        - asset: assets/fonts/poppins/Poppins-ExtraLightItalic.ttf
-#        - asset: assets/fonts/poppins/Poppins-Italic.ttf
-#        - asset: assets/fonts/poppins/Poppins-Light.ttf
-#        - asset: assets/fonts/poppins/Poppins-LightItalic.ttf
         - asset: assets/fonts/poppins/Poppins-Medium.ttf
-#        - asset: assets/fonts/poppins/Poppins-MediumItalic.ttf
-#        - asset: assets/fonts/poppins/Poppins-Regular.ttf
-#        - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
-#        - asset: assets/fonts/poppins/Poppins-SemiBoldItalic.ttf
-#        - asset: assets/fonts/poppins/Poppins-Thin.ttf
-#        - asset: assets/fonts/poppins/Poppins-ThinItalic.ttf
 
 flutter_intl:
   main_locale: en_US
