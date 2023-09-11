@@ -89,8 +89,8 @@ dependencies:
   #flutter Notification
   flutter_local_notifications: ^15.1.1
 
-  # notification
-  firebase_messaging: ^14.6.7
+
+
 
   #sqflite Database
   sqflite: ^2.3.0
