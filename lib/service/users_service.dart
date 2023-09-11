@@ -1,9 +1,11 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:signal/modal/user_model.dart';
-import 'package:signal/service/auth_service.dart';
+
+import '../modal/user_model.dart';
+import 'auth_service.dart';
 
 class UsersService {
-  final users = FirebaseFirestore.instance.collection('users');
+  static final users = FirebaseFirestore.instance.collection('users');
 
   //==========================addUsers=======================================
 
@@ -30,7 +32,7 @@ class UsersService {
 
   //================================getUsers================================
 
-  Stream<QuerySnapshot<Object?>> getUserStream() {
+  static Stream<QuerySnapshot<Object?>> getUserStream() {
     final Stream<QuerySnapshot> usersStream = users
         .where('id', isNotEqualTo: AuthService.auth.currentUser?.uid)
         .snapshots();

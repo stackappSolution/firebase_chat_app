@@ -138,7 +138,7 @@ class SignInPage extends StatelessWidget {
                             labelText: S.of(context).phoneNumber,
                             labelStyle: TextStyle(
                                 color: AppColorConstant.appYellow,
-                                fontSize: 20.px),
+                                fontSize: 16.px),
                             controller: signInViewModel.phoneNumber,
                             style: TextStyle(
                               fontSize: 22.px,
@@ -180,7 +180,7 @@ class SignInPage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: signInViewModel.isValidNumber != true
                     ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 45.px),
+                        padding: EdgeInsets.symmetric(horizontal: 50.px),
                         child: AppElevatedButton(
                           isBorderShape: true,
                           buttonColor:
@@ -194,7 +194,7 @@ class SignInPage extends StatelessWidget {
                         ),
                       )
                     : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 45.px),
+                        padding: EdgeInsets.symmetric(horizontal: 60.px),
                         child: AppElevatedButton(
                           onPressed: signInViewModel.otpSend
                               ? null
@@ -264,37 +264,7 @@ class SignInPage extends StatelessWidget {
                           ):AppText(
                             S.of(context).continues,
                             fontSize: 22.px,
-                            color: AppColorConstant.appWhite,
-                                      "verification------->${AuthService.verificationID}");
-                                }
-                                try {
-                                  await auth.verifyPhoneNumber(
-                                    phoneNumber: "$countryCode$phoneNumber",
-                                    timeout: const Duration(seconds: 60),
-                                    verificationCompleted: verified,
-                                    verificationFailed: verificationFailed,
-                                    codeSent: smsSent,
-                                    codeAutoRetrievalTimeout:
-                                        autoRetrievalTimeout,
-                                  );
-                                  signInViewModel.otpSend = true;
-                                  controller.update();
-                                } catch (e) {
-                                  // Handle any errors that may occur during OTP verification
-                                  logs("Error: $e");
-                                  signInViewModel.otpSend = false;
-                                  controller
-                                      .update();
-                                  controller.update(); // Reset the sending OTP state
-                                }
-
-                              },
-                        style: ButtonStyle(
-                          shape: MaterialStatePropertyAll(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.px)),
-                          ),
-                        ),
+                            color: AppColorConstant.appWhite,)),
                       ),
               ),
             ],

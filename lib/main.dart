@@ -19,7 +19,6 @@ Future<void> main() async {
   await ThemeUtil.loadThemeMode();
   await NotificationService.instance.initializeNotification();
   NotificationService.instance.initialize();
-  FirebaseAuth auth = FirebaseAuth.instance;
   SharedPreferences.getInstance();
 
   String? token = await FirebaseMessaging.instance.getToken();
@@ -65,8 +64,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-
-
-
-
 }

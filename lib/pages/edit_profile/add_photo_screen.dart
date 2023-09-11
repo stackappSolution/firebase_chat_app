@@ -5,7 +5,6 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/add_photo_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/edit_profile/add_photo_view_model.dart';

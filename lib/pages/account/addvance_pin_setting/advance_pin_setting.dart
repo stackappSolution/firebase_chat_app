@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/generated/l10n.dart';
 
 import '../../../controller/advance_pin_controller.dart';

@@ -295,7 +295,6 @@ class ChatingPage extends StatelessWidget {
       ),
     );
   }
-
   Widget buildMessage(
       Message message, BuildContext context, ChatingPageController controller) {
 
@@ -305,7 +304,7 @@ class ChatingPage extends StatelessWidget {
 
 
     return Slidable(
-        child: (message.sender == AuthService.auth.currentUser!.phoneNumber)
+        child: (message.isSender == AuthService.auth.currentUser!.phoneNumber)
             ? (Slidable(
             endActionPane: ActionPane(
                 extentRatio: fontSize == StringConstant.small
@@ -504,8 +503,9 @@ class ChatingPage extends StatelessWidget {
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.px),
                     child: AppImageAsset(image: message.message)),
+                ),
               ),
-            ))));
+            )));
   }
 
   AppAppBar appBar(
@@ -608,10 +608,10 @@ class ChatingPage extends StatelessWidget {
         cursorColor: AppColorConstant.offBlack,
         onChanged: (value) {
           if (chatingPageViewModal!.chatController.text == '') {
-            controller.chatingPageViewModal!.iconChange = false;
+            controller.chatingPageViewModal.iconChange = false;
             controller.update();
           } else {
-            controller.chatingPageViewModal!.iconChange = true;
+            controller.chatingPageViewModal.iconChange = true;
             controller.update();
           }
         },

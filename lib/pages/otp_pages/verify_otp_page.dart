@@ -43,16 +43,6 @@ class VerifyOtpPage extends StatelessWidget {
       Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppColorConstant.appWhite.withOpacity(0.1),
-              AppColorConstant.appYellow.withOpacity(0.1),
-            ],
-          ),
-        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -142,7 +132,7 @@ class VerifyOtpPage extends StatelessWidget {
                   alignment: Alignment.center,
                   child: verifyOtpViewModel!.isValidOTP != true
                       ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 45.px),
+                          padding: EdgeInsets.symmetric(horizontal: 50.px),
                           child: AppElevatedButton(
                               buttonColor:
                                   AppColorConstant.appYellow.withOpacity(0.5),
@@ -153,7 +143,7 @@ class VerifyOtpPage extends StatelessWidget {
                               )),
                         )
                       : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 45.px),
+                        padding: EdgeInsets.symmetric(horizontal: 60.px),
                         child: AppElevatedButton(
                             onPressed: () async {
                               verifyOtpViewModel!.isLoading = true;

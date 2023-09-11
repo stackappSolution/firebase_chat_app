@@ -18,7 +18,6 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
-import '../../app/app/utills/date_formation.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -246,7 +245,7 @@ class ChatScreen extends StatelessWidget {
                     });
                   },
 
-                  trailing: StreamBuilder(
+                  trailing:  StreamBuilder(
                     stream: controller.getLastMessage(documents[index]['id']),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {

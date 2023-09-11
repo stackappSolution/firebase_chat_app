@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 
 
 class NotificationService {
@@ -12,8 +13,8 @@ class NotificationService {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    print('Background message Id : ${message.messageId}');
-    print('Background message Time : ${message.sentTime}');
+    logs('Background message Id : ${message.messageId}');
+    logs('Background message Time : ${message.sentTime}');
   }
 
   Future<void> initializeNotification() async {
@@ -24,13 +25,13 @@ class NotificationService {
 
     NotificationSettings notificationSettings = await firebaseMessaging.requestPermission(announcement: true);
 
-    print('Notification permission status : ${notificationSettings.authorizationStatus.name}');
+    logs('Notification permission status : ${notificationSettings.authorizationStatus.name}');
 
     fcmToken = await firebaseMessaging.getToken();
-    print('FCM Token --> $fcmToken');
+    logs('FCM Token --> $fcmToken');
     if (notificationSettings.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage remoteMessage) async {
-        print('Message title: ${remoteMessage.notification!.title}, body: ${remoteMessage.notification!.body}');
+        logs('Message title: ${remoteMessage.notification!.title}, body: ${remoteMessage.notification!.body}');
 
         AndroidNotificationDetails androidNotificationDetails = const AndroidNotificationDetails(
           'CHANNEL ID',
