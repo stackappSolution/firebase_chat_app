@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_loader.dart';
@@ -18,18 +19,13 @@ class AttachmentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     attachmentViewModel ?? (attachmentViewModel = AttachmentViewModel(this));
 
     return GetBuilder<AttachmentController>(
       init: AttachmentController(),
       initState: (state) {
         attachmentViewModel!.argument = Get.arguments;
-
-
-
-
-
-
         attachmentViewModel!.selectedImage =
             attachmentViewModel!.argument['image'];
         logs("parameter data---->${attachmentViewModel!.selectedImage}");

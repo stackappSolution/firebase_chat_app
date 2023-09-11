@@ -177,7 +177,7 @@ class ChatingPage extends StatelessWidget {
                                           decoration: BoxDecoration(
                                               borderRadius:
                                               BorderRadius.circular(5.px),
-                                              color: AppColorConstant.appYellow),
+                                              color: AppColorConstant.appGrey.withOpacity(0.1)),
                                           alignment: Alignment.center,
                                           height: 25.px,
                                           width: 100.px,
@@ -185,7 +185,7 @@ class ChatingPage extends StatelessWidget {
                                               formatDate,
                                               style: const TextStyle(
                                                   color:
-                                                  AppColorConstant.appWhite))));
+                                                  AppColorConstant.appBlack))));
                                 },
                               );
                             }
@@ -321,12 +321,12 @@ class ChatingPage extends StatelessWidget {
                       child: Padding(
                           padding: EdgeInsets.only(bottom: 10.px),
                           child: CircleAvatar(
-                              radius: getFontSizeValue(
-                                  small: 15.px,
-                                  large: 22.px,
-                                  extraLarge: 28.px,
-                                  normal: 18.px),
-                              backgroundColor: AppColorConstant.appYellow)))
+                            radius: getFontSizeValue(
+                                small: 15.px,
+                                large: 22.px,
+                                extraLarge: 28.px,
+                                normal: 18.px),
+                            backgroundColor:  chatingPageViewModal!.chatBubbleColor,)))
                 ]),
             child: (message.messageType == 'text')
                 ? Container(
@@ -417,7 +417,7 @@ class ChatingPage extends StatelessWidget {
                                 extraLarge: 28.px,
                                 normal: 18.px),
                             backgroundColor:
-                            chatingPageViewModal!.chatBubbleColor,
+                            AppColorConstant.appGrey.withOpacity(0.3),
                             child: AppText(
                               (chatingPageViewModal!.arguments['isGroup'] != false)
                                   ? chatingPageViewModal!.arguments['groupName']
@@ -426,7 +426,7 @@ class ChatingPage extends StatelessWidget {
                                   : chatingPageViewModal!.arguments['name']
                                   .substring(0, 1)
                                   .toUpperCase(),
-                              color: Theme.of(context).colorScheme.onPrimary,
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 18.px,
                               fontWeight: FontWeight.w500,
                             ),
@@ -469,7 +469,7 @@ class ChatingPage extends StatelessWidget {
                             ],
                           )
                               : AppText(message.message,
-                              color: AppColorConstant.appWhite,
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: getFontSizeValue(
                                   small: 10.px,
                                   large: 20.px,

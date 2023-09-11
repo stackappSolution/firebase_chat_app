@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
@@ -20,17 +21,28 @@ class AttachmentViewModel {
   CroppedFile? croppedFile;
   String? imageURL;
   ChatingPageController? controller;
-  bool isLoading=false;
+  bool isLoading = false;
 
-  AttachmentViewModel(this.attachmentScreen){
-    Future.delayed(const Duration(milliseconds: 0),() {
-      controller= Get.find<ChatingPageController>();
-    },);
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = const Duration();
+  Duration position = const Duration();
+
+  AttachmentViewModel(this.attachmentScreen) {
+    Future.delayed(
+      const Duration(milliseconds: 0),
+      () {
+        controller = Get.find<ChatingPageController>();
+      },
+    );
   }
 
+  void imageButtonTap(AttachmentController controller) {
+    onSendMessage("image", controller);
+    Get.back;
+  }
 
-
-  imageCrop(BuildContext context, AttachmentController controller) async {
+  void imageCrop(BuildContext context, AttachmentController controller) async {
     if (selectedImage != null) {
       croppedFile = await ImageCropper().cropImage(
         sourcePath: selectedImage,
@@ -67,8 +79,8 @@ class AttachmentViewModel {
     }
   }
 
-  onSendMessage( msgType, AttachmentController controller) async {
-    await uploadImage(File(selectedImage));
+  onSendMessage(String msgType, AttachmentController controller) async {
+    DatabaseService.uploadImage(File(selectedImage));
     DatabaseService().addNewMessage(
         type: msgType,
         members: argument['members'],
@@ -80,7 +92,31 @@ class AttachmentViewModel {
     controller.update();
   }
 
-  uploadImage(File imageUrl) async {
+  void initAudioPlayer() {
+    audioPlayer.onDurationChanged.listen((Duration duration) {
+      duration = duration;
+    });
+
+    audioPlayer.onPositionChanged.listen((Duration position) {
+      position = position;
+    });
+  }
+
+  void play(controller, path) async {
+    logs("Audio Path --- $path");
+    await audioPlayer.play(AssetSource(path));
+
+    isPlaying = true;
+    controller.update();
+  }
+
+  void pause(controller) async {
+    await audioPlayer.pause();
+    isPlaying = false;
+    controller.update();
+  }
+
+  void uploadImage(File imageUrl) async {
     isLoading = true;
     logs("load--> $isLoading");
     controller!.update();
@@ -96,14 +132,4 @@ class AttachmentViewModel {
     controller!.update();
     Get.back();
   }
-
-
-
-  imageButtonTap(AttachmentController controller) {
-    onSendMessage(
-      "image",
-      controller,
-    );
-  }
-
 }
