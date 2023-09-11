@@ -105,6 +105,7 @@ class ChatColorScreen extends StatelessWidget {
 
   buildColorsGridView() {
     List<Color> chatColors = [
+      AppColorConstant.appYellow,
       AppColorConstant.darkBlue,
       AppColorConstant.darkPink,
       AppColorConstant.darkOrange,
@@ -119,7 +120,7 @@ class ChatColorScreen extends StatelessWidget {
       AppColorConstant.pink,
       AppColorConstant.lightSky,
       AppColorConstant.purple,
-      AppColorConstant.darkGreen,
+
       AppColorConstant.red,
     ];
 
@@ -168,27 +169,31 @@ class ChatColorScreen extends StatelessWidget {
   }
 
   buildSaveButton(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 100.px),
-      alignment: Alignment.center,
-      height: 35.px,
-      width: 110.px,
-      decoration: BoxDecoration(
-          color: AppColorConstant.appWhite,
-          borderRadius: BorderRadius.circular(12.px),
-          border: Border.all(color: AppColorConstant.grey, width: 2.px)),
-      child: InkWell(
-          onTap: () {
-            setStringValue(chatColor, selectedColor.value.toRadixString(16));
-            logs("selected Color--> $selectedColor");
-            controller!.update();
-            Get.back();
-          Get.off(ChatColorWallpaperScreen());
-          },
-          child: const AppText(
-            StringConstant.save,
-            color: AppColorConstant.appBlack,
-          )),
+    return InkWell(onTap: () {
+      setStringValue(chatColor, selectedColor.value.toRadixString(16));
+      logs("selected Color--> $selectedColor");
+      controller!.update();
+      Get.back();
+      Get.off(ChatColorWallpaperScreen());
+    },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 100.px),
+        alignment: Alignment.center,
+        height: 35.px,
+        width: 110.px,
+        decoration: BoxDecoration(
+            color: AppColorConstant.appWhite,
+            borderRadius: BorderRadius.circular(12.px),
+            border: Border.all(color: AppColorConstant.grey, width: 2.px)),
+
+            child: const AppText(
+              StringConstant.save,
+              color: AppColorConstant.appBlack,
+            ),
+      ),
     );
   }
 }
+
+
+
