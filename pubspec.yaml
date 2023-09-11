@@ -85,7 +85,7 @@ dependencies:
   firebase_core: ^2.15.0
   cloud_firestore: ^4.8.4
   firebase_storage: ^11.2.6
-
+  firebase_messaging:
   fluttertoast: ^8.2.2
 
   #flutter Notification
