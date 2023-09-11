@@ -8,6 +8,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
@@ -140,6 +141,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
             InkWell(
                 onTap: () {
                   Get.back();
+
                 },
                 child: AppText(S.of(context).cancel,
                     color: AppColorConstant.appYellow)),

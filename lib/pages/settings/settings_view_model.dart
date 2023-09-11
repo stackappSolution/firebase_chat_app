@@ -4,6 +4,7 @@ import 'package:signal/routes/routes_helper.dart';
 
 class SettingViewModel {
   SettingScreen? settingsScreen;
+  String? userName;
 
   SettingViewModel(this.settingsScreen);
 

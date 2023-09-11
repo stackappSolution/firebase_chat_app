@@ -8,6 +8,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
@@ -189,14 +190,17 @@ class WallpaperPreviewScreen extends StatelessWidget {
   onSetWallpaper() {
     if (parameter['image'] != null) {
       setStringValue(wallpaper, parameter['image']);
-      Get.offAll(RouteHelper.getChattingScreen());
+      Get.off(ChatColorWallpaperScreen());
 
       setStringValue(
           wallPaperColor, const Color(0xFFFFFFFF).value.toRadixString(16));
     } else {
-      Get.off(RouteHelper.getChattingScreen());
+
 
       setStringValue(wallpaper, '');
+      setStringValue(
+          wallPaperColor, wallColor!.value.toRadixString(16));
+      Get.off(ChatColorWallpaperScreen());
     }
   }
 }
