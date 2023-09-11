@@ -70,6 +70,9 @@ goToChatingScreen() {
 goToNewMessageScreen() {
   Get.toNamed(RouteHelper.getNewMessageScreen());
 }
+goToNewGroupScreen() {
+  Get.toNamed(RouteHelper.getNewGroupScreen());
+}
 
 goToAttachmentScreen(selectedImage, members) {
   Get.toNamed(RouteHelper.getAttachmentScreen(), arguments: {

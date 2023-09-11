@@ -9,7 +9,7 @@ import 'package:signal/service/database_helper.dart';
 import 'package:signal/service/users_service.dart';
 
 
-
+import '../../service/users_service.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;
@@ -19,7 +19,11 @@ class ChatViewModel {
   String string = '';
   bool isConnected = false;
 
-  final Stream<QuerySnapshot> usersStream = UsersService().getUserStream();
+
+
+
+  final Stream<QuerySnapshot> usersStream = UsersService.getUserStream();
+
   List<DocumentSnapshot> data = [];
   List timeStamp = [];
   ContactController? controller;
@@ -27,7 +31,7 @@ class ChatViewModel {
   ChatViewModel(this.chatScreen) {
     Future.delayed(
       const Duration(milliseconds: 20),
-          () {
+      () {
         controller = Get.find<ContactController>();
       },
     );
@@ -40,7 +44,7 @@ class ChatViewModel {
       fetchContacts();
     } else {
       final PermissionStatus requestResult =
-      await Permission.contacts.request();
+          await Permission.contacts.request();
 
       if (requestResult.isGranted) {
         fetchContacts();
@@ -64,18 +68,14 @@ class ChatViewModel {
     controller!.update();
   }
 
-
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
-      if (contact["contact"]
-          .toString()
-          .trim()
-          .removeAllWhitespace == number) {
+      if (contact["contact"].toString().trim().removeAllWhitespace == number) {
         return contact["name"] ?? "";
       }
     }
     return "Not Saved Yet";
   }
-}
 
+}
 

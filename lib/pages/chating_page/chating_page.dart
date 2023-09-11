@@ -322,12 +322,16 @@ class ChatingPage extends StatelessWidget {
                       child: Padding(
                           padding: EdgeInsets.only(bottom: 10.px),
                           child: CircleAvatar(
+
                               radius: getFontSizeValue(
                                   small: 15.px,
                                   large: 22.px,
                                   extraLarge: 28.px,
                                   normal: 18.px),
                               backgroundColor:  chatingPageViewModal!.chatBubbleColor,)))
+
+
+
                 ]),
             child: (message.messageType == 'text')
                 ? Container(
