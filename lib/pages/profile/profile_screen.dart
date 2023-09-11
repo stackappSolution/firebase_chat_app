@@ -92,7 +92,7 @@ class ProfileScreen extends StatelessWidget {
                                     width: 4.px,
                                     color: AppColorConstant.appWhite),
                                 shape: BoxShape.circle),
-                            child: (profileViewModel!.selectedImage != null)
+                            child: (!profileViewModel!.isLoading)?(profileViewModel!.selectedImage != null)
                                 ? CircleAvatar(
                                     radius: 55,
                                     backgroundImage: FileImage(File(
@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .primary,
-                                  ),
+                                  ):const CircularProgressIndicator(color: AppColorConstant.appYellow,),
                           ),
                           Positioned(
                               top: 78.px,
@@ -162,9 +162,7 @@ class ProfileScreen extends StatelessWidget {
                         fontSize: null,
                       ),
                     ),
-                    SizedBox(
-                      height: 120.px,
-                    ),
+                    SizedBox(height: 160.px,),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 45.px),
                       child: AppElevatedButton(
@@ -175,13 +173,13 @@ class ProfileScreen extends StatelessWidget {
                           fontSize: 20.px,
                         ),
                         isBorderShape: true,
-                        buttonColor: (profileViewModel!.isButtonActive)
+                        buttonColor: (profileViewModel!.isButtonActive &&
+                            profileViewModel!.isLoading == false)
                             ? AppColorConstant.appYellow
                             : AppColorConstant.appYellow.withOpacity(0.5),
                         onPressed: (profileViewModel!.isButtonActive &&
                                 profileViewModel!.isLoading == false)
                             ? () {
-                          setIntValue('ProfileScreen', 3);
                                 profileViewModel!.onTapNext(context);
                                 profileViewModel!.onSaveProfile(
                                   profileViewModel!.firstNameController.text,
@@ -194,7 +192,6 @@ class ProfileScreen extends StatelessWidget {
                     )
                   ],
                 ))),
-        if (profileViewModel!.isLoading) const AppLoader(),
       ],
     );
   }

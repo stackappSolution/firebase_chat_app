@@ -11,7 +11,7 @@ import '../../service/users_service.dart';
 
 
 
-
+import '../../service/users_service.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;
@@ -29,7 +29,7 @@ class ChatViewModel {
   ChatViewModel(this.chatScreen) {
     Future.delayed(
       const Duration(milliseconds: 20),
-          () {
+      () {
         controller = Get.find<ContactController>();
       },
     );
@@ -42,7 +42,7 @@ class ChatViewModel {
       fetchContacts();
     } else {
       final PermissionStatus requestResult =
-      await Permission.contacts.request();
+          await Permission.contacts.request();
 
       if (requestResult.isGranted) {
         fetchContacts();
@@ -66,13 +66,9 @@ class ChatViewModel {
     controller!.update();
   }
 
-
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
-      if (contact["contact"]
-          .toString()
-          .trim()
-          .removeAllWhitespace == number) {
+      if (contact["contact"].toString().trim().removeAllWhitespace == number) {
         return contact["name"] ?? "";
       }
     }

@@ -117,7 +117,6 @@ class SignInPage extends StatelessWidget {
                       textStyle: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600,
-
                       ),
                       // Set initial country code
                       favorite: const ['IN'], // Specify favorite country codes
@@ -175,7 +174,9 @@ class SignInPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 130.px,),
+              SizedBox(
+                height: 130.px,
+              ),
               Align(
                 alignment: Alignment.center,
                 child: signInViewModel.isValidNumber != true
@@ -194,77 +195,83 @@ class SignInPage extends StatelessWidget {
                         ),
                       )
                     : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 60.px),
+                        padding: EdgeInsets.symmetric(horizontal: 45.px),
                         child: AppElevatedButton(
-                          onPressed: signInViewModel.otpSend
-                              ? null
-                              : () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  pref.setString("MobileNumber", phoneNumber);
-                                  logs(
-                                      "entred contact IS------------->   $countryCode$phoneNumber");
-
-                                  verified(AuthCredential authResult) async {
-                                    await auth.signInWithCredential(authResult);
-                                  }
-
-                                  verificationFailed(
-                                      FirebaseAuthException authException) {
-                                    logs(authException.message.toString());
-                                  }
-
-                                  smsSent(String verificationId,
-                                      [int? forceResendingToken]) {
-                                    AuthService.verificationID = verificationId;
-                                    logs("OTP Sent to your phone");
-                                    goToVerifyPage(
-                                        phonenumber: phoneNumber.toString(),
-                                        verificationId:
-                                            AuthService.verificationID,
-                                        selectedCountry: selectedCountry);
+                            onPressed: signInViewModel.otpSend
+                                ? null
+                                : () async {
+                                    SharedPreferences pref =
+                                        await SharedPreferences.getInstance();
+                                    pref.setString("MobileNumber", phoneNumber);
                                     logs(
-                                        "verification id ----->${AuthService.verificationID}");
-                                  }
+                                        "entred contact IS------------->   $countryCode$phoneNumber");
 
-                                  autoRetrievalTimeout(String verificationId) {
-                                    controller.update();
-                                    logs(
-                                        "verification------->${AuthService.verificationID}");
-                                  }
-                                  try {
-                                    await auth.verifyPhoneNumber(
-                                      phoneNumber: "$countryCode$phoneNumber",
-                                      timeout: const Duration(seconds: 60),
-                                      verificationCompleted: verified,
-                                      verificationFailed: verificationFailed,
-                                      codeSent: smsSent,
-                                      codeAutoRetrievalTimeout:
-                                          autoRetrievalTimeout,
-                                    );
-                                    signInViewModel.otpSend = true;
-                                    controller.update();
-                                  } catch (e) {
-                                    // Handle any errors that may occur during OTP verification
-                                    logs("Error: $e");
-                                    signInViewModel.otpSend = false;
-                                    controller.update();
-                                    controller
-                                        .update(); // Reset the sending OTP state
-                                  }
-                                  var data;
-                                  if (data.passParameter['id'] != null) {}
-                                },
-                          buttonColor: AppColorConstant.appYellow,
-                          buttonHeight: 50.px,
-                          isBorderShape: true,
-                          widget: signInViewModel.otpSend
-                              ? const CircularProgressIndicator(
-                            color: AppColorConstant.appWhite,
-                          ):AppText(
-                            S.of(context).continues,
-                            fontSize: 22.px,
-                            color: AppColorConstant.appWhite,)),
+                                    verified(AuthCredential authResult) async {
+                                      await auth
+                                          .signInWithCredential(authResult);
+                                    }
+
+                                    verificationFailed(
+                                        FirebaseAuthException authException) {
+                                      logs(authException.message.toString());
+                                    }
+
+                                    smsSent(String verificationId,
+                                        [int? forceResendingToken]) {
+                                      AuthService.verificationID =
+                                          verificationId;
+                                      logs("OTP Sent to your phone");
+                                      goToVerifyPage(
+                                          phonenumber: phoneNumber.toString(),
+                                          verificationId:
+                                              AuthService.verificationID,
+                                          selectedCountry: selectedCountry);
+                                      logs(
+                                          "verification id ----->${AuthService.verificationID}");
+                                    }
+
+                                    autoRetrievalTimeout(
+                                        String verificationId) {
+                                      controller.update();
+                                      logs(
+                                          "verification------->${AuthService.verificationID}");
+                                    }
+
+                                    try {
+                                      await auth.verifyPhoneNumber(
+                                        phoneNumber: "$countryCode$phoneNumber",
+                                        timeout: const Duration(seconds: 60),
+                                        verificationCompleted: verified,
+                                        verificationFailed: verificationFailed,
+                                        codeSent: smsSent,
+                                        codeAutoRetrievalTimeout:
+                                            autoRetrievalTimeout,
+                                      );
+                                      signInViewModel.otpSend = true;
+                                      controller.update();
+                                    } catch (e) {
+                                      // Handle any errors that may occur during OTP verification
+                                      logs("Error: $e");
+                                      signInViewModel.otpSend = false;
+                                      controller.update();
+                                      controller
+                                          .update(); // Reset the sending OTP state
+                                    }
+                                    var data;
+                                    if (data.passParameter['id'] != null) {}
+                                  },
+                            buttonColor: AppColorConstant.appYellow,
+                            buttonHeight: 50.px,
+                            isBorderShape: true,
+                            widget: signInViewModel.otpSend
+                                ? const CircularProgressIndicator(
+                                    color: AppColorConstant.appWhite,
+                                  )
+                                : AppText(
+                                    S.of(context).continues,
+                                    fontSize: 22.px,
+                                    color: AppColorConstant.appWhite,
+                                  )),
                       ),
               ),
             ],
