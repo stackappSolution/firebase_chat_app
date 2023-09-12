@@ -62,7 +62,6 @@ dependencies:
 
   # file
   file_picker: ^5.5.0
-  video_player: ^2.7.1
 
 
 

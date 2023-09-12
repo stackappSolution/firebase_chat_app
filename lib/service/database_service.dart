@@ -15,7 +15,7 @@ class DatabaseService {
   String documentId = '';
   static FirebaseAuth auth = FirebaseAuth.instance;
   static bool isLoading = false;
-  
+
   //================================addNewMessage============================
 
   void addNewMessage({
@@ -58,11 +58,19 @@ class DatabaseService {
                 }));
       }
       addChatMessages(
-          members: members, message: massage, sender: sender, type: type,messageStatus: messageStatus);
+          members: members,
+          message: massage,
+          sender: sender,
+          type: type,
+          messageStatus: messageStatus);
     }
 
     addChatMessages(
-        message: massage!, sender: sender!, members: members, type: type,messageStatus: messageStatus);
+        message: massage!,
+        sender: sender!,
+        members: members,
+        type: type,
+        messageStatus: messageStatus);
   }
 
   //==========================checkFirstMessage===========================
@@ -98,7 +106,8 @@ class DatabaseService {
         .collection('rooms')
         .doc(querySnapshot.docs.first.id)
         .collection('chats')
-        .add(Message(messageStatus: messageStatus!,
+        .add(Message(
+                messageStatus: messageStatus!,
                 message: message!,
                 isSender: true,
                 messageTimestamp: DateTime.now().millisecondsSinceEpoch,
@@ -166,7 +175,6 @@ class DatabaseService {
     controller.update();
     logs("isLoading-----${isLoading}");
     return await storage.getDownloadURL();
-
   }
 
   static String imageURL = "";
@@ -189,14 +197,9 @@ class DatabaseService {
     return await storage.getDownloadURL();
   }
 
-  static String videoURL = "";
-  static Future<String> uploadVideo(
-      File url, ChatingPageController controller) async {
-    isLoading = true;
-    controller.update();
-  //======================== markMessageAsSeen =====================================
+//=== markMessageAsSeen =====================================//
 
-  void markMessagesAsSeen(String chatRoomId,String receiverId) {
+  void markMessagesAsSeen(String chatRoomId, String receiverId) {
     FirebaseFirestore.instance
         .collection("rooms")
         .doc(chatRoomId)
@@ -209,7 +212,6 @@ class DatabaseService {
       for (var doc in value.docs) {
         messageIds.add(doc.id);
       }
-
 
       for (var element in messageIds) {
         FirebaseFirestore.instance
@@ -225,6 +227,13 @@ class DatabaseService {
     });
   }
 
+  static String videoURL = "";
+
+  static Future<String> uploadVideo(
+      File url, ChatingPageController controller) async {
+    isLoading = true;
+    controller.update();
+    //=====================
     final storage = FirebaseStorage.instance
         .ref('chat')
         .child("video")
@@ -235,6 +244,5 @@ class DatabaseService {
     controller.update();
     logs("isLoading-----${isLoading}");
     return await storage.getDownloadURL();
-
   }
 }

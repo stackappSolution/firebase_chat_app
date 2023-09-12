@@ -23,7 +23,6 @@ class AttachmentViewModel {
   late VideoPlayerController videoPlayerController;
   Future<void>? initializeVideoPlayer;
 
-
   ChatingPageController? controller;
   bool isLoading = false;
 
@@ -107,7 +106,6 @@ class AttachmentViewModel {
   }
 
   onSendMessage(String msgType, AttachmentController controller) async {
-
     DatabaseService.uploadImage(File(selectedImage), controller).then((value) {
       logs('message---> $value');
       DatabaseService().addNewMessage(
@@ -117,17 +115,5 @@ class AttachmentViewModel {
           sender: AuthService.auth.currentUser!.phoneNumber!,
           isGroup: false);
     });
-
-  onSendMessage(String msgType, AttachmentController controller,message) async {
-    uploadImage(File(selectedImage));
-    DatabaseService().addNewMessage(
-      messageStatus:  false,
-        type: msgType,
-        members: argument['members'],
-        massage: message,
-        sender: AuthService.auth.currentUser!.phoneNumber!,
-        isGroup: false);
-    logs('message---> $imageURL');
-    controller.update();
   }
 }
