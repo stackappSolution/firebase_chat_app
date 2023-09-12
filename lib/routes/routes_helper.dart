@@ -4,6 +4,7 @@ import 'package:signal/pages/appearance/appearance_screen.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/pages/chating_page/image_view/image_view.dart';
+import 'package:signal/pages/chating_page/video_view/video_player_view.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
 import 'package:signal/pages/chats/chat_theme/chat_wallpaper.dart';
@@ -50,6 +51,7 @@ class RouteHelper {
   static String getIntroScreen() => RouteConstant.introScreen;
 
   static String getSplashScreen() => RouteConstant.splashScreen;
+  static String getVideoPlayerScreen() => RouteConstant.videoPlayerView;
 
   static String getChatColorWallpaperScreen() =>
       RouteConstant.chatColorWallpaperScreen;
@@ -114,6 +116,7 @@ class RouteHelper {
     GetPage(name: RouteConstant.inviteMemberScreen, page: () =>  InviteMemberScreen()),
     GetPage(name: RouteConstant.newGroupsScreen, page: () => NewGroupScreen()),
     GetPage(name: RouteConstant.groupNameScreen, page: () =>  GroupNameScreen()),
+    GetPage(name: RouteConstant.videoPlayerView, page: () =>  VideoPlayerView()),
     GetPage(
         name: RouteConstant.chatColorWallpaperScreen,
         page: () => ChatColorWallpaperScreen()),

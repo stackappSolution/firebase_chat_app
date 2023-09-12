@@ -99,6 +99,8 @@ class NewGroupScreen extends StatelessWidget {
                                     onPressed: () {
                                       newGroupViewModel!.groupMembers
                                           .remove(contact);
+
+
                                       controller.update();
                                     },
                                     icon: Icon(

@@ -12,10 +12,13 @@ class Message {
   String message;
   bool isSender;
   var messageTimestamp;
+  bool messageStatus;
   String messageType;
   String sender;
 
+
   Message({
+    required this.messageStatus,
     required this.message,
     required this.isSender,
     required this.messageTimestamp,
@@ -24,6 +27,7 @@ class Message {
   });
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
+    messageStatus: json['messageStatus'],
     message: json["message"],
     isSender: json["isSender"],
     messageTimestamp: json["messageTimestamp"],
@@ -32,6 +36,7 @@ class Message {
   );
 
   Map<String, dynamic> toJson() => {
+    "messageStatus": messageStatus,
     "message": message,
     "isSender": isSender,
     "messageTimestamp": messageTimestamp,
