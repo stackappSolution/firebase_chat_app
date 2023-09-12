@@ -117,6 +117,7 @@ class AttachmentViewModel {
   onSendMessage(String msgType, AttachmentController controller,message) async {
     uploadImage(File(selectedImage));
     DatabaseService().addNewMessage(
+      messageStatus:  false,
         type: msgType,
         members: argument['members'],
         massage: message,

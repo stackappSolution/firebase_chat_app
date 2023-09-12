@@ -17,7 +17,7 @@ class ChatColorScreen extends StatelessWidget {
   ChatColorScreen({Key? key}) : super(key: key);
 
   SettingsController? controller;
-  Color selectedColor = AppColorConstant.darkBlue;
+  Color selectedColor = AppColorConstant.appYellow;
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +164,7 @@ class ChatColorScreen extends StatelessWidget {
     if (colorCode != null) {
       return Color(int.parse(colorCode, radix: 16));
     } else {
-      return Colors.black;
+      return AppColorConstant.appYellow;
     }
   }
 

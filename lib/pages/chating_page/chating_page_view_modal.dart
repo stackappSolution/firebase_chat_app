@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_button.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -15,12 +16,11 @@ import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
-import '../../app/app/utills/app_utills.dart';
+
 import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
 import '../../service/auth_service.dart';
-
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
@@ -39,8 +39,8 @@ class ChatingPageViewModal {
   File? selectedImage;
   String? userProfile;
   bool isLoading = false;
-  List<DateTime> messageTimeStamp=[];
-  ScrollController scrollController =  ScrollController();
+  List<DateTime> messageTimeStamp = [];
+  ScrollController scrollController = ScrollController();
   String? fontSize;
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
@@ -57,8 +57,7 @@ class ChatingPageViewModal {
 
   Future<String?> fontSizeInitState() async {
     fontSize = await getStringValue(StringConstant.setFontSize);
-    logs(
-        'getStringValue(StringConstant.selectedFontSize) : $fontSize');
+    logs('getStringValue(StringConstant.selectedFontSize) : $fontSize');
     return fontSize;
   }
 
@@ -90,7 +89,7 @@ class ChatingPageViewModal {
 
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
@@ -103,7 +102,7 @@ class ChatingPageViewModal {
 
   Future<void> pickImageCamera(GetxController controller, members) async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.camera);
+        await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
@@ -229,28 +228,28 @@ class ChatingPageViewModal {
       items: <PopupMenuEntry>[
         PopupMenuItem(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 15.px,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20, top: 5.px),
-                  child: AppText(
-                    S.of(Get.context!).select,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18.px,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.px),
-                  child: Divider(
-                    height: 1.px,
-                    color: AppColorConstant.appGrey.withOpacity(0.3),
-                  ),
-                )
-              ],
-            )),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 15.px,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 20, top: 5.px),
+              child: AppText(
+                S.of(Get.context!).select,
+                fontWeight: FontWeight.w800,
+                fontSize: 18.px,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.px),
+              child: Divider(
+                height: 1.px,
+                color: AppColorConstant.appGrey.withOpacity(0.3),
+              ),
+            )
+          ],
+        )),
         PopupMenuItem(
             onTap: () {
               pickImageGallery(controller!, arguments['members']);
@@ -365,5 +364,27 @@ class ChatingPageViewModal {
 
       controller!.update();
     }
+  }
+
+  buildDoubleClickView() {
+    return Container(alignment: Alignment.center,height: 15.px,width: 15.px,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Theme.of(Get.context!).colorScheme.primary,
+          )),
+      child: Icon(Icons.done_all,color: Theme.of(Get.context!).colorScheme.primary,size: 12.px,),
+    );
+  }
+
+  buildSingleClickView() {
+    return Container(alignment: Alignment.center,height: 15.px,width: 15.px,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Theme.of(Get.context!).colorScheme.primary
+          )),
+      child: Icon(Icons.done,color: Theme.of(Get.context!).colorScheme.primary,size: 12.px,),
+    );
   }
 }

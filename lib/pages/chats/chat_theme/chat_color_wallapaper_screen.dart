@@ -8,7 +8,6 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
@@ -152,6 +151,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
               onTap: () {
                 setStringValue(wallPaperColor,
                     const Color(0xFFFFFFFF).value.toRadixString(16));
+                setStringValue(wallpaper, '');
                 controller!.update();
                 Get.back();
               },
