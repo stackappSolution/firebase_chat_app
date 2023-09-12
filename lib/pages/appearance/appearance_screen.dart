@@ -29,7 +29,6 @@ class AppearanceScreen extends StatelessWidget {
           const Duration(milliseconds: 100),
           () async {
             controller = Get.find<AppearanceController>();
-
             Future<String?> currentLanguage = getStringValue(language);
             String? selectedLanguage = await currentLanguage;
             logs("default Language--> $selectedLanguage");
@@ -41,7 +40,7 @@ class AppearanceScreen extends StatelessWidget {
             Future<String?> key = getStringValue(getLanguage);
             String? result = await key;
             appearanceViewModel!.locale = Locale(result!);
-            getStringValue(StringConstant.setFontSize);
+            getStringValue(StringConstant.setFontSize)!;
             if (getStringValue(StringConstant.setFontSize) == null) {
               setStringValue(StringConstant.setFontSize, "Normal");
             }

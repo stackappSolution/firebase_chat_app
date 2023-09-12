@@ -11,7 +11,7 @@ class RouteConstant{
   static const String settingScreen = '/settings';
   static const String profileScreen = '/profile';
   static const String appearanceScreen = '/appearance';
-  static const String chatScreen = '/chat';
+  static const String chatScreen = '/chatContactScreen';
   static const String chatingScreen = '/chatting';
   static const String addPhotoScreen = '/addPhoto';
   static const String accountScreen = '/account';

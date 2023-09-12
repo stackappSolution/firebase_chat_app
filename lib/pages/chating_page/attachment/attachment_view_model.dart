@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
@@ -12,13 +13,16 @@ import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 import '../../../app/app/utills/app_utills.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/database_service.dart';
+import 'package:video_player/video_player.dart';
 
 class AttachmentViewModel {
   AttachmentScreen? attachmentScreen;
   Map<String, dynamic> argument = {};
   dynamic selectedImage = "";
   CroppedFile? croppedFile;
-  String imageURL='';
+  late VideoPlayerController videoPlayerController;
+  Future<void>? initializeVideoPlayer;
+
   ChatingPageController? controller;
   bool isLoading = false;
 
@@ -30,7 +34,7 @@ class AttachmentViewModel {
   AttachmentViewModel(this.attachmentScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
-          () {
+      () {
         controller = Get.find<ChatingPageController>();
       },
     );
@@ -97,37 +101,19 @@ class AttachmentViewModel {
     controller.update();
   }
 
-  void uploadImage(File imageUrl) async {
-    isLoading = true;
-    logs("load--> $isLoading");
-    controller!.update();
-    final storage = FirebaseStorage.instance
-        .ref('images')
-        .child(AuthService.auth.currentUser!.phoneNumber!)
-        .child('sentImage.jpg');
-    await storage.putFile(imageUrl);
-    imageURL = await storage.getDownloadURL();
-    logs("Image URL ------ > $imageURL");
-    isLoading = false;
-    logs("load--> $isLoading");
-    controller!.update();
-    Get.back();
-  }
-
-  onSendMessage(String msgType, AttachmentController controller,message) async {
-    uploadImage(File(selectedImage));
-    DatabaseService().addNewMessage(
-      messageStatus:  false,
-        type: msgType,
-        members: argument['members'],
-        massage: message,
-        sender: AuthService.auth.currentUser!.phoneNumber!,
-        isGroup: false);
-    logs('message---> $imageURL');
-    controller.update();
-  }
-
   void imageButtonTap(AttachmentController controller) {
-    onSendMessage("image", controller,imageURL);
+    onSendMessage("image", controller);
+  }
+
+  onSendMessage(String msgType, AttachmentController controller) async {
+    DatabaseService.uploadImage(File(selectedImage), controller).then((value) {
+      logs('message---> $value');
+      DatabaseService().addNewMessage(
+          type: msgType,
+          members: argument['members'],
+          massage: value,
+          sender: AuthService.auth.currentUser!.phoneNumber!,
+          isGroup: false);
+    });
   }
 }

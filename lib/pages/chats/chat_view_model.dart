@@ -30,7 +30,7 @@ class ChatViewModel {
 
   ChatViewModel(this.chatScreen) {
     Future.delayed(
-      const Duration(milliseconds: 20),
+      const Duration(milliseconds: 100),
       () {
         controller = Get.find<ContactController>();
       },

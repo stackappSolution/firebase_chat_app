@@ -28,7 +28,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
 
         Future.delayed(
           const Duration(milliseconds: 100),
-          () async {
+              () async {
             controller = Get.find<SettingsController>();
             wallColor = await getColorFromPreferences();
 
@@ -75,107 +75,107 @@ class WallpaperPreviewScreen extends StatelessWidget {
   buildPreview(BuildContext context) {
     return (parameter['image'] != null)
         ? Container(
-            height: Device.height * 0.75,
-            width: double.infinity,
+      height: Device.height * 0.75,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: FileImage(File(parameter['image'])))),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.all(12.px),
+            alignment: Alignment.center,
+            height: 35.px,
+            width: 90.px,
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: FileImage(File(parameter['image'])))),
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(12.px),
-                  alignment: Alignment.center,
-                  height: 35.px,
-                  width: 90.px,
-                  decoration: BoxDecoration(
-                    color: AppColorConstant.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12.px),
-                  ),
-                  child: AppText(S.of(context).today),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.all(10.px),
-                      height: 40.px,
-                      width: 230.px,
-                      decoration: BoxDecoration(
-                          color: AppColorConstant.appWhite,
-                          borderRadius: BorderRadius.circular(12.px)),
-                      child: AppText(S.of(context).colorIsOnlyVisibleYou)),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.all(10.px),
-                      height: 40.px,
-                      width: 230.px,
-                      decoration: BoxDecoration(
-                          color: AppColorConstant.grey,
-                          borderRadius: BorderRadius.circular(12.px)),
-                      child: AppText(
-                        S.of(context).colorIsOnlyVisibleYou,
-                        color: AppColorConstant.appWhite,
-                      )),
-                )
-              ],
+              color: AppColorConstant.grey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12.px),
             ),
+            child: AppText(S.of(context).today),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(10.px),
+                height: 40.px,
+                width: 230.px,
+                decoration: BoxDecoration(
+                    color: AppColorConstant.appWhite,
+                    borderRadius: BorderRadius.circular(12.px)),
+                child: AppText(S.of(context).colorIsOnlyVisibleYou)),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(10.px),
+                height: 40.px,
+                width: 230.px,
+                decoration: BoxDecoration(
+                    color: AppColorConstant.grey,
+                    borderRadius: BorderRadius.circular(12.px)),
+                child: AppText(
+                  S.of(context).colorIsOnlyVisibleYou,
+                  color: AppColorConstant.appWhite,
+                )),
           )
+        ],
+      ),
+    )
         : Container(
-            height: Device.height * 0.75,
-            width: double.infinity,
-            color: wallColor,
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(12.px),
-                  alignment: Alignment.center,
-                  height: 35.px,
-                  width: 90.px,
-                  decoration: BoxDecoration(
-                    color: AppColorConstant.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12.px),
-                  ),
-                  child: AppText(
-                    S.of(context).today,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.all(10.px),
-                      height: 40.px,
-                      width: 230.px,
-                      decoration: BoxDecoration(
-                          color: AppColorConstant.appWhite,
-                          borderRadius: BorderRadius.circular(12.px)),
-                      child: AppText(
-                        S.of(context).colorIsOnlyVisibleYou,
-                        color: Theme.of(context).colorScheme.primary,
-                      )),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.all(10.px),
-                      height: 40.px,
-                      width: 230.px,
-                      decoration: BoxDecoration(
-                          color: AppColorConstant.grey,
-                          borderRadius: BorderRadius.circular(12.px)),
-                      child: AppText(
-                        S.of(context).colorIsOnlyVisibleYou,
-                        color: Theme.of(context).colorScheme.primary,
-                      )),
-                )
-              ],
+      height: Device.height * 0.75,
+      width: double.infinity,
+      color: wallColor,
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.all(12.px),
+            alignment: Alignment.center,
+            height: 35.px,
+            width: 90.px,
+            decoration: BoxDecoration(
+              color: AppColorConstant.grey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12.px),
             ),
-          );
+            child: AppText(
+              S.of(context).today,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(10.px),
+                height: 40.px,
+                width: 230.px,
+                decoration: BoxDecoration(
+                    color: AppColorConstant.appWhite,
+                    borderRadius: BorderRadius.circular(12.px)),
+                child: AppText(
+                  S.of(context).colorIsOnlyVisibleYou,
+                  color: Theme.of(context).colorScheme.primary,
+                )),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(10.px),
+                height: 40.px,
+                width: 230.px,
+                decoration: BoxDecoration(
+                    color: AppColorConstant.grey,
+                    borderRadius: BorderRadius.circular(12.px)),
+                child: AppText(
+                  S.of(context).colorIsOnlyVisibleYou,
+                  color: Theme.of(context).colorScheme.primary,
+                )),
+          )
+        ],
+      ),
+    );
   }
 
   Future<Color> getColorFromPreferences() async {

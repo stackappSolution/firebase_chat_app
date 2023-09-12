@@ -155,7 +155,6 @@ class AccountScreen extends StatelessWidget {
                     S.of(context).account,
                     fontWeight: FontWeight.bold,
                     color: primaryTheme,
-
                   ),
                 ),
                 InkWell(
@@ -181,12 +180,9 @@ class AccountScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () async {
-                    AuthService.auth.signOut().then(
-                        (value) => Get.offAllNamed(RouteHelper.getIntroScreen()));
-
-                    controller.update();
+                    accountViewModel!.deleteAccountTap(controller,context);
                   },
-                  child:  AppText(
+                  child: AppText(
                     S.of(context).deleteAccount,
                     color: AppColorConstant.red,
                   ),

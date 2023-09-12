@@ -10,9 +10,7 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
-import 'package:signal/routes/routes_helper.dart';
 
-// ignore: must_be_immutable
 class ChatColorScreen extends StatelessWidget {
   ChatColorScreen({Key? key}) : super(key: key);
 
@@ -26,7 +24,7 @@ class ChatColorScreen extends StatelessWidget {
       initState: (state) {
         Future.delayed(
           const Duration(milliseconds: 0),
-          () async {
+              () async {
             controller = Get.find<SettingsController>();
             selectedColor = await getChatBubbleColor();
             controller!.update();
@@ -140,20 +138,20 @@ class ChatColorScreen extends StatelessWidget {
           },
           child: (chatColors[index] == selectedColor)
               ? Container(
-                  height: 50.px,
-                  width: 50.px,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: AppColorConstant.appBlack, width: 5.px),
-                      color: chatColors[index],
-                      shape: BoxShape.circle),
-                )
+            height: 50.px,
+            width: 50.px,
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: AppColorConstant.appBlack, width: 5.px),
+                color: chatColors[index],
+                shape: BoxShape.circle),
+          )
               : Container(
-                  height: 50.px,
-                  width: 50.px,
-                  decoration: BoxDecoration(
-                      color: chatColors[index], shape: BoxShape.circle),
-                ),
+            height: 50.px,
+            width: 50.px,
+            decoration: BoxDecoration(
+                color: chatColors[index], shape: BoxShape.circle),
+          ),
         );
       },
     );
@@ -186,10 +184,10 @@ class ChatColorScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.px),
             border: Border.all(color: AppColorConstant.grey, width: 2.px)),
 
-            child: const AppText(
-              StringConstant.save,
-              color: AppColorConstant.appBlack,
-            ),
+        child: const AppText(
+          StringConstant.save,
+          color: AppColorConstant.appBlack,
+        ),
       ),
     );
   }

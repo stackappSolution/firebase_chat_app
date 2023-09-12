@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/modal/message.dart';
 import 'package:signal/routes/routes_helper.dart';
@@ -13,11 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class DatabaseService {
   String documentId = '';
   static FirebaseAuth auth = FirebaseAuth.instance;
-
-
-
-
-
+  static bool isLoading = false;
 
   //================================addNewMessage============================
 
@@ -61,11 +58,19 @@ class DatabaseService {
                 }));
       }
       addChatMessages(
-          members: members, message: massage, sender: sender, type: type,messageStatus: messageStatus);
+          members: members,
+          message: massage,
+          sender: sender,
+          type: type,
+          messageStatus: messageStatus);
     }
 
     addChatMessages(
-        message: massage!, sender: sender!, members: members, type: type,messageStatus: messageStatus);
+        message: massage!,
+        sender: sender!,
+        members: members,
+        type: type,
+        messageStatus: messageStatus);
   }
 
   //==========================checkFirstMessage===========================
@@ -101,7 +106,8 @@ class DatabaseService {
         .collection('rooms')
         .doc(querySnapshot.docs.first.id)
         .collection('chats')
-        .add(Message(messageStatus: messageStatus!,
+        .add(Message(
+                messageStatus: messageStatus!,
                 message: message!,
                 isSender: true,
                 messageTimestamp: DateTime.now().millisecondsSinceEpoch,
@@ -154,21 +160,46 @@ class DatabaseService {
 
   static String audioURL = "";
 
-  static void uploadAudio(File url, ChatingPageController controller) async {
+  static Future<String> uploadAudio(
+      File url, ChatingPageController controller) async {
+    isLoading = true;
+    controller.update();
+
     final storage = FirebaseStorage.instance
         .ref('chat')
         .child("audio")
         .child(AuthService.auth.currentUser!.phoneNumber!)
         .child('sentAudio.mp3');
     await storage.putFile(url);
-    audioURL = await storage.getDownloadURL();
+    isLoading = false;
     controller.update();
+    logs("isLoading-----${isLoading}");
+    return await storage.getDownloadURL();
   }
 
+  static String imageURL = "";
 
-  //======================== markMessageAsSeen =====================================
+  static Future<String> uploadImage(
+      File imageUrl, AttachmentController controller) async {
+    isLoading = true;
+    controller.update();
+    logs("isLoading-----${isLoading}");
+    final storage = FirebaseStorage.instance
+        .ref('chat')
+        .child("images")
+        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child('sentImage.jpg');
+    await storage.putFile(imageUrl);
+    isLoading = false;
+    controller.update();
+    logs("isLoading-----${isLoading}");
+    Get.back();
+    return await storage.getDownloadURL();
+  }
 
-  void markMessagesAsSeen(String chatRoomId,String receiverId) {
+//=== markMessageAsSeen =====================================//
+
+  void markMessagesAsSeen(String chatRoomId, String receiverId) {
     FirebaseFirestore.instance
         .collection("rooms")
         .doc(chatRoomId)
@@ -181,7 +212,6 @@ class DatabaseService {
       for (var doc in value.docs) {
         messageIds.add(doc.id);
       }
-
 
       for (var element in messageIds) {
         FirebaseFirestore.instance
@@ -197,6 +227,22 @@ class DatabaseService {
     });
   }
 
+  static String videoURL = "";
 
-
+  static Future<String> uploadVideo(
+      File url, ChatingPageController controller) async {
+    isLoading = true;
+    controller.update();
+    //=====================
+    final storage = FirebaseStorage.instance
+        .ref('chat')
+        .child("video")
+        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child('sentVideo.mp4');
+    await storage.putFile(url);
+    isLoading = false;
+    controller.update();
+    logs("isLoading-----${isLoading}");
+    return await storage.getDownloadURL();
+  }
 }
