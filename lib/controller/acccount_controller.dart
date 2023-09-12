@@ -1,5 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:signal/service/auth_service.dart';
 
-class AttachmentController extends GetxController{
+import '../app/app/utills/app_utills.dart';
 
+class AttachmentController extends GetxController {
+  final userTable = FirebaseFirestore.instance.collection('users');
+
+  Future<void> deleteCollection() async {
+    final documents = await userTable
+        .where('id', isEqualTo: AuthService.auth.currentUser!.uid)
+        .get();
+    for (final document in documents.docs) {
+      await document.reference.delete();
+    }
+    logs("Delete Account");
+  }
 }

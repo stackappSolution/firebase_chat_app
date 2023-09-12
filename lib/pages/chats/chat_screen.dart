@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/date_formation.dart';
+import 'package:signal/app/app/utills/theme_util.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_loader.dart';
@@ -20,12 +21,14 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 
+import '../../service/users_service.dart';
+
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
 
   ChatViewModel? chatViewModel;
-  ContactController? contactController;
+  ContactController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,15 @@ class ChatScreen extends StatelessWidget {
       initState: (state) {
         DataBaseHelper.createDB();
         chatViewModel!.getPermission();
+        Future.delayed(
+          const Duration(milliseconds: 0),
+              () async {
+            controller = Get.find<ContactController>();
+            await UsersService.getUserData();
+            controller!.update();
+          },
+        );
+
       },
       builder: (controller) {
         return SafeArea(
@@ -135,7 +147,7 @@ class ChatScreen extends StatelessWidget {
               padding: EdgeInsets.only(left: 11.px,top: 3.px,bottom: 3.px),
               child: CircleAvatar(
                 backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-                child: AppText('S',
+                child: AppText(UsersService.userName.substring(0, 1).toString().toUpperCase(),
                     fontSize: 13.px, color: AppColorConstant.appYellow),
               ),
             ),
@@ -179,7 +191,7 @@ class ChatScreen extends StatelessWidget {
       },
       elevation: 0.5,
       position: PopupMenuPosition.under,
-      color: AppColorConstant.appLightGrey,
+      color:(ThemeUtil.isDark)? AppColorConstant.blackOff:AppColorConstant.appWhite,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
       icon: Padding(
         padding: EdgeInsets.all(10.px),
@@ -192,13 +204,13 @@ class ChatScreen extends StatelessWidget {
         return [
           PopupMenuItem(
             value: 0,
-            child: AppText(S.of(Get.context!).newGroup),
+            child: AppText(S.of(Get.context!).newGroup,color:  Theme.of(context).colorScheme.primary,),
           ),
           PopupMenuItem(
-              value: 1, child: AppText(S.of(Get.context!).markAllRead)),
-          PopupMenuItem(value: 2, child: AppText(S.of(Get.context!).settings)),
+              value: 1, child: AppText(S.of(Get.context!).markAllRead,color:  Theme.of(context).colorScheme.primary)),
+          PopupMenuItem(value: 2, child: AppText(S.of(Get.context!).settings,color:  Theme.of(context).colorScheme.primary)),
           PopupMenuItem(
-              value: 3, child: AppText(S.of(Get.context!).inviteFriends)),
+              value: 3, child: AppText(S.of(Get.context!).inviteFriends,color:  Theme.of(context).colorScheme.primary)),
         ];
       },
     );

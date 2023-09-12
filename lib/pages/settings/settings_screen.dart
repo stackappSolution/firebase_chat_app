@@ -7,6 +7,7 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
+import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
@@ -31,7 +32,6 @@ class SettingScreen extends StatelessWidget {
           const Duration(milliseconds: 0),
           () async {
             controller = Get.find<SettingsController>();
-            await UsersService.getUserData();
             controller!.update();
           },
         );
@@ -161,6 +161,12 @@ class SettingScreen extends StatelessWidget {
           8,
           AppAsset.help,
           S.of(Get.context!).help,
+        ),
+        settingsView(
+          context,
+          9,
+          AppAsset.help,
+          StringConstant.logOut,
         ),
       ],
     );

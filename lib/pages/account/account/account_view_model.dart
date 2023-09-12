@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,6 +14,9 @@ import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/app_navigation.dart';
 
+import '../../../app/app/utills/theme_util.dart';
+import '../../../app/widget/app_textForm_field.dart';
+import '../../../service/auth_service.dart';
 import 'account_screen.dart';
 
 class AccountViewModel {
@@ -19,13 +25,153 @@ class AccountViewModel {
   bool isRegistrationLockActive = false;
   bool changeKeyBoard = false;
   bool isError = false;
+  bool isButtonActive = false;
+
   String firebaseStoredPin = "";
+  String countryCode = "+91";
+  final textController = TextEditingController();
+
   final pinController = TextEditingController();
 
   AccountViewModel(this.accountScreen);
 
   changePinTap() {
     goToPinSettingScreen();
+  }
+
+  deleteAccountTap(AttachmentController controller, context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.px)),
+                    titlePadding: EdgeInsets.only(left: 15.px, top: 8.px),
+                    backgroundColor: (ThemeUtil.isDark)?AppColorConstant.blackOff:AppColorConstant.appWhite,
+                    elevation: 0.0,
+                    contentPadding: EdgeInsets.zero,
+                    insetPadding:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                    title: Container(
+                        margin: EdgeInsets.all(10.px),
+                        child: AppText(
+                          fontSize: 20.px,
+                          S.of(context).phoneNumber,
+                          color: Theme.of(context).colorScheme.primary,
+                        )),
+                    content: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12.px, vertical: 20.px),
+                      child: Row(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(right: 5.px.px),
+                            height: 47.px,
+                            width: 90.px,
+                            decoration: BoxDecoration(
+                                color:
+                                    AppColorConstant.appYellow.withOpacity(0.1),
+                                border: Border.all(
+                                    color: AppColorConstant.appYellow),
+                                borderRadius: BorderRadius.circular(13.px)),
+                            child: CountryCodePicker(
+                              showFlag: false,
+                              showFlagDialog: true,
+                              onChanged: (country) {
+                                countryCode = country.toString();
+                              },
+                              initialSelection: 'IN',
+                              textStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              // Set initial country code
+                              favorite: const [
+                                'IN'
+                              ], // Specify favorite country codes
+                            ),
+                          ),
+                          Expanded(
+                            child: AppTextFormField(
+                              keyboardType: TextInputType.number,
+                              controller: textController,
+                              labelText: S.of(context).phoneNumber,
+                              onChanged: (value) {
+                                setState(
+                                  () {
+                                    onChangedNumber(controller);
+                                  },
+                                );
+                              },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9]')),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: AppText(
+                                  S.of(context).cancel,
+                                  color: AppColorConstant.appYellow,
+                                )),
+                            InkWell(
+                                onTap: (isButtonActive)
+                                    ? () {
+                                        AuthService.auth.signOut();
+                                        controller.deleteCollection();
+                                        if (Platform.isAndroid) {
+                                          SystemNavigator.pop();
+                                        } else if (Platform.isIOS) {
+                                          exit(0);
+                                        }
+                                        Get.back();
+                                      }
+                                    : null,
+                                child: AppText(
+                                  S.of(context).deleteAccount,
+                                  color: (isButtonActive)
+                                      ? AppColorConstant.red
+                                      : AppColorConstant.darkSecondary,
+                                )),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                },
+              );
+            },
+          );
+        });
+  }
+
+  onChangedNumber(controller) {
+    if (("$countryCode${textController.text}") ==
+        AuthService.auth.currentUser!.phoneNumber) {
+      isButtonActive = true;
+      controller.update();
+    } else {
+      isButtonActive = false;
+      controller.update();
+    }
+    logs("isButtonActive-----> ${isButtonActive}");
   }
 
   onKeyBoardChangeTap(controller) {
@@ -123,8 +269,7 @@ class AccountViewModel {
                                     ),
                                   Padding(
                                     padding: EdgeInsets.only(left: 5.px),
-                                    child: AppText(
-                                        S.of(context).switchKeyboard,
+                                    child: AppText(S.of(context).switchKeyboard,
                                         fontSize: 13.px,
                                         color: AppColorConstant.blue),
                                   )
@@ -154,7 +299,7 @@ class AccountViewModel {
                         Navigator.pop(context);
                         controller.update();
                       },
-                      child:  AppText(
+                      child: AppText(
                         S.of(context).cancel,
                         color: AppColorConstant.appYellow,
                       ),
@@ -179,7 +324,7 @@ class AccountViewModel {
                           );
                         }
                       },
-                      child:  AppText(S.of(context).turnOff,
+                      child: AppText(S.of(context).turnOff,
                           color: AppColorConstant.appYellow),
                     ),
                   )
@@ -236,8 +381,8 @@ class AccountViewModel {
                       Get.back();
                       controller.update();
                     },
-                    child:  AppText(
-                     S.of(context).cancel,
+                    child: AppText(
+                      S.of(context).cancel,
                       color: AppColorConstant.appYellow,
                     ),
                   ),
@@ -252,7 +397,7 @@ class AccountViewModel {
                             controller.update();
                             Get.back();
                           },
-                          child:  AppText(S.of(context).turnOff,
+                          child: AppText(S.of(context).turnOff,
                               color: AppColorConstant.appYellow))
                       : InkWell(
                           onTap: () {
@@ -260,7 +405,7 @@ class AccountViewModel {
                             controller.update();
                             Get.back();
                           },
-                          child:  AppText(S.of(context).turnOn,
+                          child: AppText(S.of(context).turnOn,
                               color: AppColorConstant.appYellow)),
                 )
               ],

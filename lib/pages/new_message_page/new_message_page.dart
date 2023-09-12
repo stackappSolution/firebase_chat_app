@@ -144,6 +144,7 @@ class NewMessagePage extends StatelessWidget {
       itemCount: newMessageViewModel!.isSearching == true
           ? newMessageViewModel!.filteredContacts.length
           : newMessageViewModel!.contacts.length,
+
       itemBuilder: (context, index) {
         final Contact contact = newMessageViewModel!.isSearching
             ? newMessageViewModel!.filteredContacts[index]
@@ -179,7 +180,6 @@ class NewMessagePage extends StatelessWidget {
                   controller.update();
                 },
                 child: Column(
-                  // AppText(firstLetter),
                   children: [
                     ListTile(
                       onTap: () async {

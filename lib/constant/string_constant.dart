@@ -200,4 +200,7 @@ class StringConstant {
   static const String resetChatColor = 'resetChatColor';
 
 
+
+  static const String logOut = 'Log Out';
+
 }

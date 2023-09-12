@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +21,7 @@ import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
 import '../../service/auth_service.dart';
-
+import '../../service/database_service.dart';
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
@@ -37,10 +38,12 @@ class ChatingPageViewModal {
   String? formatedTime;
   bool isBlocked = false;
   File? selectedImage;
+  File? selectedVideo;
+  File? audioFile;
   String? userProfile;
   bool isLoading = false;
-  List<DateTime> messageTimeStamp=[];
-  ScrollController scrollController =  ScrollController();
+  List<DateTime> messageTimeStamp = [];
+  ScrollController scrollController = ScrollController();
   String? fontSize;
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
@@ -57,8 +60,7 @@ class ChatingPageViewModal {
 
   Future<String?> fontSizeInitState() async {
     fontSize = await getStringValue(StringConstant.setFontSize);
-    logs(
-        'getStringValue(StringConstant.selectedFontSize) : $fontSize');
+    logs('getStringValue(StringConstant.selectedFontSize) : $fontSize');
     return fontSize;
   }
 
@@ -88,9 +90,61 @@ class ChatingPageViewModal {
     }
   }
 
+  audioSendTap() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['mp3'],
+    );
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      if (file.path != null) {
+        audioFile = File(file.path!);
+        onSendAudio("audio", controller);
+      } else {}
+
+      logs('Selected MP3 file: ${file.name}');
+    } else {
+      logs('User canceled file picking');
+    }
+  }
+
+  videoSendTap() {
+    pickVideoGallery(controller!, arguments['members']);
+  }
+
+  onSendAudio(String msgType, controller) async {
+    DatabaseService.uploadAudio(File(audioFile!.path), controller)
+        .then((value) {
+      logs('message---> $value');
+      DatabaseService().addNewMessage(
+          type: msgType,
+          members: arguments['members'],
+          massage: value,
+          sender: AuthService.auth.currentUser!.phoneNumber!,
+          isGroup: false);
+    });
+
+    controller.update();
+  }
+
+  onSendVideo(String msgType, controller) async {
+    DatabaseService.uploadAudio(File(audioFile!.path), controller)
+        .then((value) {
+      logs('message---> $value');
+      DatabaseService().addNewMessage(
+          type: msgType,
+          members: arguments['members'],
+          massage: value,
+          sender: AuthService.auth.currentUser!.phoneNumber!,
+          isGroup: false);
+    });
+    controller.update();
+  }
+
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
@@ -101,9 +155,20 @@ class ChatingPageViewModal {
     }
   }
 
+  Future<void> pickVideoGallery(GetxController controller, members) async {
+    final pickedFile = await ImagePicker().pickVideo(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      selectedVideo = (File(pickedFile.path));
+      goToAttachmentScreen(selectedVideo, members);
+      logs(selectedVideo.toString());
+      controller.update();
+    }
+  }
+
   Future<void> pickImageCamera(GetxController controller, members) async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.camera);
+        await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
@@ -178,7 +243,12 @@ class ChatingPageViewModal {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppText(S.of(Get.context!).audio),
+                  InkWell(
+                      onTap: () {
+                        audioSendTap();
+                        Get.back();
+                      },
+                      child: AppText(S.of(Get.context!).audio)),
                   Padding(
                     padding: EdgeInsets.only(top: 5.px),
                     child: Divider(
@@ -193,7 +263,12 @@ class ChatingPageViewModal {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppText(S.of(Get.context!).video),
+                  InkWell(
+                      onTap: () {
+                        videoSendTap();
+                        Get.back();
+                      },
+                      child: AppText(S.of(Get.context!).video)),
                   Padding(
                     padding: EdgeInsets.only(top: 10.px),
                     child: Divider(
@@ -229,28 +304,28 @@ class ChatingPageViewModal {
       items: <PopupMenuEntry>[
         PopupMenuItem(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 15.px,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20, top: 5.px),
-                  child: AppText(
-                    S.of(Get.context!).select,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18.px,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.px),
-                  child: Divider(
-                    height: 1.px,
-                    color: AppColorConstant.appGrey.withOpacity(0.3),
-                  ),
-                )
-              ],
-            )),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 15.px,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 20, top: 5.px),
+              child: AppText(
+                S.of(Get.context!).select,
+                fontWeight: FontWeight.w800,
+                fontSize: 18.px,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.px),
+              child: Divider(
+                height: 1.px,
+                color: AppColorConstant.appGrey.withOpacity(0.3),
+              ),
+            )
+          ],
+        )),
         PopupMenuItem(
             onTap: () {
               pickImageGallery(controller!, arguments['members']);
