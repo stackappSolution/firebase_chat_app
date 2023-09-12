@@ -1,11 +1,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 
 import '../modal/user_model.dart';
 import 'auth_service.dart';
 
 class UsersService {
   static final users = FirebaseFirestore.instance.collection('users');
+  static String userName = "  ";
 
   //==========================addUsers=======================================
 
@@ -91,14 +93,11 @@ class UsersService {
   }
 
   static Future getUserData() async {
-    QuerySnapshot querySnapshot = await users
-        .where('id', isNotEqualTo: AuthService.auth.currentUser?.uid)
+    final data = await users
+        .where('id', isEqualTo: AuthService.auth.currentUser!.uid).limit(1)
         .get();
+    userName = data.docs[0]["firstName"];
+    logs("current User Name  ---- $userName");
 
-    final userDoc = users.doc(querySnapshot.docs.first.id);
-
-    final userSnapshot = await userDoc.get();
-    final userName = userSnapshot['firstName'];
-    return userName;
   }
 }

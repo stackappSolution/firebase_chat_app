@@ -28,11 +28,10 @@ class SettingScreen extends StatelessWidget {
     return GetBuilder<SettingsController>(
       initState: (state) {
         Future.delayed(
-          const Duration(milliseconds: 10),
-              () async {
+          const Duration(milliseconds: 0),
+          () async {
             controller = Get.find<SettingsController>();
-            settingViewModel!.userName = await UsersService.getUserData();
-            logs('user---> ${settingViewModel!.userName}');
+            await UsersService.getUserData();
             controller!.update();
           },
         );
@@ -86,10 +85,7 @@ class SettingScreen extends StatelessWidget {
           maxRadius: 35.px,
           backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
           child: AppText(
-              settingViewModel!.userName!
-                  .substring(0, 1)
-                  .toString()
-                  .toUpperCase(),
+              UsersService.userName.substring(0, 1).toString().toUpperCase(),
               fontSize: 25.px,
               color: primaryTheme),
         ),
@@ -101,7 +97,7 @@ class SettingScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppText(
-              settingViewModel!.userName!,
+              UsersService.userName,
               fontSize: 20.px,
               color: primaryTheme,
             ),

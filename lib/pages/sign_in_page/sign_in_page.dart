@@ -180,21 +180,21 @@ class SignInPage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: signInViewModel.isValidNumber != true
                     ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45.px),
+                  padding: EdgeInsets.symmetric(horizontal: 60.px),
                   child: AppElevatedButton(
                     isBorderShape: true,
                     buttonColor:
                     AppColorConstant.appYellow.withOpacity(0.5),
-                    buttonHeight: 50,
+                    buttonHeight: 50.px,
                     widget: AppText(
                       S.of(context).continues,
-                      fontSize: 22,
+                      fontSize: 18.px,
                       color: AppColorConstant.appWhite,
                     ),
                   ),
                 )
                     : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45.px),
+                  padding: EdgeInsets.symmetric(horizontal: 60.px),
                   child: AppElevatedButton(
                       onPressed: signInViewModel.otpSend
                           ? null
@@ -263,7 +263,7 @@ class SignInPage extends StatelessWidget {
                         color: AppColorConstant.appWhite,
                       ):AppText(
                         S.of(context).continues,
-                        fontSize: 22.px,
+                        fontSize: 18.px,
                         color: AppColorConstant.appWhite,)),
                 ),
               ),

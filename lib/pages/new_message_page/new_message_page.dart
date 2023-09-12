@@ -167,7 +167,6 @@ class NewMessagePage extends StatelessWidget {
             }
             final data = snapshot.data!.docs;
 
-            logs("user List ${controller.userList}");
             return (controller.userList.contains(
                 mobileNumber.toString().trim().removeAllWhitespace))
                 ? Container(

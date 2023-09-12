@@ -481,10 +481,10 @@ class S {
   }
 
   /// `Signal`
-  String get signal {
+  String get chatApp {
     return Intl.message(
-      'Signal',
-      name: 'signal',
+      'Chat App',
+      name: 'Chat App',
       desc: '',
       args: [],
     );
