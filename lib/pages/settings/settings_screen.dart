@@ -8,6 +8,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
+import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/service/auth_service.dart';
@@ -75,37 +76,41 @@ class SettingScreen extends StatelessWidget {
   buildProfileView(context) {
     Color primaryTheme = Theme.of(context).colorScheme.primary;
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;
-    return Row(
-      children: [
-        SizedBox(
-          width: 20.px,
-          height: 20.px,
-        ),
-        CircleAvatar(
-          maxRadius: 35.px,
-          backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-          child: AppText(
-              UsersService.userName.substring(0, 1).toString().toUpperCase(),
-              fontSize: 25.px,
-              color: primaryTheme),
-        ),
-        SizedBox(
-          width: 30.px,
-          height: 20.px,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppText(
-              UsersService.userName,
-              fontSize: 20.px,
-              color: primaryTheme,
-            ),
-            AppText(AuthService.auth.currentUser!.phoneNumber!,
-                color: secondaryTheme, fontSize: 12.px),
-          ],
-        )
-      ],
+    return InkWell(onTap: () {
+      Get.to(EditProfileScreen());
+    },
+      child: Row(
+        children: [
+          SizedBox(
+            width: 20.px,
+            height: 20.px,
+          ),
+          CircleAvatar(
+            maxRadius: 35.px,
+            backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
+            child: AppText(
+                UsersService.userName.substring(0, 1).toString().toUpperCase(),
+                fontSize: 25.px,
+                color: primaryTheme),
+          ),
+          SizedBox(
+            width: 30.px,
+            height: 20.px,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppText(
+                UsersService.userName,
+                fontSize: 20.px,
+                color: primaryTheme,
+              ),
+              AppText(AuthService.auth.currentUser!.phoneNumber!,
+                  color: secondaryTheme, fontSize: 12.px),
+            ],
+          )
+        ],
+      ),
     );
   }
 
