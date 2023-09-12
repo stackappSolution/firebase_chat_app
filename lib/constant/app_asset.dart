@@ -18,6 +18,8 @@ class AppAsset {
   static const String background = '${imagePath}background.png';
   static const String appIconText = '${imagePath}app_logo_text.png';
   static const String appBar = '${imagePath}appbar.png';
+  static const String play = '${iconPath}play.png';
+  static const String pause = '${iconPath}pause.png';
 
   static const String introPage = '${imagePath}intro_page.png';
   static const String signIn='${imagePath}signin.png';

@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_button.dart';
 import 'package:signal/app/widget/app_text.dart';
@@ -16,7 +17,7 @@ import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
-import '../../app/app/utills/app_utills.dart';
+
 import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
@@ -440,5 +441,27 @@ class ChatingPageViewModal {
 
       controller!.update();
     }
+  }
+
+  buildDoubleClickView() {
+    return Container(alignment: Alignment.center,height: 15.px,width: 15.px,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Theme.of(Get.context!).colorScheme.primary,
+          )),
+      child: Icon(Icons.done_all,color: Theme.of(Get.context!).colorScheme.primary,size: 12.px,),
+    );
+  }
+
+  buildSingleClickView() {
+    return Container(alignment: Alignment.center,height: 15.px,width: 15.px,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Theme.of(Get.context!).colorScheme.primary
+          )),
+      child: Icon(Icons.done,color: Theme.of(Get.context!).colorScheme.primary,size: 12.px,),
+    );
   }
 }

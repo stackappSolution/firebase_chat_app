@@ -162,7 +162,7 @@ class ChatColorScreen extends StatelessWidget {
     if (colorCode != null) {
       return Color(int.parse(colorCode, radix: 16));
     } else {
-      return Colors.black;
+      return AppColorConstant.appYellow;
     }
   }
 

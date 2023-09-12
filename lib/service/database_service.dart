@@ -15,10 +15,11 @@ class DatabaseService {
   String documentId = '';
   static FirebaseAuth auth = FirebaseAuth.instance;
   static bool isLoading = false;
-
+  
   //================================addNewMessage============================
 
   void addNewMessage({
+    bool? messageStatus,
     String? type,
     String? createdBy,
     String? profile,
@@ -57,11 +58,11 @@ class DatabaseService {
                 }));
       }
       addChatMessages(
-          members: members, message: massage, sender: sender, type: type);
+          members: members, message: massage, sender: sender, type: type,messageStatus: messageStatus);
     }
 
     addChatMessages(
-        message: massage!, sender: sender!, members: members, type: type);
+        message: massage!, sender: sender!, members: members, type: type,messageStatus: messageStatus);
   }
 
   //==========================checkFirstMessage===========================
@@ -78,6 +79,7 @@ class DatabaseService {
   //===============================addChatMessage=============================
 
   void addChatMessages({
+    bool? messageStatus,
     String? type,
     List<dynamic>? members,
     String? message,
@@ -96,7 +98,7 @@ class DatabaseService {
         .collection('rooms')
         .doc(querySnapshot.docs.first.id)
         .collection('chats')
-        .add(Message(
+        .add(Message(messageStatus: messageStatus!,
                 message: message!,
                 isSender: true,
                 messageTimestamp: DateTime.now().millisecondsSinceEpoch,
@@ -192,6 +194,36 @@ class DatabaseService {
       File url, ChatingPageController controller) async {
     isLoading = true;
     controller.update();
+  //======================== markMessageAsSeen =====================================
+
+  void markMessagesAsSeen(String chatRoomId,String receiverId) {
+    FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(chatRoomId)
+        .collection("chats")
+        .where('sender', isEqualTo: receiverId)
+        .where("messageStatus", isEqualTo: false)
+        .get()
+        .then((value) {
+      List<String> messageIds = [];
+      for (var doc in value.docs) {
+        messageIds.add(doc.id);
+      }
+
+
+      for (var element in messageIds) {
+        FirebaseFirestore.instance
+            .collection('rooms')
+            .doc(chatRoomId)
+            .collection('chats')
+            .doc(element)
+            .update({'messageStatus': true}).then((value) {
+          print("massage upgraded");
+        });
+        print("value-----------> ${value.docs.length}");
+      }
+    });
+  }
 
     final storage = FirebaseStorage.instance
         .ref('chat')

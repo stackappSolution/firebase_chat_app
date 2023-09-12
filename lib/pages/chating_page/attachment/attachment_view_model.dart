@@ -118,6 +118,16 @@ class AttachmentViewModel {
           isGroup: false);
     });
 
+  onSendMessage(String msgType, AttachmentController controller,message) async {
+    uploadImage(File(selectedImage));
+    DatabaseService().addNewMessage(
+      messageStatus:  false,
+        type: msgType,
+        members: argument['members'],
+        massage: message,
+        sender: AuthService.auth.currentUser!.phoneNumber!,
+        isGroup: false);
+    logs('message---> $imageURL');
     controller.update();
   }
 }

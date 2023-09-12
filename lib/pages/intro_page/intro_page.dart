@@ -24,7 +24,7 @@ class IntroPage extends StatelessWidget {
     return GetBuilder(
       init: IntroPageController(),
       initState: (introPage) {
-        introPageInitState(context);
+        NetworkConnectivity.checkConnectivity(context);
       },
       builder: (IntroPageController controller) {
         return Scaffold(
