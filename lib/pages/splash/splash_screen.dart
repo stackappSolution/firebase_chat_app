@@ -7,6 +7,7 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/pages/splash/splash_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
+import 'package:signal/service/network_connectivity.dart';
 
 import '../../constant/color_constant.dart';
 
@@ -16,6 +17,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NetworkConnectivity.checkConnectivity(context);
     splashViewModel ?? (splashViewModel = SplashViewModel(this));
     Timer(const Duration(seconds: 5), () {
       SharedPreferences.getInstance().then((prefs) {

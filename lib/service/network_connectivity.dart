@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+
 import '../app/widget/app_alert_dialog.dart';
 import '../app/widget/app_button.dart';
 import '../app/widget/app_text.dart';
@@ -23,7 +24,6 @@ class NetworkConnectivity {
   static String status = "";
   static bool isConnected = false;
   Map source = {ConnectivityResult.none: false};
-
 
   Stream get myStream => controller.stream;
 
@@ -71,40 +71,52 @@ class NetworkConnectivity {
           ? showDialog(
               context: context,
               builder: (context) {
-                return AppAlertDialog(
-                  title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const AppText(
-                          "networkError",
-                          fontWeight: FontWeight.bold,
+                return Padding(
+                  padding: EdgeInsets.all(20.px),
+                  child: AppAlertDialog(
+                    shape: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.circular(15.px)),
+                    title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText(
+                            "Network Error",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 22.px,
+                          ),
+                          AppText(
+                            "\nSorry, there was a network error. Please check your internet connection and try again. If the problem persists, contact your network administrator or service provider for assistance. We apologize for any inconvenience.",
+                            fontSize: 15.px,
+                            textAlign: TextAlign.justify,
+                          )
+                        ]),
+                    actions: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 10.px, bottom: 10.px),
+                        child: AppButton(
+                          onTap: () {
+                            Get.back();
+                          },
+                          fontColor: AppColorConstant.appWhite,
+                          string: "Back",
+                          fontSize: 20,
+                          borderRadius: BorderRadius.circular(15),
+                          height: 40,
+                          color: AppColorConstant.appYellow,
+                          stringChild: false,
+                          width: 100,
                         ),
-                        AppText(
-                          "pleaseCheckYourInternet",
-                          fontSize: 15.px,
-                        )
-                      ]),
-                  actions: [
-                    AppButton(
-                      onTap: () {
-                        Get.back();
-                      },
-                      fontColor: AppColorConstant.appWhite,
-                      string: "back",
-                      fontSize: 20,
-                      borderRadius: BorderRadius.circular(15),
-                      height: 40,
-                      color: AppColorConstant.appYellow,
-                      stringChild: false,
-                      width: 100,
-                    )
-                  ],
-                  insetPadding: EdgeInsets.zero,
+                      )
+                    ],
+                    insetPadding: EdgeInsets.zero,
+                  ),
                 );
               },
             )
           : null;
     });
   }
+
   void disposeStream() => controller.close();
 }

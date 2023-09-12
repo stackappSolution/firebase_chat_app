@@ -7,7 +7,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/edit_profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/edit_profile/edit_profile_view_model.dart';
-
+import 'package:signal/pages/settings/settings_screen.dart';
 
 // ignore: must_be_immutable
 class EditProfileScreen extends StatelessWidget {
@@ -44,22 +44,24 @@ class EditProfileScreen extends StatelessWidget {
             Column(
               children: [
                 Padding(
-                  padding:  EdgeInsets.only(bottom: 10.px),
+                  padding: EdgeInsets.only(bottom: 10.px),
                   child: CircleAvatar(
-                    radius: 40.px,backgroundColor: AppColorConstant.yellowLight,
+                    radius: 40.px,
+                    backgroundColor: AppColorConstant.yellowLight,
                   ),
                 ),
-                InkWell(onTap: () {
-                  editProfileViewModel!.editPhotoTap();
-                },
+                InkWell(
+                  onTap: () {
+                    editProfileViewModel!.editPhotoTap();
+                  },
                   child: Container(
                     width: 100.px,
                     height: 33.px,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: AppColorConstant.yellowLight,
-                        borderRadius: BorderRadius.all(Radius.circular(30.px)),
-                        ),
+                      color: AppColorConstant.yellowLight,
+                      borderRadius: BorderRadius.all(Radius.circular(30.px)),
+                    ),
                     child: AppText(
                       S.of(context).editPhoto,
                       fontSize: 12.px,
@@ -73,41 +75,48 @@ class EditProfileScreen extends StatelessWidget {
           ],
         ),
         Padding(
-          padding:  EdgeInsets.only(top: 33.px),
+          padding: EdgeInsets.only(top: 33.px),
+          child: InkWell(
+            onTap: () {
+              editProfileViewModel!.profileNameTap(context);
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.account_circle),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.px),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText(S.of(context).profile, color: primaryTheme),
+                      AppText(S.of(context).yourProfile,
+                          color: secondaryTheme, fontSize: 14.px),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            editProfileViewModel!.aboutTap(context);
+          },
           child: Row(
             children: [
-              const Icon(Icons.account_circle),
+              const Icon(Icons.edit),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.px),
+                padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 27),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppText(S.of(context).profile, color: primaryTheme),
-                    AppText(S.of(context).yourProfile,
+                    AppText(S.of(context).about),
+                    AppText(S.of(context).profile,
                         color: secondaryTheme, fontSize: 14.px),
                   ],
                 ),
               )
             ],
           ),
-        ),
-        Row(
-          children: [
-            const Icon(Icons.edit),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 27),
-              child: Column(
-                children: [
-
-                  InkWell(onTap: () {
-                    editProfileViewModel!.aboutTap(context);
-                  },child:  AppText(S.of(context).about)),
-                  AppText(S.of(context).profile,
-                      color: secondaryTheme, fontSize: 14.px),
-                ],
-              ),
-            )
-          ],
         ),
         Row(
           children: [
@@ -135,7 +144,9 @@ class EditProfileScreen extends StatelessWidget {
   }
 
   getAppBar(context) {
-    return AppAppBar(
+    return AppAppBar(leading: IconButton(onPressed: () {
+      Get.to(SettingScreen());
+    }, icon: Icon(Icons.arrow_back_outlined)),
         title: AppText(
       S.of(context).profile,
       fontSize: 20.px,
