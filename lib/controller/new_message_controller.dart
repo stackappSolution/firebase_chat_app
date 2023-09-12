@@ -29,6 +29,13 @@ class NewMessageController extends GetxController {
 
   Future getUserPhoneList() async {
     if(userList.isEmpty)
+      {
+        final data = await userTable.where('phone').get();
+        data.docs.forEach((element) {
+          userList.add(element["phone"]);
+        });
+        logs("getUserPhoneList=== ${userList}");
+      }
     {
       final data = await userTable.where('phone').get();
       data.docs.forEach((element) {

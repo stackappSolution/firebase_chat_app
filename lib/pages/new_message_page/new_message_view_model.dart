@@ -43,7 +43,7 @@ class NewMessageViewModel {
   }
 
   void getContactPermission() async {
-    if (await Permission.contacts.isGranted) {
+    if (await Permission.contacts.isGranted && contacts.isEmpty) {
       fetchContacts();
     } else {
       await Permission.contacts.request();
@@ -51,11 +51,15 @@ class NewMessageViewModel {
   }
 
   void fetchContacts() async {
-    logs("fetch contact entered");
-    contacts = await ContactsService.getContacts(withThumbnails: false);
-    filteredContacts = List.from(contacts);
-    isLoading = false;
-    newMessageController!.update();
+    if(contacts.isEmpty)
+      {
+        logs("fetch contact entered");
+        contacts = await ContactsService.getContacts(withThumbnails: false);
+        filteredContacts = List.from(contacts);
+        isLoading = false;
+        newMessageController!.update();
+      }
+
   }
 
   getAllContacts() async {

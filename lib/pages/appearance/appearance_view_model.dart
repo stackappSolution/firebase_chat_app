@@ -31,14 +31,14 @@ class AppearanceViewModel {
   AppearanceViewModel(this.appearanceScreen) {
     Future.delayed(
       const Duration(milliseconds: 100),
-      () => controller = Get.find<AppearanceController>(),
+          () => controller = Get.find<AppearanceController>(),
     );
   }
 
   themeDialog(
-    context,
-    AppearanceController controller,
-  ) {
+      context,
+      AppearanceController controller,
+      ) {
     showDialog(
       context: context,
       builder: (context) {
@@ -46,12 +46,12 @@ class AppearanceViewModel {
           builder: (context, setState) {
             return AppAlertDialog(
               titlePadding:
-                  EdgeInsets.only(top: 18.px, left: 35.px, bottom: 5.px),
+              EdgeInsets.only(top: 18.px, left: 35.px, bottom: 5.px),
               backgroundColor: AppColorConstant.blackOff,
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
               insetPadding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
               title: AppText(
                 S.of(context).theme,
                 color: AppColorConstant.appWhite,
@@ -67,7 +67,7 @@ class AppearanceViewModel {
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
-                          (states) => AppColorConstant.appYellow),
+                              (states) => AppColorConstant.appYellow),
                       title: AppText(
                         S.of(context).systemDefault,
                         color: AppColorConstant.appWhite,
@@ -85,7 +85,7 @@ class AppearanceViewModel {
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
-                          (states) => AppColorConstant.appYellow),
+                              (states) => AppColorConstant.appYellow),
                       title: AppText(S.of(context).light,
                           color: AppColorConstant.appWhite),
                       value: ThemeMode.light,
@@ -101,7 +101,7 @@ class AppearanceViewModel {
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
-                          (states) => AppColorConstant.appYellow),
+                              (states) => AppColorConstant.appYellow),
                       title: AppText(S.of(context).dark,
                           color: AppColorConstant.appWhite),
                       value: ThemeMode.dark,
@@ -139,7 +139,7 @@ class AppearanceViewModel {
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
               insetPadding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               title: Container(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.all(10.px),
@@ -165,7 +165,7 @@ class AppearanceViewModel {
                     ),
                     groupValue: locale,
                     onChanged: (value) {
-                      setState(() {
+                      setState(() async {
                         locale = value!;
                         setStringValue(
                             getLanguage, Get.deviceLocale!.languageCode);
@@ -173,6 +173,40 @@ class AppearanceViewModel {
                         Get.updateLocale(locale!);
                         selectedLanguage = S.of(Get.context!).systemDefault;
                         setStringValue(language, selectedLanguage!);
+                        saveFontSize =
+                        await getStringValue(StringConstant.setFontSize);
+
+                        if (selectedLanguage == S.of(Get.context!).gujarati) {
+                          if (saveFontSize == "Large") {
+                            logs('large');
+                            saveSelectedFontSize("Large");
+                          } else if (saveFontSize == "નાના") {
+                            logs('Small');
+                            saveSelectedFontSize('Small');
+                          } else if (saveFontSize == "સામાન્ય") {
+                            logs('Normal');
+                            saveSelectedFontSize('Normal');
+                          } else if (saveFontSize == "વધારાનું મોટું") {
+                            logs('ExtraLarge');
+                            saveSelectedFontSize('ExtraLarge');
+                          }
+                        }
+
+                        if (selectedLanguage == S.of(Get.context!).english) {
+                          if (saveFontSize == "Large") {
+                            logs('વિશાળ');
+                            saveSelectedFontSize("વિશાળ");
+                          } else if (saveFontSize == "Small") {
+                            logs('નાના');
+                            saveSelectedFontSize('નાના');
+                          } else if (saveFontSize == "Normal") {
+                            logs('સામાન્ય');
+                            saveSelectedFontSize('સામાન્ય');
+                          } else if (saveFontSize == "ExtraLarge") {
+                            logs('વધારાનું મોટું');
+                            saveSelectedFontSize('વધારાનું મોટું');
+                          }
+                        }
                       });
                     },
                   ),
@@ -183,14 +217,39 @@ class AppearanceViewModel {
                     title: AppText(S.of(context).english),
                     value: const Locale('en_US'),
                     groupValue: locale,
-                    onChanged: (value) {
-                      setState(() {
+                    onChanged: (value) async {
+                      saveFontSize = await getStringValue(StringConstant.setFontSize);
+
+                      setState(()  {
                         locale = value!;
                         setStringValue(getLanguage, 'en_US');
                         S.load(const Locale('en_US'));
                         Get.updateLocale(locale!);
                         selectedLanguage = S.of(Get.context!).english;
                         setStringValue(language, selectedLanguage!);
+
+                        if (selectedLanguage == "English") {
+                          if (saveFontSize == "વિશાળ") {
+                            logs('large');
+                            saveSelectedFontSize("Large");
+                          }
+
+                          else if (saveFontSize == "નાના") {
+                            logs('Small');
+                            saveSelectedFontSize('Small');
+                          }
+
+                          else if (saveFontSize == "સામાન્ય" || saveFontSize == "Normal") {
+                            logs('Normal');
+                            saveSelectedFontSize('Normal');
+                          }
+
+                          else if (saveFontSize == "વધારાનું મોટું") {
+                            logs('ExtraLarge');
+                            saveSelectedFontSize('ExtraLarge');
+                          }
+                        }
+
                       });
                     },
                   ),
@@ -201,14 +260,34 @@ class AppearanceViewModel {
                     title: AppText(S.of(context).gujarati),
                     value: const Locale('gu_IN'),
                     groupValue: locale,
-                    onChanged: (value) {
-                      setState(() {
+                    onChanged: (value) async {
+                      saveFontSize = await getStringValue(StringConstant.setFontSize);
+
+                      setState(() async {
+
                         locale = value!;
                         S.load(const Locale('gu_IN'));
                         setStringValue(getLanguage, 'gu_IN');
                         Get.updateLocale(locale!);
                         selectedLanguage = S.of(Get.context!).gujarati;
                         setStringValue(language, selectedLanguage!);
+                        saveFontSize = await getStringValue(StringConstant.setFontSize);
+
+                        if (selectedLanguage == "ગુજરાતી") {
+                          if (saveFontSize == "Large") {
+                            logs('વિશાળ');
+                            saveSelectedFontSize("વિશાળ");
+                          } else if (saveFontSize == "Small") {
+                            logs('નાના');
+                            saveSelectedFontSize('નાના');
+                          } else if (saveFontSize == "Normal") {
+                            logs('સામાન્ય');
+                            saveSelectedFontSize('સામાન્ય');
+                          } else if (saveFontSize == "ExtraLarge") {
+                            logs('વધારાનું મોટું');
+                            saveSelectedFontSize('વધારાનું મોટું');
+                          }
+                        }
                       });
                     },
                   ),
@@ -225,9 +304,9 @@ class AppearanceViewModel {
   }
 
   messageFontDialog(
-    context,
-    AppearanceController controller,
-  ) {
+      context,
+      AppearanceController controller,
+      ) {
     showDialog(
       context: context,
       builder: (context) {
@@ -235,11 +314,12 @@ class AppearanceViewModel {
           builder: (context, setState) {
             return AppAlertDialog(
               titlePadding:
-                  EdgeInsets.only(top: 18.px, left: 35.px, bottom: 5.px),
+              EdgeInsets.only(top: 18.px, left: 35.px, bottom: 5.px),
               backgroundColor: AppColorConstant.blackOff,
               elevation: 0.0,
               contentPadding: EdgeInsets.zero,
-              insetPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              insetPadding:
+              const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               title: AppText(S.of(context).selectMember,
                   color: AppColorConstant.appWhite),
               actions: [
@@ -253,61 +333,61 @@ class AppearanceViewModel {
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
-                          (states) => AppColorConstant.appYellow),
+                              (states) => AppColorConstant.appYellow),
                       title: AppText(S.of(context).small,
                           color: AppColorConstant.appWhite),
                       value: S.of(context).small,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
                         setState(() {
-                          saveFontSize = value;
+                          saveFontSize = S.of(context).small;
                         });
-                        await saveSelectedFontSize(value!);
+                        await saveSelectedFontSize(saveFontSize!);
                         controller.update();
                       },
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
-                          (states) => AppColorConstant.appYellow),
+                              (states) => AppColorConstant.appYellow),
                       title: AppText(S.of(context).normal,
                           color: AppColorConstant.appWhite),
                       value: S.of(context).normal,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
                         setState(() {
-                          saveFontSize = value;
+                          saveFontSize = S.of(context).normal;
                         });
-                        await saveSelectedFontSize(value!);
+                        await saveSelectedFontSize(saveFontSize!);
                         controller.update();
                       },
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
-                          (states) => AppColorConstant.appYellow),
+                              (states) => AppColorConstant.appYellow),
                       title: AppText(S.of(context).large,
                           color: AppColorConstant.appWhite),
                       value: S.of(context).large,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
                         setState(() {
-                          saveFontSize = value;
+                          saveFontSize = S.of(context).large;
                         });
-                        await saveSelectedFontSize(value!);
+                        await saveSelectedFontSize(saveFontSize!);
                         controller.update();
                       },
                     ),
                     RadioListTile(
                       fillColor: MaterialStateColor.resolveWith(
-                          (states) => AppColorConstant.appYellow),
+                              (states) => AppColorConstant.appYellow),
                       title: AppText(S.of(context).extraLarge,
                           color: AppColorConstant.appWhite),
                       value: S.of(context).extraLarge,
                       groupValue: saveFontSize,
                       onChanged: (value) async {
                         setState(() {
-                          saveFontSize = value;
+                          saveFontSize = S.of(context).extraLarge;
                         });
-                        await saveSelectedFontSize(value!);
+                        await saveSelectedFontSize(saveFontSize!);
                         controller.update();
                       },
                     ),
@@ -322,13 +402,16 @@ class AppearanceViewModel {
   }
 
   saveSelectedFontSize(String fontSize) async {
+    // logs(
+    //     'setStringValue(StringConstant.selectedFontSize) : - $fontSize');
     setStringValue(StringConstant.setFontSize, fontSize);
-    logs(
-        'setStringValue(StringConstant.selectedFontSize) : ${StringConstant.setFontSize} - $fontSize');
+
 
     saveFontSize = await getStringValue(StringConstant.setFontSize);
     logs('getStringValue(StringConstant.selectedFontSize) : $saveFontSize');
   }
+
+
 
   mainTap(index, context, AppearanceController controller) {
     switch (index) {
@@ -365,9 +448,9 @@ class AppearanceViewModel {
     }
   }
 
-  loadSelectedFontSize() async {
+  loadSelectedFontSize(context) async {
     final fontSize = await getStringValue(StringConstant.selectedFontSize) ??
-        StringConstant.normal;
+        S.of(context).normal;
     selectedFontSize = fontSize.toString();
     logs("selectedFontSize-----$selectedFontSize");
   }

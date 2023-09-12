@@ -132,7 +132,7 @@ class ChatScreen extends StatelessWidget {
               goToSettingPage();
             },
             child: Padding(
-              padding: EdgeInsets.all(7.0.px),
+              padding: EdgeInsets.only(left: 11.px,top: 3.px,bottom: 3.px),
               child: CircleAvatar(
                 backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
                 child: AppText('S',
@@ -142,10 +142,10 @@ class ChatScreen extends StatelessWidget {
           ),
         ),
         title: Padding(
-          padding: EdgeInsets.only(left: 14.px),
-          child: AppText(S.of(Get.context!).signal,
+          padding: EdgeInsets.only(left: 5.px),
+          child: AppText(S.of(Get.context!).chatApp,
               color: Theme.of(Get.context!).colorScheme.primary,
-              fontSize: 20.px),
+              fontSize: 18.px),
         ),
         actions: [
           InkWell(

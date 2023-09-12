@@ -62,7 +62,7 @@ class ChatViewModel {
     for (int i = 0; i < contacts.length; i++) {
       Contact contact = contacts[i];
       await DataBaseHelper.setContactDetails(
-          contact.displayName, contact.phones!.first.value);
+          contact.displayName, contact.phones!.first.value ?? "");
     }
     DataBaseHelper.getContactDetails();
     controller!.update();

@@ -9,6 +9,8 @@ import 'package:signal/controller/appearance_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
 
+import '../../constant/string_constant.dart';
+
 // ignore: must_be_immutable
 class AppearanceScreen extends StatelessWidget {
   AppearanceViewModel? appearanceViewModel;
@@ -27,19 +29,23 @@ class AppearanceScreen extends StatelessWidget {
           const Duration(milliseconds: 100),
           () async {
             controller = Get.find<AppearanceController>();
-            Future<String?> key = getStringValue(getLanguage);
-            String? result = await key;
-            appearanceViewModel!.locale = Locale(result!);
 
             Future<String?> currentLanguage = getStringValue(language);
             String? selectedLanguage = await currentLanguage;
             logs("default Language--> $selectedLanguage");
             appearanceViewModel!.selectedLanguage = selectedLanguage;
 
-            String? currentFontSize =await getStringValue(fontSizes);
-            String? selectedFontSize = currentFontSize;
-            logs("default FontSize--> $selectedFontSize");
-            appearanceViewModel!.saveFontSize = selectedFontSize;
+            appearanceViewModel!.saveFontSize =
+                await getStringValue(fontSizes) ?? S.of(context).normal;
+
+            Future<String?> key = getStringValue(getLanguage);
+            String? result = await key;
+            appearanceViewModel!.locale = Locale(result!);
+            getStringValue(StringConstant.setFontSize);
+            if (getStringValue(StringConstant.setFontSize) == null) {
+              setStringValue(StringConstant.setFontSize, "Normal");
+            }
+
             controller!.update();
           },
         );
@@ -56,7 +62,6 @@ class AppearanceScreen extends StatelessWidget {
   }
 
   getAppBar(context) {
-
     return AppAppBar(
         title: AppText(
       S.of(Get.context!).appearance,
@@ -87,18 +92,23 @@ class AppearanceScreen extends StatelessWidget {
                 .substring(10)
                 .capitalizeFirst,
             controller),
-       appearanceViewTile(
-           3, context, S.of(Get.context!).chatColor, "", controller),
+        appearanceViewTile(
+            3, context, S.of(Get.context!).chatColor, "", controller),
         appearanceViewTile(
             4, context, S.of(Get.context!).appIcon, "", controller),
-        appearanceViewTile(5, context, S.of(Get.context!).messageFontSize,
+        appearanceViewTile(
+            5,
+            context,
+            S.of(Get.context!).messageFontSize,
             (appearanceViewModel.saveFontSize != null)
                 ? appearanceViewModel.saveFontSize
-                : "default", controller),
+                : S.of(context).normal,
+            controller),
         appearanceViewTile(6, context, S.of(Get.context!).navigationBarSize,
             S.of(context).normal, controller),
-      ]),);}
-
+      ]),
+    );
+  }
 
   appearanceViewTile(
     index,
@@ -109,9 +119,10 @@ class AppearanceScreen extends StatelessWidget {
   ) {
     return InkWell(
       onTap: () {
-       appearanceViewModel!.mainTap(index, context, controller);
+        appearanceViewModel!.mainTap(index, context, controller);
       },
-      child: Container(width: double.infinity,
+      child: Container(
+        width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 25.px, vertical: 13.px),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

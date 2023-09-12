@@ -41,7 +41,7 @@ class ChatingPageViewModal {
   bool isLoading = false;
   List<DateTime> messageTimeStamp=[];
   ScrollController scrollController =  ScrollController();
-
+  String? fontSize;
   List<String> chats = [];
   TextEditingController chatController = TextEditingController();
 
@@ -50,16 +50,16 @@ class ChatingPageViewModal {
   ChatingPageViewModal([this.chatingPage]) {
     Future.delayed(const Duration(milliseconds: 0), () async {
       controller = Get.find<ChatingPageController>();
-      ChatingPage.fontSize = await getStringValue(StringConstant.setFontSize);
+      fontSize = await getStringValue(StringConstant.setFontSize);
       controller!.update();
     });
   }
 
   Future<String?> fontSizeInitState() async {
-    ChatingPage.fontSize = await getStringValue(StringConstant.setFontSize);
+    fontSize = await getStringValue(StringConstant.setFontSize);
     logs(
-        'getStringValue(StringConstant.selectedFontSize) : ${ChatingPage.fontSize}');
-    return ChatingPage.fontSize;
+        'getStringValue(StringConstant.selectedFontSize) : $fontSize');
+    return fontSize;
   }
 
   List<PopupMenuEntry<String>> popupMenu = [
@@ -132,7 +132,7 @@ class ChatingPageViewModal {
 
   buildPopupMenu(BuildContext context) {
     return PopupMenuButton(
-      offset: Offset(-10, kToolbarHeight),
+      offset: const Offset(-10, kToolbarHeight),
       onSelected: (value) {
         if (value == 0) {
           buildImagePickerMenu(context);

@@ -1,11 +1,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 
 import '../modal/user_model.dart';
 import 'auth_service.dart';
 
 class UsersService {
   static final users = FirebaseFirestore.instance.collection('users');
+  static String userName = "  ";
 
   //==========================addUsers=======================================
 
@@ -88,5 +90,14 @@ class UsersService {
     users.doc(querySnapshot.docs.first.id).update({
       'blockedNumbers': FieldValue.arrayRemove([unBlockedNumber]),
     });
+  }
+
+  static Future getUserData() async {
+    final data = await users
+        .where('id', isEqualTo: AuthService.auth.currentUser!.uid).limit(1)
+        .get();
+    userName = data.docs[0]["firstName"];
+    logs("current User Name  ---- $userName");
+
   }
 }
