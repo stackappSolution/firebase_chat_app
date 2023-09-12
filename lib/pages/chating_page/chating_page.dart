@@ -71,7 +71,7 @@ class ChatingPage extends StatelessWidget {
               );
               Future<String?> key = getStringValue(wallpaper);
               chatingPageViewModal!.wallpaperPath = await key;
-              logs('path---> ${chatingPageViewModal!.wallpaperPath!}');
+              logs('path---> ${chatingPageViewModal!.wallpaperPath}');
 
               chatingPageViewModal!.chatBubbleColor =
                   await chatingPageViewModal!.getChatBubbleColor();
@@ -274,8 +274,8 @@ class ChatingPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const AppText(
-                'cancel',
+               AppText(
+                S.of(context).cancel,
                 color: AppColorConstant.appYellow,
               ),
               AppButton(

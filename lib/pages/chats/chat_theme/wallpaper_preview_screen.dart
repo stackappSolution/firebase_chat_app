@@ -190,6 +190,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
   onSetWallpaper() {
     if (parameter['image'] != null) {
       setStringValue(wallpaper, parameter['image']);
+      Get.back();
       Get.off(ChatColorWallpaperScreen());
 
       setStringValue(
@@ -200,6 +201,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
       setStringValue(wallpaper, '');
       setStringValue(
           wallPaperColor, wallColor!.value.toRadixString(16));
+      Get.back();
       Get.off(ChatColorWallpaperScreen());
     }
   }

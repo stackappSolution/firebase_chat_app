@@ -152,6 +152,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
               onTap: () {
                 setStringValue(wallPaperColor,
                     const Color(0xFFFFFFFF).value.toRadixString(16));
+                setStringValue(wallpaper, '');
                 controller!.update();
                 Get.back();
               },

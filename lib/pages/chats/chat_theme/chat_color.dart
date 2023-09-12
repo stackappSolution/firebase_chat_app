@@ -10,14 +10,14 @@ import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
-import 'package:signal/routes/routes_helper.dart';
+
 
 // ignore: must_be_immutable
 class ChatColorScreen extends StatelessWidget {
   ChatColorScreen({Key? key}) : super(key: key);
 
   SettingsController? controller;
-  Color selectedColor = AppColorConstant.darkBlue;
+  Color selectedColor = AppColorConstant.appYellow;
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +164,7 @@ class ChatColorScreen extends StatelessWidget {
     if (colorCode != null) {
       return Color(int.parse(colorCode, radix: 16));
     } else {
-      return Colors.black;
+      return AppColorConstant.appYellow;
     }
   }
 
@@ -177,7 +177,7 @@ class ChatColorScreen extends StatelessWidget {
       Get.off(ChatColorWallpaperScreen());
     },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 100.px),
+        margin: EdgeInsets.symmetric(horizontal: 100.px,vertical:  10.px),
         alignment: Alignment.center,
         height: 35.px,
         width: 110.px,
