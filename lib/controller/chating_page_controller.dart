@@ -1,18 +1,21 @@
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
+
 import 'package:video_player/video_player.dart';
 import '../pages/chating_page/chating_page_view_modal.dart';
 
 class ChatingPageController extends GetxController {
   ChatingPage? chatingPage;
   ChatingPageViewModal chatingPageViewModal = ChatingPageViewModal();
-  AudioPlayer player = AudioPlayer();
+
+  final player = AudioPlayer();
+  VideoPlayerController? controller;
+
   RxBool isPlay = false.obs;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-
+  late Stream<Duration?> streamDuration;
 
 
 
@@ -20,25 +23,28 @@ class ChatingPageController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    player.onPlayerStateChanged.listen((state) {
-      isPlay.value = state == PlayerState.playing;
+    player.playerStateStream.listen((state) {
+      isPlay.value =  state.playing;
       update();
     });
 
-    player.onDurationChanged.listen((event) {
-      duration = event;
+    player.durationStream.listen((event) {
+      duration = event!;
       update();
     });
 
-    player.onPositionChanged.listen((event) {
+    player.positionStream.listen((event) {
       position = event;
       update();
     });
 
+
   }
 
-
-
-
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    player.dispose();
+  }
 }

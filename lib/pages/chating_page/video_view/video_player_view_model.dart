@@ -10,5 +10,6 @@ class VideoPlayerViewModel{
   VideoPlayerController? videoController;
   Future<void>? initializeVideoPlayer;
   VideoPlayerViewModel(this.videoPlayerView);
+  double videoPlayerValue = 0.0;
 
 }
