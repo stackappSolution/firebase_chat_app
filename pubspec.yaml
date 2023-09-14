@@ -63,6 +63,14 @@ dependencies:
   # file
   file_picker: ^5.5.0
 
+  #  image:
+  image: ^4.0.17
+
+  # success & error
+  bot_toast: ^4.1.1
+
+
+
 
 
   # Fetch server data & State management :
@@ -93,9 +101,6 @@ dependencies:
 
   #flutter Notification
   flutter_local_notifications: ^15.1.1
-
-
-
 
   #sqflite Database
   sqflite: ^2.3.0

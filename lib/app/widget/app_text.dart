@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 
 class AppText extends StatelessWidget {
@@ -43,7 +44,7 @@ class AppText extends StatelessWidget {
         color: color ?? Colors.black,
         fontFamily: fontFamily ?? 'poppins',
         fontWeight: fontWeight,
-        fontSize: fontSize ?? 16,
+        fontSize: fontSize ?? 14.px,
         height: height,
         fontStyle: fontStyle,
         overflow: overflow,

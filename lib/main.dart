@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -61,6 +62,9 @@ class MyApp extends StatelessWidget {
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
             themeMode: ThemeUtil.selectedTheme,
+            builder: BotToastInit(),
+            navigatorObservers: [BotToastNavigatorObserver()],
+
             localizationsDelegates:  const [
               S.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,

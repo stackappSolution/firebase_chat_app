@@ -19,7 +19,6 @@ class DatabaseService {
   //================================addNewMessage============================
 
   void addNewMessage({
-    bool? messageStatus,
     String? type,
     String? createdBy,
     String? profile,
@@ -62,7 +61,7 @@ class DatabaseService {
           message: massage,
           sender: sender,
           type: type,
-          messageStatus: messageStatus);
+          messageStatus: false);
     }
 
     addChatMessages(
@@ -70,7 +69,7 @@ class DatabaseService {
         sender: sender!,
         members: members,
         type: type,
-        messageStatus: messageStatus);
+        messageStatus: false);
   }
 
   //==========================checkFirstMessage===========================
@@ -230,10 +229,9 @@ class DatabaseService {
   static String videoURL = "";
 
   static Future<String> uploadVideo(
-      File url, ChatingPageController controller) async {
+      File url,  controller) async {
     isLoading = true;
     controller.update();
-    //=====================
     final storage = FirebaseStorage.instance
         .ref('chat')
         .child("video")
@@ -243,6 +241,28 @@ class DatabaseService {
     isLoading = false;
     controller.update();
     logs("isLoading-----${isLoading}");
+    Get.back();
+    return await storage.getDownloadURL();
+  }
+
+//==================== file Upload =====================//
+
+  static String docURL = "";
+
+  static Future<String> uploadDoc(
+      File url,  controller) async {
+    isLoading = true;
+    controller.update();
+    final storage = FirebaseStorage.instance
+        .ref('chat')
+        .child("doc")
+        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child('sentDoc.pdf');
+    await storage.putFile(url);
+    isLoading = false;
+    controller.update();
+    logs("isLoading-----${isLoading}");
+    Get.back();
     return await storage.getDownloadURL();
   }
 }

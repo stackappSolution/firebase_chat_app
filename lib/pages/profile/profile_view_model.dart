@@ -17,6 +17,7 @@ import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../app/app/utills/app_utills.dart';
+import '../../app/app/utills/toast_util.dart';
 import '../../app/app/utills/validation.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
@@ -32,7 +33,7 @@ class ProfileViewModel {
   bool isLoading = false;
   Map<String, dynamic> parameter = {};
   ProfileController? controller;
-  bool isProfileSubmitted=false;
+  bool isProfileSubmitted = false;
 
   ProfileViewModel(this.profileScreen) {
     Future.delayed(
@@ -213,15 +214,21 @@ class ProfileViewModel {
   onSaveProfile(String firstName, String lastName, String phoneNo) {
     UsersService()
         .addUser(
-          firstName: firstName,
-          lastName: lastName,
-          phone: phoneNo,
-          photo: (userProfile != null) ? userProfile! : '',
-          fcmToken: '',
-        )
-        .then((value) => Get.offAll(() => HomeScreen()));
+      firstName: firstName,
+      lastName: lastName,
+      phone: phoneNo,
+      photo: (userProfile != null) ? userProfile! : '',
+      fcmToken: '',
+    )
+        .then(
+      (value) {
+        ToastUtil.successToast("Logged successfully");
+        goToHomeScreen();
+      },
+    );
 
-    isProfileSubmitted=true;
+    isProfileSubmitted = true;
+
     controller!.update();
   }
 }

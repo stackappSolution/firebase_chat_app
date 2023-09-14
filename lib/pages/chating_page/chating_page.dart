@@ -981,7 +981,6 @@ class ChatingPage extends StatelessWidget {
             .contains(chatingPageViewModal!.arguments['number']))
         ? null
         : DatabaseService().addNewMessage(
-            messageStatus: false,
             type: 'text',
             members: chatingPageViewModal!.arguments['members'],
             massage: message,
