@@ -176,7 +176,7 @@ class ChatingPage extends StatelessWidget {
                                 context,
                                 controller);
                           },
-                          reverse: true,
+                          reverse: true,physics: BouncingScrollPhysics(),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           order: GroupedListOrder.DESC,
                           useStickyGroupSeparators: true,
@@ -964,6 +964,7 @@ class ChatingPage extends StatelessWidget {
                 'id': chatingPageViewModal!.arguments['id'],
                 'isGroup': chatingPageViewModal!.arguments['isGroup'],
                 'members': chatingPageViewModal!.arguments['members'],
+                'about': chatingPageViewModal!.arguments['about'],
               },
             );
           }
