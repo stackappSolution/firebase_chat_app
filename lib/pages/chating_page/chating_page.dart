@@ -401,7 +401,9 @@ class ChatingPage extends StatelessWidget {
                   ? buildSenderMessageView(context, message)
                   : (message.messageType == 'image')
                       ? buildSenderImageView(message, context)
-                      : buildSenderAudioView(controller, context, message)))
+                      : (message.messageType == 'audio')
+                          ? buildSenderAudioView(controller, context, message)
+                          : buildVideoView(message)))
           : (Slidable(
               startActionPane: ActionPane(
                 extentRatio:
@@ -998,7 +1000,6 @@ class ChatingPage extends StatelessWidget {
             .contains(chatingPageViewModal!.arguments['number']))
         ? null
         : DatabaseService().addNewMessage(
-            messageStatus: false,
             type: 'text',
             members: chatingPageViewModal!.arguments['members'],
             massage: message,

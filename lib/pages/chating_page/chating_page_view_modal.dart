@@ -50,8 +50,9 @@ class ChatingPageViewModal {
   ScrollController scrollController = ScrollController();
   String? fontSize;
   List<String> chats = [];
-  TextEditingController chatController = TextEditingController();
+  File? selectedFile;
 
+  TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;
 
   ChatingPageViewModal([this.chatingPage]) {
@@ -94,6 +95,36 @@ class ChatingPageViewModal {
     }
   }
 
+
+
+  //========================= files =============================//
+
+  Future<void> pickDocument(ChatingPageController controller) async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx'],
+    );
+
+    if (result != null) {
+      selectedFile = File(result.files.single.path!);
+      onSendDoc("doc",controller);
+    }
+  }
+
+  onSendDoc(String msgType, ChatingPageController controller,) async {
+    DatabaseService.uploadDoc(File(selectedFile!.path), controller).then((value) {
+      logs('message---> $value');
+      DatabaseService().addNewMessage(
+          type: msgType,
+          members: arguments['members'],
+          massage: value,
+          sender: AuthService.auth.currentUser!.phoneNumber!,
+          isGroup: false);
+    });
+  }
+
+  //========================= audio =============================//
+  
   audioSendTap() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -113,10 +144,6 @@ class ChatingPageViewModal {
     }
   }
 
-  videoSendTap() {
-    pickVideoGallery(controller!, arguments['members']);
-  }
-
   onSendAudio(String msgType, controller) async {
     DatabaseService.uploadAudio(File(audioFile!.path), controller)
         .then((value) {
@@ -132,6 +159,25 @@ class ChatingPageViewModal {
     controller.update();
   }
 
+
+  //========================= video =============================//
+
+  Future<void> pickVideoGallery(GetxController controller, members) async {
+    final pickedFile =
+    await ImagePicker().pickVideo(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      selectedVideo = (File(pickedFile.path));
+      goToAttachmentScreen(selectedVideo!.path, members);
+      logs(selectedVideo.toString());
+      controller.update();
+    }
+  }
+  videoSendTap() {
+    pickVideoGallery(controller!, arguments['members']);
+  }
+
+
   onSendVideo(String msgType, controller) async {
     DatabaseService.uploadAudio(File(audioFile!.path), controller)
         .then((value) {
@@ -146,6 +192,9 @@ class ChatingPageViewModal {
     controller.update();
   }
 
+  //========================= pick images =============================//
+
+
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -155,17 +204,6 @@ class ChatingPageViewModal {
       goToAttachmentScreen(selectedImage!.path, members);
       // uploadImage(selectedImage!);
       logs(selectedImage.toString());
-      controller.update();
-    }
-  }
-
-  Future<void> pickVideoGallery(GetxController controller, members) async {
-    final pickedFile = await ImagePicker().pickVideo(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      selectedVideo = (File(pickedFile.path));
-      goToAttachmentScreen(selectedVideo, members);
-      logs(selectedVideo.toString());
       controller.update();
     }
   }
@@ -286,7 +324,9 @@ class ChatingPageViewModal {
               value: 3,
               child: Column(
                 children: [
-                  AppText(S.of(Get.context!).documents),
+                  InkWell(onTap: () {
+                    pickDocument(controller!);
+                  },child: AppText(S.of(Get.context!).documents)),
                   SizedBox(
                     height: 20.px,
                   )
@@ -447,24 +487,37 @@ class ChatingPageViewModal {
   }
 
   buildDoubleClickView() {
-    return Container(alignment: Alignment.center,height: 15.px,width: 15.px,
+    return Container(
+      alignment: Alignment.center,
+      height: 15.px,
+      width: 15.px,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
             color: Theme.of(Get.context!).colorScheme.primary,
           )),
-      child: Icon(Icons.done_all,color: Theme.of(Get.context!).colorScheme.primary,size: 12.px,),
+      child: Icon(
+        Icons.done_all,
+        color: Theme.of(Get.context!).colorScheme.primary,
+        size: 12.px,
+      ),
     );
   }
 
   buildSingleClickView() {
-    return Container(alignment: Alignment.center,height: 15.px,width: 15.px,
+    return Container(
+      alignment: Alignment.center,
+      height: 15.px,
+      width: 15.px,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(
-            color: Theme.of(Get.context!).colorScheme.primary
-          )),
-      child: Icon(Icons.done,color: Theme.of(Get.context!).colorScheme.primary,size: 12.px,),
+          border:
+              Border.all(color: Theme.of(Get.context!).colorScheme.primary)),
+      child: Icon(
+        Icons.done,
+        color: Theme.of(Get.context!).colorScheme.primary,
+        size: 12.px,
+      ),
     );
   }
 }
