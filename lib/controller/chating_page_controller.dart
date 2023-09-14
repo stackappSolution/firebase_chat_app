@@ -1,5 +1,7 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:signal/modal/message.dart';
+
 import 'package:signal/pages/chating_page/chating_page.dart';
 
 import 'package:video_player/video_player.dart';
@@ -15,7 +17,8 @@ class ChatingPageController extends GetxController {
   RxBool isPlay = false.obs;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  late Stream<Duration?> streamDuration;
+  Message? message;
+
 
 
 
@@ -23,17 +26,17 @@ class ChatingPageController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    player.playerStateStream.listen((state) {
-      isPlay.value =  state.playing;
+    player.onPlayerStateChanged.listen((state) {
+      message?.isPlaying =  state == PlayerState.playing;
       update();
     });
 
-    player.durationStream.listen((event) {
-      duration = event!;
+    player.onDurationChanged.listen((event) {
+      duration = event;
       update();
     });
 
-    player.positionStream.listen((event) {
+    player.onPositionChanged.listen((event) {
       position = event;
       update();
     });
