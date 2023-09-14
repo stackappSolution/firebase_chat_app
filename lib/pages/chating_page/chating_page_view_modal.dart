@@ -17,6 +17,7 @@ import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
@@ -51,6 +52,7 @@ class ChatingPageViewModal {
   String? fontSize;
   List<String> chats = [];
   File? selectedFile;
+
 
   TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;

@@ -28,6 +28,7 @@ import 'package:signal/pages/settings/privacy/privacy_screen.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/pages/sign_in_page/sign_in_page.dart';
 import 'package:signal/routes/routes_constant.dart';
+import 'package:signal/temp_music/playlist_screen.dart';
 import '../pages/account/account/account_screen.dart';
 import '../pages/account/addvance_pin_setting/advance_pin_setting.dart';
 import '../pages/account/pin_setting/pin_setting_screen.dart';
@@ -100,6 +101,7 @@ class RouteHelper {
   static String getAttachmentScreen() => RouteConstant.attachmentScreen;
   static String getChatContactScreen() => RouteConstant.chatScreen;
 
+
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
     GetPage(
@@ -119,6 +121,7 @@ class RouteHelper {
     GetPage(name: RouteConstant.newGroupsScreen, page: () => NewGroupScreen()),
     GetPage(name: RouteConstant.groupNameScreen, page: () =>  GroupNameScreen()),
     GetPage(name: RouteConstant.videoPlayerView, page: () =>  VideoPlayerView()),
+
     GetPage(
         name: RouteConstant.chatColorWallpaperScreen,
         page: () => ChatColorWallpaperScreen()),

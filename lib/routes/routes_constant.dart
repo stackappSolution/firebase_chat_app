@@ -35,6 +35,7 @@ class RouteConstant{
   static const String privacyScreen = '/privacy';
   static const String blockedUsersScreen = '/blocked';
   static const String disappearingScreen = '/disappear';
+  static const String playListScreen = '/temp_music';
 
   static const String newMessageScreen = '/NewMessagePage';
   static const String attachmentScreen = '/attachmentScreen';

@@ -9,21 +9,23 @@ Message messageFromJson(String str) => Message.fromJson(json.decode(str));
 String messageToJson(Message data) => json.encode(data.toJson());
 
 class Message {
-  String message;
+  String? message;
   bool isSender;
   var messageTimestamp;
   bool messageStatus;
-  String messageType;
-  String sender;
+  String? messageType;
+  String? sender;
+  bool isPlaying;
 
 
   Message({
-    required this.messageStatus,
-    required this.message,
-    required this.isSender,
-    required this.messageTimestamp,
-    required this.messageType,
-    required this.sender,
+     this.messageStatus = false,
+     this.message,
+     this.isSender = false,
+     this.messageTimestamp,
+     this.messageType,
+     this.sender,
+    this.isPlaying = false,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
@@ -33,6 +35,7 @@ class Message {
     messageTimestamp: json["messageTimestamp"],
     messageType: json["messageType"],
     sender: json["sender"],
+
   );
 
   Map<String, dynamic> toJson() => {

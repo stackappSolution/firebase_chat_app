@@ -29,17 +29,16 @@ Future<void> main() async {
         ? AppColorConstant.darkPrimary
         : AppColorConstant.appWhite,
     statusBarBrightness:
-    (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
+        (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
   ));
   // String? token = await FirebaseMessaging.instance.getToken();
   // logs('Token---------------------> $token');
-
 
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   const MyApp({super.key});
+  const MyApp({super.key});
 
   bool get isProfileCompleted => false;
 
@@ -64,8 +63,7 @@ class MyApp extends StatelessWidget {
             themeMode: ThemeUtil.selectedTheme,
             builder: BotToastInit(),
             navigatorObservers: [BotToastNavigatorObserver()],
-
-            localizationsDelegates:  const [
+            localizationsDelegates: const [
               S.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,

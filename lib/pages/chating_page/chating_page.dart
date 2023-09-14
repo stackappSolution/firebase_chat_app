@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -492,11 +493,11 @@ class ChatingPage extends StatelessWidget {
                 ? Column(
                     children: [
                       AppText(
-                        message.sender,
+                        message.sender!,
                         fontSize: 10.px,
                       ),
                       AppText(
-                        message.message,
+                        message.message!,
                         color: AppColorConstant.appBlack,
                         fontSize: chatingPageViewModal!.fontSize ==
                                 S.of(context).small
@@ -512,7 +513,7 @@ class ChatingPage extends StatelessWidget {
                     ],
                   )
                 : AppText(
-                    message.message,
+                    message.message!,
                     color: AppColorConstant.appBlack,
                     fontSize: chatingPageViewModal!.fontSize ==
                             S.of(context).small
@@ -600,6 +601,7 @@ class ChatingPage extends StatelessWidget {
 
   buildSenderAudioView(
       ChatingPageController controller, BuildContext context, Message message) {
+
     return Align(
       alignment: Alignment.topRight,
       child: Column(
@@ -630,7 +632,7 @@ class ChatingPage extends StatelessWidget {
                       onChanged: (value) async {
                         controller.position = Duration(seconds: value.toInt());
                         await controller.player.seek(controller.position);
-                        //await controller.player.resume();
+                        await controller.player.resume();
                       },
                     ),
                   ),
@@ -641,14 +643,23 @@ class ChatingPage extends StatelessWidget {
                 ),
                 IconButton(
                     onPressed: () async {
-                      if (controller.isPlay.value) {
+
+                      if (message.isPlaying) {
                         await controller.player.pause();
+                        message.isPlaying= false;
+
+                        controller.update();
                       } else {
-                        await controller.player.setUrl(message.message);
-                        await controller.player.play();
+
+                        UrlSource audioUrl = UrlSource(message.message!);
+                        await controller.player.play(audioUrl);
+                        message.isPlaying= true;
+
+
+                        controller.update();
                       }
                     },
-                    icon: (controller.isPlay.value)
+                    icon: (message.isPlaying)
                         ? const Icon(
                             Icons.pause_circle,
                             color: AppColorConstant.appWhite,
@@ -776,7 +787,7 @@ class ChatingPage extends StatelessWidget {
             alignment: Alignment.topRight,
             backGroundColor: chatingPageViewModal!.chatBubbleColor,
             child: AppText(
-              message.message,
+              message.message!,
               color: AppColorConstant.appWhite,
               fontSize: chatingPageViewModal!.fontSize == S.of(context).small
                   ? 10.px
@@ -854,7 +865,7 @@ class ChatingPage extends StatelessWidget {
                       onChanged: (value) async {
                         controller.position = Duration(seconds: value.toInt());
                         await controller.player.seek(controller.position);
-                        //await controller.player.resume();
+                        await controller.player.resume();
                       },
                     ),
                   ),
@@ -865,16 +876,18 @@ class ChatingPage extends StatelessWidget {
                 ),
                 IconButton(
                     onPressed: () async {
-                      if (controller.isPlay.value) {
+                      if (message.isPlaying) {
                         await controller.player.pause();
-                      } else {
-                        await controller.player.setUrl(message.message);
-                        await controller.player.play();
+                        message.isPlaying = false;
                         controller.update();
-                        logs('url--------> ${message.message}');
+                      } else {
+                        UrlSource audioUrl = UrlSource(message.message!);
+                        await controller.player.play(audioUrl);
+                        message.isPlaying = true;
+                        controller.update();
                       }
                     },
-                    icon: (controller.isPlay.value)
+                    icon: (message.isPlaying)
                         ? const Icon(
                             Icons.pause_circle,
                             color: AppColorConstant.appBlack,
