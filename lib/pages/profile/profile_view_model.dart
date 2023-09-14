@@ -219,6 +219,8 @@ class ProfileViewModel {
       phone: phoneNo,
       photo: (userProfile != null) ? userProfile! : '',
       fcmToken: '',
+      about: ''
+
     )
         .then(
       (value) {
