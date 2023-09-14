@@ -477,6 +477,7 @@ class ChatingPageViewModal {
         'id': arguments['id'],
         'isGroup': arguments['isGroup'],
         'members': arguments['members'],
+        'about': arguments['about'],
       });
     }
     if (value == 3) {

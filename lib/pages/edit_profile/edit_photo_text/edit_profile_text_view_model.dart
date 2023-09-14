@@ -2,48 +2,67 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:signal/controller/edit_profile_controller.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 import '../../../app/app/utills/app_utills.dart';
 import 'edit_profile_text.dart';
+import 'edit_profile_text_controller.dart';
 
 class EditProfileTextViewModel {
+   bool isLoading = false;
+
   static final users = FirebaseFirestore.instance.collection('users');
   EditProfileText? editProfileText;
   WidgetsToImageController controller = WidgetsToImageController();
-  Uint8List? bytes;
-  EditProfileTextViewModel(this.editProfileText);
-
+ static EditProfileTextController? editProfileTextController;
   TextEditingController textEditingController = TextEditingController();
+
+  EditProfileTextViewModel(this.editProfileText) {
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        editProfileTextController = Get.find<EditProfileTextController>();
+      },
+    );
+  }
 
 // Update the user's profile picture
   updateProfilePicture(String imagePath) {
+    isLoading = true;
+    editProfileTextController!.update();
     uploadImages(File(imagePath)).then((value) {
       if (value != null) {
         updateUserPhotoUrl(value);
+        isLoading = false;
+        editProfileTextController!.update();
       } else {
         print('Error uploading image');
+        isLoading = false;
+        editProfileTextController!.update();
       }
     });
   }
 
   Future<void> updateUserPhotoUrl(String photoUrl) async {
+    isLoading = true;
+    editProfileTextController!.update();
     try {
+
       await users.doc(AuthService.auth.currentUser!.uid).update({
         'photoUrl': photoUrl,
       });
       print('Successfully updated user profile picture');
+      isLoading = false;
+      editProfileTextController!.update();
     } catch (e) {
       print('Error updating user profile picture: $e');
     }
   }
 
-  static bool isLoading = true;
-  static String imageURL = "";
 
-  static Future<String?> uploadImages(File imageUrl) async {
+   Future<String?> uploadImages(File imageUrl) async {
     isLoading = true;
 
     logs("isLoading-----$isLoading");
@@ -54,17 +73,18 @@ class EditProfileTextViewModel {
     try {
       await storage.putFile(imageUrl);
       isLoading = false;
-
+      editProfileTextController!.update();
       logs("isLoading-----$isLoading");
       Get.back();
       return await storage.getDownloadURL();
     } catch (e) {
       print('Error uploading image: $e');
       isLoading = false;
-
+      editProfileTextController!.update();
       return null;
     }
   }
+
   Color? backGroud = const Color(0xFFFFD1AB);
   List<Color> chatColors = [
     const Color(0xFFFFD1AB),
@@ -83,4 +103,3 @@ class EditProfileTextViewModel {
     const Color(0xFFA7FFDE),
   ];
 }
-

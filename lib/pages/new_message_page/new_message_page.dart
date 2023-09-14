@@ -163,7 +163,7 @@ class NewMessagePage extends StatelessWidget {
               return const AppText('');
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const AppText('');
+              return const AppLoader();
             }
             final data = snapshot.data!.docs;
             //  controller.userList.contains(mobileNumber.toString().trim().removeAllWhitespace)

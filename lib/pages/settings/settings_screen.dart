@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
+import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -89,53 +91,66 @@ class SettingScreen extends StatelessWidget {
       onTap: () {
         Get.to(EditProfileScreen());
       },
-      child: Row(
-        children: [
-          SizedBox(
-            width: 20.px,
-            height: 20.px,
-          ),
-          UsersService.photoUrl.isEmpty
-              ? CircleAvatar(
-                  maxRadius: 30.px,
-                  backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-                  child: AppText(
-                      UsersService.userName
-                          .substring(0, 1)
-                          .toString()
-                          .toUpperCase(),
-                      fontSize: 25.px,
-                      color: primaryTheme),
-                )
-              : CircleAvatar(
-                  maxRadius: 30.px,
-                  backgroundImage: NetworkImage(UsersService.photoUrl),
+      child: StreamBuilder(
+        stream: UsersService.getUserData(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const AppText('');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const AppLoader();
+          }
+          final data = snapshot.data!.docs;
+          return Row(
+            children: [
+              SizedBox(
+                width: 20.px,
+                height: 20.px,
+              ),
+              data[0]['photoUrl'].isEmpty
+                  ? CircleAvatar(
+                      maxRadius: 35.px,
+                      backgroundColor:
+                          AppColorConstant.appYellow.withOpacity(0.2),
+                      child: AppText(
+                          data[0]['firstName']
+                              .substring(0, 1)
+                              .toString()
+                              .toUpperCase(),
+                          fontSize: 25.px,
+                          color: primaryTheme),
+                    )
+                  : CircleAvatar(
+                      maxRadius: 35.px,
+                      backgroundImage: NetworkImage(data[0]['photoUrl']),
+                    ),
+              SizedBox(
+                width: 30.px,
+                height: 20.px,
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: AppText(
+                        '${data[0]['firstName']} ${data[0]['lastName']}',
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 20.px,
+                        color: primaryTheme,
+                      ),
+                    ),
+                    AppText(AuthService.auth.currentUser!.phoneNumber!,
+                        overflow: TextOverflow.ellipsis,
+                        color: secondaryTheme,
+                        fontSize: 12.px),
+                  ],
                 ),
-          SizedBox(
-            width: 30.px,
-            height: 20.px,
-          ),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
-                  child: AppText(
-                    '${UsersService.userName} ${UsersService.lastName}',
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: 20.px,
-                    color: primaryTheme,
-                  ),
-                ),
-                AppText(AuthService.auth.currentUser!.phoneNumber!,
-                    overflow: TextOverflow.ellipsis,
-                    color: secondaryTheme,
-                    fontSize: 12.px),
-              ],
-            ),
-          )
-        ],
+              )
+            ],
+          );
+        },
       ),
     );
   }

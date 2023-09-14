@@ -149,18 +149,38 @@ class ChatScreen extends StatelessWidget {
             onTap: () {
               goToSettingPage();
             },
-            child: Padding(
-              padding: EdgeInsets.only(left: 11.px, top: 3.px, bottom: 3.px),
-              child: CircleAvatar(
-                backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-                child: AppText(
-                    UsersService.userName
-                        .substring(0, 1)
-                        .toString()
-                        .toUpperCase(),
-                    fontSize: 13.px,
-                    color: AppColorConstant.appYellow),
-              ),
+            child: StreamBuilder(
+              stream: UsersService.getUserData(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return const AppText('');
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const AppLoader();
+                }
+                final data = snapshot.data!.docs;
+                return Padding(
+                  padding:
+                      EdgeInsets.only(left: 11.px, top: 3.px, bottom: 3.px),
+                  child: data[0]['photoUrl'].isEmpty
+                      ? CircleAvatar(
+                          maxRadius: 35.px,
+                          backgroundColor:
+                              AppColorConstant.appYellow.withOpacity(0.2),
+                          child: AppText(
+                            data[0]['firstName']
+                                .substring(0, 1)
+                                .toString()
+                                .toUpperCase(),
+                            fontSize: 18.px,
+                          ),
+                        )
+                      : CircleAvatar(
+                          maxRadius: 35.px,
+                          backgroundImage: NetworkImage(data[0]['photoUrl']),
+                        ),
+                );
+              },
             ),
           ),
         ),
