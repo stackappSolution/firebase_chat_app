@@ -14,6 +14,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
+import 'package:signal/pages/temp_search_page/temp_search_page.dart';
 
 
 import 'package:signal/routes/app_navigation.dart';
@@ -54,7 +55,7 @@ class ChatScreen extends StatelessWidget {
             child: Scaffold(
               appBar: getAppBar(context, controller),
               backgroundColor: Theme.of(context).colorScheme.background,
-              floatingActionButton: buildFloatingButton(),
+              floatingActionButton: buildFloatingButton(context),
               body: getBody(controller),
             ));
       },
@@ -67,7 +68,7 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  buildFloatingButton() {
+  buildFloatingButton(context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -81,7 +82,11 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: AppColorConstant.appYellow,
             child: AppImageAsset(
                 image: AppAsset.camera, height: 22.px, width: 22.px),
-            onPressed: () {},
+            onPressed: () {
+             Navigator.push(context, MaterialPageRoute(builder: (context) {
+               return TempSearchPage();
+             },));
+            },
           ),
         ),
         Padding(

@@ -332,7 +332,7 @@ class PrivacyScreen extends StatelessWidget {
 
   getBlockedContacts() async {
     privacyViewModel!.blockedNumbers =
-        await UsersService().getBlockedUsers();
+        await UsersService.instance.getBlockedUsers();
           controller!.update();
     logs('list-------------> ${privacyViewModel!.blockedNumbers.length}');
   }

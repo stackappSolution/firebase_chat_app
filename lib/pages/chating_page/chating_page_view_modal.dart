@@ -480,7 +480,7 @@ class ChatingPageViewModal {
     }
     if (value == 3) {
       blockedNumbers.add(arguments['number']);
-      UsersService().blockUser(blockedNumbers, arguments['number']);
+      UsersService.instance.blockUser(blockedNumbers, arguments['number']);
 
       controller!.update();
     }

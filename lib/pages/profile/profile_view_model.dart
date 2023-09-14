@@ -1,4 +1,6 @@
 import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,10 +12,11 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/pages/home/home_screen.dart';
+import 'package:signal/modal/user_model.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
+import 'package:signal/service/notification_service.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../app/app/utills/app_utills.dart';
@@ -24,12 +27,12 @@ import '../../constant/app_asset.dart';
 
 class ProfileViewModel {
   ProfileScreen? profileScreen;
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   String errorFirstName = "";
   bool isButtonActive = false;
   File? selectedImage;
-  String? userProfile;
+  String? userProfilePicture;
   bool isLoading = false;
   Map<String, dynamic> parameter = {};
   ProfileController? controller;
@@ -201,34 +204,30 @@ class ProfileViewModel {
     controller!.update();
     final storage = FirebaseStorage.instance
         .ref('profile')
-        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child(AuthService.auth.currentUser?.phoneNumber ?? '')
         .child('profile.jpg');
     await storage.putFile(imageUrl);
-    userProfile = await storage.getDownloadURL();
-    logs("profile........ $userProfile");
+    userProfilePicture = await storage.getDownloadURL();
+    logs("profile........ $userProfilePicture");
     isLoading = false;
     logs("load--> $isLoading");
     controller!.update();
   }
 
-  onSaveProfile(String firstName, String lastName, String phoneNo) {
-    UsersService()
-        .addUser(
-      firstName: firstName,
-      lastName: lastName,
-      phone: phoneNo,
-      photo: (userProfile != null) ? userProfile! : '',
-      fcmToken: '',
-    )
-        .then(
-      (value) {
-        ToastUtil.successToast("Logged successfully");
-        goToHomeScreen();
-      },
+  Future<void> onSaveProfile() async {
+    UserModel userModel = UserModel(
+      id: FirebaseAuth.instance.currentUser?.uid,
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      fcmToken: NotificationService.instance.fcmToken ?? '',
+      photoUrl: userProfilePicture ?? '',
+      phone: FirebaseAuth.instance.currentUser?.phoneNumber?.trim().replaceAll(' ', '```'),
     );
-
+    bool isUserAdded = await UsersService.instance.addUser(userModel);
+    if (isUserAdded) {
+      ToastUtil.successToast("Logged successfully");
+      goToHomeScreen();
+    }
     isProfileSubmitted = true;
-
-    controller!.update();
   }
 }

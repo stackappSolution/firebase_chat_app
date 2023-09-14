@@ -38,7 +38,7 @@ class ChatingPage extends StatelessWidget {
 
   getBlockedList() async {
     chatingPageViewModal!.blockedNumbers =
-        await UsersService().getBlockedUsers();
+        await UsersService.instance.getBlockedUsers();
     logs('list-------------> ${chatingPageViewModal!.blockedNumbers}');
   }
 
@@ -65,7 +65,7 @@ class ChatingPage extends StatelessWidget {
             logs('arg--> ${chatingPageViewModal!.arguments}');
             controller = Get.find<ChatingPageController>();
 
-            chatingPageViewModal!.isBlocked = await UsersService()
+            chatingPageViewModal!.isBlocked = await UsersService.instance
                 .isBlockedByLoggedInUser(
                     chatingPageViewModal!.arguments['number']);
             logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
@@ -340,7 +340,7 @@ class ChatingPage extends StatelessWidget {
                 onTap: () {
                   chatingPageViewModal!.blockedNumbers
                       .remove(chatingPageViewModal!.arguments['number']);
-                  UsersService()
+                  UsersService.instance
                       .unblockUser(chatingPageViewModal!.arguments['number']);
                   controller.update();
                 },

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_elevated_button.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
-import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -15,6 +13,7 @@ import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
 import 'package:signal/service/auth_service.dart';
+
 import '../../constant/app_asset.dart';
 
 // ignore: must_be_immutable
@@ -174,19 +173,11 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         isBorderShape: true,
                         buttonColor: (profileViewModel!.isButtonActive &&
-                            profileViewModel!.isLoading == false)
+                                profileViewModel!.isLoading == false)
                             ? AppColorConstant.appYellow
                             : AppColorConstant.appYellow.withOpacity(0.5),
-                        onPressed: (profileViewModel!.isButtonActive &&
-                                profileViewModel!.isLoading == false)
-                            ? () {
-                                profileViewModel!.onTapNext(context);
-                                profileViewModel!.onSaveProfile(
-                                  profileViewModel!.firstNameController.text,
-                                  profileViewModel!.lastNameController.text,
-                                  AuthService.auth.currentUser!.phoneNumber!.trim().removeAllWhitespace,
-                                );
-                              }
+                        onPressed: (profileViewModel!.isButtonActive &&  profileViewModel!.isLoading == false)
+                            ? () => profileViewModel!.onSaveProfile()
                             : null,
                       ),
                     )

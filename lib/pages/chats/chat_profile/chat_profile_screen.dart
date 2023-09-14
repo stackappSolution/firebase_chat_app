@@ -337,7 +337,7 @@ class ChatProfileScreen extends StatelessWidget {
                     onTap: () {
                       chatProfileViewModel!.blockedNumbers
                           .add(chatProfileViewModel!.arguments['number']);
-                      UsersService().blockUser(
+                      UsersService.instance.blockUser(
                           chatProfileViewModel!.blockedNumbers,
                           chatProfileViewModel!.arguments['number']);
                       Get.back();
@@ -392,7 +392,7 @@ class ChatProfileScreen extends StatelessWidget {
                     onTap: () {
                       chatProfileViewModel!.blockedNumbers
                           .remove(chatProfileViewModel!.arguments['number']);
-                      UsersService().unblockUser(
+                      UsersService.instance.unblockUser(
                           chatProfileViewModel!.arguments['number']);
                       controller.update();
                       Get.back();
@@ -419,7 +419,7 @@ class ChatProfileScreen extends StatelessWidget {
 
   getBlockedUsersList() async {
     chatProfileViewModel!.blockedNumbers =
-        await UsersService().getBlockedUsers();
+        await UsersService.instance.getBlockedUsers();
     controller!.update();
     logs('blockkkkk-----------> ${chatProfileViewModel!.blockedNumbers}');
   }
