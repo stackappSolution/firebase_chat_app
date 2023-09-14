@@ -57,12 +57,12 @@ class IntroPage extends StatelessWidget {
                     widget: AppText(
                       S.of(context).getStarted,
                       color: AppColorConstant.appWhite,
-                      fontSize: 20.px,
+                      fontSize: 18.px,
                     ),
                   ),
                 ),
                 transferOrRestoreAccount(context),
-                SizedBox(height: 15.px),
+                SizedBox(height: 50.px),
               ],
             ),
           ),
@@ -106,7 +106,6 @@ class IntroPage extends StatelessWidget {
             S.of(Get.context!).theBestMessengerAndChat,
             fontWeight: FontWeight.w400,
             color: Theme.of(context).colorScheme.secondary,
-            fontSize: 15.px,
           ),
         ),
         AppText(

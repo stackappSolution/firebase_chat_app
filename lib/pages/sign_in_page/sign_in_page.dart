@@ -2,6 +2,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +19,8 @@ import 'package:signal/pages/sign_in_page/sign_in_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 
+import '../../app/app/utills/toast_util.dart';
+
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
 
@@ -29,20 +32,64 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     signInViewModel ?? (signInViewModel = SignInViewModel(this));
     return GetBuilder(
-        init: SignInController(),
-        initState: (state) {},
-        builder: (SignInController controller) {
-          return SafeArea(
+      init: SignInController(),
+      initState: (state) {},
+      builder: (SignInController controller) {
+        return WillPopScope(
+          onWillPop: () async {
+            // Show a confirmation dialog
+            return await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: Colors.transparent)),
+                  title: AppText('Exit App',fontWeight: FontWeight.bold),
+                  content: AppText('Are you sure you want to exit the app?'),
+                  actions: [
+                    Row(
+                      children: [
+                        Spacer(),
+                        AppElevatedButton(buttonWidth: 50,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40,
+                          widget: AppText('Yes',color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            SystemNavigator.pop();
+                            Navigator.of(context).pop(true); // Exit the app
+                          },
+                        ),
+                        SizedBox(width: 10),
+                        AppElevatedButton(buttonWidth: 50,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40,
+                          widget: AppText('No',color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            Navigator.of(context).pop(false); // Don't exit the app
+                          },
+                        ),
+                        // Add spacing between buttons
+
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: SafeArea(
             child: Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.background,
-                body: buildsignInPage(
-                    signInViewModel!.selectedCountry.toString(),
-                    signInViewModel!.phoneNumber.text,
-                    context,
-                    controller,
-                    signInViewModel!)),
-          );
-        });
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: buildsignInPage(
+                signInViewModel!.selectedCountry.toString(),
+                signInViewModel!.phoneNumber.text,
+                context,
+                controller,
+                signInViewModel!,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Container buildsignInPage(
@@ -218,19 +265,17 @@ class SignInPage extends StatelessWidget {
                             [int? forceResendingToken]) {
                           AuthService.verificationID = verificationId;
                           logs("OTP Sent to your phone");
+                          ToastUtil.successToast("OTP successfully sent");
                           goToVerifyPage(
                               phonenumber: phoneNumber.toString(),
                               verificationId:
                               AuthService.verificationID,
                               selectedCountry: selectedCountry);
-                          logs(
-                              "verification id ----->${AuthService.verificationID}");
+                          logs("verification id ----->${AuthService.verificationID}");
                         }
-
                         autoRetrievalTimeout(String verificationId) {
                           controller.update();
-                          logs(
-                              "verification------->${AuthService.verificationID}");
+                          logs("verification------->${AuthService.verificationID}");
                         }
                         try {
                           await auth.verifyPhoneNumber(

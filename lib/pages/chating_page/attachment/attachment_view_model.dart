@@ -11,6 +11,8 @@ import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 
 import '../../../app/app/utills/app_utills.dart';
+import '../../../app/app/utills/toast_util.dart';
+import '../../../app/app/utills/toast_util.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/database_service.dart';
 import 'package:video_player/video_player.dart';
@@ -25,19 +27,36 @@ class AttachmentViewModel {
 
   ChatingPageController? controller;
   bool isLoading = false;
+  bool isVideo = false;
 
   //final audioPlayer = AudioPlayer();
   bool isPlaying = false;
+  double sliderValue = 0.0;
+
   Duration duration = const Duration();
   Duration position = const Duration();
 
   AttachmentViewModel(this.attachmentScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
-      () {
+          () {
         controller = Get.find<ChatingPageController>();
       },
     );
+  }
+
+  void stopVideoPlayback() {
+    if (videoPlayerController != null &&
+        videoPlayerController!.value.isPlaying) {
+      videoPlayerController!.pause();
+    }
+  }
+
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
   void imageCrop(BuildContext context, AttachmentController controller) async {
@@ -102,11 +121,15 @@ class AttachmentViewModel {
   // }
 
   void imageButtonTap(AttachmentController controller) {
-    onSendMessage("image", controller);
+    checkImageSize(File(selectedImage),controller);
+  }
+
+  void videoButtonTap(AttachmentController controller) {
+    onSendMessage("video", controller);
   }
 
   onSendMessage(String msgType, AttachmentController controller) async {
-    DatabaseService.uploadImage(File(selectedImage), controller).then((value) {
+    DatabaseService.uploadVideo(File(selectedImage), controller).then((value) {
       logs('message---> $value');
       DatabaseService().addNewMessage(
           type: msgType,
@@ -116,4 +139,22 @@ class AttachmentViewModel {
           isGroup: false);
     });
   }
+
+  Future<void> checkImageSize(File imageFile,controller) async {
+    int fileSizeInBytes = await imageFile.length();
+
+    double fileSizeInMB = (fileSizeInBytes / (1024 * 1024)).toDouble();
+
+    if (fileSizeInMB < 2) {
+      onSendMessage("image", controller);
+
+
+      logs('Image is smaller than 2 MB. Performing action...');
+    } else {
+      ToastUtil.successToast("Image is larger than 2 MB.");
+
+      logs('Image is larger than 2 MB.');
+    }
+  }
+
 }

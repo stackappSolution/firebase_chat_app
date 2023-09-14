@@ -51,7 +51,9 @@ class AccountViewModel {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.px)),
                     titlePadding: EdgeInsets.only(left: 15.px, top: 8.px),
-                    backgroundColor: (ThemeUtil.isDark)?AppColorConstant.blackOff:AppColorConstant.appWhite,
+                    backgroundColor: (ThemeUtil.isDark)
+                        ? AppColorConstant.blackOff
+                        : AppColorConstant.appWhite,
                     elevation: 0.0,
                     contentPadding: EdgeInsets.zero,
                     insetPadding:
@@ -136,11 +138,6 @@ class AccountViewModel {
                                     ? () {
                                         AuthService.auth.signOut();
                                         controller.deleteCollection();
-                                        if (Platform.isAndroid) {
-                                          SystemNavigator.pop();
-                                        } else if (Platform.isIOS) {
-                                          exit(0);
-                                        }
                                         Get.back();
                                       }
                                     : null,

@@ -174,6 +174,9 @@ class AppearanceViewModel {
                     groupValue: locale,
                     onChanged: (value) {
                       setState(() async {
+                        Get.back();
+
+                        logs("Selected language ---- > $value");
                         locale = value!;
                         setStringValue(
                             getLanguage, Get.deviceLocale!.languageCode);
@@ -215,7 +218,6 @@ class AppearanceViewModel {
                             saveSelectedFontSize('વધારાનું મોટું');
                           }
                         }
-                        Get.back();
                       });
                     },
                   ),
@@ -228,10 +230,15 @@ class AppearanceViewModel {
                     value: const Locale('en_US'),
                     groupValue: locale,
                     onChanged: (value) async {
-                      saveFontSize =
-                          (await getStringValue(StringConstant.setFontSize))!;
+                      getFontSize().then(
+                        (value) {
+                          selectedFontSize = value;
+                        },
+                      );
 
                       setState(() {
+                        Get.back();
+
                         locale = value!;
                         setStringValue(getLanguage, 'en_US');
                         S.load(const Locale('en_US'));
@@ -255,7 +262,6 @@ class AppearanceViewModel {
                             saveSelectedFontSize('ExtraLarge');
                           }
                         }
-                        Get.back();
                       });
                     },
                   ),
@@ -268,10 +274,16 @@ class AppearanceViewModel {
                     value: const Locale('gu_IN'),
                     groupValue: locale,
                     onChanged: (value) async {
-                      saveFontSize =
-                          (await getStringValue(StringConstant.setFontSize))!;
+                      logs("Selected language ---- > $value");
 
+                      getFontSize().then(
+                        (value) {
+                          selectedFontSize = value;
+                        },
+                      );
                       setState(() async {
+                        Get.back();
+
                         locale = value!;
                         S.load(const Locale('gu_IN'));
                         setStringValue(getLanguage, 'gu_IN');
@@ -296,7 +308,6 @@ class AppearanceViewModel {
                             saveSelectedFontSize('વધારાનું મોટું');
                           }
                         }
-                        Get.back();
                       });
                     },
                   ),
@@ -415,6 +426,10 @@ class AppearanceViewModel {
         );
       },
     );
+  }
+
+  Future<String?> getFontSize() async {
+    return await getStringValue(StringConstant.setFontSize);
   }
 
   saveSelectedFontSize(String fontSize) async {
