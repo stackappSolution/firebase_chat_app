@@ -3,21 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:signal/pages/sign_in_page/sign_in_page.dart';
 
-class SignInViewModel{
-
+class SignInViewModel {
   SignInPage? signInPage;
 
-
-   TextEditingController phoneNumber = TextEditingController();
-   TextEditingController countrycode = TextEditingController();
-   FirebaseAuth auth = FirebaseAuth.instance;
-   String countryCode = '';
-   CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
-   bool isValidNumber = false;
-   bool otpSend = false;
-   bool isSendingOTP = false;
-   var temp;
-   var data;
+  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController countrycode = TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  String countryCode = '';
+  CountryCode selectedCountry = CountryCode.fromCountryCode('IN');
+  bool isValidNumber = false;
+  bool isLoading = false;
+  bool isSendingOTP = false;
+  static FocusNode focusNode = FocusNode();
 
   SignInViewModel(this.signInPage);
 

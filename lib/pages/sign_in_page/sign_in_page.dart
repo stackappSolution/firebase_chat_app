@@ -13,13 +13,12 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
+import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/sign_in_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/sign_in_page/sign_in_view_model.dart';
-import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 
-import '../../app/app/utills/toast_util.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -41,33 +40,40 @@ class SignInPage extends StatelessWidget {
             return await showDialog(
               context: context,
               builder: (context) {
-                return AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: Colors.transparent)),
-                  title: AppText('Exit App',fontWeight: FontWeight.bold),
-                  content: AppText('Are you sure you want to exit the app?'),
+                return AlertDialog(
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(color: Colors.transparent)),
+                  title: const AppText('Exit App', fontWeight: FontWeight.bold),
+                  content: const AppText('Are you sure you want to exit the app?'),
                   actions: [
                     Row(
                       children: [
-                        Spacer(),
-                        AppElevatedButton(buttonWidth: 50,
+                        const Spacer(),
+                        AppElevatedButton(
+                          buttonWidth: 50,
                           buttonColor: AppColorConstant.appYellow,
                           buttonHeight: 40,
-                          widget: AppText('Yes',color: AppColorConstant.appWhite),
+                          widget:
+                              const AppText('Yes', color: AppColorConstant.appWhite),
                           onPressed: () {
                             SystemNavigator.pop();
                             Navigator.of(context).pop(true); // Exit the app
                           },
                         ),
-                        SizedBox(width: 10),
-                        AppElevatedButton(buttonWidth: 50,
+                        const SizedBox(width: 10),
+                        AppElevatedButton(
+                          buttonWidth: 50,
                           buttonColor: AppColorConstant.appYellow,
                           buttonHeight: 40,
-                          widget: AppText('No',color: AppColorConstant.appWhite),
+                          widget:
+                              const AppText(StringConstant.cansel, color: AppColorConstant.appWhite),
                           onPressed: () {
-                            Navigator.of(context).pop(false); // Don't exit the app
+                            Navigator.of(context)
+                                .pop(false); // Don't exit the app
                           },
                         ),
                         // Add spacing between buttons
-
                       ],
                     ),
                   ],
@@ -93,13 +99,14 @@ class SignInPage extends StatelessWidget {
   }
 
   Container buildsignInPage(
-      String countryCode,
-      String phoneNumber,
-      BuildContext context,
-      SignInController controller,
-      SignInViewModel signInViewModel,
-      ) =>
+    String countryCode,
+    String phoneNumber,
+    BuildContext context,
+    SignInController controller,
+    SignInViewModel signInViewModel,
+  ) =>
       Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.px),
         height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
@@ -113,39 +120,36 @@ class SignInPage extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: AppImageAsset(
-                  height: 230.px,
+                  height: 190.px,
                   image: AppAsset.signIn,
                 ),
               ),
               SizedBox(
-                height: 20.px,
+                height: 30.px,
               ),
               Container(
-                  margin: EdgeInsets.only(left: 20.px),
                   alignment: Alignment.centerLeft,
                   child: AppText(
                     S.of(Get.context!).signIn,
-                    fontSize: 30.px,
+                    fontSize: 25.px,
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).colorScheme.primary,
                   )),
-              Container(
-                margin: EdgeInsets.only(left: 20.px),
-                child: AppText(
-                  S.of(Get.context!).signInDescription,
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15.px,
-                ),
-              ),
+               Padding(
+                 padding:  EdgeInsets.symmetric(vertical: 5.px),
+                 child: AppText(
+                    S.of(Get.context!).signInDescription,
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontWeight: FontWeight.w400,
+                  ),
+               ),
               SizedBox(
-                height: 15.px,
+                height: 10.px,
               ),
               Row(
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 20.px),
                     height: 50.px,
                     width: 80.px,
                     decoration: BoxDecoration(
@@ -154,7 +158,7 @@ class SignInPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(13.px)),
                     child: CountryCodePicker(
                       dialogBackgroundColor:
-                      Theme.of(context).colorScheme.background,
+                          Theme.of(context).colorScheme.background,
                       showFlag: false,
                       showFlagDialog: true,
                       onChanged: (country) {
@@ -164,7 +168,6 @@ class SignInPage extends StatelessWidget {
                       textStyle: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600,
-
                       ),
                       // Set initial country code
                       favorite: const ['IN'], // Specify favorite country codes
@@ -178,17 +181,16 @@ class SignInPage extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.px),
                               color:
-                              AppColorConstant.appYellow.withOpacity(0.1)),
+                                  AppColorConstant.appYellow.withOpacity(0.1)),
                           height: 50.px,
                           margin: EdgeInsets.only(left: 10.px, right: 10.px),
                           child: AppTextFormField(
+                            focusNode: SignInViewModel.focusNode,
                             labelText: S.of(context).phoneNumber,
-                            labelStyle: TextStyle(
-                                color: AppColorConstant.appYellow,
-                                fontSize: 20.px),
+                            labelStyle: const TextStyle(
+                                color: AppColorConstant.appYellow),
                             controller: signInViewModel.phoneNumber,
-                            style: TextStyle(
-                              fontSize: 22.px,
+                            style: const TextStyle(
                               fontWeight: FontWeight.w400,
                             ),
                             inputFormatters: [
@@ -222,95 +224,63 @@ class SignInPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 130.px,),
+              SizedBox(
+                height: 130.px,
+              ),
               Align(
                 alignment: Alignment.center,
                 child: signInViewModel.isValidNumber != true
                     ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 60.px),
-                  child: AppElevatedButton(
-                    isBorderShape: true,
-                    buttonColor:
-                    AppColorConstant.appYellow.withOpacity(0.5),
-                    buttonHeight: 50.px,
-                    widget: AppText(
-                      S.of(context).continues,
-                      fontSize: 18.px,
-                      color: AppColorConstant.appWhite,
-                    ),
-                  ),
-                )
+                        padding: EdgeInsets.symmetric(horizontal: 60.px),
+                        child: AppElevatedButton(
+                          isBorderShape: true,
+                          buttonColor:
+                              AppColorConstant.appYellow.withOpacity(0.5),
+                          buttonHeight: 50.px,
+                          widget: AppText(
+                            S.of(context).continues,
+                            fontSize: 16.px,
+                            color: AppColorConstant.appWhite,
+                          ),
+                        ),
+                      )
                     : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 60.px),
-                  child: AppElevatedButton(
-                      onPressed: signInViewModel.otpSend
-                          ? null
-                          : () async {
-                        SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                        pref.setString("MobileNumber", phoneNumber);
-                        logs(
-                            "entred contact IS------------->   $countryCode$phoneNumber");
-
-                        verified(AuthCredential authResult) async {
-                          await auth.signInWithCredential(authResult);
-                        }
-
-                        verificationFailed(
-                            FirebaseAuthException authException) {
-                          logs(authException.message.toString());
-                        }
-
-                        smsSent(String verificationId,
-                            [int? forceResendingToken]) {
-                          AuthService.verificationID = verificationId;
-                          logs("OTP Sent to your phone");
-                          ToastUtil.successToast("OTP successfully sent");
-                          goToVerifyPage(
-                              phonenumber: phoneNumber.toString(),
-                              verificationId:
-                              AuthService.verificationID,
-                              selectedCountry: selectedCountry);
-                          logs("verification id ----->${AuthService.verificationID}");
-                        }
-                        autoRetrievalTimeout(String verificationId) {
-                          controller.update();
-                          logs("verification------->${AuthService.verificationID}");
-                        }
-                        try {
-                          await auth.verifyPhoneNumber(
-                            phoneNumber: "$countryCode$phoneNumber",
-                            timeout: const Duration(seconds: 60),
-                            verificationCompleted: verified,
-                            verificationFailed: verificationFailed,
-                            codeSent: smsSent,
-                            codeAutoRetrievalTimeout:
-                            autoRetrievalTimeout,
-                          );
-                          signInViewModel.otpSend = true;
-                          controller.update();
-                        } catch (e) {
-                          // Handle any errors that may occur during OTP verification
-                          logs("Error: $e");
-                          signInViewModel.otpSend = false;
-                          controller.update();
-                          controller
-                              .update(); // Reset the sending OTP state
-                        }
-                        var data;
-                        if (data.passParameter['id'] != null) {}
-                      },
-                      buttonColor: AppColorConstant.appYellow,
-                      buttonHeight: 50.px,
-                      isBorderShape: true,
-                      widget: signInViewModel.otpSend
-                          ? const CircularProgressIndicator(
-                        color: AppColorConstant.appWhite,
-                      ):AppText(
-                        S.of(context).continues,
-                        fontSize: 18.px,
-                        color: AppColorConstant.appWhite,)),
-                ),
+                        padding: EdgeInsets.symmetric(horizontal: 60.px),
+                        child: AppElevatedButton(
+                            onPressed: signInViewModel.isLoading
+                                ? null
+                                : () async {
+                                    try {
+                                      SharedPreferences pref =
+                                          await SharedPreferences.getInstance();
+                                      pref.setString(
+                                          "MobileNumber", phoneNumber);
+                                      AuthService.verifyPhoneNumber(
+                                          countryCode,"$countryCode$phoneNumber",
+                                        );
+                                      signInViewModel.isLoading = true;
+                                      controller.update();
+                                    } catch (e) {
+                                      logs("Error: $e");
+                                      signInViewModel.isLoading = false;
+                                      controller.update();
+                                    }
+                                    var data;
+                                    if (data.passParameter['id'] != null) {}
+                                  },
+                            buttonColor: AppColorConstant.appYellow,
+                            buttonHeight: 50.px,
+                            isBorderShape: true,
+                            widget: signInViewModel.isLoading
+                                ? const CircularProgressIndicator(
+                                    color: AppColorConstant.appWhite,
+                                  )
+                                : AppText(
+                                    S.of(context).continues,
+                                    fontSize: 16.px,
+                                    color: AppColorConstant.appWhite,
+                                  )),
+                      ),
               ),
             ],
           ),

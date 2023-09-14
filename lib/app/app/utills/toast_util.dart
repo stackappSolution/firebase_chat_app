@@ -9,7 +9,7 @@ class ToastUtil {
  static  void warningToast(String msg,) {
     BotToast.showNotification(
       title: (_) =>
-          AppText(msg, fontSize: 12.px, color: AppColorConstant.appWhite),
+          AppText(msg, fontSize: 12.px, color: AppColorConstant.red,fontWeight: FontWeight.bold,),
       backgroundColor: AppColorConstant.appYellow,
       borderRadius: 6.px,
       duration: const Duration(seconds: 1),

@@ -27,14 +27,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     profileViewModel ?? (profileViewModel = ProfileViewModel(this));
-
-
     return GetBuilder<ProfileController>(
       init: ProfileController(),
       initState: (state) {
         profileViewModel!.parameter = Get.parameters;
         logs('profileStatus---> ${AuthService.auth.currentUser!.photoURL}');
-
       },
       builder: (GetxController controller) {
         return SafeArea(
@@ -52,6 +49,7 @@ class ProfileScreen extends StatelessWidget {
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;
     return Stack(
       children: [
+        if (profileViewModel!.isLoadingOnSave) AppLoader(),
         SingleChildScrollView(
             child: Padding(
                 padding: EdgeInsets.only(left: 22.px, right: 22.px),
@@ -65,16 +63,15 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           AppText(S.of(context).yourProfile,
                               color: primaryTheme,
-                              fontSize: 40.px,
+                              fontSize: 35.px,
                               fontWeight: FontWeight.bold),
                           Padding(
                             padding: EdgeInsets.only(top: 20.px),
                             child: AppText(S.of(context).profileAreVisible,
-                                fontSize: 15.px, color: secondaryTheme),
+                                color: secondaryTheme),
                           ),
                         ],
                       ),
-
                     ),
                     Container(
                       alignment: Alignment.center,
@@ -92,28 +89,33 @@ class ProfileScreen extends StatelessWidget {
                                     width: 4.px,
                                     color: AppColorConstant.appWhite),
                                 shape: BoxShape.circle),
-                            child: (!profileViewModel!.isLoading)?(profileViewModel!.selectedImage != null)
-                                ? CircleAvatar(
-                                    radius: 55,
-                                    backgroundImage: FileImage(File(
-                                        profileViewModel!
-                                            .selectedImage!.path)),
-                                  )
-                                : AppImageAsset(
-                                    height: 50.px,
-                                    image: AppAsset.profile,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary,
-                                  ):const CircularProgressIndicator(color: AppColorConstant.appYellow,),
+                            child: (!profileViewModel!.isLoading)
+                                ? (profileViewModel!.selectedImage != null)
+                                    ? CircleAvatar(
+                                        radius: 55,
+                                        backgroundImage: FileImage(File(
+                                            profileViewModel!
+                                                .selectedImage!.path)),
+                                      )
+                                    : AppImageAsset(
+                                        height: 50.px,
+                                        image: AppAsset.profile,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      )
+                                : const CircularProgressIndicator(
+                                    color: AppColorConstant.appYellow,
+                                  ),
                           ),
                           Positioned(
                               top: 78.px,
                               left: 93.px,
-                              child: InkWell(onTap:(){
-                                profileViewModel!
-                                    .addProfileTap(context, controller);
-                              } ,
+                              child: InkWell(
+                                onTap: () {
+                                  profileViewModel!
+                                      .addProfileTap(context, controller);
+                                },
                                 child: Container(
                                     alignment: Alignment.center,
                                     height: 27.px,
@@ -137,7 +139,8 @@ class ProfileScreen extends StatelessWidget {
                       controller: profileViewModel!.firstNameController,
                       labelText: S.of(context).firstName,
                       onChanged: (value) {
-                        profileViewModel!.onChangedValue(value, controller,context);
+                        profileViewModel!
+                            .onChangedValue(value, controller, context);
                       },
                     ),
                     Align(
@@ -162,7 +165,9 @@ class ProfileScreen extends StatelessWidget {
                         fontSize: null,
                       ),
                     ),
-                    SizedBox(height: 160.px,),
+                    SizedBox(
+                      height: 160.px,
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 45.px),
                       child: AppElevatedButton(
@@ -170,22 +175,18 @@ class ProfileScreen extends StatelessWidget {
                         widget: AppText(
                           S.of(context).next,
                           color: AppColorConstant.appWhite,
-                          fontSize: 20.px,
+                          fontSize: 18.px,
                         ),
                         isBorderShape: true,
                         buttonColor: (profileViewModel!.isButtonActive &&
-                            profileViewModel!.isLoading == false)
+                                profileViewModel!.isLoading == false)
                             ? AppColorConstant.appYellow
                             : AppColorConstant.appYellow.withOpacity(0.5),
                         onPressed: (profileViewModel!.isButtonActive &&
                                 profileViewModel!.isLoading == false)
                             ? () {
-                                profileViewModel!.onTapNext(context);
-                                profileViewModel!.onSaveProfile(
-                                  profileViewModel!.firstNameController.text,
-                                  profileViewModel!.lastNameController.text,
-                                  AuthService.auth.currentUser!.phoneNumber!.trim().removeAllWhitespace,
-                                );
+                                profileViewModel!
+                                    .onTapNext(context, controller);
                               }
                             : null,
                       ),

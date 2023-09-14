@@ -136,16 +136,18 @@ class AttachmentScreen extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(20.px),
           decoration: const BoxDecoration(color: AppColorConstant.appWhite),
-          child: Column(children: [
-            Align(
-                alignment: Alignment.bottomLeft,
-                child: IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: const Icon(Icons.clear))),
-            Expanded(
-              child: SizedBox(
+          child: SingleChildScrollView(
+            child: Column(children: [
+              Align(
+                  alignment: Alignment.bottomLeft,
+                  child: IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: const Icon(Icons.clear))),
+              Container(
+                width: double.infinity,
+                height: 500.px,
                 child: FutureBuilder(
                   future: attachmentViewModel!.initializeVideoPlayer,
                   builder: (context, snapshot) {
@@ -153,16 +155,12 @@ class AttachmentScreen extends StatelessWidget {
                       return Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              height: 400.px,
-                              child: AspectRatio(
-                                aspectRatio: attachmentViewModel!
-                                    .videoPlayerController!.value.aspectRatio,
-                                child: VideoPlayer(attachmentViewModel!
-                                    .videoPlayerController!),
-                              ),
+                          Expanded(
+                            child: AspectRatio(
+                              aspectRatio: attachmentViewModel!
+                                  .videoPlayerController!.value.aspectRatio,
+                              child: VideoPlayer(
+                                  attachmentViewModel!.videoPlayerController!),
                             ),
                           ),
                           InkWell(
@@ -178,11 +176,12 @@ class AttachmentScreen extends StatelessWidget {
                               controller.update();
                             },
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.0.px),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(
+                                  Container(
+                                    width: 40.px,
                                     child: AppText(
                                       attachmentViewModel!.formatDuration(
                                           attachmentViewModel!
@@ -192,25 +191,29 @@ class AttachmentScreen extends StatelessWidget {
                                       fontSize: 10.px,
                                     ),
                                   ),
-                                  Slider(
-                                    activeColor: AppColorConstant.appYellow,
-                                    value: attachmentViewModel!.sliderValue,
-                                    onChanged: (value) {
-                                      attachmentViewModel!.sliderValue = value;
-                                      controller.update();
-                                      attachmentViewModel!.videoPlayerController
-                                          .seekTo(Duration(
-                                              milliseconds: value.toInt()));
-                                      controller.update();
-                                      logs(
-                                          "slider valuse  -- >${attachmentViewModel!.sliderValue}");
-                                    },
-                                    max: attachmentViewModel!
-                                        .videoPlayerController
-                                        .value
-                                        .duration
-                                        .inMilliseconds
-                                        .toDouble(),
+                                  Expanded(
+                                    child: Slider(
+                                      activeColor: AppColorConstant.appYellow,
+                                      value: attachmentViewModel!.sliderValue,
+                                      onChanged: (value) {
+                                        attachmentViewModel!.sliderValue =
+                                            value;
+                                        controller.update();
+                                        attachmentViewModel!
+                                            .videoPlayerController
+                                            .seekTo(Duration(
+                                                milliseconds: value.toInt()));
+                                        controller.update();
+                                        logs(
+                                            "slider valuse  -- >${attachmentViewModel!.sliderValue}");
+                                      },
+                                      max: attachmentViewModel!
+                                          .videoPlayerController
+                                          .value
+                                          .duration
+                                          .inMilliseconds
+                                          .toDouble(),
+                                    ),
                                   ),
                                   SizedBox(
                                       height: 30.px,
@@ -229,9 +232,10 @@ class AttachmentScreen extends StatelessWidget {
                                               color: AppColorConstant.appYellow,
                                               size: 25.px,
                                             )),
-                                  SizedBox(
+                                  Container(
+                                    width: 45.px,
                                     child: Padding(
-                                      padding:  EdgeInsets.only(left: 5.px),
+                                      padding: EdgeInsets.only(left: 5.px),
                                       child: AppText(
                                         attachmentViewModel!.formatDuration(
                                             attachmentViewModel!
@@ -249,26 +253,26 @@ class AttachmentScreen extends StatelessWidget {
                         ],
                       );
                     } else {
-                      return const Center(child: CircularProgressIndicator());
+                      return const AppLoader();
                     }
                   },
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 15.px),
-              child: AppTextFormField(
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    attachmentViewModel!.stopVideoPlayback();
-                    attachmentViewModel!.videoButtonTap(controller);
-                  },
-                  icon:
-                      const Icon(Icons.send, color: AppColorConstant.appYellow),
+              Padding(
+                padding: EdgeInsets.only(top: 15.px),
+                child: AppTextFormField(
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      attachmentViewModel!.stopVideoPlayback();
+                      attachmentViewModel!.videoButtonTap(controller);
+                    },
+                    icon: const Icon(Icons.send,
+                        color: AppColorConstant.appYellow),
+                  ),
                 ),
-              ),
-            )
-          ]),
+              )
+            ]),
+          ),
         ),
         if (DatabaseService.isLoading) const AppLoader(),
       ],

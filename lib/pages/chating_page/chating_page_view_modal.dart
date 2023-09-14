@@ -38,7 +38,6 @@ class ChatingPageViewModal {
   bool isGroup = false;
   dynamic snapshots;
 
-
   String? formatedTime;
   bool isBlocked = false;
   File? selectedImage;
@@ -95,8 +94,6 @@ class ChatingPageViewModal {
     }
   }
 
-
-
   //========================= files =============================//
 
   Future<void> pickDocument(ChatingPageController controller) async {
@@ -106,13 +103,19 @@ class ChatingPageViewModal {
     );
 
     if (result != null) {
+      logs("selected files ---- > ${selectedFile!.path}");
       selectedFile = File(result.files.single.path!);
-      onSendDoc("doc",controller);
+
+      onSendDoc("doc", controller);
     }
   }
 
-  onSendDoc(String msgType, ChatingPageController controller,) async {
-    DatabaseService.uploadDoc(File(selectedFile!.path), controller).then((value) {
+  onSendDoc(
+    String msgType,
+    ChatingPageController controller,
+  ) async {
+    DatabaseService.uploadDoc(File(selectedFile!.path), controller)
+        .then((value) {
       logs('message---> $value');
       DatabaseService().addNewMessage(
           type: msgType,
@@ -124,7 +127,7 @@ class ChatingPageViewModal {
   }
 
   //========================= audio =============================//
-  
+
   audioSendTap() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -159,12 +162,11 @@ class ChatingPageViewModal {
     controller.update();
   }
 
-
   //========================= video =============================//
 
   Future<void> pickVideoGallery(GetxController controller, members) async {
     final pickedFile =
-    await ImagePicker().pickVideo(source: ImageSource.gallery);
+        await ImagePicker().pickVideo(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedVideo = (File(pickedFile.path));
@@ -173,10 +175,10 @@ class ChatingPageViewModal {
       controller.update();
     }
   }
+
   videoSendTap() {
     pickVideoGallery(controller!, arguments['members']);
   }
-
 
   onSendVideo(String msgType, controller) async {
     DatabaseService.uploadAudio(File(audioFile!.path), controller)
@@ -193,7 +195,6 @@ class ChatingPageViewModal {
   }
 
   //========================= pick images =============================//
-
 
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile =
@@ -244,6 +245,18 @@ class ChatingPageViewModal {
         if (value == 0) {
           buildImagePickerMenu(context);
         }
+        if (value == 1) {
+          audioSendTap();
+          Get.back();
+        }
+        if (value == 2) {
+          videoSendTap();
+          Get.back();
+        }
+        if (value == 3) {
+          pickDocument(controller!);
+          Get.back();
+        }
       },
       elevation: 0.5,
       position: PopupMenuPosition.over,
@@ -285,12 +298,7 @@ class ChatingPageViewModal {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InkWell(
-                      onTap: () {
-                        audioSendTap();
-                        Get.back();
-                      },
-                      child: AppText(S.of(Get.context!).audio)),
+                  AppText(S.of(Get.context!).audio),
                   Padding(
                     padding: EdgeInsets.only(top: 5.px),
                     child: Divider(
@@ -305,12 +313,7 @@ class ChatingPageViewModal {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InkWell(
-                      onTap: () {
-                        videoSendTap();
-                        Get.back();
-                      },
-                      child: AppText(S.of(Get.context!).video)),
+                  AppText(S.of(Get.context!).video),
                   Padding(
                     padding: EdgeInsets.only(top: 10.px),
                     child: Divider(
@@ -324,9 +327,7 @@ class ChatingPageViewModal {
               value: 3,
               child: Column(
                 children: [
-                  InkWell(onTap: () {
-                    pickDocument(controller!);
-                  },child: AppText(S.of(Get.context!).documents)),
+                  AppText(S.of(Get.context!).documents),
                   SizedBox(
                     height: 20.px,
                   )

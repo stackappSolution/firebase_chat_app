@@ -11,11 +11,10 @@ goToSignInPage() {
   Get.offAllNamed(RouteHelper.getSignInPage());
 }
 
-goToVerifyPage({required String phonenumber, verificationId, selectedCountry}) {
+goToVerifyPage({required String phonenumber, selectedCountry}) {
   Get.toNamed(RouteHelper.getVerifyOtpPage(), parameters: {
     "phoneNo": phonenumber,
-    "verificationId": verificationId,
-    "selectedCountry": selectedCountry.toString(),
+     "selectedCountry": selectedCountry.toString(),
   }, );
 }
 

@@ -96,30 +96,6 @@ class AttachmentViewModel {
     }
   }
 
-  // void initAudioPlayer() {
-  //   audioPlayer.onDurationChanged.listen((Duration duration) {
-  //     duration = duration;
-  //   });
-  //
-  //   audioPlayer.onPositionChanged.listen((Duration position) {
-  //     position = position;
-  //   });
-  // }
-
-  // void play(controller, path) async {
-  //   logs("Audio Path --- $path");
-  //   await audioPlayer.play(AssetSource(path));
-  //
-  //   isPlaying = true;
-  //   controller.update();
-  // }
-
-  // void pause(controller) async {
-  //   await audioPlayer.pause();
-  //   isPlaying = false;
-  //   controller.update();
-  // }
-
   void imageButtonTap(AttachmentController controller) {
     checkImageSize(File(selectedImage),controller);
   }
@@ -147,7 +123,6 @@ class AttachmentViewModel {
 
     if (fileSizeInMB < 2) {
       onSendMessage("image", controller);
-
 
       logs('Image is smaller than 2 MB. Performing action...');
     } else {

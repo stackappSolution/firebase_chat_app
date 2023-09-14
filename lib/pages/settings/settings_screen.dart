@@ -97,7 +97,7 @@ class SettingScreen extends StatelessWidget {
           ),
           UsersService.photoUrl.isEmpty
               ? CircleAvatar(
-                  maxRadius: 35.px,
+                  maxRadius: 30.px,
                   backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
                   child: AppText(
                       UsersService.userName
@@ -108,7 +108,7 @@ class SettingScreen extends StatelessWidget {
                       color: primaryTheme),
                 )
               : CircleAvatar(
-                  maxRadius: 35.px,
+                  maxRadius: 30.px,
                   backgroundImage: NetworkImage(UsersService.photoUrl),
                 ),
           SizedBox(
@@ -196,7 +196,7 @@ class SettingScreen extends StatelessWidget {
         settingsView(
           context,
           9,
-          AppAsset.help,
+          AppAsset.logOut,
           StringConstant.logOut,
         ),
       ],
@@ -212,19 +212,19 @@ class SettingScreen extends StatelessWidget {
         },
         title: AppText(
           tittle,
-          fontSize: 15.px,
           color: Theme.of(context).colorScheme.primary,
         ),
         leading: Container(
-          height: 50.px,
-          width: 50.px,
-          padding: EdgeInsets.all(12.px),
+          height: 45.px,
+          width: 45.px,
+          padding: EdgeInsets.all(10.px),
           decoration: BoxDecoration(
               color: AppColorConstant.appYellow.withOpacity(0.2),
               borderRadius: BorderRadius.circular(12.px),
               border: Border.all(color: AppColorConstant.appYellow)),
           child: AppImageAsset(
             image: image,
+            color: AppColorConstant.appYellow,
           ),
         ),
       ),

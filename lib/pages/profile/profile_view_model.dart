@@ -31,6 +31,7 @@ class ProfileViewModel {
   File? selectedImage;
   String? userProfile;
   bool isLoading = false;
+  bool isLoadingOnSave = false;
   Map<String, dynamic> parameter = {};
   ProfileController? controller;
   bool isProfileSubmitted = false;
@@ -59,7 +60,14 @@ class ProfileViewModel {
     }
   }
 
-  onTapNext(context) async {
+  onTapNext(context, GetxController controller) async {
+    isLoadingOnSave = true;
+    controller.update();
+    onSaveProfile(
+      firstNameController.text,
+      lastNameController.text,
+      AuthService.auth.currentUser!.phoneNumber!.trim().removeAllWhitespace,
+    );
     goToHomeScreen();
     logs("NextTapped");
   }

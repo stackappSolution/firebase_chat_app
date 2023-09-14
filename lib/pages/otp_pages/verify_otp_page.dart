@@ -7,6 +7,7 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_elevated_button.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
+import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -90,54 +91,55 @@ class VerifyOtpPage extends StatelessWidget {
     );
   }
 
-  buildVerifyotpScreen(VerifyOtpController controller, BuildContext context) =>
-      Container(
-        height: double.infinity,
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 80.px,
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: AppImageAsset(
-                  height: 230.px,
-                  image: AppAsset.verifyOtp,
+  buildVerifyotpScreen(controller, BuildContext context) {
+    return Stack(
+      children: [
+        if (AuthService.isResend) const AppLoader(),
+        Container(
+          height: double.infinity,
+          width: double.infinity,
+          margin: EdgeInsets.symmetric(horizontal: 20.px),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 80.px,
                 ),
-              ),
-              SizedBox(
-                height: 20.px,
-              ),
-              Container(
-                  margin: EdgeInsets.only(left: 20.px),
-                  alignment: Alignment.centerLeft,
+                Align(
+                  alignment: Alignment.center,
+                  child: AppImageAsset(
+                    height: 190.px,
+                    image: AppAsset.verifyOtp,
+                  ),
+                ),
+                SizedBox(
+                  height: 30.px,
+                ),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: AppText(
+                      S.of(Get.context!).verify,
+                      fontSize: 25.px,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.px),
                   child: AppText(
-                    S.of(Get.context!).verify,
-                    fontSize: 30.px,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.primary,
-                  )),
-              Container(
-                margin: EdgeInsets.only(left: 20.px),
-                child: AppText(
-                  '${S.of(Get.context!).verifyOtp}${verifyOtpViewModel!.parameter["selectedCountry"]}${verifyOtpViewModel!.parameter["phoneNo"]}',
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15.px,
+                    '${S.of(Get.context!).verifyOtp} ${verifyOtpViewModel!.parameter["phoneNo"]}',
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 15.px,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.px, right: 20.px),
+                SizedBox(
+                  height: 20.px,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
                       child: Pinput(
                         controller: verifyOtpViewModel!.otpcontroller,
                         defaultPinTheme: PinTheme(
@@ -147,8 +149,9 @@ class VerifyOtpPage extends StatelessWidget {
                                   width: 2.px),
                               borderRadius: BorderRadius.circular(15.px)),
                           height: 50.px,
+                          width: 50.px,
                           textStyle: TextStyle(
-                              fontSize: 20.px,
+                              fontSize: 18.px,
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w600),
                         ),
@@ -163,69 +166,105 @@ class VerifyOtpPage extends StatelessWidget {
                         length: 6,
                         onChanged: (value) {
                           if (value.length == 6) {
-                            verifyOtpViewModel!.isValidOTP = true;
+                            verifyOtpViewModel!.isButtonActive = true;
                             controller.update();
                           } else {
-                            verifyOtpViewModel!.isValidOTP = false;
+                            verifyOtpViewModel!.isButtonActive = false;
                             controller.update();
                           }
                         },
                         showCursor: true,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 130.px,
-              ),
-              Align(
-                  alignment: Alignment.center,
-                  child: verifyOtpViewModel!.isValidOTP != true
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 60.px),
-                          child: AppElevatedButton(
-                              buttonColor:
-                                  AppColorConstant.appYellow.withOpacity(0.5),
-                              buttonHeight: 50,
-                              isBorderShape: true,
-                              widget: AppText(S.of(context).verifyButton,
-                                  fontSize: 22.px,
-                                  color: AppColorConstant.appWhite)),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 60.px),
-                          child: AppElevatedButton(
-                            onPressed: () async {
-                              try {
-                                verifyOtpViewModel!.isLoading = true;
-                                controller.update();
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0.px),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(5.0.px),
+                        child: InkWell(
+                            onTap: (AuthService.canResendOTP())
+                                ? () {
+                                    logs("resend Tapped");
+                                    AuthService.isResend = true;
 
-                                await AuthService().verifyOtp(
-                                  verificationID: AuthService.verificationID,
-                                  smsCode: verifyOtpViewModel!.otpcontroller.text,
-                                  phoneNumber: verifyOtpViewModel!.parameter.values.first,
-                                );
-                              } catch (e) {
-                                ToastUtil.warningToast("Enter Valid OTP");
-                                logs("OTP Verification Failed: $e");
-                              }
-                              controller.update();
-                            },
-                            buttonColor: AppColorConstant.appYellow,
-                            buttonHeight: 50.px,
-                            isBorderShape: true,
-                            widget: (verifyOtpViewModel!.isLoading)
-                                ? const CircularProgressIndicator(
-                                    color: AppColorConstant.appWhite,
-                                  )
-                                : AppText(S.of(context).verifyButton,
-                                    fontSize: 18.px,
-                                    color: AppColorConstant.appWhite),
-                          ),
-                        )),
-            ],
+                                    AuthService.verifyPhoneNumber(
+                                      verifyOtpViewModel!
+                                          .parameter["selectedCountry"],
+                                      verifyOtpViewModel!.parameter["phoneNo"],
+                                    );
+                                    verifyOtpViewModel!.isButtonActive = false;
+                                  }
+                                : null,
+                            child: AppText(
+                              "Resend OTP",
+                              color: (!AuthService.canResendOTP())
+                                  ? AppColorConstant.darkSecondary
+                                  : AppColorConstant.appYellow,
+                            )),
+                      ),
+                      if (AuthService.countdownSeconds != 0)
+                        Container(
+                            alignment: Alignment.centerRight,
+                            width: 50.px,
+                            child: AppText(
+                                "${AuthService.countdownSeconds.toString()} : 00")),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 130.px,
+                ),
+                Align(
+                    alignment: Alignment.center,
+                    child: verifyOtpViewModel!.isButtonActive != true
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 60.px),
+                            child: AppElevatedButton(
+                                buttonColor:
+                                    AppColorConstant.appYellow.withOpacity(0.5),
+                                buttonHeight: 50,
+                                isBorderShape: true,
+                                widget: AppText(S.of(context).verifyButton,
+                                    fontSize: 22.px,
+                                    color: AppColorConstant.appWhite)),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 60.px),
+                            child: AppElevatedButton(
+                              onPressed: () async {
+                                try {
+                                  AuthService.isVerifyLoading = true;
+                                  controller.update();
+
+                                  await AuthService.signInWithOTP(
+                                      verifyOtpViewModel!.otpcontroller.text);
+                                } catch (e) {
+                                  ToastUtil.warningToast("Enter Valid OTP");
+                                  logs("OTP Verification Failed: $e");
+                                }
+                                controller.update();
+                              },
+                              buttonColor: AppColorConstant.appYellow,
+                              buttonHeight: 50.px,
+                              isBorderShape: true,
+                              widget: (AuthService.isVerifyLoading)
+                                  ? const CircularProgressIndicator(
+                                      color: AppColorConstant.appWhite,
+                                    )
+                                  : AppText(S.of(context).verifyButton,
+                                      fontSize: 18.px,
+                                      color: AppColorConstant.appWhite),
+                            ),
+                          )),
+              ],
+            ),
           ),
         ),
-      );
+      ],
+    );
+  }
 }
