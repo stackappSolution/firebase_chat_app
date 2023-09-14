@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -26,7 +25,6 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 import 'package:signal/service/users_service.dart';
-import 'package:video_player/video_player.dart';
 import '../../controller/chating_page_controller.dart';
 
 // ignore: must_be_immutable
@@ -51,6 +49,9 @@ class ChatingPage extends StatelessWidget {
     getBlockedList();
 
     return GetBuilder<ChatingPageController>(
+      dispose: (state) {
+        controller!.player.dispose();
+      },
       initState: (state) async {
         chatingPageViewModal!.parameter = Get.parameters;
         chatingPageViewModal!.arguments = Get.arguments;
@@ -78,6 +79,9 @@ class ChatingPage extends StatelessWidget {
             chats = DatabaseService().getChatStream(
               snapshots.docs.first.id,
             );
+
+            chatingPageViewModal!.snapshots = await DatabaseService()
+                .getChatDoc(chatingPageViewModal!.arguments['members']);
 
             DatabaseService().markMessagesAsSeen(snapshots.docs.first.id,
                 chatingPageViewModal!.arguments['number']);
@@ -142,6 +146,11 @@ class ChatingPage extends StatelessWidget {
                         final message = snapshot.data!.docs
                             .map((doc) => doc.data() as Map<String, dynamic>)
                             .toList();
+
+                        DatabaseService().markMessagesAsSeen(
+                            chatingPageViewModal!.snapshots.docs.first.id,
+                            chatingPageViewModal!.arguments['number']);
+
                         return GroupedListView(
                           itemBuilder: (context, element) {
                             String formattedTime = DateFormation()
@@ -540,19 +549,27 @@ class ChatingPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.all(10.px),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColorConstant.appYellow,
+          InkWell(
+            onTap: () {
+              Get.toNamed(RouteHelper.getImageViewScreen(), arguments: {
+                'image': message.message,
+                'name': chatingPageViewModal!.arguments['name']
+              });
+            },
+            child: Container(
+              margin: EdgeInsets.all(10.px),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColorConstant.appYellow,
+                ),
+                borderRadius: BorderRadius.circular(12.px),
               ),
-              borderRadius: BorderRadius.circular(12.px),
-            ),
-            height: 200.px,
-            width: 150.px,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12.px),
-              child: AppImageAsset(image: message.message),
+              height: 200.px,
+              width: 150.px,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12.px),
+                child: AppImageAsset(image: message.message),
+              ),
             ),
           ),
           Align(
@@ -611,7 +628,7 @@ class ChatingPage extends StatelessWidget {
                       onChanged: (value) async {
                         controller.position = Duration(seconds: value.toInt());
                         await controller.player.seek(controller.position);
-                        await controller.player.resume();
+                        //await controller.player.resume();
                       },
                     ),
                   ),
@@ -625,10 +642,8 @@ class ChatingPage extends StatelessWidget {
                       if (controller.isPlay.value) {
                         await controller.player.pause();
                       } else {
-                        UrlSource audioUrl = UrlSource(message.message);
-                        await controller.player.play(audioUrl);
-
-                        logs('audio-------------> $audioUrl');
+                        await controller.player.setUrl(message.message);
+                        await controller.player.play();
                       }
                     },
                     icon: (controller.isPlay.value)
@@ -837,7 +852,7 @@ class ChatingPage extends StatelessWidget {
                       onChanged: (value) async {
                         controller.position = Duration(seconds: value.toInt());
                         await controller.player.seek(controller.position);
-                        await controller.player.resume();
+                        //await controller.player.resume();
                       },
                     ),
                   ),
@@ -851,8 +866,10 @@ class ChatingPage extends StatelessWidget {
                       if (controller.isPlay.value) {
                         await controller.player.pause();
                       } else {
-                        await controller.player
-                            .play(UrlSource(message.message));
+                        await controller.player.setUrl(message.message);
+                        await controller.player.play();
+                        controller.update();
+                        logs('url--------> ${message.message}');
                       }
                     },
                     icon: (controller.isPlay.value)

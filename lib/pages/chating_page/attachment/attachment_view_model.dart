@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,7 +29,7 @@ class AttachmentViewModel {
   bool isLoading = false;
   bool isVideo = false;
 
-  final audioPlayer = AudioPlayer();
+  //final audioPlayer = AudioPlayer();
   bool isPlaying = false;
   double sliderValue = 0.0;
 
@@ -96,29 +96,29 @@ class AttachmentViewModel {
     }
   }
 
-  void initAudioPlayer() {
-    audioPlayer.onDurationChanged.listen((Duration duration) {
-      duration = duration;
-    });
+  // void initAudioPlayer() {
+  //   audioPlayer.onDurationChanged.listen((Duration duration) {
+  //     duration = duration;
+  //   });
+  //
+  //   audioPlayer.onPositionChanged.listen((Duration position) {
+  //     position = position;
+  //   });
+  // }
 
-    audioPlayer.onPositionChanged.listen((Duration position) {
-      position = position;
-    });
-  }
+  // void play(controller, path) async {
+  //   logs("Audio Path --- $path");
+  //   await audioPlayer.play(AssetSource(path));
+  //
+  //   isPlaying = true;
+  //   controller.update();
+  // }
 
-  void play(controller, path) async {
-    logs("Audio Path --- $path");
-    await audioPlayer.play(AssetSource(path));
-
-    isPlaying = true;
-    controller.update();
-  }
-
-  void pause(controller) async {
-    await audioPlayer.pause();
-    isPlaying = false;
-    controller.update();
-  }
+  // void pause(controller) async {
+  //   await audioPlayer.pause();
+  //   isPlaying = false;
+  //   controller.update();
+  // }
 
   void imageButtonTap(AttachmentController controller) {
     checkImageSize(File(selectedImage));

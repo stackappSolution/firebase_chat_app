@@ -199,6 +199,7 @@ class DatabaseService {
 //=== markMessageAsSeen =====================================//
 
   void markMessagesAsSeen(String chatRoomId, String receiverId) {
+
     FirebaseFirestore.instance
         .collection("rooms")
         .doc(chatRoomId)
@@ -225,6 +226,23 @@ class DatabaseService {
       }
     });
   }
+
+
+  //===========getChatDoc===================================================
+
+  getChatDoc(List<dynamic> members) async {
+
+    final snapshots = await FirebaseFirestore.instance
+        .collection('rooms')
+        .where('members',
+        isEqualTo: members)
+        .get();
+
+    return snapshots;
+
+  }
+
+
 
   static String videoURL = "";
 
