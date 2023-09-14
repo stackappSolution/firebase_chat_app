@@ -54,7 +54,6 @@ class ChatProfileScreen extends StatelessWidget {
               'id': chatProfileViewModel!.arguments['id'],
               'isGroup': chatProfileViewModel!.arguments['isGroup'],
               'members': chatProfileViewModel!.arguments['members'],
-              'about': chatProfileViewModel!.arguments['about'],
             });
 
             return true;
@@ -75,7 +74,6 @@ class ChatProfileScreen extends StatelessWidget {
               'id': chatProfileViewModel!.arguments['id'],
               'isGroup': chatProfileViewModel!.arguments['isGroup'],
               'members': chatProfileViewModel!.arguments['members'],
-              'about': chatProfileViewModel!.arguments['about'],
             });
           },
           icon: const Icon(Icons.arrow_back_outlined)),
@@ -97,19 +95,7 @@ class ChatProfileScreen extends StatelessWidget {
           height: 2.px,
           color: Theme.of(context).colorScheme.secondary,
         ),
-        Padding(
-          padding:  EdgeInsets.only(top: 10.px,bottom: 10.px),
-          child: Center(child: AppText(chatProfileViewModel?.arguments['about'] ?? 'I am useing chatapp..!!!',fontSize: 18.px)),
-        ),
-        Divider(
-          height: 2.px,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
         buildProfileListView(context),
-        Divider(
-          height: 2.px,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
         SizedBox(
           height: 20.px,
         ),

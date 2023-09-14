@@ -14,11 +14,15 @@ class EditProfileViewModel {
 
   EditProfileViewModel(this.editProfileScreen);
 
-  void editPhotoTap(data) {
+  void editPhotoTap() {
     Get.to(AddPhotoScreen());
   }
 
-  void aboutTap(BuildContext context) {
+  void profileNameTap(BuildContext context) {
+    Get.to(EditProfileNameScreen());
+  }
 
+  void aboutTap(BuildContext context) {
+    Get.to(EditProfileAboutScreen());
   }
 }

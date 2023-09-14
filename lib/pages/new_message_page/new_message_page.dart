@@ -164,7 +164,7 @@ class NewMessagePage extends StatelessWidget {
               return const AppText('');
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const AppLoader();
+              return const AppText('');
             }
             final data = snapshot.data!.docs;
 
