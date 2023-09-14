@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -180,7 +182,16 @@ class AccountScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () async {
+                    FirebaseMessaging messaging = FirebaseMessaging.instance;
+                    String? fcmToken = await messaging.getToken();
+                    if (fcmToken != null) {
+                      await messaging.deleteToken();
+                      print('Deleted FCM Token: $fcmToken');
+                    }
                     accountViewModel!.deleteAccountTap(controller,context);
+                    AuthService.auth.signOut().then(
+                        (value) => Get.offAllNamed(RouteHelper.getIntroScreen()));
+                    controller.update();
                   },
                   child: AppText(
                     S.of(context).deleteAccount,

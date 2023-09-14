@@ -14,8 +14,6 @@ import 'package:signal/pages/appearance/appearance_screen.dart';
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/theme_util.dart';
 import 'package:signal/routes/routes_helper.dart';
-import '../../app/app/utills/app_utills.dart';
-import '../../app/app/utills/theme_util.dart';
 
 class AppearanceViewModel {
   AppearanceScreen? appearanceScreen;
@@ -178,7 +176,7 @@ class AppearanceViewModel {
                         setStringValue(
                             getLanguage, Get.deviceLocale!.languageCode);
                         S.load((Locale(Get.deviceLocale!.languageCode)));
-                        Get.updateLocale(locale!);
+                        Get.updateLocale(locale);
                         selectedLanguage = S.of(Get.context!).systemDefault;
                         setStringValue(language, selectedLanguage!);
                         saveFontSize =
@@ -235,7 +233,7 @@ class AppearanceViewModel {
                         locale = value!;
                         setStringValue(getLanguage, 'en_US');
                         S.load(const Locale('en_US'));
-                        Get.updateLocale(locale!);
+                        Get.updateLocale(locale);
                         selectedLanguage = S.of(Get.context!).english;
                         setStringValue(language, selectedLanguage!);
 
@@ -275,7 +273,7 @@ class AppearanceViewModel {
                         locale = value!;
                         S.load(const Locale('gu_IN'));
                         setStringValue(getLanguage, 'gu_IN');
-                        Get.updateLocale(locale!);
+                        Get.updateLocale(locale);
                         selectedLanguage = S.of(Get.context!).gujarati;
                         setStringValue(language, selectedLanguage!);
                         saveFontSize =

@@ -6,6 +6,7 @@ import 'package:signal/routes/app_navigation.dart';
 class SplashViewModel {
   SplashScreen? splashScreen;
   String? phoneNumber;
+  String? messaging;
 
   SplashViewModel(this.splashScreen);
 

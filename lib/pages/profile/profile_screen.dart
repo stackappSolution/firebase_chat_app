@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -31,10 +32,9 @@ class ProfileScreen extends StatelessWidget {
 
     return GetBuilder<ProfileController>(
       init: ProfileController(),
-      initState: (state) {
+      initState: (state) async {
         profileViewModel!.parameter = Get.parameters;
         logs('profileStatus---> ${AuthService.auth.currentUser!.photoURL}');
-
       },
       builder: (GetxController controller) {
         return SafeArea(
@@ -185,6 +185,7 @@ class ProfileScreen extends StatelessWidget {
                                   profileViewModel!.firstNameController.text,
                                   profileViewModel!.lastNameController.text,
                                   AuthService.auth.currentUser!.phoneNumber!.trim().removeAllWhitespace,
+                                  profileViewModel!.getFCMToken(),
                                 );
                               }
                             : null,

@@ -9,11 +9,11 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../app/app/utills/app_utills.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/database_service.dart';
-import 'package:video_player/video_player.dart';
 
 class AttachmentViewModel {
   AttachmentScreen? attachmentScreen;

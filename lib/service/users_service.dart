@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/service/notification_service.dart';
 
 import '../modal/user_model.dart';
 import 'auth_service.dart';
@@ -9,7 +10,8 @@ class UsersService {
   static final users = FirebaseFirestore.instance.collection('users');
   static String userName = "  ";
   static String lastName = "  ";
-  static String photoUrl = "";
+  static String photoUrl = "  ";
+  static String? fcmToken = NotificationService.fcmToken;
 
   //==========================addUsers=======================================
 

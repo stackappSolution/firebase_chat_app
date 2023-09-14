@@ -28,21 +28,65 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     signInViewModel ?? (signInViewModel = SignInViewModel(this));
-    return GetBuilder(
-        init: SignInController(),
-        initState: (state) {},
-        builder: (SignInController controller) {
-          return SafeArea(
+     return GetBuilder(
+      init: SignInController(),
+      initState: (state) {},
+      builder: (SignInController controller) {
+        return WillPopScope(
+          onWillPop: () async {
+            // Show a confirmation dialog
+            return await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: const BorderSide(color: Colors.transparent)),
+                  title: const AppText('Exit App',fontWeight: FontWeight.bold),
+                  content: const AppText('Are you sure you want to exit the app?'),
+                  actions: [
+                    Row(
+                      children: [
+                        const Spacer(),
+                        AppElevatedButton(buttonWidth: 50,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40,
+                          widget: const AppText('Yes',color: AppColorConstant.appWhite),
+                          onPressed: () {
+                          SystemNavigator.pop();
+                            Navigator.of(context).pop(true); // Exit the app
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        AppElevatedButton(buttonWidth: 50,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40,
+                          widget: const AppText('No',color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            Navigator.of(context).pop(false); // Don't exit the app
+                          },
+                        ),
+                        // Add spacing between buttons
+
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: SafeArea(
             child: Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.background,
-                body: buildsignInPage(
-                    signInViewModel!.selectedCountry.toString(),
-                    signInViewModel!.phoneNumber.text,
-                    context,
-                    controller,
-                    signInViewModel!)),
-          );
-        });
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: buildsignInPage(
+                signInViewModel!.selectedCountry.toString(),
+                signInViewModel!.phoneNumber.text,
+                context,
+                controller,
+                signInViewModel!,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Container buildsignInPage(
@@ -117,7 +161,6 @@ class SignInPage extends StatelessWidget {
                       textStyle: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600,
-
                       ),
                       // Set initial country code
                       favorite: const ['IN'], // Specify favorite country codes
@@ -202,8 +245,7 @@ class SignInPage extends StatelessWidget {
                         SharedPreferences pref =
                         await SharedPreferences.getInstance();
                         pref.setString("MobileNumber", phoneNumber);
-                        logs(
-                            "entred contact IS------------->   $countryCode$phoneNumber");
+                        logs("entred contact IS------------->   $countryCode$phoneNumber");
 
                         verified(AuthCredential authResult) async {
                           await auth.signInWithCredential(authResult);
@@ -223,14 +265,11 @@ class SignInPage extends StatelessWidget {
                               verificationId:
                               AuthService.verificationID,
                               selectedCountry: selectedCountry);
-                          logs(
-                              "verification id ----->${AuthService.verificationID}");
+                          logs("verification id ----->${AuthService.verificationID}");
                         }
-
                         autoRetrievalTimeout(String verificationId) {
                           controller.update();
-                          logs(
-                              "verification------->${AuthService.verificationID}");
+                          logs("verification------->${AuthService.verificationID}");
                         }
                         try {
                           await auth.verifyPhoneNumber(
@@ -264,7 +303,8 @@ class SignInPage extends StatelessWidget {
                       ):AppText(
                         S.of(context).continues,
                         fontSize: 18.px,
-                        color: AppColorConstant.appWhite,)),
+                        color: AppColorConstant.appWhite,),
+                  ),
                 ),
               ),
             ],

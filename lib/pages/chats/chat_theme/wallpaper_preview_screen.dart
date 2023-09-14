@@ -9,7 +9,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
-import 'package:signal/routes/routes_helper.dart';
 
 // ignore: must_be_immutable
 class WallpaperPreviewScreen extends StatelessWidget {

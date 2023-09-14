@@ -49,6 +49,7 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   sticky_headers: ^0.3.0+2
   grouped_list: ^5.1.2
+  bot_toast: ^4.1.1
 
   #serchField
   flutter_typeahead: ^4.6.2

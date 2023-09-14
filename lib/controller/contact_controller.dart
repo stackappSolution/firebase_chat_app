@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:get/get.dart';
 
 import '../app/app/utills/app_utills.dart';
 
 class ContactController extends GetxController {
   RxBool isSearch = false.obs;
+
+  List<Contact> contacts = [];
+  List<Contact> filteredContacts = [];
+  bool isSearching = false;
 
   bool get searchValue => isSearch.value;
   RxString filteredValue = ''.obs;
@@ -37,8 +42,8 @@ class ContactController extends GetxController {
     return users.where('phone', isEqualTo: number).snapshots();
   }
 
-  getMyChatContactList(number) {
-    return rooms.where('members', arrayContains: number).snapshots();
+  getMyChatContactList(currentUserId) {
+    return rooms.where('members', arrayContains: currentUserId).snapshots();
   }
 
   getTimeStamp(id) async {

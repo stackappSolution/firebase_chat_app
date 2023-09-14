@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/pages/otp_pages/verify_otp_page.dart';
 
 class VerifyOtpViewModel{
@@ -16,6 +17,7 @@ class VerifyOtpViewModel{
   bool isValidOTP = false;
   bool isLoading = false;
   Map<String,dynamic> parameter = {};
+  String? fcmToken;
 
   final defaultPinTheme = PinTheme(
     width: 50.px,
@@ -35,5 +37,11 @@ class VerifyOtpViewModel{
 
   bool isValidOtp(String value) {
     return value.length == 6 && int.tryParse(value) != null;
+  }
+
+  void getFCMToken() async {
+    var messaging;
+    fcmToken = await messaging.getToken();
+    logs('FCM TOKEN222222222-->$fcmToken');
   }
 }

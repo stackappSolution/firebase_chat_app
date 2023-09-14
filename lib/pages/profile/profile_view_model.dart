@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,6 @@ import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/users_service.dart';
-
 import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/validation.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -210,18 +210,23 @@ class ProfileViewModel {
     controller!.update();
   }
 
-  onSaveProfile(String firstName, String lastName, String phoneNo) {
+  onSaveProfile(String firstName, String lastName, String phoneNo,String fcmToken) {
     UsersService()
         .addUser(
           firstName: firstName,
           lastName: lastName,
           phone: phoneNo,
           photo: (userProfile != null) ? userProfile! : '',
-          fcmToken: '',
+          fcmToken: fcmToken
         )
         .then((value) => Get.offAll(() => HomeScreen()));
 
     isProfileSubmitted=true;
     controller!.update();
+  }
+  getFCMToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? fcmToken = await messaging.getToken();
+    logs('FCM TOKEN get profile view model screen-->$fcmToken');
   }
 }

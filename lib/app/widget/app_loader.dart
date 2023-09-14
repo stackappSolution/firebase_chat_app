@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/constant/color_constant.dart';
 
 class AppLoader extends StatelessWidget {

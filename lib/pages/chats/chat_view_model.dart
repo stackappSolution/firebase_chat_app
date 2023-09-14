@@ -1,26 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/service/database_helper.dart';
-
-import '../../service/users_service.dart';
-
 import 'package:signal/service/users_service.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;
-  List<Contact> contacts = [];
-  List<Contact> filterContacts = [];
   bool isLoading = false;
   String string = '';
   bool isConnected = false;
+  bool isSearching = false;
+  List contactList = [];
+  TextEditingController searchController = TextEditingController();
 
 
-
+  List<Contact> contacts = [];
+  List<Contact> filteredContacts = [];
 
   final Stream<QuerySnapshot> usersStream = UsersService.getUserStream();
 
@@ -76,6 +76,24 @@ class ChatViewModel {
     }
     return "Not Saved Yet";
   }
+
+  void filterContacts(String query) {
+    filteredContacts.clear();
+    if (query.isEmpty) {
+      filteredContacts.addAll(contacts);
+    } else {
+      filteredContacts.addAll(contacts.where((contact) {
+        return contact.displayName!.toLowerCase().contains(query.toLowerCase());
+      }).toList());
+    }
+    controller!.update();
+  }
+
+  void handleSearch(String query) {
+    searchController.text;
+    filterContacts(query);
+  }
+
 }
 
 

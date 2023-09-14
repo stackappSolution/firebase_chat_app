@@ -4,12 +4,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 
 
-
 class NotificationService {
   NotificationService._privateConstructor();
 
   static final NotificationService instance = NotificationService._privateConstructor();
-  String? fcmToken;
+  static String? fcmToken;
   FirebaseMessaging? firebaseMessaging;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -28,7 +27,7 @@ class NotificationService {
 
     logs('Notification permission status : ${notificationSettings.authorizationStatus.name}');
 
-    fcmToken = await firebaseMessaging.getToken();
+    fcmToken =  await firebaseMessaging.getToken();
     logs('FCM Token --> $fcmToken');
     if (notificationSettings.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage remoteMessage) async {

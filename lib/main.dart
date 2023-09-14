@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +30,6 @@ Future<void> main() async {
     statusBarBrightness:
     (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
   ));
-  // String? token = await FirebaseMessaging.instance.getToken();
-  // logs('Token---------------------> $token');
-
-
   runApp(const MyApp());
 }
 

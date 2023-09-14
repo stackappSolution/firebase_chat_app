@@ -1,8 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
-
-import '../../app/app/utills/app_utills.dart';
 import '../../routes/app_navigation.dart';
 import '../../service/auth_service.dart';
 
@@ -12,7 +11,7 @@ class SettingViewModel {
 
   SettingViewModel(this.settingsScreen);
 
-  mainTap(index) {
+  mainTap(index) async {
     switch (index) {
 
       case 1:
@@ -44,7 +43,14 @@ class SettingViewModel {
       case 9:
         {
           logOut();
+          FirebaseMessaging messaging = FirebaseMessaging.instance;
+          String? fcmToken = await messaging.getToken();
+          if (fcmToken != null) {
+            await messaging.deleteToken();
+            print('Deleted FCM Token: $fcmToken');
+          }
           goToIntroPage();
+
         }
         break;
     }

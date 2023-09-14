@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/service/notification_service.dart';
 
 class RestConstant {
   static String Baseurl = 'https://fcm.googleapis.com/';
@@ -10,16 +11,18 @@ class RestConstant {
 }
 
 class ResponseService {
+  // static  String ?msg ;
   static bool connnect = false;
   static String? responceBody;
   static Map<String, dynamic>? Bodymap;
 
   static Future<String> PostRestUrl(
-      String endpoint, Map<String, dynamic> BodyMap) async {
+      String endpoint, Map<String, dynamic> BodyMap, msg,String messageType) async {
     String serverKey =
         "AAAAtzZoiJ0:APA91bEJUKsYrPg7vQ2D1xQgA4m4YwZKOc2uXJHJ__HziGDQdQE7gvISuAmBRmD3OF9sCFhPQsrZ0tTU-Me1_OEZDturmPreCm3Oqzw0jFM6cMunbJR0lXwF5pTgDVaRIS54OdcahoZS";
-    String registrationToken =
+     String registrationToken =
         await FirebaseMessaging.instance.getToken() ?? '';
+     logs('REGISTRATION TOKEN -->$registrationToken');
 
     const url = "https://fcm.googleapis.com/fcm/send";
 
@@ -32,8 +35,11 @@ class ResponseService {
       'to': registrationToken,
       'notification': {
         'title': 'Chat App',
-        'body': 'Hello How Are You ',
+        'body': msg,
       },
+      'data':{
+        'messageType':messageType,
+      }
     };
 
     log('message --> $message');

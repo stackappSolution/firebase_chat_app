@@ -24,6 +24,7 @@ import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
+import 'package:signal/service/notification_api_services.dart';
 import 'package:signal/service/users_service.dart';
 import '../../controller/chating_page_controller.dart';
 
@@ -993,7 +994,7 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  onSendMessage(message, ChatingPageController controller) async {
+  onSendMessage(message,ChatingPageController controller) async {
     (chatingPageViewModal!.blockedNumbers
             .contains(chatingPageViewModal!.arguments['number']))
         ? null
@@ -1039,6 +1040,26 @@ class ChatingPage extends StatelessWidget {
               ? const Icon(Icons.send, color: AppColorConstant.appBlack)
               : Icon(Icons.add, size: 27.px, color: AppColorConstant.appBlack),
           onTap: () {
+            String messageType = "text";
+            if (chatingPageViewModal!.chatController.text.endsWith(".jpg") ||
+                chatingPageViewModal!.chatController.text.endsWith(".png")) {
+              messageType = "image";
+            } else if (chatingPageViewModal!.chatController.text.endsWith(".mp3")) {
+              messageType = "audio";
+            } else if (chatingPageViewModal!.chatController.text.endsWith(".mp4")) {
+              messageType = "video";
+            } else if (chatingPageViewModal!.chatController.text.endsWith(".pdf")) {
+              messageType = "document";
+            }
+            Map<String, dynamic> bodyMap = {
+              "useFor": "message",
+              "messageType": messageType,
+              "message": chatingPageViewModal!.chatController.text,
+            };
+            var response =  ResponseService.PostRestUrl(
+                RestConstant.endpoint, bodyMap,chatingPageViewModal!.chatController.text,messageType);
+            logs('chatingPageViewModal!.chatController.text--> ${chatingPageViewModal!.chatController.text}');
+            logs('response--> $response');
             if (chatingPageViewModal!.chatController.text.isNotEmpty) {
               onSendMessage(
                   chatingPageViewModal!.chatController.text, controller);

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +10,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/network_connectivity.dart';
 
+import '../../app/app/utills/app_utills.dart';
 import '../../constant/color_constant.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -19,7 +21,10 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     NetworkConnectivity.checkConnectivity(context);
     splashViewModel ?? (splashViewModel = SplashViewModel(this));
-    Timer(const Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 5), () async {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      String? fcmToken = await messaging.getToken();
+      logs('FCM TOKEN-->$fcmToken');
       SharedPreferences.getInstance().then((prefs) {
         if (AuthService.auth.currentUser != null) {
           RouteHelper.getHomeScreen();

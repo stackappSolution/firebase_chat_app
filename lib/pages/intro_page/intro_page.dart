@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -122,7 +123,10 @@ class IntroPage extends StatelessWidget {
   AppImageAsset image() => AppImageAsset(
       height: 250.px, width: 250.px, image: 'assets/images/intro_page.png');
 
-  void introPageInitState(context) {
+  Future<void> introPageInitState(context) async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? fcmToken = await messaging.getToken();
+    logs('FCM TOKEN get intro screen-->$fcmToken');
     NetworkConnectivity.initialise();
     NetworkConnectivity.instance.myStream.listen(
           (source) {

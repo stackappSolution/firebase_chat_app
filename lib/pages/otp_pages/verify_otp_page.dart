@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -29,10 +30,58 @@ class VerifyOtpPage extends StatelessWidget {
         logs("parameter data---->${verifyOtpViewModel!.parameter.values}");
       },
       builder: (VerifyOtpController controller) {
-        return SafeArea(
-          child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: buildVerifyotpScreen(controller, context),
+        return WillPopScope(
+          onWillPop: () async {
+            return await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.px),
+                      borderSide: const BorderSide(color: Colors.transparent)),
+                  title: const AppText('Exit App', fontWeight: FontWeight.bold),
+                  content:
+                      const AppText('Are you sure you want to exit the app?'),
+                  actions: [
+                    Row(
+                      children: [
+                        const Spacer(),
+                        AppElevatedButton(
+                          buttonWidth: 50.px,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40.px,
+                          widget: const AppText('Yes',
+                              color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            SystemNavigator.pop();
+                            //Navigator.of(context).pop(true); // Exit the app
+                          },
+                        ),
+                        SizedBox(width: 10.px),
+                        AppElevatedButton(
+                          buttonWidth: 50.px,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40.px,
+                          widget: const AppText('No',
+                              color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pop(false); // Don't exit the app
+                          },
+                        ),
+                        // Add spacing between buttons
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: SafeArea(
+            child: Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: buildVerifyotpScreen(controller, context),
+            ),
           ),
         );
       },
@@ -136,15 +185,15 @@ class VerifyOtpPage extends StatelessWidget {
                           child: AppElevatedButton(
                               buttonColor:
                                   AppColorConstant.appYellow.withOpacity(0.5),
-                              buttonHeight: 50,isBorderShape: true,
-                              widget: AppText(
-                                S.of(context).verifyButton,
-                                fontSize: 22.px,color: AppColorConstant.appWhite
-                              )),
+                              buttonHeight: 50,
+                              isBorderShape: true,
+                              widget: AppText(S.of(context).verifyButton,
+                                  fontSize: 22.px,
+                                  color: AppColorConstant.appWhite)),
                         )
                       : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 60.px),
-                        child: AppElevatedButton(
+                          padding: EdgeInsets.symmetric(horizontal: 60.px),
+                          child: AppElevatedButton(
                             onPressed: () async {
                               verifyOtpViewModel!.isLoading = true;
                               controller.update();
@@ -152,17 +201,15 @@ class VerifyOtpPage extends StatelessWidget {
                               setIntValue('verification', 2);
                               await AuthService()
                                   .verifyOtp(
-                                    verificationID: AuthService.verificationID,
-                                    smsCode:
-                                        verifyOtpViewModel!.otpcontroller.text,
-                                    phoneNumber: verifyOtpViewModel!
-                                        .parameter.values.first,
-                                  )
-                                  .then((isVerificationSuccessful) {})
-                                  .catchError(
+                                verificationID: AuthService.verificationID,
+                                smsCode: verifyOtpViewModel!.otpcontroller.text,
+                                phoneNumber:
+                                    verifyOtpViewModel!.parameter.values.first,
+                              )
+                                  .then((isVerificationSuccessful) async {
+                              }).catchError(
                                 (error) {
-                                  logs(
-                                      "Error during OTP verification----> $error");
+                                  logs("Error during OTP verification----> $error");
                                 },
                               );
                               controller.update();
@@ -174,12 +221,11 @@ class VerifyOtpPage extends StatelessWidget {
                                 ? const CircularProgressIndicator(
                                     color: AppColorConstant.appWhite,
                                   )
-                                : AppText(
-                                S.of(context).verifyButton,
+                                : AppText(S.of(context).verifyButton,
                                     fontSize: 18.px,
                                     color: AppColorConstant.appWhite),
                           ),
-                      )),
+                        )),
             ],
           ),
         ),
