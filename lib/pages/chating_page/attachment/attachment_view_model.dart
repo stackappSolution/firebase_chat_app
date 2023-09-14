@@ -121,8 +121,7 @@ class AttachmentViewModel {
   // }
 
   void imageButtonTap(AttachmentController controller) {
-    checkImageSize(File(selectedImage));
-    //onSendMessage("image", controller);
+    checkImageSize(File(selectedImage),controller);
   }
 
   void videoButtonTap(AttachmentController controller) {
@@ -141,16 +140,19 @@ class AttachmentViewModel {
     });
   }
 
-  Future<void> checkImageSize(File imageFile) async {
+  Future<void> checkImageSize(File imageFile,controller) async {
     int fileSizeInBytes = await imageFile.length();
 
     double fileSizeInMB = (fileSizeInBytes / (1024 * 1024)).toDouble();
 
     if (fileSizeInMB < 2) {
-      ToastUtil.successToast("Image is larger than 2 MB.");
+      onSendMessage("image", controller);
+
 
       logs('Image is smaller than 2 MB. Performing action...');
     } else {
+      ToastUtil.successToast("Image is larger than 2 MB.");
+
       logs('Image is larger than 2 MB.');
     }
   }
