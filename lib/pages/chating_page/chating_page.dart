@@ -20,6 +20,7 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/modal/message.dart';
+import 'package:signal/pages/chating_page/audio/audio_player_view.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
@@ -604,6 +605,7 @@ class ChatingPage extends StatelessWidget {
       ChatingPageController controller, BuildContext context, Message message) {
     return Align(
       alignment: Alignment.topRight,
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -698,6 +700,7 @@ class ChatingPage extends StatelessWidget {
           ),
         ],
       ),
+
     );
   }
 
@@ -831,6 +834,7 @@ class ChatingPage extends StatelessWidget {
   buildReceiverAudioView(
       BuildContext context, ChatingPageController controller, Message message) {
     return Align(
+
       alignment: Alignment.topLeft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -884,11 +888,11 @@ class ChatingPage extends StatelessWidget {
                     },
                     icon: (message.isPlaying)
                         ? const Icon(
-                            Icons.pause_circle,
-                            color: AppColorConstant.appBlack,
-                          )
+                      Icons.pause_circle,
+                      color: AppColorConstant.appBlack,
+                    )
                         : const Icon(Icons.play_circle,
-                            color: AppColorConstant.appBlack)),
+                        color: AppColorConstant.appBlack)),
               ],
             ),
           ),
@@ -898,16 +902,25 @@ class ChatingPage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 10),
               child: AppText(
                 message.messageTimestamp.toString(),
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
                 textAlign: TextAlign.start,
-                fontSize: chatingPageViewModal!.fontSize == S.of(context).small
+                fontSize: chatingPageViewModal!.fontSize == S
+                    .of(context)
+                    .small
                     ? 8.px
-                    : chatingPageViewModal!.fontSize == S.of(context).large
-                        ? 15.px
-                        : chatingPageViewModal!.fontSize ==
-                                S.of(context).extraLarge
-                            ? 20.px
-                            : 12.px,
+                    : chatingPageViewModal!.fontSize == S
+                    .of(context)
+                    .large
+                    ? 15.px
+                    : chatingPageViewModal!.fontSize ==
+                    S
+                        .of(context)
+                        .extraLarge
+                    ? 20.px
+                    : 12.px,
               ),
             ),
           ),
@@ -915,7 +928,6 @@ class ChatingPage extends StatelessWidget {
       ),
     );
   }
-
   AppAppBar appBar(
     ChatingPageController controller,
     context,

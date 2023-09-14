@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
+
 import 'package:signal/modal/message.dart';
 
 import 'package:signal/pages/chating_page/chating_page.dart';
@@ -17,17 +18,18 @@ class ChatingPageController extends GetxController {
   RxBool isPlay = false.obs;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+
   Message? message;
-
-
-
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     player.onPlayerStateChanged.listen((state) {
-      message?.isPlaying =  state == PlayerState.playing;
+      message?.isPlaying = state == PlayerState.playing;
+
+      isPlay.value = state == PlayerState.playing;
+
       update();
     });
 
@@ -40,8 +42,6 @@ class ChatingPageController extends GetxController {
       position = event;
       update();
     });
-
-
   }
 
   @override

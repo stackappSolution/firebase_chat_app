@@ -7,7 +7,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_textForm_field.dart';
-import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_view_model.dart';
 import 'package:signal/service/database_service.dart';
@@ -42,7 +41,7 @@ class AttachmentScreen extends StatelessWidget {
 
         attachmentViewModel!.initializeVideoPlayer =
             attachmentViewModel!.videoPlayerController!.initialize();
-        attachmentViewModel!.videoPlayerController!.setLooping(true);
+        attachmentViewModel!.videoPlayerController!.setLooping(false);
 
         Future.delayed(
           const Duration(milliseconds: 200),

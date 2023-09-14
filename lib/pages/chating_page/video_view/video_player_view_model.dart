@@ -11,5 +11,22 @@ class VideoPlayerViewModel{
   Future<void>? initializeVideoPlayer;
   VideoPlayerViewModel(this.videoPlayerView);
   double videoPlayerValue = 0.0;
+  double sliderValue = 0.0;
+
+
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+
+  void stopVideoPlayback() {
+    if (videoController != null &&
+        videoController!.value.isPlaying) {
+      videoController!.pause();
+    }
+  }
 
 }
