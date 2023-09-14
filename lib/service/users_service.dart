@@ -18,7 +18,8 @@ class UsersService {
       String? lastName,
       required String photo,
       required String phone,
-      required String fcmToken}) async {
+      required String fcmToken,
+      String? about}) async {
     try {
       users.doc(AuthService.auth.currentUser!.uid).set(User(
               firstName: firstName,
@@ -26,7 +27,8 @@ class UsersService {
               id: AuthService.auth.currentUser!.uid,
               phone: phone,
               fcmToken: fcmToken,
-              photoUrl: photo)
+              photoUrl: photo,
+              about: about)
           .toJson());
       return 'success';
     } catch (e) {
@@ -94,15 +96,10 @@ class UsersService {
     });
   }
 
-  static Future getUserData() async {
-    final data = await users
+  static getUserData()  {
+    return  users
         .where('id', isEqualTo: AuthService.auth.currentUser!.uid).limit(1)
-        .get();
-    userName = data.docs[0]["firstName"];
-    photoUrl = data.docs[0]["photoUrl"];
-    lastName = data.docs[0]["lastName"];
-    logs("current User Name  ---- $userName");
-    logs("current photoUrl  ---- $photoUrl");
+        .snapshots();
 
   }
 }
