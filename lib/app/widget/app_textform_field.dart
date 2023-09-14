@@ -44,6 +44,7 @@ class AppTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: true,
       onChanged: onChanged,
       controller: controller,
       focusNode:focusNode ,
