@@ -36,6 +36,9 @@ class ChatingPageViewModal {
   String? wallpaperPath;
   String? blockedBy;
   bool isGroup = false;
+  dynamic snapshots;
+
+
   String? formatedTime;
   bool isBlocked = false;
   File? selectedImage;

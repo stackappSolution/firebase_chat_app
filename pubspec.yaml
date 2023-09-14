@@ -55,10 +55,11 @@ dependencies:
 
   #audio
   on_audio_query: ^2.9.0
-  audioplayers: ^5.1.0
+  just_audio: ^0.9.35
 
   #Video
   video_player: ^2.7.1
+
 
   # file
   file_picker: ^5.5.0
@@ -68,6 +69,10 @@ dependencies:
   # Fetch server data & State management :
   get: ^4.6.5
   connectivity: ^3.0.6
+
+
+
+
 
 
   # contact numbers
