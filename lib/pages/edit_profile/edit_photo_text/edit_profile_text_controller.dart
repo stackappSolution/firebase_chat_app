@@ -1,6 +1,3 @@
 import 'package:get/get.dart';
 
-class EditProfileTextController extends GetxController
-{
-
-}
+class EditProfileTextController extends GetxController {}

@@ -10,6 +10,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
+import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/service/auth_service.dart';
@@ -50,6 +51,14 @@ class SettingScreen extends StatelessWidget {
 
   getAppbar(context) {
     return AppAppBar(
+      // leading: IconButton(
+      //   onPressed: () {
+      //     Get.to(HomeScreen());
+      //   },
+      //   icon: const Icon(
+      //     Icons.arrow_back_outlined,
+      //   ),
+      // ),
       title: AppText(
         S.of(Get.context!).settings,
         fontSize: 20.px,
@@ -76,38 +85,55 @@ class SettingScreen extends StatelessWidget {
   buildProfileView(context) {
     Color primaryTheme = Theme.of(context).colorScheme.primary;
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;
-    return InkWell(onTap: () {
-      Get.to(EditProfileScreen());
-    },
+    return InkWell(
+      onTap: () {
+        Get.to(EditProfileScreen());
+      },
       child: Row(
         children: [
           SizedBox(
             width: 20.px,
             height: 20.px,
           ),
-          CircleAvatar(
-            maxRadius: 35.px,
-            backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-            child: AppText(
-                UsersService.userName.substring(0, 1).toString().toUpperCase(),
-                fontSize: 25.px,
-                color: primaryTheme),
-          ),
+          UsersService.photoUrl.isEmpty
+              ? CircleAvatar(
+                  maxRadius: 35.px,
+                  backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
+                  child: AppText(
+                      UsersService.userName
+                          .substring(0, 1)
+                          .toString()
+                          .toUpperCase(),
+                      fontSize: 25.px,
+                      color: primaryTheme),
+                )
+              : CircleAvatar(
+                  maxRadius: 35.px,
+                  backgroundImage: NetworkImage(UsersService.photoUrl),
+                ),
           SizedBox(
             width: 30.px,
             height: 20.px,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppText(
-                UsersService.userName,
-                fontSize: 20.px,
-                color: primaryTheme,
-              ),
-              AppText(AuthService.auth.currentUser!.phoneNumber!,
-                  color: secondaryTheme, fontSize: 12.px),
-            ],
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: AppText(
+                    '${UsersService.userName} ${UsersService.lastName}',
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 20.px,
+                    color: primaryTheme,
+                  ),
+                ),
+                AppText(AuthService.auth.currentUser!.phoneNumber!,
+                    overflow: TextOverflow.ellipsis,
+                    color: secondaryTheme,
+                    fontSize: 12.px),
+              ],
+            ),
           )
         ],
       ),
