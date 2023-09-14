@@ -4,19 +4,28 @@ import 'package:get/get.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/validation.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/pages/edit_profile/edit_profile_name_screen/edit_profile_name_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_name_screen/edit_profile_name_screen.dart';
 import 'package:signal/service/auth_service.dart';
 
-class EditProfileNameScreenViewModel {
-  static final users = FirebaseFirestore.instance.collection('users');
+import '../../settings/settings_screen.dart';
 
+class EditProfileNameScreenViewModel {
+  final users = FirebaseFirestore.instance.collection('users');
+  bool isLoading = false;
   EditProfileNameScreen? editProfileNameScreen;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   String errorFirstName = "";
-
-  EditProfileNameScreenViewModel(this.editProfileNameScreen);
-
+  EditProfileNameController ?editProfileNameController;
+  EditProfileNameScreenViewModel(this.editProfileNameScreen) {
+    Future.delayed(
+      const Duration(milliseconds: 100),
+          () {
+            editProfileNameController = Get.find<EditProfileNameController>();
+      },
+    );
+  }
   onChangedValue(value, GetxController controller, BuildContext context) {
     if (ValidationUtil.validateName(value)) {
       errorFirstName = "";
@@ -25,7 +34,6 @@ class EditProfileNameScreenViewModel {
       logs("on change  ${ValidationUtil.validateName(value)}");
     } else {
       errorFirstName = S.of(context).enterValidName;
-
       controller.update();
     }
   }
@@ -35,13 +43,23 @@ class EditProfileNameScreenViewModel {
     String? lastName,
   ) async {
     try {
+      isLoading = true;
+      editProfileNameController!.update();
       await users.doc(AuthService.auth.currentUser!.uid).update({
         'firstName': firstName,
         'lastName': lastName!,
       });
-      print('Successfully updated user profile picture');
+      logs('Successfully updated user profile picture');
+      Get.to(SettingScreen());
+      isLoading = false;
+      editProfileNameController!.update();
     } catch (e) {
-      print('Error updating user profile picture: $e');
+      logs('Error updating user profile picture: $e');
+      isLoading = false;
+      editProfileNameController!.update();
+
     }
+
+
   }
 }
