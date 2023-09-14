@@ -8,6 +8,8 @@ import 'auth_service.dart';
 class UsersService {
   static final users = FirebaseFirestore.instance.collection('users');
   static String userName = "  ";
+  static String lastName = "  ";
+  static String photoUrl = "";
 
   //==========================addUsers=======================================
 
@@ -97,7 +99,10 @@ class UsersService {
         .where('id', isEqualTo: AuthService.auth.currentUser!.uid).limit(1)
         .get();
     userName = data.docs[0]["firstName"];
+    photoUrl = data.docs[0]["photoUrl"];
+    lastName = data.docs[0]["lastName"];
     logs("current User Name  ---- $userName");
+    logs("current photoUrl  ---- $photoUrl");
 
   }
 }

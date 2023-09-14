@@ -119,6 +119,9 @@ dependencies:
 
   # version
   package_info_plus: ^4.1.0
+  widgets_to_image: ^0.0.2
+  image: ^4.0.17
+  path_provider: ^2.1.1
 
 
 dev_dependencies:
