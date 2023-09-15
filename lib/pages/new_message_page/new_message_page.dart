@@ -38,9 +38,11 @@ class NewMessagePage extends StatelessWidget {
         DataBaseHelper.createDB();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
+        logs(
+            "New Message Screen SQF Contacts ---- > ${DataBaseHelper.contactData}");
       },
       builder: (NewMessageController controller) {
-        controller.getUserPhoneList();
+        // controller.getUserPhoneList();
         return SafeArea(
             child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -150,10 +152,10 @@ class NewMessagePage extends StatelessWidget {
             : newMessageViewModel!.contacts[index];
         String? mobileNumber =
             contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
-
-        logs(mobileNumber.toString().trim().removeAllWhitespace);
         String? displayName = contact.displayName ?? 'unknown';
         String firstLetter = displayName.substring(0, 1).toUpperCase();
+        logs(
+            "Sqf Contacts  ====  >  ${DataBaseHelper.contactData[index]["name"]}");
 
         return StreamBuilder(
           stream: controller
@@ -241,8 +243,6 @@ class NewMessagePage extends StatelessWidget {
                                       return const AppText('');
                                     }
                                     final data = snapshot.data!.docs;
-                                    logs(
-                                        "urls  ----- > ${data.first["photoUrl"]}");
 
                                     //data.first["photoUrl"].toString().contains("https://") && data.first["photoUrl"].toString().isNotEmpty
                                     return (false)

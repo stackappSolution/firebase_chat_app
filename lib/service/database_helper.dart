@@ -20,12 +20,24 @@ class DataBaseHelper {
 
   static setContactDetails(name, contact) async {
     try {
-      String qry = "insert into data values(null,'$name','$contact')";
-      await createDB().then((value) => value.rawInsert(qry));
+      final Database db = await createDB();
+
+      // Check if the contact already exists in the database
+      final List<Map<String, dynamic>> existingContacts = await db.rawQuery(
+          "SELECT * FROM data WHERE name = '$name' AND contact = '$contact'");
+
+      if (existingContacts.isEmpty) {
+        String qry = "INSERT INTO data VALUES(null, '$name', '$contact')";
+        await db.rawInsert(qry);
+      } else {
+        logs('Contact already exists.');
+      }
     } catch (e) {
       logs('Error : $e');
     }
   }
+
+
 
   static getContactDetails() async {
     try {

@@ -227,7 +227,7 @@ class ProfileViewModel {
       phone: phoneNo,
       photo: (userProfile != null) ? userProfile! : '',
       fcmToken: '',
-      about: ''
+      about: 'I am using ChatApp..!!!'
 
     )
         .then(

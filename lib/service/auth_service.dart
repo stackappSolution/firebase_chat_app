@@ -52,7 +52,7 @@ class AuthService {
     // );
     isResend = true;
     logs("isResend  --- ${isResend}");
-   // verifyOtpController!.update();
+    // verifyOtpController!.update();
 
     logs("entred contact IS------------->   $contact");
 
@@ -96,27 +96,31 @@ class AuthService {
     signInController!.update();
   }
 
-  static Future signInWithOTP(otp) async {
-    logs("entered OTP IS------------->   $otp");
+  static Future signInWithOTP(String otp) async {
+    logs("Entered OTP is: $otp");
+
     try {
       AuthCredential authCredential = PhoneAuthProvider.credential(
         verificationId: verificationID,
         smsCode: otp.trim(),
       );
-      await auth.signInWithCredential(authCredential);
-      ToastUtil.successToast("OTP Verified");
-
-      logs("OTP verified and logged in");
 
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(authCredential);
-      logs("successful logged");
 
-      logs("otp --------------> ${userCredential.toString()}");
-      goToProfilePage();
+      if (userCredential.user != null) {
+        logs("OTP verified and logged in");
+        ToastUtil.successToast("OTP Verified");
+        goToProfilePage();
+      } else {
+        isVerifyLoading = false;
+        logs("Incorrect OTP");
+        ToastUtil.warningToast("incorrect OTP");
+      }
     } catch (e) {
-      ToastUtil.warningToast("invalid OTP");
       isVerifyLoading = false;
+      logs("Login error Error: $e");
+      ToastUtil.warningToast("Incorrect OTP");
     }
   }
 

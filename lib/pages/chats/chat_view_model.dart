@@ -21,7 +21,6 @@ class ChatViewModel {
   ChatScreen? chatScreen;
   List<Contact> contacts = [];
   List<Contact> filterContacts = [];
-  bool isLoading = false;
   String string = '';
   bool isConnected = false;
 
@@ -58,18 +57,23 @@ class ChatViewModel {
   }
 
   void fetchContacts() async {
+    DataBaseHelper.getContactDetails();
     logs("fetch contact entered");
     contacts = await ContactsService.getContacts();
-    isLoading = false;
     logs("saved contact length----->  ${contacts.length}");
     for (int i = 0; i < contacts.length; i++) {
       Contact contact = contacts[i];
-      await DataBaseHelper.setContactDetails(
-          contact.displayName, contact.phones!.first.value ?? "");
+      await DataBaseHelper.setContactDetails(contact.displayName, contact.phones!.first.value ?? "");
     }
     DataBaseHelper.getContactDetails();
     controller!.update();
   }
+
+
+
+
+
+
 
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {

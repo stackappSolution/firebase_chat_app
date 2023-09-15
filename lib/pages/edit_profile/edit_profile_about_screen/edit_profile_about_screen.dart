@@ -13,8 +13,7 @@ import '../edit_profile_screen.dart';
 
 class EditProfileAboutScreen extends StatelessWidget {
   EditProfileAboutScreenViewModel? editProfileAboutScreenViewModel;
-
-  var data;
+  String data;
 
   EditProfileAboutScreen(this.data, {super.key});
 
@@ -88,7 +87,9 @@ class EditProfileAboutScreen extends StatelessWidget {
                       height: 50.px,
                       child: InkWell(
                         onTap: () {
-                          editProfileAboutScreenViewModel!.captionController.text = editProfileAboutScreenViewModel!.caption[index];
+                          editProfileAboutScreenViewModel!
+                                  .captionController.text =
+                              editProfileAboutScreenViewModel!.caption[index];
                           controller.update();
                         },
                         child: AppText(
@@ -115,7 +116,7 @@ class EditProfileAboutScreen extends StatelessWidget {
               ),
             ],
           ),
-          if (editProfileAboutScreenViewModel!.isLoading) AppLoader()
+          if (editProfileAboutScreenViewModel!.isLoading) const AppLoader()
         ],
       ),
     );
@@ -125,7 +126,6 @@ class EditProfileAboutScreen extends StatelessWidget {
     return AppAppBar(
       leadingWidth: 50.px,
       title: AppText('About', fontSize: 19.px),
-
     );
   }
 }

@@ -183,6 +183,12 @@ class VerifyOtpPage extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      if (AuthService.countdownSeconds != 0)
+                        Container(
+                            alignment: Alignment.centerRight,
+                            width: 50.px,
+                            child: AppText(
+                                "00 : ${AuthService.countdownSeconds.toString()} ")),
                       Padding(
                         padding: EdgeInsets.all(5.0.px),
                         child: InkWell(
@@ -206,12 +212,6 @@ class VerifyOtpPage extends StatelessWidget {
                                   : AppColorConstant.appYellow,
                             )),
                       ),
-                      if (AuthService.countdownSeconds != 0)
-                        Container(
-                            alignment: Alignment.centerRight,
-                            width: 50.px,
-                            child: AppText(
-                                "${AuthService.countdownSeconds.toString()} : 00")),
                     ],
                   ),
                 ),

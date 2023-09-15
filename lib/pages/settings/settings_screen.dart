@@ -12,7 +12,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
-import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/service/auth_service.dart';
@@ -53,14 +52,6 @@ class SettingScreen extends StatelessWidget {
 
   getAppbar(context) {
     return AppAppBar(
-      // leading: IconButton(
-      //   onPressed: () {
-      //     Get.to(HomeScreen());
-      //   },
-      //   icon: const Icon(
-      //     Icons.arrow_back_outlined,
-      //   ),
-      // ),
       title: AppText(
         S.of(Get.context!).settings,
         fontSize: 20.px,

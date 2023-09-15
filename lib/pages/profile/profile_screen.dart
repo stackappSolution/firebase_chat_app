@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
@@ -137,6 +138,9 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     AppTextFormField(
                       controller: profileViewModel!.firstNameController,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(15),
+                      ],
                       labelText: S.of(context).firstName,
                       onChanged: (value) {
                         profileViewModel!
@@ -160,6 +164,9 @@ class ProfileScreen extends StatelessWidget {
                         top: 10.px,
                       ),
                       child: AppTextFormField(
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(15),
+                        ],
                         controller: profileViewModel!.lastNameController,
                         labelText: S.of(context).lastName,
                         fontSize: null,
