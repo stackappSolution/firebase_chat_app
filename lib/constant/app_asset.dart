@@ -25,6 +25,7 @@ class AppAsset {
   static const String signIn='${imagePath}signin.png';
   static const String verifyOtp='${imagePath}verifyotp.png';
   static const String splash='${imagePath}splash.png';
+  static const String docs='${imagePath}docs.png';
 
   //     ======================= Icons =======================     //
   static const String drawerIcon = '${iconPath}drawer.svg';

@@ -13,6 +13,7 @@ import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 import '../../../app/app/utills/app_utills.dart';
 import '../../../app/app/utills/toast_util.dart';
 import '../../../app/app/utills/toast_util.dart';
+import '../../../modal/send_message_model.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/database_service.dart';
 import 'package:video_player/video_player.dart';
@@ -28,6 +29,7 @@ class AttachmentViewModel {
   ChatingPageController? controller;
   bool isLoading = false;
   bool isVideo = false;
+  String? fileSizes;
 
   //final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -39,7 +41,7 @@ class AttachmentViewModel {
   AttachmentViewModel(this.attachmentScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
-          () {
+      () {
         controller = Get.find<ChatingPageController>();
       },
     );
@@ -97,39 +99,53 @@ class AttachmentViewModel {
   }
 
   void imageButtonTap(AttachmentController controller) {
-    checkImageSize(File(selectedImage),controller);
+    onSendMessage("image", controller);
   }
 
   void videoButtonTap(AttachmentController controller) {
     onSendMessage("video", controller);
   }
 
-  onSendMessage(String msgType, AttachmentController controller) async {
-    DatabaseService.uploadVideo(File(selectedImage), controller).then((value) {
-      logs('message---> $value');
-      DatabaseService().addNewMessage(
-          type: msgType,
-          members: argument['members'],
-          massage: value,
-          sender: AuthService.auth.currentUser!.phoneNumber!,
-          isGroup: false);
-    });
+  void documentButtonTap(AttachmentController controller) {
+    onSendMessage("doc", controller);
   }
 
-  Future<void> checkImageSize(File imageFile,controller) async {
+  onSendMessage(String msgType, AttachmentController controller) async {
+    if (await isFileLarge(File(selectedImage), controller) == false) {
+      DatabaseService.uploadVideo(File(selectedImage), controller)
+          .then((value) {
+        logs('message---> $value');
+        SendMessageModel sendMessageModel = SendMessageModel(
+            type: msgType,
+            members: argument['members'],
+            message: value,
+            sender: AuthService.auth.currentUser!.phoneNumber!,
+            isGroup: false);
+        DatabaseService.instance
+            .addNewMessage(sendMessageModel: sendMessageModel);
+      });
+    }
+  }
+
+  Future<bool> isFileLarge(File imageFile, controller) async {
     int fileSizeInBytes = await imageFile.length();
 
     double fileSizeInMB = (fileSizeInBytes / (1024 * 1024)).toDouble();
 
     if (fileSizeInMB < 2) {
-      onSendMessage("image", controller);
-
       logs('Image is smaller than 2 MB. Performing action...');
+      return false;
     } else {
       ToastUtil.successToast("Image is larger than 2 MB.");
-
       logs('Image is larger than 2 MB.');
+      return true;
     }
   }
 
+  Future fileSize(controller) async {
+    int fileSizeInBytes = await File(selectedImage).length();
+    fileSizes = (fileSizeInBytes / (1024 * 1024)).toDouble().toString();
+    logs(fileSizes!);
+    controller.update();
+  }
 }

@@ -19,8 +19,9 @@ class AuthService {
 
   AuthService._privateConstructor();
 
-  static String verificationID = '';
   static final AuthService instance = AuthService._privateConstructor();
+  static String verificationID = '';
+
   static final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   bool isOtpSent = false;
   static bool isTimerRunning = false;

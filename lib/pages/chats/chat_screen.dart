@@ -40,7 +40,7 @@ class ChatScreen extends StatelessWidget {
           const Duration(milliseconds: 0),
           () async {
             controller = Get.find<ContactController>();
-            await UsersService.getUserData();
+            await UsersService.getUserStream();
             controller!.update();
           },
         );
@@ -146,25 +146,25 @@ class ChatScreen extends StatelessWidget {
               goToSettingPage();
             },
             child: StreamBuilder(
-              stream: UsersService.getUserData(),
+              stream: UsersService.getUserStream(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return const AppText('');
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const AppLoader();
+                  return const AppText('');
                 }
                 final data = snapshot.data!.docs;
                 return Padding(
                   padding:
                       EdgeInsets.only(left: 11.px, top: 3.px, bottom: 3.px),
-                  child: data[0]['photoUrl'].isEmpty
+                  child: data.first['photoUrl'].isEmpty
                       ? CircleAvatar(
                           maxRadius: 35.px,
                           backgroundColor:
                               AppColorConstant.appYellow.withOpacity(0.2),
                           child: AppText(
-                            data[0]['firstName']
+                            data.first['firstName']
                                 .substring(0, 1)
                                 .toString()
                                 .toUpperCase(),
@@ -173,7 +173,7 @@ class ChatScreen extends StatelessWidget {
                         )
                       : CircleAvatar(
                           maxRadius: 35.px,
-                          backgroundImage: NetworkImage(data[0]['photoUrl']),
+                          backgroundImage: NetworkImage(data.first['photoUrl']),
                         ),
                 );
               },

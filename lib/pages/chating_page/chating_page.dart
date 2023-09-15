@@ -26,6 +26,7 @@ import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 import 'package:signal/service/users_service.dart';
 import '../../controller/chating_page_controller.dart';
+import '../../modal/send_message_model.dart';
 
 // ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
@@ -38,7 +39,7 @@ class ChatingPage extends StatelessWidget {
 
   getBlockedList() async {
     chatingPageViewModal!.blockedNumbers =
-        await UsersService().getBlockedUsers();
+        await UsersService.instance.getBlockedUsers();
     logs('list-------------> ${chatingPageViewModal!.blockedNumbers}');
   }
 
@@ -65,7 +66,7 @@ class ChatingPage extends StatelessWidget {
             logs('arg--> ${chatingPageViewModal!.arguments}');
             controller = Get.find<ChatingPageController>();
 
-            chatingPageViewModal!.isBlocked = await UsersService()
+            chatingPageViewModal!.isBlocked = await UsersService.instance
                 .isBlockedByLoggedInUser(
                     chatingPageViewModal!.arguments['number']);
             logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
@@ -76,14 +77,14 @@ class ChatingPage extends StatelessWidget {
                     isEqualTo: chatingPageViewModal!.arguments['members'])
                 .get();
 
-            chats = DatabaseService().getChatStream(
+            chats = DatabaseService.instance.getChatStream(
               snapshots.docs.first.id,
             );
 
-            chatingPageViewModal!.snapshots = await DatabaseService()
+            chatingPageViewModal!.snapshots = await DatabaseService.instance
                 .getChatDoc(chatingPageViewModal!.arguments['members']);
 
-            DatabaseService().markMessagesAsSeen(snapshots.docs.first.id,
+            DatabaseService.instance.markMessagesAsSeen(snapshots.docs.first.id,
                 chatingPageViewModal!.arguments['number']);
             Future<String?> key = getStringValue(wallPaperColor);
             chatingPageViewModal!.wallpaperPath = await key;
@@ -147,7 +148,7 @@ class ChatingPage extends StatelessWidget {
                             .map((doc) => doc.data() as Map<String, dynamic>)
                             .toList();
 
-                        DatabaseService().markMessagesAsSeen(
+                        DatabaseService.instance.markMessagesAsSeen(
                             chatingPageViewModal!.snapshots.docs.first.id,
                             chatingPageViewModal!.arguments['number']);
 
@@ -164,7 +165,7 @@ class ChatingPage extends StatelessWidget {
                                 .add(dateTime);
 
                             return buildMessage(
-                                Message(
+                                MessageModel(
                                     messageStatus: element['messageStatus'],
                                     message: element['message'],
                                     isSender: element['isSender'],
@@ -174,7 +175,8 @@ class ChatingPage extends StatelessWidget {
                                 context,
                                 controller);
                           },
-                          reverse: true,physics: BouncingScrollPhysics(),
+                          reverse: true,
+                          physics: const BouncingScrollPhysics(),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           order: GroupedListOrder.DESC,
                           useStickyGroupSeparators: true,
@@ -277,7 +279,7 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildVideoView(Message message) {
+  buildVideoView(MessageModel messageModel) {
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -294,7 +296,7 @@ class ChatingPage extends StatelessWidget {
             onTap: () {
               Get.toNamed(RouteHelper.getVideoPlayerScreen(), arguments: {
                 'receiverName': chatingPageViewModal!.arguments['name'],
-                'videoUrl': message.message
+                'videoUrl': messageModel.message
               });
             },
             child: const SizedBox(
@@ -340,7 +342,7 @@ class ChatingPage extends StatelessWidget {
                 onTap: () {
                   chatingPageViewModal!.blockedNumbers
                       .remove(chatingPageViewModal!.arguments['number']);
-                  UsersService()
+                  UsersService.instance
                       .unblockUser(chatingPageViewModal!.arguments['number']);
                   controller.update();
                 },
@@ -359,8 +361,8 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  Widget buildMessage(
-      Message message, BuildContext context, ChatingPageController controller) {
+  Widget buildMessage(MessageModel message, BuildContext context,
+      ChatingPageController controller) {
     return Slidable(
       child: (message.sender == AuthService.auth.currentUser!.phoneNumber)
           ? (Slidable(
@@ -472,7 +474,7 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildReceiverMessageView(BuildContext context, Message message) {
+  buildReceiverMessageView(BuildContext context, MessageModel message) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
       alignment: Alignment.centerLeft,
@@ -492,11 +494,11 @@ class ChatingPage extends StatelessWidget {
                 ? Column(
                     children: [
                       AppText(
-                        message.sender,
+                        message.sender.toString(),
                         fontSize: 10.px,
                       ),
                       AppText(
-                        message.message,
+                        message.message.toString(),
                         color: AppColorConstant.appBlack,
                         fontSize: chatingPageViewModal!.fontSize ==
                                 S.of(context).small
@@ -512,7 +514,7 @@ class ChatingPage extends StatelessWidget {
                     ],
                   )
                 : AppText(
-                    message.message,
+                    message.message.toString(),
                     color: AppColorConstant.appBlack,
                     fontSize: chatingPageViewModal!.fontSize ==
                             S.of(context).small
@@ -545,7 +547,7 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildReceiverImageView(Message message, BuildContext context) {
+  buildReceiverImageView(MessageModel message, BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
       child: Column(
@@ -598,8 +600,8 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildSenderAudioView(
-      ChatingPageController controller, BuildContext context, Message message) {
+  buildSenderAudioView(ChatingPageController controller, BuildContext context,
+      MessageModel message) {
     return Align(
       alignment: Alignment.topRight,
       child: Column(
@@ -644,7 +646,8 @@ class ChatingPage extends StatelessWidget {
                       if (controller.isPlay.value) {
                         await controller.player.pause();
                       } else {
-                        await controller.player.setUrl(message.message);
+                        await controller.player
+                            .setUrl(message.message.toString());
                         await controller.player.play();
                       }
                     },
@@ -695,7 +698,7 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildSenderImageView(Message message, BuildContext context) {
+  buildSenderImageView(MessageModel message, BuildContext context) {
     return Align(
       alignment: Alignment.topRight,
       child: InkWell(
@@ -758,7 +761,7 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildSenderMessageView(BuildContext context, Message message) {
+  buildSenderMessageView(BuildContext context, MessageModel message) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
       alignment: Alignment.centerRight,
@@ -776,7 +779,7 @@ class ChatingPage extends StatelessWidget {
             alignment: Alignment.topRight,
             backGroundColor: chatingPageViewModal!.chatBubbleColor,
             child: AppText(
-              message.message,
+              message.message.toString(),
               color: AppColorConstant.appWhite,
               fontSize: chatingPageViewModal!.fontSize == S.of(context).small
                   ? 10.px
@@ -822,8 +825,8 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildReceiverAudioView(
-      BuildContext context, ChatingPageController controller, Message message) {
+  buildReceiverAudioView(BuildContext context, ChatingPageController controller,
+      MessageModel message) {
     return Align(
       alignment: Alignment.topLeft,
       child: Column(
@@ -868,7 +871,8 @@ class ChatingPage extends StatelessWidget {
                       if (controller.isPlay.value) {
                         await controller.player.pause();
                       } else {
-                        await controller.player.setUrl(message.message);
+                        await controller.player
+                            .setUrl(message.message.toString());
                         await controller.player.play();
                         controller.update();
                         logs('url--------> ${message.message}');
@@ -997,15 +1001,17 @@ class ChatingPage extends StatelessWidget {
   }
 
   onSendMessage(message, ChatingPageController controller) async {
+    SendMessageModel sendMessageModel = SendMessageModel(
+        type: 'text',
+        members: chatingPageViewModal!.arguments['members'],
+        message: message,
+        sender: AuthService.auth.currentUser!.phoneNumber!,
+        isGroup: false);
+
     (chatingPageViewModal!.blockedNumbers
             .contains(chatingPageViewModal!.arguments['number']))
         ? null
-        : DatabaseService().addNewMessage(
-            type: 'text',
-            members: chatingPageViewModal!.arguments['members'],
-            massage: message,
-            sender: AuthService.auth.currentUser!.phoneNumber!,
-            isGroup: false);
+        : DatabaseService.instance.addNewMessage(sendMessageModel :sendMessageModel);
     logs('message---> $message');
 
     controller.update();

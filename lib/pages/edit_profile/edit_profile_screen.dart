@@ -42,7 +42,7 @@ class EditProfileScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 40.px),
       child: StreamBuilder(
-        stream: UsersService.getUserData(),
+        stream: UsersService.getUserStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const AppText('');

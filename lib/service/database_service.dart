@@ -7,69 +7,59 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/modal/message.dart';
+import 'package:signal/modal/send_message_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../modal/first_message_model.dart';
+
 class DatabaseService {
+  DatabaseService._privateConstructor();
+
+  static final DatabaseService instance = DatabaseService._privateConstructor();
+
   String documentId = '';
   static FirebaseAuth auth = FirebaseAuth.instance;
   static bool isLoading = false;
 
   //================================addNewMessage============================
 
-  void addNewMessage({
-    String? type,
-    String? createdBy,
-    String? profile,
-    String? groupName,
-    List<dynamic>? members,
-    String? massage,
-    String? sender,
-    bool? isGroup,
-  }) async {
-    bool isFirst = await checkFirst(members!);
+  void addNewMessage(
+      {SendMessageModel? sendMessageModel,
+      FirstMessageModel? firstMessageModel}) async {
+    addChatMessage(sendMessageModel!);
+
+    bool isFirst = await checkFirst(firstMessageModel!.members!);
 
     if (isFirst) {
       DocumentReference doc =
           await FirebaseFirestore.instance.collection('rooms').add({
         'id': '',
-        'members': members,
-        'isGroup': isGroup,
+        'members': firstMessageModel.members,
+        'isGroup': firstMessageModel.isGroup,
         'time': DateTime.now().millisecondsSinceEpoch,
       });
       await doc.update({'id': doc.id});
 
-      if (isGroup == true) {
+      if (firstMessageModel.isGroup == true) {
         await doc.update({'id': doc.id});
         await FirebaseFirestore.instance
             .collection('rooms')
             .doc(doc.id)
             .update({
-          'groupProfile': profile,
-          'groupName': groupName,
-          'createdBy': createdBy,
+          'groupProfile': firstMessageModel.profile,
+          'groupName': firstMessageModel.groupName,
+          'createdBy': firstMessageModel.createdBy,
         }).then((value) =>
                 Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
                   'isGroup': true,
-                  'groupName': groupName!,
-                  'members': members,
+                  'groupName': firstMessageModel.groupName!,
+                  'members': firstMessageModel.members,
                 }));
       }
-      addChatMessages(
-          members: members,
-          message: massage,
-          sender: sender,
-          type: type,
-          messageStatus: false);
+      addChatMessage(sendMessageModel);
     }
-
-    addChatMessages(
-        message: massage!,
-        sender: sender!,
-        members: members,
-        type: type,
-        messageStatus: false);
   }
 
   //==========================checkFirstMessage===========================
@@ -85,8 +75,8 @@ class DatabaseService {
 
   //===============================addChatMessage=============================
 
-  void addChatMessages({
-    bool? messageStatus,
+  void addChatMessage(
+    SendMessageModel sendMessageModel, {
     String? type,
     List<dynamic>? members,
     String? message,
@@ -99,20 +89,19 @@ class DatabaseService {
 
     logs(querySnapshot.docs.first.id);
 
-    logs(querySnapshot.docs.first.id);
+    MessageModel messageModel = MessageModel(
+        messageStatus: false,
+        message: sendMessageModel.message,
+        isSender: true,
+        messageTimestamp: DateTime.now().millisecondsSinceEpoch,
+        messageType: sendMessageModel.type,
+        sender: sendMessageModel.sender);
 
     FirebaseFirestore.instance
         .collection('rooms')
         .doc(querySnapshot.docs.first.id)
         .collection('chats')
-        .add(Message(
-                messageStatus: messageStatus!,
-                message: message!,
-                isSender: true,
-                messageTimestamp: DateTime.now().millisecondsSinceEpoch,
-                messageType: type!,
-                sender: sender!)
-            .toJson());
+        .add(messageModel.toJson());
   }
 
   //=============================getChats====================================
@@ -199,7 +188,6 @@ class DatabaseService {
 //=== markMessageAsSeen =====================================//
 
   void markMessagesAsSeen(String chatRoomId, String receiverId) {
-
     FirebaseFirestore.instance
         .collection("rooms")
         .doc(chatRoomId)
@@ -227,27 +215,20 @@ class DatabaseService {
     });
   }
 
-
   //===========getChatDoc===================================================
 
   getChatDoc(List<dynamic> members) async {
-
     final snapshots = await FirebaseFirestore.instance
         .collection('rooms')
-        .where('members',
-        isEqualTo: members)
+        .where('members', isEqualTo: members)
         .get();
 
     return snapshots;
-
   }
-
-
 
   static String videoURL = "";
 
-  static Future<String> uploadVideo(
-      File url,  controller) async {
+  static Future<String> uploadVideo(File url, controller) async {
     isLoading = true;
     controller.update();
     final storage = FirebaseStorage.instance
@@ -267,8 +248,7 @@ class DatabaseService {
 
   static String docURL = "";
 
-  static Future<String> uploadDoc(
-      File url,  controller) async {
+  static Future<String> uploadDoc(File url, controller) async {
     isLoading = true;
     controller.update();
     final storage = FirebaseStorage.instance

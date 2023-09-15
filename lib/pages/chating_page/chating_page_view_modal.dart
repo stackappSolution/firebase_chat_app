@@ -18,9 +18,11 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
+import '../../modal/send_message_model.dart';
 import '../../service/auth_service.dart';
 import '../../service/database_service.dart';
 
@@ -97,36 +99,27 @@ class ChatingPageViewModal {
   //========================= files =============================//
 
   Future<void> pickDocument(ChatingPageController controller) async {
+    logs("on Doc Pic");
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
+    logs("file ---->  ${result.toString()}");
 
     if (result != null) {
-      logs("selected files ---- > ${selectedFile!.path}");
+      logs("selected files ---- > ${selectedFile.toString()}");
       selectedFile = File(result.files.single.path!);
+      goToAttachmentScreen(selectedFile!.path, arguments['members']);
+    }
+    else
+    {
+      logs("not selected file");
 
-      onSendDoc("doc", controller);
     }
   }
 
-  onSendDoc(
-    String msgType,
-    ChatingPageController controller,
-  ) async {
-    DatabaseService.uploadDoc(File(selectedFile!.path), controller)
-        .then((value) {
-      logs('message---> $value');
-      DatabaseService().addNewMessage(
-          type: msgType,
-          members: arguments['members'],
-          massage: value,
-          sender: AuthService.auth.currentUser!.phoneNumber!,
-          isGroup: false);
-    });
-  }
 
-  //========================= audio =============================//
+  //=========================== audio =============================//
 
   audioSendTap() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -138,7 +131,10 @@ class ChatingPageViewModal {
       PlatformFile file = result.files.first;
       if (file.path != null) {
         audioFile = File(file.path!);
-        onSendAudio("audio", controller);
+        // ignore: unrelated_type_equality_checks
+        if (await isFileLarge(File(file.path!)) == false) {
+          onSendAudio("audio", controller);
+        }
       } else {}
 
       logs('Selected MP3 file: ${file.name}');
@@ -151,14 +147,15 @@ class ChatingPageViewModal {
     DatabaseService.uploadAudio(File(audioFile!.path), controller)
         .then((value) {
       logs('message---> $value');
-      DatabaseService().addNewMessage(
+      SendMessageModel sendMessageModel = SendMessageModel(
           type: msgType,
           members: arguments['members'],
-          massage: value,
+          message: value,
           sender: AuthService.auth.currentUser!.phoneNumber!,
           isGroup: false);
+      DatabaseService.instance
+          .addNewMessage(sendMessageModel: sendMessageModel);
     });
-
     controller.update();
   }
 
@@ -169,10 +166,12 @@ class ChatingPageViewModal {
         await ImagePicker().pickVideo(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      selectedVideo = (File(pickedFile.path));
-      goToAttachmentScreen(selectedVideo!.path, members);
-      logs(selectedVideo.toString());
-      controller.update();
+      if (await isFileLarge(File(pickedFile.path)) == false) {
+        selectedVideo = (File(pickedFile.path));
+        goToAttachmentScreen(selectedVideo!.path, members);
+        logs(selectedVideo.toString());
+        controller.update();
+      }
     }
   }
 
@@ -184,12 +183,14 @@ class ChatingPageViewModal {
     DatabaseService.uploadAudio(File(audioFile!.path), controller)
         .then((value) {
       logs('message---> $value');
-      DatabaseService().addNewMessage(
+      SendMessageModel sendMessageModel = SendMessageModel(
           type: msgType,
           members: arguments['members'],
-          massage: value,
+          message: value,
           sender: AuthService.auth.currentUser!.phoneNumber!,
           isGroup: false);
+      DatabaseService.instance
+          .addNewMessage(sendMessageModel: sendMessageModel);
     });
     controller.update();
   }
@@ -236,6 +237,22 @@ class ChatingPageViewModal {
     isLoading = false;
     logs("load--> $isLoading");
     controller!.update();
+  }
+
+  Future<bool> isFileLarge(File file) async {
+    int fileSizeInBytes = await file.length();
+
+    double fileSizeInMB = (fileSizeInBytes / (1024 * 1024)).toDouble();
+
+    if (fileSizeInMB < 2) {
+      logs('File is smaller than 2 MB. Performing action...');
+      return false;
+    } else {
+      ToastUtil.successToast("File is larger than 2 MB.");
+
+      logs('Image is larger than 2 MB.');
+      return true;
+    }
   }
 
   buildPopupMenu(BuildContext context) {
@@ -482,7 +499,7 @@ class ChatingPageViewModal {
     }
     if (value == 3) {
       blockedNumbers.add(arguments['number']);
-      UsersService().blockUser(blockedNumbers, arguments['number']);
+      UsersService.instance.blockUser(blockedNumbers, arguments['number']);
 
       controller!.update();
     }

@@ -83,7 +83,7 @@ class SettingScreen extends StatelessWidget {
         Get.to(EditProfileScreen());
       },
       child: StreamBuilder(
-        stream: UsersService.getUserData(),
+        stream: UsersService.getUserStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const AppText('');
@@ -98,13 +98,13 @@ class SettingScreen extends StatelessWidget {
                 width: 20.px,
                 height: 20.px,
               ),
-              data[0]['photoUrl'].isEmpty
+              data.first['photoUrl'].isEmpty
                   ? CircleAvatar(
                       maxRadius: 35.px,
                       backgroundColor:
                           AppColorConstant.appYellow.withOpacity(0.2),
                       child: AppText(
-                          data[0]['firstName']
+                          data.first['firstName']
                               .substring(0, 1)
                               .toString()
                               .toUpperCase(),
@@ -113,7 +113,7 @@ class SettingScreen extends StatelessWidget {
                     )
                   : CircleAvatar(
                       maxRadius: 35.px,
-                      backgroundImage: NetworkImage(data[0]['photoUrl']),
+                      backgroundImage: NetworkImage(data.first['photoUrl']),
                     ),
               SizedBox(
                 width: 30.px,
@@ -126,7 +126,7 @@ class SettingScreen extends StatelessWidget {
                   children: [
                     Flexible(
                       child: AppText(
-                        '${data[0]['firstName']} ${data[0]['lastName']}',
+                        '${data.first['firstName']} ${data.first['lastName']}',
                         overflow: TextOverflow.ellipsis,
                         fontSize: 20.px,
                         color: primaryTheme,

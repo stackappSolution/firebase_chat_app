@@ -16,6 +16,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 
+import '../../app/widget/app_image_assets.dart';
 import '../../service/database_helper.dart';
 
 class NewMessagePage extends StatelessWidget {
@@ -42,7 +43,7 @@ class NewMessagePage extends StatelessWidget {
             "New Message Screen SQF Contacts ---- > ${DataBaseHelper.contactData}");
       },
       builder: (NewMessageController controller) {
-        // controller.getUserPhoneList();
+        controller.getUserPhoneList();
         return SafeArea(
             child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -133,157 +134,137 @@ class NewMessagePage extends StatelessWidget {
       );
 
   buildContactList(BuildContext context, NewMessageController controller) {
-    if (newMessageViewModel!.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          color: AppColorConstant.appYellow,
-        ),
-      );
-    }
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: newMessageViewModel!.isSearching == true
-          ? newMessageViewModel!.filteredContacts.length
-          : newMessageViewModel!.contacts.length,
-      itemBuilder: (context, index) {
-        final Contact contact = newMessageViewModel!.isSearching
-            ? newMessageViewModel!.filteredContacts[index]
-            : newMessageViewModel!.contacts[index];
-        String? mobileNumber =
-            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
-        String? displayName = contact.displayName ?? 'unknown';
-        String firstLetter = displayName.substring(0, 1).toUpperCase();
-        logs(
-            "Sqf Contacts  ====  >  ${DataBaseHelper.contactData[index]["name"]}");
+    return Stack(
+      children: [
+        if (newMessageViewModel!.isLoading) const AppLoader(),
+        ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: newMessageViewModel!.isSearching == true
+              ? newMessageViewModel!.filteredContacts.length
+              : newMessageViewModel!.contacts.length,
+          itemBuilder: (context, index) {
+            final Contact contact = newMessageViewModel!.isSearching
+                ? newMessageViewModel!.filteredContacts[index]
+                : newMessageViewModel!.contacts[index];
+            String? mobileNumber = contact.phones!.isNotEmpty
+                ? contact.phones!.first.value
+                : 'N/A';
+            String? displayName = contact.displayName ?? 'unknown';
+            String firstLetter = displayName.substring(0, 1).toUpperCase();
+            logs(
+                "Sqf Contacts  ====  >  ${DataBaseHelper.contactData[index]["name"]}");
 
-        return StreamBuilder(
-          stream: controller
-              .getUserData(mobileNumber.toString().trim().removeAllWhitespace),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return const AppText('');
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const AppLoader();
-            }
-            final data = snapshot.data!.docs;
-            //  controller.userList.contains(mobileNumber.toString().trim().removeAllWhitespace)
-            return (true)
-                ? Container(
-                    margin: EdgeInsets.only(top: 5.px),
-                    child: InkWell(
-                      onTap: () {
-                        newMessageViewModel!.isLoading = true;
-                        controller.update();
-                        goToChatingScreen();
-                        controller.update();
-                      },
-                      child: Column(
-                        children: [
-                          ListTile(
-                            onTap: () async {
-                              newMessageViewModel!.isThisUserExist =
-                                  await controller.doesUserExist(mobileNumber
-                                      .toString()
-                                      .trim()
-                                      .removeAllWhitespace);
-                              if (newMessageViewModel!.isThisUserExist &&
+            return Container(
+              margin: EdgeInsets.only(top: 5.px),
+              child: InkWell(
+                onTap: () {
+                  newMessageViewModel!.isLoading = true;
+                  controller.update();
+                  goToChatingScreen();
+                  controller.update();
+                },
+                child: Column(
+                  children: [
+                    ListTile(
+                      onTap: () async {
+                        newMessageViewModel!.isThisUserExist =
+                            await controller.doesUserExist(mobileNumber
+                                .toString()
+                                .trim()
+                                .removeAllWhitespace);
+                        if (newMessageViewModel!.isThisUserExist &&
+                            mobileNumber
+                                    .toString()
+                                    .trim()
+                                    .removeAllWhitespace !=
+                                AuthService.auth.currentUser!.phoneNumber) {
+                          Get.toNamed(RouteHelper.getChattingScreen(),
+                              arguments: {
+                                'members': [
+                                  AuthService.auth.currentUser!.phoneNumber!,
                                   mobileNumber
-                                          .toString()
-                                          .trim()
-                                          .removeAllWhitespace !=
-                                      AuthService
-                                          .auth.currentUser!.phoneNumber) {
-                                Get.toNamed(RouteHelper.getChattingScreen(),
-                                    arguments: {
-                                      'members': [
-                                        AuthService
-                                            .auth.currentUser!.phoneNumber!,
-                                        mobileNumber
-                                            .toString()
-                                            .removeAllWhitespace
-                                            .trim()
-                                      ],
-                                      'name': displayName,
-                                      'number': mobileNumber
-                                          .toString()
-                                          .trim()
-                                          .removeAllWhitespace,
-                                      'isGroup': false,
-                                    });
-                              } else {
-                                Get.toNamed(RouteHelper.getInviteMemberScreen(),
-                                    parameters: {
-                                      'firstLetter': firstLetter,
-                                      'displayName': displayName,
-                                      'phoneNo': mobileNumber
-                                    });
-                              }
-                            },
-                            leading: InkWell(
-                                onTap: () {
-                                  Get.toNamed(
-                                      RouteHelper.getChatProfileScreen());
-                                },
-                                child: StreamBuilder(
-                                  //   stream: controller.getProfile("+911234567890"),
-
-                                  stream: controller.getUserData(mobileNumber
                                       .toString()
+                                      .removeAllWhitespace
                                       .trim()
-                                      .removeAllWhitespace),
-                                  builder: (context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (snapshot.hasError) {
-                                      return const AppText('');
-                                    }
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const AppText('');
-                                    }
-                                    final data = snapshot.data!.docs;
-
-                                    //data.first["photoUrl"].toString().contains("https://") && data.first["photoUrl"].toString().isNotEmpty
-                                    return (false)
-                                        ? Container(
-                                            height: 48.px,
-                                            width: 48.px,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        data[0]["photoUrl"]),
-                                                    fit: BoxFit.cover)),
-                                          )
-                                        : CircleAvatar(
-                                            maxRadius: 20.px,
-                                            backgroundColor: AppColorConstant
-                                                .appYellow
-                                                .withOpacity(0.8),
-                                            child: AppText(
-                                              firstLetter,
-                                              color: AppColorConstant.appWhite,
-                                              fontSize: 20.px,
-                                            ));
-                                  },
-                                )),
-                            title: AppText(
-                              displayName,
-                              fontSize: 15.px,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            subtitle: AppText(mobileNumber!,
-                                color: AppColorConstant.grey, fontSize: 12.px),
-                          ),
-                        ],
+                                ],
+                                'name': displayName,
+                                'number': mobileNumber
+                                    .toString()
+                                    .trim()
+                                    .removeAllWhitespace,
+                                'isGroup': false,
+                              });
+                        } else {
+                          Get.toNamed(RouteHelper.getInviteMemberScreen(),
+                              parameters: {
+                                'firstLetter': firstLetter,
+                                'displayName': displayName,
+                                'phoneNo': mobileNumber
+                              });
+                        }
+                      },
+                      leading: InkWell(
+                          onTap: () {
+                            Get.toNamed(RouteHelper.getChatProfileScreen());
+                          },
+                          child: StreamBuilder(
+                            stream: controller.getProfile(mobileNumber
+                                .toString()
+                                .trim()
+                                .removeAllWhitespace),
+                            builder: (context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return const AppText('');
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const AppText('');
+                              }
+                              final data = snapshot.data!.docs;
+                              return (controller.userList.contains(mobileNumber
+                                          .toString()
+                                          .trim()
+                                          .removeAllWhitespace) &&
+                                      data.first["photoUrl"]
+                                          .toString()
+                                          .contains("https://"))
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(700),
+                                      child: AppImageAsset(
+                                        image: data[0]["photoUrl"],
+                                        fit: BoxFit.cover,
+                                        height: 40.px,
+                                        width: 40.px,
+                                      ))
+                                  : CircleAvatar(
+                                      maxRadius: 20.px,
+                                      backgroundColor: AppColorConstant
+                                          .appYellow
+                                          .withOpacity(0.8),
+                                      child: AppText(
+                                        firstLetter,
+                                        color: AppColorConstant.appWhite,
+                                        fontSize: 20.px,
+                                      ));
+                            },
+                          )),
+                      title: AppText(
+                        displayName,
+                        fontSize: 15.px,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
+                      subtitle: AppText(mobileNumber!,
+                          color: AppColorConstant.grey, fontSize: 12.px),
                     ),
-                  )
-                : Container();
+                  ],
+                ),
+              ),
+            );
           },
-        );
-      },
+        )
+      ],
     );
   }
 }

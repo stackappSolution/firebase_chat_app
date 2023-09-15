@@ -103,7 +103,7 @@ class BlockedUsersScreen extends StatelessWidget {
 
   getBlockedUsersList() async {
     blockedUsersViewModel!.blockedUsersList =
-        await UsersService().getBlockedUsers();
+        await UsersService.instance.getBlockedUsers();
     controller!.update();
     logs('blockkkkk-----------> ${blockedUsersViewModel!.blockedUsersList}');
   }

@@ -18,6 +18,7 @@ import 'package:signal/generated/l10n.dart';
 import 'constant/color_constant.dart';
 
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
@@ -34,8 +35,10 @@ Future<void> main() async {
   // String? token = await FirebaseMessaging.instance.getToken();
   // logs('Token---------------------> $token');
 
-
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

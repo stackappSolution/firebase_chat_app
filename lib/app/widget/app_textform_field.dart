@@ -21,39 +21,39 @@ class AppTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final FocusNode? focusNode;
 
-  const AppTextFormField(
-      {super.key,
-        this.hintText,
-        this.label,
-        this.suffixIcon,
-        this.onSuffixTap,
-        this.onChanged,
-        this.validator,
-        this.inputFormatters,
-        this.controller,
-        this.style,
-        this.labelText,
-        this.labelStyle,
-        this.keyboardType,
-        this.decoration,
-        this.fontSize,
-        this.isborderRadius,
-        this.focusNode,
-      });
+  const AppTextFormField({
+    super.key,
+    this.hintText,
+    this.label,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.onChanged,
+    this.validator,
+    this.inputFormatters,
+    this.controller,
+    this.style,
+    this.labelText,
+    this.labelStyle,
+    this.keyboardType,
+    this.decoration,
+    this.fontSize,
+    this.isborderRadius,
+    this.focusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      autofocus: true,
       onChanged: onChanged,
       controller: controller,
-      focusNode:focusNode ,
+      focusNode: focusNode,
       decoration: decoration ??
           InputDecoration(
             enabledBorder: OutlineInputBorder(
-                borderSide:  const BorderSide(color: AppColorConstant.appYellowBorder),
-                borderRadius: isborderRadius ?? BorderRadius.all(Radius.circular(11.px))
-            ),
+                borderSide:
+                    const BorderSide(color: AppColorConstant.appYellowBorder),
+                borderRadius:
+                    isborderRadius ?? BorderRadius.all(Radius.circular(11.px))),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(11.px)),
               borderSide: const BorderSide(
@@ -61,16 +61,16 @@ class AppTextFormField extends StatelessWidget {
               ),
             ),
             contentPadding:
-            EdgeInsets.symmetric(vertical: 2.px, horizontal: 15.px),
+                EdgeInsets.symmetric(vertical: 2.px, horizontal: 15.px),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(11.px)),
               borderSide:
-              const BorderSide(color: AppColorConstant.appYellowBorder),
+                  const BorderSide(color: AppColorConstant.appYellowBorder),
             ),
             hintText: hintText,
             labelText: labelText,
             labelStyle:
-            const TextStyle(color: AppColorConstant.appYellowBorder),
+                const TextStyle(color: AppColorConstant.appYellowBorder),
             suffixIcon: suffixIcon,
           ),
       keyboardType: keyboardType,

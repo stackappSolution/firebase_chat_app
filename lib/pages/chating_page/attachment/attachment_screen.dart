@@ -48,6 +48,7 @@ class AttachmentScreen extends StatelessWidget {
           const Duration(milliseconds: 200),
           () {
             attachmentController = Get.find<AttachmentController>();
+            attachmentViewModel!.fileSize(attachmentController);
 
             attachmentViewModel!.videoPlayerController!.addListener(() {
               attachmentViewModel!.sliderValue = attachmentViewModel!
@@ -75,9 +76,31 @@ class AttachmentScreen extends StatelessWidget {
           },
           child: SafeArea(
               child: Scaffold(
-                  body: (!attachmentViewModel!.isVideo)
-                      ? photoShowView(controller, context)
-                      : videoShowView(controller, context))),
+                  body: Column(
+            children: [
+              if (attachmentViewModel!.selectedImage
+                      .toString()
+                      .contains(".jpg") ||
+                  attachmentViewModel!.selectedImage
+                      .toString()
+                      .contains(".png"))
+                photoShowView(controller, context),
+              if (attachmentViewModel!.selectedImage
+                  .toString()
+                  .contains(".mp4"))
+                videoShowView(controller, context),
+              if (attachmentViewModel!.selectedImage
+                      .toString()
+                      .contains(".pdf") ||
+                  attachmentViewModel!.selectedImage
+                      .toString()
+                      .contains(".doc") ||
+                  attachmentViewModel!.selectedImage
+                      .toString()
+                      .contains("dotx"))
+                documentShowView(controller, context)
+            ],
+          ))),
         );
       },
     );
@@ -273,6 +296,64 @@ class AttachmentScreen extends StatelessWidget {
               )
             ]),
           ),
+        ),
+        if (DatabaseService.isLoading) const AppLoader(),
+      ],
+    );
+  }
+
+  documentShowView(AttachmentController controller, BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.all(20.px),
+          decoration: const BoxDecoration(color: AppColorConstant.appWhite),
+          child: Column(children: [
+            Align(
+                alignment: Alignment.bottomLeft,
+                child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(Icons.clear))),
+            SizedBox(
+              height: 100.px,
+            ),
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 2.px, color: AppColorConstant.appYellow),
+                    borderRadius: BorderRadius.all(Radius.circular(20.px))),
+                height: 300.px,
+                child: Padding(
+                  padding: EdgeInsets.all(70.px),
+                  child: AppImageAsset(
+                    image: AppAsset.docs,
+                    height: 100.px,
+                  ),
+                )),
+            Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.all(12.px),
+                  child: AppText("${attachmentViewModel!.fileSizes}",color: AppColorConstant.darkSecondary,fontSize: 18.px,),
+                )),
+            SizedBox(
+              height: 70.px,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 15.px),
+              child: AppTextFormField(
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    attachmentViewModel!.documentButtonTap(controller);
+                  },
+                  icon:
+                      const Icon(Icons.send, color: AppColorConstant.appYellow),
+                ),
+              ),
+            )
+          ]),
         ),
         if (DatabaseService.isLoading) const AppLoader(),
       ],

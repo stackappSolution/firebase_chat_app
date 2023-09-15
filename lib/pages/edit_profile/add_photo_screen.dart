@@ -51,7 +51,7 @@ class AddPhotoScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 15.px, bottom: 15.px),
               child: StreamBuilder(
-                stream: UsersService.getUserData(),
+                stream: UsersService.getUserStream(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return const AppText('');
