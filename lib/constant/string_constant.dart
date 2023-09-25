@@ -202,5 +202,6 @@ class StringConstant {
 
 
   static const String logOut = 'Log Out';
+  static const String yes = 'yes';
 
 }

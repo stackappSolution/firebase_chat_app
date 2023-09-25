@@ -9,14 +9,12 @@ import 'package:signal/pages/edit_profile/add_photo_controller.dart';
 import 'package:signal/pages/edit_profile/add_photo_screen.dart';
 import 'package:signal/service/auth_service.dart';
 
-
-
 class AddPhotoViewModel {
-   final users = FirebaseFirestore.instance.collection("users");
+  final users = FirebaseFirestore.instance.collection("users");
 
   AddPhotoScreen? addPhotoScreen;
 
-   AddPhotoController? controller;
+  AddPhotoController? controller;
   bool isLoading = false;
   File? selectedImage;
   String? userProfile;
@@ -33,13 +31,13 @@ class AddPhotoViewModel {
   updateProfilePicture(String imagePath) {
     isLoading = true;
     controller!.update();
-    uploadImages(File(imagePath)).then((value) {
+    uploadImagesStorage(File(imagePath)).then((value) {
       if (value != null) {
         updateUserPhotoUrl(value);
         isLoading = false;
         controller!.update();
       } else {
-        print('Error uploading image');
+        logs('Error uploading image');
         isLoading = false;
         controller!.update();
       }
@@ -47,55 +45,50 @@ class AddPhotoViewModel {
   }
 
   Future<void> updateUserPhotoUrl(String photoUrl) async {
+    logs("updateUserPhotoUrl Entred");
     isLoading = true;
     controller!.update();
     try {
       await users.doc(AuthService.auth.currentUser!.uid).update({
         'photoUrl': photoUrl,
       });
-      print('Successfully updated user profile picture');
+      logs('Successfully updated user profile picture');
       isLoading = false;
       controller!.update();
     } catch (e) {
-      print('Error updating user profile picture: $e');
+      logs('Error updating user profile picture: $e');
       isLoading = false;
       controller!.update();
     }
   }
 
   Future<void> pickImage(GetxController controller, ImageSource source) async {
-
     final pickedFile = await ImagePicker().pickImage(source: source);
-    isLoading = true;
-    controller.update();
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(File(selectedImage!.path));
+     // uploadImageStorage(File(selectedImage!.path));
       logs('selectedImage ${selectedImage.toString()}');
     }
-    isLoading = false;
-    controller.update();
   }
 
   Future<void> deleteUserPhoto() async {
     isLoading = true;
     controller!.update();
-
     try {
       await users.doc(AuthService.auth.currentUser!.uid).update({
         'photoUrl': "",
       });
-      print('Successfully deleted user profile picture');
+      logs('Successfully deleted user profile picture');
       isLoading = false;
       controller!.update();
     } catch (e) {
-      print('Error deleting user profile picture: $e');
+      logs('Error deleting user profile picture: $e');
       isLoading = false;
       controller!.update();
     }
   }
 
-  Future<String?> uploadImages(File imageUrl) async {
+  Future<String?> uploadImagesStorage(File imageUrl) async {
     isLoading = true;
     controller!.update();
     logs("isLoading-----$isLoading");
@@ -118,7 +111,7 @@ class AddPhotoViewModel {
     }
   }
 
-  uploadImage(File imageUrl) async {
+  Future<String> uploadImageStorage(File imageUrl) async {
     isLoading = true;
     controller!.update();
     logs("load--> $isLoading");
@@ -128,9 +121,11 @@ class AddPhotoViewModel {
         .child('profile.jpg');
     await storage.putFile(imageUrl);
     userProfile = await storage.getDownloadURL();
-    logs("profile........ $userProfile");
+    logs("profile====> $userProfile");
     isLoading = false;
+    updateUserPhotoUrl(await storage.getDownloadURL());
     controller!.update();
     logs("load--> $isLoading");
+    return await storage.getDownloadURL();
   }
 }

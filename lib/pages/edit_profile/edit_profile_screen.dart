@@ -42,7 +42,7 @@ class EditProfileScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 40.px),
       child: StreamBuilder(
-        stream: UsersService.getUserData(),
+        stream: UsersService.getUserStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const AppText('');
@@ -143,7 +143,8 @@ class EditProfileScreen extends StatelessWidget {
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AppText(S.of(context).about),
-                          AppText(data[0]['about'],
+                          data[0]['about'] != ''? AppText(data[0]['about'] ,
+                              color: secondaryTheme, fontSize: 14.px):AppText( 'I am using ChatApp..!!!',
                               color: secondaryTheme, fontSize: 14.px),
                         ],
                       ),

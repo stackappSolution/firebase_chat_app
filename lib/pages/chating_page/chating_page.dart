@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/date_formation.dart';
@@ -26,6 +28,7 @@ import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 import 'package:signal/service/users_service.dart';
 import '../../controller/chating_page_controller.dart';
+import '../../modal/send_message_model.dart';
 
 // ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
@@ -38,7 +41,7 @@ class ChatingPage extends StatelessWidget {
 
   getBlockedList() async {
     chatingPageViewModal!.blockedNumbers =
-        await UsersService().getBlockedUsers();
+        await UsersService.instance.getBlockedUsers();
     logs('list-------------> ${chatingPageViewModal!.blockedNumbers}');
   }
 
@@ -53,6 +56,10 @@ class ChatingPage extends StatelessWidget {
         controller!.player.dispose();
       },
       initState: (state) async {
+        chatingPageViewModal!.isFileDownLoadingList = List.filled(100, false);
+        chatingPageViewModal!.isFileDownLoadedList = List.filled(100, false);
+        chatingPageViewModal!.isPlayList = List.filled(100, false);
+        chatingPageViewModal!.thumbnailList = List.filled(100, "");
         chatingPageViewModal!.parameter = Get.parameters;
         chatingPageViewModal!.arguments = Get.arguments;
         chatingPageViewModal!.fontSize =
@@ -64,8 +71,9 @@ class ChatingPage extends StatelessWidget {
           () async {
             logs('arg--> ${chatingPageViewModal!.arguments}');
             controller = Get.find<ChatingPageController>();
-
-            chatingPageViewModal!.isBlocked = await UsersService()
+            controller!.durationList = List.filled(100, Duration.zero);
+            controller!.positionList = List.filled(100, Duration.zero);
+            chatingPageViewModal!.isBlocked = await UsersService.instance
                 .isBlockedByLoggedInUser(
                     chatingPageViewModal!.arguments['number']);
             logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
@@ -76,14 +84,14 @@ class ChatingPage extends StatelessWidget {
                     isEqualTo: chatingPageViewModal!.arguments['members'])
                 .get();
 
-            chats = DatabaseService().getChatStream(
+            chats = DatabaseService.instance.getChatStream(
               snapshots.docs.first.id,
             );
 
-            chatingPageViewModal!.snapshots = await DatabaseService()
+            chatingPageViewModal!.snapshots = await DatabaseService.instance
                 .getChatDoc(chatingPageViewModal!.arguments['members']);
 
-            DatabaseService().markMessagesAsSeen(snapshots.docs.first.id,
+            DatabaseService.instance.markMessagesAsSeen(snapshots.docs.first.id,
                 chatingPageViewModal!.arguments['number']);
             Future<String?> key = getStringValue(wallPaperColor);
             chatingPageViewModal!.wallpaperPath = await key;
@@ -99,137 +107,149 @@ class ChatingPage extends StatelessWidget {
       },
       init: ChatingPageController(),
       builder: (ChatingPageController controller) {
-        return Scaffold(
-          appBar: appBar(controller, context),
-          body: Container(
-            decoration: BoxDecoration(
-                image: (chatingPageViewModal!.wallpaperPath != null)
-                    ? DecorationImage(
-                        image: FileImage(
-                            File(chatingPageViewModal!.wallpaperPath!)))
-                    : null,
-                color: (chatingPageViewModal!.wallpaperPath != null)
-                    ? chatingPageViewModal!.wallpaperColor
-                    : Colors.transparent),
-            child: Column(
-              children: [
-                (chatingPageViewModal!.arguments['isGroup'])
-                    ? Container(
-                        padding: EdgeInsets.all(8.px),
-                        margin: EdgeInsets.all(8.px),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15.px),
-                              color:
-                                  AppColorConstant.appWhite.withOpacity(0.3)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AppText(
-                              '${chatingPageViewModal!.arguments['createdBy']} created this group',
-                              fontSize: 10.px,
+        return WillPopScope(
+          onWillPop: () async {
+            controller!.player.dispose();
+
+            return true;
+          },
+          child: Scaffold(
+            appBar: appBar(controller, context),
+            body: Container(
+              decoration: BoxDecoration(
+                  image: (chatingPageViewModal!.wallpaperPath != null)
+                      ? DecorationImage(
+                          image: FileImage(
+                              File(chatingPageViewModal!.wallpaperPath!)))
+                      : null,
+                  color: (chatingPageViewModal!.wallpaperPath != null)
+                      ? chatingPageViewModal!.wallpaperColor
+                      : Colors.transparent),
+              child: Column(
+                children: [
+                  (chatingPageViewModal!.arguments['isGroup'])
+                      ? Container(
+                          padding: EdgeInsets.all(8.px),
+                          margin: EdgeInsets.all(8.px),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.px),
+                                color:
+                                    AppColorConstant.appWhite.withOpacity(0.3)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AppText(
+                                '${chatingPageViewModal!.arguments['createdBy']} created this group',
+                                fontSize: 10.px,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    : const SizedBox(),
-                Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: chats,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return AppText(S.of(context).somethingWentWrong);
-                      }
-                      if (snapshot.hasData) {
-                        final data = snapshot.data!.docs;
-                        logs('data----> ${data.length}');
-                        final message = snapshot.data!.docs
-                            .map((doc) => doc.data() as Map<String, dynamic>)
-                            .toList();
+                        )
+                      : const SizedBox(),
+                  Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: chats,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return AppText(S.of(context).somethingWentWrong);
+                        }
+                        if (snapshot.hasData) {
+                          final data = snapshot.data!.docs;
+                          final message = snapshot.data!.docs
+                              .map((doc) => doc.data() as Map<String, dynamic>)
+                              .toList();
 
-                        DatabaseService().markMessagesAsSeen(
-                            chatingPageViewModal!.snapshots.docs.first.id,
-                            chatingPageViewModal!.arguments['number']);
+                          DatabaseService.instance.markMessagesAsSeen(
+                              chatingPageViewModal!.snapshots.docs.first.id,
+                              chatingPageViewModal!.arguments['number']);
 
-                        return GroupedListView(
-                          itemBuilder: (context, element) {
-                            String formattedTime = DateFormation()
-                                .getChatTimeFormate(
-                                    element['messageTimestamp']);
+                          return GroupedListView(
+                            itemBuilder: (context, element) {
+                              int index = message.indexOf(element);
 
-                            DateTime dateTime = DateFormation()
-                                .getDatetime(element['messageTimestamp']);
+                              String formattedTime = DateFormation()
+                                  .getChatTimeFormate(
+                                      element['messageTimestamp']);
 
-                            chatingPageViewModal!.messageTimeStamp
-                                .add(dateTime);
+                              DateTime dateTime = DateFormation()
+                                  .getDatetime(element['messageTimestamp']);
 
-                            return buildMessage(
-                                Message(
-                                    messageStatus: element['messageStatus'],
-                                    message: element['message'],
-                                    isSender: element['isSender'],
-                                    messageTimestamp: formattedTime,
-                                    messageType: element['messageType'],
-                                    sender: element['sender']),
-                                context,
-                                controller);
-                          },
-                          reverse: true,physics: BouncingScrollPhysics(),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          order: GroupedListOrder.DESC,
-                          useStickyGroupSeparators: true,
-                          floatingHeader: true,
-                          elements: message,
-                          groupBy: (element) {
-                            String formatDate(DateTime dateTime) {
-                              return DateFormat('MMM d, y').format(dateTime);
-                            }
+                              chatingPageViewModal!.messageTimeStamp
+                                  .add(dateTime);
 
-                            int timestamp = element['messageTimestamp'];
-                            DateTime date =
-                                DateTime.fromMillisecondsSinceEpoch(timestamp);
-                            return formatDate(date);
-                          },
-                          groupHeaderBuilder: (value) {
-                            var timestamp = value['messageTimestamp'];
-                            String formatDate =
-                                DateFormation().headerTimestamp(timestamp);
-                            return Container(
-                              margin: EdgeInsets.all(15.px),
-                              alignment: Alignment.center,
-                              height: 25.px,
-                              child: Container(
-                                padding: EdgeInsets.all(5.px),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.px),
-                                  color:
-                                      AppColorConstant.appGrey.withOpacity(0.3),
-                                ),
+                              return buildMessage(
+                                  MessageModel(
+                                      messageStatus: element['messageStatus'],
+                                      message: element['message'],
+                                      isSender: element['isSender'],
+                                      messageTimestamp: formattedTime,
+                                      messageType: element['messageType'],
+                                      sender: element['sender'],
+                                      text: element['text']),
+                                  context,
+                                  controller,
+                                  index);
+                            },
+                            reverse: true,
+                            physics: const BouncingScrollPhysics(),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            order: GroupedListOrder.DESC,
+                            useStickyGroupSeparators: true,
+                            floatingHeader: true,
+                            elements: message,
+                            groupBy: (element) {
+                              String formatDate(DateTime dateTime) {
+                                return DateFormat('MMM d, y').format(dateTime);
+                              }
+
+                              int timestamp = element['messageTimestamp'];
+                              DateTime date =
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      timestamp);
+                              return formatDate(date);
+                            },
+                            groupHeaderBuilder: (value) {
+                              var timestamp = value['messageTimestamp'];
+                              String formatDate =
+                                  DateFormation().headerTimestamp(timestamp);
+                              return Container(
+                                margin: EdgeInsets.all(15.px),
                                 alignment: Alignment.center,
                                 height: 25.px,
-                                width: 100.px,
-                                child: Text(
-                                  formatDate,
-                                  style: const TextStyle(
-                                    color: AppColorConstant.appBlack,
+                                child: Container(
+                                  padding: EdgeInsets.all(5.px),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.px),
+                                    color: AppColorConstant.appGrey
+                                        .withOpacity(0.3),
+                                  ),
+                                  alignment: Alignment.center,
+                                  height: 25.px,
+                                  width: 100.px,
+                                  child: Text(
+                                    formatDate,
+                                    style: const TextStyle(
+                                      color: AppColorConstant.appBlack,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      }
-                      return const AppLoader();
-                    },
+                              );
+                            },
+                          );
+                        }
+                        return AppLoader();
+                      },
+                    ),
                   ),
-                ),
-                (chatingPageViewModal!.isBlocked)
-                    ? buildBlockView(context)
-                    : (chatingPageViewModal!.blockedNumbers.contains(
-                            chatingPageViewModal!.arguments['number']))
-                        ? buildUnblockView(context, controller)
-                        : buildTextFormField(context, controller),
-              ],
+                  (chatingPageViewModal!.isBlocked)
+                      ? buildBlockView(context)
+                      : (chatingPageViewModal!.blockedNumbers.contains(
+                              chatingPageViewModal!.arguments['number']))
+                          ? buildUnblockView(context, controller)
+                          : buildTextFormField(context, controller),
+                ],
+              ),
             ),
           ),
         );
@@ -277,37 +297,6 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildVideoView(Message message) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: AppImageAsset(
-            image: AppAsset.signIn,
-            fit: BoxFit.fill,
-            height: 200,
-            width: 150,
-          ),
-        ),
-        InkWell(
-            onTap: () {
-              Get.toNamed(RouteHelper.getVideoPlayerScreen(), arguments: {
-                'receiverName': chatingPageViewModal!.arguments['name'],
-                'videoUrl': message.message
-              });
-            },
-            child: const SizedBox(
-                height: 30,
-                width: 30,
-                child: AppImageAsset(
-                  image: AppAsset.play,
-                  color: AppColorConstant.appBlack,
-                )))
-      ],
-    );
-  }
-
   buildUnblockView(BuildContext context, ChatingPageController controller) {
     return Container(
       padding: EdgeInsets.all(12.px),
@@ -340,7 +329,7 @@ class ChatingPage extends StatelessWidget {
                 onTap: () {
                   chatingPageViewModal!.blockedNumbers
                       .remove(chatingPageViewModal!.arguments['number']);
-                  UsersService()
+                  UsersService.instance
                       .unblockUser(chatingPageViewModal!.arguments['number']);
                   controller.update();
                 },
@@ -359,8 +348,8 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  Widget buildMessage(
-      Message message, BuildContext context, ChatingPageController controller) {
+  Widget buildMessage(MessageModel message, BuildContext context,
+      ChatingPageController controller, int index) {
     return Slidable(
       child: (message.sender == AuthService.auth.currentUser!.phoneNumber)
           ? (Slidable(
@@ -400,10 +389,13 @@ class ChatingPage extends StatelessWidget {
               child: (message.messageType == 'text')
                   ? buildSenderMessageView(context, message)
                   : (message.messageType == 'image')
-                      ? buildSenderImageView(message, context)
+                      ? buildSenderImageView(message, context, index)
                       : (message.messageType == 'audio')
-                          ? buildSenderAudioView(controller, context, message)
-                          : buildVideoView(message)))
+                          ? buildSenderAudioView(
+                              controller, context, message, index)
+                          : (message.messageType == 'doc')
+                              ? buildSenderDocumentView(context, message, index)
+                              : buildSenderVideoView(context, message, index)))
           : (Slidable(
               startActionPane: ActionPane(
                 extentRatio:
@@ -464,15 +456,21 @@ class ChatingPage extends StatelessWidget {
               child: (message.messageType == 'text')
                   ? buildReceiverMessageView(context, message)
                   : (message.messageType == 'image')
-                      ? buildReceiverImageView(message, context)
+                      ? buildReceiverImageView(message, context, index)
                       : (message.messageType == 'audio')
-                          ? buildReceiverAudioView(context, controller, message)
-                          : buildVideoView(message),
+                          ? buildReceiverAudioView(
+                              context, controller, message, index)
+                          : (message.messageType == 'doc')
+                              ? buildReceiverDocumentView(
+                                  context, message, index)
+                              : buildReceiverVideoView(context, message, index),
             )),
     );
   }
 
-  buildReceiverMessageView(BuildContext context, Message message) {
+  //===========================  message =============================//
+
+  buildReceiverMessageView(BuildContext context, MessageModel message) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
       alignment: Alignment.centerLeft,
@@ -492,11 +490,11 @@ class ChatingPage extends StatelessWidget {
                 ? Column(
                     children: [
                       AppText(
-                        message.sender,
+                        message.sender.toString(),
                         fontSize: 10.px,
                       ),
                       AppText(
-                        message.message,
+                        message.message.toString(),
                         color: AppColorConstant.appBlack,
                         fontSize: chatingPageViewModal!.fontSize ==
                                 S.of(context).small
@@ -512,7 +510,7 @@ class ChatingPage extends StatelessWidget {
                     ],
                   )
                 : AppText(
-                    message.message,
+                    message.message.toString(),
                     color: AppColorConstant.appBlack,
                     fontSize: chatingPageViewModal!.fontSize ==
                             S.of(context).small
@@ -545,220 +543,7 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildReceiverImageView(Message message, BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: () {
-              Get.toNamed(RouteHelper.getImageViewScreen(), arguments: {
-                'image': message.message,
-                'name': chatingPageViewModal!.arguments['name']
-              });
-            },
-            child: Container(
-              margin: EdgeInsets.all(10.px),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColorConstant.appYellow,
-                ),
-                borderRadius: BorderRadius.circular(12.px),
-              ),
-              height: 200.px,
-              width: 150.px,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12.px),
-                child: AppImageAsset(image: message.message),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: AppText(
-                message.messageTimestamp.toString(),
-                color: Theme.of(context).colorScheme.primary,
-                textAlign: TextAlign.start,
-                fontSize: chatingPageViewModal!.fontSize == S.of(context).small
-                    ? 8.px
-                    : chatingPageViewModal!.fontSize == S.of(context).large
-                        ? 15.px
-                        : chatingPageViewModal!.fontSize ==
-                                S.of(context).extraLarge
-                            ? 20.px
-                            : 12.px,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  buildSenderAudioView(
-      ChatingPageController controller, BuildContext context, Message message) {
-    return Align(
-      alignment: Alignment.topRight,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Container(
-            width: 265.px,
-            margin: EdgeInsets.all(8.px),
-            height: 45.px,
-            decoration: BoxDecoration(
-                color: chatingPageViewModal!.chatBubbleColor,
-                borderRadius: BorderRadius.circular(12.px)),
-            child: Row(
-              children: [
-                SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: AppColorConstant.appWhite,
-                    thumbShape: RoundSliderThumbShape(
-                        enabledThumbRadius: 8.px, disabledThumbRadius: 8.px),
-                  ),
-                  child: SizedBox(
-                    width: 150.px,
-                    child: Slider(
-                      activeColor: AppColorConstant.appWhite,
-                      min: 0,
-                      max: controller.duration.inSeconds.toDouble(),
-                      value: controller.position.inSeconds.toDouble(),
-                      onChanged: (value) async {
-                        controller.position = Duration(seconds: value.toInt());
-                        await controller.player.seek(controller.position);
-                        //await controller.player.resume();
-                      },
-                    ),
-                  ),
-                ),
-                AppText(
-                  DateFormation().formatTime(controller.position),
-                  color: AppColorConstant.appWhite,
-                ),
-                IconButton(
-                    onPressed: () async {
-                      if (controller.isPlay.value) {
-                        await controller.player.pause();
-                      } else {
-                        await controller.player.setUrl(message.message);
-                        await controller.player.play();
-                      }
-                    },
-                    icon: (controller.isPlay.value)
-                        ? const Icon(
-                            Icons.pause_circle,
-                            color: AppColorConstant.appWhite,
-                          )
-                        : const Icon(Icons.play_circle,
-                            color: AppColorConstant.appWhite)),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AppText(
-                    message.messageTimestamp.toString(),
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: chatingPageViewModal!.fontSize ==
-                            S.of(context).small
-                        ? 8.px
-                        : chatingPageViewModal!.fontSize == S.of(context).large
-                            ? 15.px
-                            : chatingPageViewModal!.fontSize ==
-                                    S.of(context).extraLarge
-                                ? 20.px
-                                : 12.px,
-                  ),
-                  SizedBox(
-                    width: 10.px,
-                  ),
-                  (message.sender == AuthService.auth.currentUser!.phoneNumber)
-                      ? (message.messageStatus == true)
-                          ? chatingPageViewModal!.buildDoubleClickView()
-                          : chatingPageViewModal!.buildSingleClickView()
-                      : null,
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  buildSenderImageView(Message message, BuildContext context) {
-    return Align(
-      alignment: Alignment.topRight,
-      child: InkWell(
-          onTap: () {
-            Get.toNamed(RouteHelper.getImageViewScreen(), arguments: {
-              'image': message.message,
-              'name': chatingPageViewModal!.arguments['name']
-            });
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                margin: EdgeInsets.all(10.px),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColorConstant.appYellow,
-                  ),
-                  borderRadius: BorderRadius.circular(12.px),
-                ),
-                height: 200.px,
-                width: 150.px,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12.px),
-                    child: AppImageAsset(image: message.message)),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 10.px),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AppText(
-                      message.messageTimestamp.toString(),
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize:
-                          chatingPageViewModal!.fontSize == S.of(context).small
-                              ? 8.px
-                              : chatingPageViewModal!.fontSize ==
-                                      S.of(context).large
-                                  ? 15.px
-                                  : chatingPageViewModal!.fontSize ==
-                                          S.of(context).extraLarge
-                                      ? 20.px
-                                      : 12.px,
-                    ),
-                    SizedBox(
-                      width: 10.px,
-                    ),
-                    (message.sender ==
-                            AuthService.auth.currentUser!.phoneNumber)
-                        ? (message.messageStatus == true)
-                            ? chatingPageViewModal!.buildDoubleClickView()
-                            : chatingPageViewModal!.buildSingleClickView()
-                        : null,
-                  ],
-                ),
-              ),
-            ],
-          )),
-    );
-  }
-
-  buildSenderMessageView(BuildContext context, Message message) {
+  buildSenderMessageView(BuildContext context, MessageModel message) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
       alignment: Alignment.centerRight,
@@ -776,7 +561,7 @@ class ChatingPage extends StatelessWidget {
             alignment: Alignment.topRight,
             backGroundColor: chatingPageViewModal!.chatBubbleColor,
             child: AppText(
-              message.message,
+              message.message.toString(),
               color: AppColorConstant.appWhite,
               fontSize: chatingPageViewModal!.fontSize == S.of(context).small
                   ? 10.px
@@ -822,65 +607,486 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildReceiverAudioView(
-      BuildContext context, ChatingPageController controller, Message message) {
+  //===========================  image =============================//
+
+  buildReceiverImageView(MessageModel message, BuildContext context, index) {
+    chatingPageViewModal!.isFileDownloadedCheck(
+      index,
+      "IMAGE",
+      message.message,
+      controller!,
+    );
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Container(
+        alignment: Alignment.center,
+        width: 170.px,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                chatingPageViewModal!
+                    .viewFile(message.message, "IMAGE", controller!, index);
+              },
+              child: Container(
+                margin: EdgeInsets.all(10.px),
+                decoration: BoxDecoration(
+                  color: AppColorConstant.darkSecondary,
+                  border: Border.all(
+                    width: 2.px,
+                    color: AppColorConstant.darkSecondary,
+                  ),
+                  borderRadius: BorderRadius.circular(12.px),
+                ),
+                width: 150.px,
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12.px),
+                          child: AppImageAsset(image: message.message),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (chatingPageViewModal!
+                                    .isFileDownLoadingList[index] &&
+                                !chatingPageViewModal!
+                                    .isFileDownLoadedList[index])
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: CircularProgressIndicator(
+                                  color: AppColorConstant.appYellow,
+                                ),
+                              ),
+                            if (!chatingPageViewModal!
+                                    .isFileDownLoadedList[index] &&
+                                !chatingPageViewModal!
+                                    .isFileDownLoadingList[index])
+                              InkWell(
+                                onTap: () {
+                                  chatingPageViewModal!.viewFile(
+                                      message.message,
+                                      "IMAGE",
+                                      controller!,
+                                      index);
+                                },
+                                child: Icon(
+                                  Icons.download_for_offline_outlined,
+                                  size: 45.px,
+                                  color: AppColorConstant.appYellow,
+                                ),
+                              )
+                          ],
+                        )
+                      ],
+                    ),
+                    if (message.text!.isNotEmpty)
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(4.px),
+                            child: AppText(
+                              message.text.toString(),
+                              fontSize: 10.px,
+                              color: AppColorConstant.appWhite,
+                            ),
+                          ))
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: AppText(
+                  message.messageTimestamp.toString(),
+                  color: Theme.of(context).colorScheme.primary,
+                  textAlign: TextAlign.start,
+                  fontSize: chatingPageViewModal!.fontSize ==
+                          S.of(context).small
+                      ? 8.px
+                      : chatingPageViewModal!.fontSize == S.of(context).large
+                          ? 15.px
+                          : chatingPageViewModal!.fontSize ==
+                                  S.of(context).extraLarge
+                              ? 20.px
+                              : 12.px,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  buildSenderImageView(MessageModel message, BuildContext context, index) {
+    chatingPageViewModal!.isFileDownloadedCheck(
+      index,
+      "SENT/IMAGE",
+      message.message,
+      controller!,
+    );
+    return Align(
+      alignment: Alignment.topRight,
+      child: InkWell(
+          onTap: () {
+            chatingPageViewModal!
+                .viewFile(message.message, "SENT/IMAGE", controller!, index);
+          },
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(10.px),
+                    decoration: BoxDecoration(
+                      color: AppColorConstant.appYellow,
+                      border: Border.all(
+                        color: AppColorConstant.appYellow,
+                      ),
+                      borderRadius: BorderRadius.circular(12.px),
+                    ),
+                    width: 150.px,
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(12.px),
+                            child: (chatingPageViewModal!
+                                    .isFileDownLoadedList[index])
+                                ? AppImageAsset(image: message.message)
+                                : AppImageAsset(image: message.message)),
+                        if (message.text!.isNotEmpty)
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.all(4.px),
+                                child: AppText(
+                                  message.text.toString(),
+                                  fontSize: 10.px,
+                                  color: AppColorConstant.appWhite,
+                                ),
+                              ))
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 13.px,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppText(
+                          message.messageTimestamp.toString(),
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: chatingPageViewModal!.fontSize ==
+                                  S.of(context).small
+                              ? 8.px
+                              : chatingPageViewModal!.fontSize ==
+                                      S.of(context).large
+                                  ? 15.px
+                                  : chatingPageViewModal!.fontSize ==
+                                          S.of(context).extraLarge
+                                      ? 20.px
+                                      : 12.px,
+                        ),
+                        SizedBox(
+                          width: 10.px,
+                        ),
+                        (message.sender ==
+                                AuthService.auth.currentUser!.phoneNumber)
+                            ? (message.messageStatus == true)
+                                ? chatingPageViewModal!.buildDoubleClickView()
+                                : chatingPageViewModal!.buildSingleClickView()
+                            : null,
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )),
+    );
+  }
+
+  //===========================  audio =============================//
+
+  buildSenderAudioView(ChatingPageController controller, BuildContext context,
+      MessageModel message, int index) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            margin: EdgeInsets.all(6.px),
+            width: 265.px,
+            decoration: BoxDecoration(
+                color: AppColorConstant.yellowLight,
+                borderRadius: BorderRadius.circular(12.px)),
+            child: Column(
+              children: [
+                Container(
+                  width: 265.px,
+                  height: 45.px,
+                  decoration: BoxDecoration(
+                      color: chatingPageViewModal!.chatBubbleColor,
+                      borderRadius: BorderRadius.circular(12.px)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          activeTrackColor: AppColorConstant.appWhite,
+                          thumbShape: RoundSliderThumbShape(
+                              enabledThumbRadius: 8.px,
+                              disabledThumbRadius: 8.px),
+                        ),
+                        child: SizedBox(
+                          width: 150.px,
+                          child: Slider(
+                            activeColor: AppColorConstant.appWhite,
+                            min: 0,
+                            max: controller.durationList[index].inSeconds
+                                .toDouble(),
+                            value: controller.positionList[index].inSeconds
+                                .toDouble(),
+                            onChanged: (value) async {
+                              controller.positionList[index] =
+                                  Duration(seconds: value.toInt());
+                              await controller.player
+                                  .seek(controller.positionList[index]);
+                              //await controller.player.resume();
+                            },
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            controller.player.dispose();
+                          },
+                          icon: const Icon(
+                            Icons.disabled_by_default,
+                          )),
+                      // Container(
+                      //   width: 50.px,
+                      //   alignment: Alignment.center,
+                      //   child: AppText(
+                      //     DateFormation()
+                      //         .formatTime(controller.positionList[index]),
+                      //     color: AppColorConstant.appWhite,
+                      //     fontSize: 10.px,
+                      //   ),
+                      // ),
+                      IconButton(
+                          onPressed: () async {
+                            controller.index = index;
+                            controller.update();
+
+                            chatingPageViewModal!.isPlayList[index] =
+                                !chatingPageViewModal!.isPlayList[index];
+
+                            chatingPageViewModal!.viewFile(message.message,
+                                "SENT/AUDIO", controller!, index);
+                          },
+                          icon: (chatingPageViewModal!.isPlayList[index])
+                              ? const Icon(
+                                  Icons.pause_circle,
+                                  color: AppColorConstant.appWhite,
+                                )
+                              : const Icon(Icons.play_circle,
+                                  color: AppColorConstant.appWhite)),
+                    ],
+                  ),
+                ),
+                if (message.text!.isNotEmpty)
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5.px, horizontal: 8.px),
+                        child: AppText(
+                          message.text.toString(),
+                          fontSize: 10.px,
+                          color: AppColorConstant.blackOff,
+                        ),
+                      ))
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: 13.px,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AppText(
+                    message.messageTimestamp.toString(),
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: chatingPageViewModal!.fontSize ==
+                            S.of(context).small
+                        ? 8.px
+                        : chatingPageViewModal!.fontSize == S.of(context).large
+                            ? 15.px
+                            : chatingPageViewModal!.fontSize ==
+                                    S.of(context).extraLarge
+                                ? 20.px
+                                : 12.px,
+                  ),
+                  SizedBox(
+                    width: 10.px,
+                  ),
+                  (message.sender == AuthService.auth.currentUser!.phoneNumber)
+                      ? (message.messageStatus == true)
+                          ? chatingPageViewModal!.buildDoubleClickView()
+                          : chatingPageViewModal!.buildSingleClickView()
+                      : null,
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  buildReceiverAudioView(BuildContext context, ChatingPageController controller,
+      MessageModel message, int index) {
+    chatingPageViewModal!.isFileDownloadedCheck(
+      index,
+      "AUDIO",
+      message.message,
+      controller!,
+    );
     return Align(
       alignment: Alignment.topLeft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 265.px,
-            margin: EdgeInsets.all(8.px),
-            height: 45.px,
+            margin: EdgeInsets.all(7.px),
             decoration: BoxDecoration(
-                color: AppColorConstant.appGrey.withOpacity(0.3),
+                color: AppColorConstant.darkSecondary,
                 borderRadius: BorderRadius.circular(12.px)),
-            child: Row(
+            width: 265.px,
+            child: Column(
               children: [
-                SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: AppColorConstant.appBlack,
-                    thumbShape: RoundSliderThumbShape(
-                        enabledThumbRadius: 8.px, disabledThumbRadius: 8.px),
-                  ),
-                  child: SizedBox(
-                    width: 150.px,
-                    child: Slider(
-                      activeColor: AppColorConstant.appBlack,
-                      min: 0,
-                      max: controller.duration.inSeconds.toDouble(),
-                      value: controller.position.inSeconds.toDouble(),
-                      onChanged: (value) async {
-                        controller.position = Duration(seconds: value.toInt());
-                        await controller.player.seek(controller.position);
-                        //await controller.player.resume();
-                      },
-                    ),
+                Container(
+                  width: 265.px,
+                  height: 45.px,
+                  decoration: BoxDecoration(
+                      color: AppColorConstant.blackOff,
+                      borderRadius: BorderRadius.circular(12.px)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          activeTrackColor: AppColorConstant.appWhite,
+                          thumbShape: RoundSliderThumbShape(
+                              enabledThumbRadius: 8.px,
+                              disabledThumbRadius: 8.px),
+                        ),
+                        child: SizedBox(
+                          width: 150.px,
+                          child: Slider(
+                            activeColor: AppColorConstant.appWhite,
+                            min: 0,
+                            max: controller.durationList[index].inSeconds
+                                .toDouble(),
+                            value: controller.positionList[index].inSeconds
+                                .toDouble(),
+                            onChanged: (value) async {
+                              controller.positionList[index] =
+                                  Duration(seconds: value.toInt());
+                              await controller.player
+                                  .seek(controller.positionList[index]);
+                              //await controller.player.resume();
+                            },
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        width: 50.px,
+                        child: AppText(
+                          DateFormation()
+                              .formatTime(controller.positionList[index]),
+                          color: AppColorConstant.appWhite,
+                          fontSize: 10.px,
+                        ),
+                      ),
+                      if (chatingPageViewModal!.isFileDownLoadedList[index])
+                        IconButton(
+                            onPressed: () async {
+                              controller.index = index;
+                              controller.update();
+
+                              chatingPageViewModal!.isPlayList[index] =
+                                  !chatingPageViewModal!.isPlayList[index];
+
+                              chatingPageViewModal!.viewFile(
+                                  message.message, "AUDIO", controller!, index);
+                            },
+                            icon: (chatingPageViewModal!.isPlayList[index])
+                                ? const Icon(
+                                    Icons.pause_circle,
+                                    color: AppColorConstant.appWhite,
+                                  )
+                                : const Icon(Icons.play_circle,
+                                    color: AppColorConstant.appWhite)),
+                      if (!chatingPageViewModal!.isFileDownLoadingList[index] &&
+                          !chatingPageViewModal!.isFileDownLoadedList[index])
+                        Padding(
+                          padding: EdgeInsets.only(left: 10.px),
+                          child: InkWell(
+                              onTap: () {
+                                chatingPageViewModal!.viewFile(message.message,
+                                    "AUDIO", controller!, index);
+                              },
+                              child: const Icon(
+                                Icons.download_for_offline_outlined,
+                                color: AppColorConstant.appYellow,
+                              )),
+                        ),
+                      if (chatingPageViewModal!.isFileDownLoadingList[index] &&
+                          !chatingPageViewModal!.isFileDownLoadedList[index])
+                        Container(
+                          width: 30.px,
+                          height: 30,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(8.px),
+                          margin: EdgeInsets.only(left: 8.px),
+                          child: const CircularProgressIndicator(
+                            color: AppColorConstant.appWhite,
+                          ),
+                        )
+                    ],
                   ),
                 ),
-                AppText(
-                  DateFormation().formatTime(controller.position),
-                  color: AppColorConstant.appBlack,
-                ),
-                IconButton(
-                    onPressed: () async {
-                      if (controller.isPlay.value) {
-                        await controller.player.pause();
-                      } else {
-                        await controller.player.setUrl(message.message);
-                        await controller.player.play();
-                        controller.update();
-                        logs('url--------> ${message.message}');
-                      }
-                    },
-                    icon: (controller.isPlay.value)
-                        ? const Icon(
-                            Icons.pause_circle,
-                            color: AppColorConstant.appBlack,
-                          )
-                        : const Icon(Icons.play_circle,
-                            color: AppColorConstant.appBlack)),
+                if (message.text!.isNotEmpty)
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5.px, horizontal: 8.px),
+                        child: AppText(
+                          message.text.toString(),
+                          fontSize: 10.px,
+                          color: AppColorConstant.appWhite,
+                        ),
+                      ))
               ],
             ),
           ),
@@ -902,6 +1108,507 @@ class ChatingPage extends StatelessWidget {
                             : 12.px,
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //===========================  video =============================//
+
+  buildSenderVideoView(context, MessageModel message, index) {
+    chatingPageViewModal!.isFileDownloadedCheck(
+      index,
+      "SENT/VIDEO",
+      message.message,
+      controller!,
+    );
+    return Align(
+      alignment: Alignment.topRight,
+      child: InkWell(
+        onTap: () {
+          chatingPageViewModal!
+              .viewFile(message.message, "SENT/VIDEO", controller!, index);
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  width: 130.px,
+                  margin: EdgeInsets.all(8.px),
+                  decoration: BoxDecoration(
+                      color: AppColorConstant.appYellow,
+                      borderRadius: BorderRadius.all(Radius.circular(10.px))),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2.px, color: AppColorConstant.appYellow),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.px)),
+                            color: AppColorConstant.yellowLight),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            if (chatingPageViewModal!.thumbnailList[index] ==
+                                "")
+                              const AppImageAsset(
+                                image: AppAsset.signIn,
+                                fit: BoxFit.fill,
+                              ),
+                            InkWell(
+                              onTap: () {
+                                chatingPageViewModal!.viewFile(message.message,
+                                    "SENT/VIDEO", controller!, index);
+                              },
+                              child: Icon(
+                                Icons.play_circle_outline,
+                                size: 45.px,
+                                color: AppColorConstant.appYellow,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      if (message.text!.isNotEmpty)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.all(4.px),
+                              child: AppText(
+                                message.text.toString(),
+                                fontSize: 10.px,
+                                color: AppColorConstant.appWhite,
+                              ),
+                            ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 13.px, top: 3.px),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AppText(
+                        message.messageTimestamp.toString(),
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: chatingPageViewModal!.fontSize ==
+                                S.of(context).small
+                            ? 8.px
+                            : chatingPageViewModal!.fontSize ==
+                                    S.of(context).large
+                                ? 15.px
+                                : chatingPageViewModal!.fontSize ==
+                                        S.of(context).extraLarge
+                                    ? 20.px
+                                    : 12.px,
+                      ),
+                      SizedBox(
+                        width: 10.px,
+                      ),
+                      (message.sender ==
+                              AuthService.auth.currentUser!.phoneNumber)
+                          ? (message.messageStatus == true)
+                              ? chatingPageViewModal!.buildDoubleClickView()
+                              : chatingPageViewModal!.buildSingleClickView()
+                          : null,
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  buildReceiverVideoView(context, MessageModel message, index) {
+    chatingPageViewModal!
+        .isFileDownloadedCheck(index, "VIDEO", message.message, controller!);
+    return Align(
+      alignment: Alignment.topLeft,
+      child: InkWell(
+        onTap: () {
+          chatingPageViewModal!
+              .viewFile(message.message, "VIDEO", controller!, index);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(8.0.px),
+              child: Container(
+                width: 130.px,
+                margin: EdgeInsets.all(8.px),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 2.px, color: AppColorConstant.darkSecondary),
+                    color: AppColorConstant.darkSecondary,
+                    borderRadius: BorderRadius.all(Radius.circular(10.px))),
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.px)),
+                              color: AppColorConstant.yellowLight),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                            child: const AppImageAsset(
+                              image: AppAsset.signIn,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              chatingPageViewModal!.viewFile(
+                                  message.message, "VIDEO", controller!, index);
+                            },
+                            child: Column(
+                              children: [
+                                if (chatingPageViewModal!
+                                        .isFileDownLoadingList[index] &&
+                                    !chatingPageViewModal!
+                                        .isFileDownLoadedList[index])
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(
+                                      color: AppColorConstant.appYellow,
+                                    ),
+                                  )
+
+                                else
+                                  if(chatingPageViewModal!
+                                      .isFileDownLoadedList[index])
+                                  InkWell(
+                                    onTap: () {
+                                      chatingPageViewModal!.viewFile(
+                                          message.message,
+                                          "VIDEO",
+                                          controller!,
+                                          index);
+                                    },
+                                    child:Icon(
+                                      Icons.play_circle_outline,
+                                      size: 45.px,
+                                      color: AppColorConstant.appYellow,
+                                    ),
+                                  ),
+
+                                if (!chatingPageViewModal!
+                                        .isFileDownLoadedList[index] &&
+                                    !chatingPageViewModal!
+                                        .isFileDownLoadingList[index])
+                                  Icon(
+                                    Icons.download_for_offline_outlined,
+                                    size: 45.px,
+                                    color: AppColorConstant.appYellow,
+                                  )
+                              ],
+                            )),
+                      ],
+                    ),
+                    if (message.text!.isNotEmpty)
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(4.px),
+                            child: AppText(
+                              message.text.toString(),
+                              fontSize: 10.px,
+                              color: AppColorConstant.appWhite,
+                            ),
+                          )),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 13.px, top: 3.px),
+              child: AppText(
+                message.messageTimestamp.toString(),
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: chatingPageViewModal!.fontSize == S.of(context).small
+                    ? 8.px
+                    : chatingPageViewModal!.fontSize == S.of(context).large
+                        ? 15.px
+                        : chatingPageViewModal!.fontSize ==
+                                S.of(context).extraLarge
+                            ? 20.px
+                            : 12.px,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  //  ===========================  docs =============================  //
+
+  buildSenderDocumentView(context, MessageModel message, int index) {
+    chatingPageViewModal!.isFileDownloadedCheck(
+      index,
+      "SENT/DOC",
+      message.message,
+      controller!,
+    );
+    return Align(
+      alignment: Alignment.topRight,
+      child: InkWell(
+        onTap: () {
+          chatingPageViewModal!
+              .viewFile(message.message, "SENT/DOC", controller!, index);
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  width: 200.px,
+                  margin:
+                      EdgeInsets.symmetric(horizontal: 10.px, vertical: 5.px),
+                  decoration: BoxDecoration(
+                      color: AppColorConstant.yellowLight,
+                      borderRadius: BorderRadius.all(Radius.circular(10.px))),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          chatingPageViewModal!.viewFile(
+                              message.message, "SENT/DOC", controller!, index);
+                        },
+                        child: Container(
+                          width: 200.px,
+                          decoration: BoxDecoration(
+                              color: chatingPageViewModal!.chatBubbleColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.px))),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(10.px),
+                                child: Row(
+                                  children: [
+                                    AppImageAsset(
+                                      image: AppAsset.pdf,
+                                      height: 45.px,
+                                      color: AppColorConstant.appWhite,
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8.px),
+                                        child: const Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AppText(
+                                              "PDF..",
+                                              color: AppColorConstant.appWhite,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            AppText(
+                                              "kb",
+                                              color: AppColorConstant.appWhite,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (message.text!.isNotEmpty)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.all(4.px),
+                              child: AppText(
+                                message.text.toString(),
+                                fontSize: 10.px,
+                                color: AppColorConstant.appBlack,
+                              ),
+                            ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 13.px, top: 3.px),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AppText(
+                        message.messageTimestamp.toString(),
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: chatingPageViewModal!.fontSize ==
+                                S.of(context).small
+                            ? 8.px
+                            : chatingPageViewModal!.fontSize ==
+                                    S.of(context).large
+                                ? 15.px
+                                : chatingPageViewModal!.fontSize ==
+                                        S.of(context).extraLarge
+                                    ? 20.px
+                                    : 12.px,
+                      ),
+                      SizedBox(
+                        width: 10.px,
+                      ),
+                      (message.sender ==
+                              AuthService.auth.currentUser!.phoneNumber)
+                          ? (message.messageStatus == true)
+                              ? chatingPageViewModal!.buildDoubleClickView()
+                              : chatingPageViewModal!.buildSingleClickView()
+                          : null,
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  buildReceiverDocumentView(context, MessageModel message, int index) {
+    chatingPageViewModal!
+        .isFileDownloadedCheck(index, "DOC", message.message, controller!);
+
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10.px, vertical: 5.px),
+                width: 200.px,
+                decoration: BoxDecoration(
+                    color: AppColorConstant.darkSecondary,
+                    borderRadius: BorderRadius.all(Radius.circular(10.px))),
+                child: InkWell(
+                  onTap: () async {
+                    chatingPageViewModal!
+                        .viewFile(message.message, "DOC", controller!, index);
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 200.px,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.px)),
+                            color: AppColorConstant.blackOff),
+                        child: Padding(
+                          padding: EdgeInsets.all(10.px),
+                          child: Row(
+                            children: [
+                              if (chatingPageViewModal!
+                                      .isFileDownLoadingList[index] &&
+                                  !chatingPageViewModal!
+                                      .isFileDownLoadedList[index])
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: CircularProgressIndicator(
+                                    color: AppColorConstant.appWhite,
+                                  ),
+                                ),
+                              if (!chatingPageViewModal!
+                                      .isFileDownLoadedList[index] &&
+                                  !chatingPageViewModal!
+                                      .isFileDownLoadingList[index])
+                                Icon(
+                                  Icons.download_for_offline_outlined,
+                                  size: 45.px,
+                                  color: AppColorConstant.appWhite,
+                                )
+                              else
+                                AppImageAsset(
+                                  image: AppAsset.pdf,
+                                  height: 45.px,
+                                  color: AppColorConstant.appWhite,
+                                ),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.px),
+                                  child: const Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AppText(
+                                        "PDF..",
+                                        color: AppColorConstant.appWhite,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      AppText(
+                                        "kb",
+                                        color: AppColorConstant.appWhite,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (message.text!.isNotEmpty)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.all(4.px),
+                              child: AppText(
+                                message.text.toString(),
+                                fontSize: 10.px,
+                                color: AppColorConstant.appWhite,
+                              ),
+                            ))
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 12.px, bottom: 5.px),
+                child: AppText(
+                  message.messageTimestamp.toString(),
+                  color: Theme.of(context).colorScheme.primary,
+                  textAlign: TextAlign.start,
+                  fontSize: chatingPageViewModal!.fontSize ==
+                          S.of(context).small
+                      ? 8.px
+                      : chatingPageViewModal!.fontSize == S.of(context).large
+                          ? 15.px
+                          : chatingPageViewModal!.fontSize ==
+                                  S.of(context).extraLarge
+                              ? 20.px
+                              : 12.px,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -997,15 +1704,21 @@ class ChatingPage extends StatelessWidget {
   }
 
   onSendMessage(message, ChatingPageController controller) async {
+    logs(
+        "Chatting page members ---- > ${chatingPageViewModal!.arguments['members']}");
+
+    SendMessageModel sendMessageModel = SendMessageModel(
+        type: 'text',
+        members: chatingPageViewModal!.arguments['members'],
+        message: message,
+        sender: AuthService.auth.currentUser!.phoneNumber!,
+        isGroup: false);
+
     (chatingPageViewModal!.blockedNumbers
             .contains(chatingPageViewModal!.arguments['number']))
         ? null
-        : DatabaseService().addNewMessage(
-            type: 'text',
-            members: chatingPageViewModal!.arguments['members'],
-            massage: message,
-            sender: AuthService.auth.currentUser!.phoneNumber!,
-            isGroup: false);
+        : DatabaseService.instance
+            .addNewMessage(sendMessageModel: sendMessageModel);
     logs('message---> $message');
 
     controller.update();

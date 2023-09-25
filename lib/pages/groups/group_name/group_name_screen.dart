@@ -15,6 +15,8 @@ import 'package:signal/pages/groups/group_name/group_name_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 
+import '../../../modal/first_message_model.dart';
+
 // ignore: must_be_immutable
 class GroupNameScreen extends StatelessWidget {
   GroupNameScreen({Key? key}) : super(key: key);
@@ -60,7 +62,7 @@ class GroupNameScreen extends StatelessWidget {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                   title: TextFormField(
                       controller: groupNameViewModel!.groupNameController,
-                      decoration:  InputDecoration(
+                      decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: S.of(context).groupName)),
                   leading: (groupNameViewModel!.selectedImage != null)
@@ -93,19 +95,20 @@ class GroupNameScreen extends StatelessWidget {
                 child: ListTile(
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 20.px, horizontal: 20.px),
-                  title:  AppText(S.of(context).members,color:  Theme.of(context).colorScheme.primary,),
+                  title: AppText(
+                    S.of(context).members,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   subtitle: Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.px),
-                    child: AppText(
-                        S.of(context).addRemoveMember,
-                        color: AppColorConstant.appGrey,
-                        fontSize: 12.px),
+                    child: AppText(S.of(context).addRemoveMember,
+                        color: AppColorConstant.appGrey, fontSize: 12.px),
                   ),
                 )),
             buildMembersList()
           ],
         ),
-        if (groupNameViewModel!.isLoading) const AppLoader(),
+        if (groupNameViewModel!.isLoading)  AppLoader(),
       ],
     );
   }
@@ -139,7 +142,10 @@ class GroupNameScreen extends StatelessWidget {
                     firstLetter,
                     color: AppColorConstant.appWhite,
                   )),
-              title: AppText(displayName,color:  Theme.of(context).colorScheme.primary,),
+              title: AppText(
+                displayName,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           );
         },
@@ -148,8 +154,13 @@ class GroupNameScreen extends StatelessWidget {
   }
 
   getAppbar(BuildContext context) {
-    return AppAppBar(backgroundColor: Theme.of(context).colorScheme.background,
-      title: AppText(S.of(context).nameThisGroup, fontSize: 20.px,color:  Theme.of(context).colorScheme.primary,),
+    return AppAppBar(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      title: AppText(
+        S.of(context).nameThisGroup,
+        fontSize: 20.px,
+        color: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 
@@ -165,7 +176,10 @@ class GroupNameScreen extends StatelessWidget {
           stringChild: true,
           borderRadius: BorderRadius.circular(20.px),
           width: 100.px,
-          child:  AppText(S.of(context).create, color:  Theme.of(context).colorScheme.primary,),
+          child: AppText(
+            S.of(context).create,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         if (groupNameViewModel!.isLoading)
           const CircularProgressIndicator(
@@ -178,15 +192,16 @@ class GroupNameScreen extends StatelessWidget {
     groupNameViewModel!.mobileNo
         .add(AuthService.auth.currentUser!.phoneNumber!);
 
-    List<dynamic>  members= groupNameViewModel!.mobileNo.toSet().toList();
+    List<dynamic> members = groupNameViewModel!.mobileNo.toSet().toList();
 
-    DatabaseService().addNewMessage(type: 'text',
-      createdBy: AuthService.auth.currentUser!.phoneNumber!,
+    FirstMessageModel firstMessageModel = FirstMessageModel(
+        type: 'text',
+        createdBy: AuthService.auth.currentUser!.phoneNumber!,
         groupName: groupNameViewModel!.groupNameController.text,
         profile: groupNameViewModel!.userProfile,
         members: members,
-
         isGroup: true);
-
+    DatabaseService.instance
+        .addNewMessage(firstMessageModel: firstMessageModel);
   }
 }

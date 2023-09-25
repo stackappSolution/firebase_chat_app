@@ -31,6 +31,7 @@ import 'package:signal/routes/routes_constant.dart';
 import '../pages/account/account/account_screen.dart';
 import '../pages/account/addvance_pin_setting/advance_pin_setting.dart';
 import '../pages/account/pin_setting/pin_setting_screen.dart';
+import '../pages/chating_page/file_view/file_view.dart';
 import '../pages/chats/chat_screen.dart';
 import '../pages/splash/splash_screen.dart';
 
@@ -99,6 +100,7 @@ class RouteHelper {
   static String getGroupNameScreen() => RouteConstant.groupNameScreen;
   static String getAttachmentScreen() => RouteConstant.attachmentScreen;
   static String getChatContactScreen() => RouteConstant.chatScreen;
+  static String getFileView() => RouteConstant.fileView;
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
@@ -287,5 +289,7 @@ class RouteHelper {
 
     GetPage(
         name: RouteConstant.chatScreen, page: () => ChatScreen()),
+    GetPage(
+        name: RouteConstant.fileView, page: () => FileViews()),
   ];
 }

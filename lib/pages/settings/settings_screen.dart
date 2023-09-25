@@ -12,7 +12,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
-import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/settings/settings_view_model.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/service/auth_service.dart';
@@ -53,14 +52,6 @@ class SettingScreen extends StatelessWidget {
 
   getAppbar(context) {
     return AppAppBar(
-      // leading: IconButton(
-      //   onPressed: () {
-      //     Get.to(HomeScreen());
-      //   },
-      //   icon: const Icon(
-      //     Icons.arrow_back_outlined,
-      //   ),
-      // ),
       title: AppText(
         S.of(Get.context!).settings,
         fontSize: 20.px,
@@ -92,13 +83,13 @@ class SettingScreen extends StatelessWidget {
         Get.to(EditProfileScreen());
       },
       child: StreamBuilder(
-        stream: UsersService.getUserData(),
+        stream: UsersService.getUserStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const AppText('');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const AppLoader();
+            return  AppLoader();
           }
           final data = snapshot.data!.docs;
           return Row(
@@ -107,13 +98,13 @@ class SettingScreen extends StatelessWidget {
                 width: 20.px,
                 height: 20.px,
               ),
-              data[0]['photoUrl'].isEmpty
+              data.first['photoUrl'].isEmpty
                   ? CircleAvatar(
                       maxRadius: 35.px,
                       backgroundColor:
                           AppColorConstant.appYellow.withOpacity(0.2),
                       child: AppText(
-                          data[0]['firstName']
+                          data.first['firstName']
                               .substring(0, 1)
                               .toString()
                               .toUpperCase(),
@@ -122,7 +113,7 @@ class SettingScreen extends StatelessWidget {
                     )
                   : CircleAvatar(
                       maxRadius: 35.px,
-                      backgroundImage: NetworkImage(data[0]['photoUrl']),
+                      backgroundImage: NetworkImage(data.first['photoUrl']),
                     ),
               SizedBox(
                 width: 30.px,
@@ -135,7 +126,7 @@ class SettingScreen extends StatelessWidget {
                   children: [
                     Flexible(
                       child: AppText(
-                        '${data[0]['firstName']} ${data[0]['lastName']}',
+                        '${data.first['firstName']} ${data.first['lastName']}',
                         overflow: TextOverflow.ellipsis,
                         fontSize: 20.px,
                         color: primaryTheme,
@@ -211,7 +202,7 @@ class SettingScreen extends StatelessWidget {
         settingsView(
           context,
           9,
-          AppAsset.help,
+          AppAsset.logOut,
           StringConstant.logOut,
         ),
       ],
@@ -227,19 +218,19 @@ class SettingScreen extends StatelessWidget {
         },
         title: AppText(
           tittle,
-          fontSize: 15.px,
           color: Theme.of(context).colorScheme.primary,
         ),
         leading: Container(
-          height: 50.px,
-          width: 50.px,
-          padding: EdgeInsets.all(12.px),
+          height: 45.px,
+          width: 45.px,
+          padding: EdgeInsets.all(10.px),
           decoration: BoxDecoration(
               color: AppColorConstant.appYellow.withOpacity(0.2),
               borderRadius: BorderRadius.circular(12.px),
               border: Border.all(color: AppColorConstant.appYellow)),
           child: AppImageAsset(
             image: image,
+            color: AppColorConstant.appYellow,
           ),
         ),
       ),

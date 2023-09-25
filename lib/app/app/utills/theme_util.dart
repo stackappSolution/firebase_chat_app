@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,12 @@ class ThemeUtil {
     return ThemeUtil.getThemeMode().then((value) {
       selectedTheme = value;
       logs("loadThemeMode----> $value");
+
+      // var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      // bool isDark = brightness == Brightness.dark;
+      // logs("Current Brightness ---- > $isDark");
+      // controller.update();
+
       if (selectedTheme == ThemeMode.dark) {
         isDark = true;
         controller.update();
@@ -25,7 +32,9 @@ class ThemeUtil {
         controller.update();
       }
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: (ThemeUtil.isDark)
+        statusBarIconBrightness:
+            (ThemeUtil.isDark) ? Brightness.light : Brightness.dark,
+        statusBarColor: (isDark)
             ? AppColorConstant.darkPrimary
             : AppColorConstant.appWhite,
         statusBarBrightness:

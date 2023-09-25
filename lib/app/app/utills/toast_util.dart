@@ -6,14 +6,20 @@ import '../../../constant/color_constant.dart';
 import '../../widget/app_text.dart';
 
 class ToastUtil {
- static  void warningToast(String msg,) {
+  static void warningToast(
+    String msg,
+  ) {
     BotToast.showNotification(
-      title: (_) =>
-          AppText(msg, fontSize: 12.px, color: AppColorConstant.appWhite),
+      title: (_) => AppText(
+        msg,
+        fontSize: 12.px,
+        color: AppColorConstant.red,
+        fontWeight: FontWeight.bold,
+      ),
       backgroundColor: AppColorConstant.appYellow,
       borderRadius: 6.px,
       duration: const Duration(seconds: 1),
-      animationDuration: const Duration(milliseconds: 200),
+      animationDuration: const Duration(milliseconds: 350),
     );
   }
 
@@ -22,15 +28,32 @@ class ToastUtil {
       title: (_) => Text(
         msg,
         style: TextStyle(
-          color: Colors.white,
+          color: AppColorConstant.appWhite,
           fontSize: 16.px,
           fontWeight: FontWeight.w600,
         ),
       ),
       backgroundColor: Colors.green,
       borderRadius: 15.0,
-      duration: const Duration(milliseconds: 1500),
-      animationDuration: const Duration(milliseconds: 200),
+      duration: const Duration(seconds: 1),
+      animationDuration: const Duration(milliseconds: 350),
+    );
+  }
+
+  static void messageToast(String msg) {
+    BotToast.showNotification(
+      title: (_) => Text(
+        msg,
+        style: TextStyle(
+          color: AppColorConstant.appWhite,
+          fontSize: 16.px,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      backgroundColor: AppColorConstant.appYellow,
+      borderRadius: 15.0,
+      duration: const Duration(seconds: 1),
+      animationDuration: const Duration(milliseconds: 350),
     );
   }
 }

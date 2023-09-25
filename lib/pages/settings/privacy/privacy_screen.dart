@@ -22,13 +22,17 @@ class PrivacyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     privacyViewModel ?? (privacyViewModel = PrivacyViewModel(this));
 
-    return GetBuilder<SettingsController>(initState: (state) {
-      Future.delayed(const Duration(milliseconds: 10),() {
-        Get.find<SettingsController>();
-      },);
-      getBlockedContacts();
-      privacyViewModel!.secureScreen();
-    },
+    return GetBuilder<SettingsController>(
+      initState: (state) {
+        Future.delayed(
+          const Duration(milliseconds: 10),
+          () {
+            Get.find<SettingsController>();
+          },
+        );
+        getBlockedContacts();
+        privacyViewModel!.secureScreen();
+      },
       init: SettingsController(),
       builder: (controller) {
         return Scaffold(
@@ -332,8 +336,8 @@ class PrivacyScreen extends StatelessWidget {
 
   getBlockedContacts() async {
     privacyViewModel!.blockedNumbers =
-        await UsersService().getBlockedUsers();
-          controller!.update();
+        await UsersService.instance.getBlockedUsers();
+    controller!.update();
     logs('list-------------> ${privacyViewModel!.blockedNumbers.length}');
   }
 }

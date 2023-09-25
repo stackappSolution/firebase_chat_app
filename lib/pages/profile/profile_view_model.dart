@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,8 @@ import '../../app/app/utills/toast_util.dart';
 import '../../app/app/utills/validation.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
+import '../../modal/user_model.dart';
+import '../../service/notification_service.dart';
 
 class ProfileViewModel {
   ProfileScreen? profileScreen;
@@ -29,8 +32,9 @@ class ProfileViewModel {
   String errorFirstName = "";
   bool isButtonActive = false;
   File? selectedImage;
-  String? userProfile;
+  String? userProfilePicture;
   bool isLoading = false;
+  bool isLoadingOnSave = false;
   Map<String, dynamic> parameter = {};
   ProfileController? controller;
   bool isProfileSubmitted = false;
@@ -59,9 +63,11 @@ class ProfileViewModel {
     }
   }
 
-  onTapNext(context) async {
-    goToHomeScreen();
+  onTapNext(context, GetxController controller) async {
     logs("NextTapped");
+    controller.update();
+    onSaveProfile();
+    goToHomeScreen();
   }
 
   addProfileTap(BuildContext context, GetxController controller) async {
@@ -177,7 +183,7 @@ class ProfileViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(selectedImage!);
+      uploadImageStorage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
     }
@@ -189,13 +195,13 @@ class ProfileViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(selectedImage!);
+      uploadImageStorage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
     }
   }
 
-  uploadImage(File imageUrl) async {
+  uploadImageStorage(File filepath) async {
     isLoading = true;
     logs("load--> $isLoading");
     controller!.update();
@@ -203,34 +209,33 @@ class ProfileViewModel {
         .ref('profile')
         .child(AuthService.auth.currentUser!.phoneNumber!)
         .child('profile.jpg');
-    await storage.putFile(imageUrl);
-    userProfile = await storage.getDownloadURL();
-    logs("profile........ $userProfile");
+    await storage.putFile(filepath);
+    userProfilePicture = await storage.getDownloadURL();
+    logs("profile------> $userProfilePicture");
     isLoading = false;
     logs("load--> $isLoading");
     controller!.update();
+    return await storage.getDownloadURL();
+
   }
 
-  onSaveProfile(String firstName, String lastName, String phoneNo) {
-    UsersService()
-        .addUser(
-      firstName: firstName,
-      lastName: lastName,
-      phone: phoneNo,
-      photo: (userProfile != null) ? userProfile! : '',
-      fcmToken: '',
-      about: ''
-
-    )
-        .then(
-      (value) {
-        ToastUtil.successToast("Logged successfully");
-        goToHomeScreen();
-      },
+  Future<void> onSaveProfile() async {
+    UserModel userModel = UserModel(
+      id: FirebaseAuth.instance.currentUser?.uid,
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      fcmToken: NotificationService.instance.fcmToken ?? '',
+      photoUrl: userProfilePicture ?? '',
+      phone: FirebaseAuth.instance.currentUser?.phoneNumber
+          ?.trim()
+          .replaceAll(' ', '```'),
+      about: "Heyy!!! i am using ChatApp!!"
     );
-
+    bool isUserAdded = await UsersService.instance.addUser(userModel);
+    if (isUserAdded) {
+      ToastUtil.successToast("Logged successfully");
+      goToHomeScreen();
+    }
     isProfileSubmitted = true;
-
-    controller!.update();
   }
 }

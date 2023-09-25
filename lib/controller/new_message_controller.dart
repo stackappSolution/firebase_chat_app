@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import '../app/app/utills/app_utills.dart';
 
-
 class NewMessageController extends GetxController {
   RxBool isSearch = false.obs;
   List userList = [];
@@ -28,15 +27,7 @@ class NewMessageController extends GetxController {
   }
 
   Future getUserPhoneList() async {
-    if(userList.isEmpty)
-      {
-        final data = await userTable.where('phone').get();
-        data.docs.forEach((element) {
-          userList.add(element["phone"]);
-        });
-        logs("getUserPhoneList=== $userList");
-      }
-    {
+    if (userList.isEmpty) {
       final data = await userTable.where('phone').get();
       data.docs.forEach((element) {
         userList.add(element["phone"]);
@@ -45,11 +36,12 @@ class NewMessageController extends GetxController {
     }
 
   }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getProfile(String number) {
     return userTable.where('phone', isEqualTo: number).snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>>  getUserData(String number) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserData(String number) {
     return userTable.where('phone').snapshots();
   }
 }

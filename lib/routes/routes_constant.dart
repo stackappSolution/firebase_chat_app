@@ -38,6 +38,7 @@ class RouteConstant{
 
   static const String newMessageScreen = '/NewMessagePage';
   static const String attachmentScreen = '/attachmentScreen';
+  static const String fileView = '/fileView';
 
 
 

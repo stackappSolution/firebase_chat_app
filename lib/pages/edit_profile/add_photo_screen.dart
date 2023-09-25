@@ -17,6 +17,8 @@ import 'package:signal/pages/edit_profile/edit_photo_text/edit_profile_text.dart
 import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../app/app/utills/app_utills.dart';
+
 // ignore: must_be_immutable
 class AddPhotoScreen extends StatelessWidget {
   AddPhotoViewModel? addPhotoViewModel;
@@ -51,13 +53,13 @@ class AddPhotoScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 15.px, bottom: 15.px),
               child: StreamBuilder(
-                stream: UsersService.getUserData(),
+                stream: UsersService.getUserStream(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return const AppText('');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const AppLoader();
+                    return  AppLoader();
                   }
                   final data = snapshot.data!.docs;
                   return data[0]['photoUrl'].isEmpty
@@ -65,13 +67,17 @@ class AddPhotoScreen extends StatelessWidget {
                           maxRadius: 70.px,
                           backgroundColor:
                               AppColorConstant.appYellow.withOpacity(0.2),
-                          child: AppText(
-                              data[0]['firstName']
-                                  .substring(0, 1)
-                                  .toString()
-                                  .toUpperCase(),
-                              fontSize: 60.px,
-                              color: AppColorConstant.appBlack),
+                          child: (!addPhotoViewModel!.isLoading)
+                              ? AppText(
+                                  data[0]['firstName']
+                                      .substring(0, 1)
+                                      .toString()
+                                      .toUpperCase(),
+                                  fontSize: 60.px,
+                                  color: AppColorConstant.appBlack)
+                              : const CircularProgressIndicator(
+                                  color: AppColorConstant.appYellow,
+                                ),
                         )
                       : Stack(
                           children: [
@@ -95,7 +101,6 @@ class AddPhotoScreen extends StatelessWidget {
                                     child: InkWell(
                                       onTap: () {
                                         addPhotoViewModel!.deleteUserPhoto();
-                                        Get.to(SettingScreen());
                                       },
                                       child: Container(
                                         width: 25.px,
@@ -125,8 +130,9 @@ class AddPhotoScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    addPhotoViewModel!.pickImage(controller,ImageSource.camera);
-
+                    logs("Pick Camera");
+                    addPhotoViewModel!
+                        .pickImage(controller, ImageSource.camera);
                   },
                   child: Column(
                     children: [
@@ -150,7 +156,10 @@ class AddPhotoScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    addPhotoViewModel!.pickImage(controller,ImageSource.gallery);
+                    logs("Pick gallery");
+
+                    addPhotoViewModel!
+                        .pickImage(controller, ImageSource.gallery);
                   },
                   child: Column(
                     children: [
@@ -242,7 +251,6 @@ class AddPhotoScreen extends StatelessWidget {
             ),
           ],
         ),
-        if (addPhotoViewModel!.isLoading) const AppLoader(),
       ],
     );
   }

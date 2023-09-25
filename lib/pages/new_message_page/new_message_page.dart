@@ -16,6 +16,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 
+import '../../app/widget/app_image_assets.dart';
 import '../../service/database_helper.dart';
 
 class NewMessagePage extends StatelessWidget {
@@ -38,27 +39,29 @@ class NewMessagePage extends StatelessWidget {
         DataBaseHelper.createDB();
         newMessageViewModel!.getContactPermission();
         newMessageViewModel!.getAllContacts();
+        logs(
+            "New Message Screen SQF Contacts ---- > ${DataBaseHelper.contactData}");
       },
       builder: (NewMessageController controller) {
         controller.getUserPhoneList();
         return SafeArea(
             child: Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.background,
-              appBar: buildAppBar(context),
-              body: buildSearchBar(context, controller),
-            ));
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: buildAppBar(context),
+          body: buildSearchBar(context, controller),
+        ));
       },
     );
   }
 
   buildAppBar(BuildContext context) => AppAppBar(
-    backgroundColor: Theme.of(context).colorScheme.background,
-    title: AppText(
-      S.of(context).newMessage,
-      fontSize: 20.px,
-      color: Theme.of(context).colorScheme.primary,
-    ),
-  );
+        backgroundColor: Theme.of(context).colorScheme.background,
+        title: AppText(
+          S.of(context).newMessage,
+          fontSize: 20.px,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      );
 
   buildSearchBar(BuildContext context, NewMessageController controller) =>
       SingleChildScrollView(
@@ -112,7 +115,7 @@ class NewMessagePage extends StatelessWidget {
                   leading: CircleAvatar(
                     radius: 20.px,
                     backgroundColor:
-                    AppColorConstant.appYellow.withOpacity(0.5),
+                        AppColorConstant.appYellow.withOpacity(0.5),
                     child: Icon(Icons.group,
                         color: AppColorConstant.appBlack, size: 17.px),
                   )),
@@ -131,46 +134,28 @@ class NewMessagePage extends StatelessWidget {
       );
 
   buildContactList(BuildContext context, NewMessageController controller) {
-    if (newMessageViewModel!.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          color: AppColorConstant.appYellow,
-        ),
-      );
-    }
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: newMessageViewModel!.isSearching == true
-          ? newMessageViewModel!.filteredContacts.length
-          : newMessageViewModel!.contacts.length,
+    return Stack(
+      children: [
+        if (newMessageViewModel!.isLoading)  AppLoader(),
+        ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: newMessageViewModel!.isSearching == true
+              ? newMessageViewModel!.filteredContacts.length
+              : newMessageViewModel!.contacts.length,
+          itemBuilder: (context, index) {
+            final Contact contact = newMessageViewModel!.isSearching
+                ? newMessageViewModel!.filteredContacts[index]
+                : newMessageViewModel!.contacts[index];
+            String? mobileNumber = contact.phones!.isNotEmpty
+                ? contact.phones!.first.value
+                : 'N/A';
+            String? displayName = contact.displayName ?? 'unknown';
+            String firstLetter = displayName.substring(0, 1).toUpperCase()?? "  ";
+            logs(
+                "Sqf Contacts  ====  >  ${DataBaseHelper.contactData[index]["name"]}");
 
-      itemBuilder: (context, index) {
-        final Contact contact = newMessageViewModel!.isSearching
-            ? newMessageViewModel!.filteredContacts[index]
-            : newMessageViewModel!.contacts[index];
-        String? mobileNumber =
-        contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
-
-        logs(mobileNumber.toString().trim().removeAllWhitespace);
-        String? displayName = contact.displayName ?? 'unknown';
-        String firstLetter = displayName.substring(0, 1).toUpperCase();
-
-        return StreamBuilder(
-          stream: controller
-              .getUserData(mobileNumber.toString().trim().removeAllWhitespace),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return const AppText('');
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const AppLoader();
-            }
-            final data = snapshot.data!.docs;
-
-            return (controller.userList.contains(
-                mobileNumber.toString().trim().removeAllWhitespace))
-                ? Container(
+            return Container(
               margin: EdgeInsets.only(top: 5.px),
               child: InkWell(
                 onTap: () {
@@ -184,22 +169,20 @@ class NewMessagePage extends StatelessWidget {
                     ListTile(
                       onTap: () async {
                         newMessageViewModel!.isThisUserExist =
-                        await controller.doesUserExist(mobileNumber
-                            .toString()
-                            .trim()
-                            .removeAllWhitespace);
-                        if (newMessageViewModel!.isThisUserExist &&
-                            mobileNumber
+                            await controller.doesUserExist(mobileNumber
                                 .toString()
                                 .trim()
-                                .removeAllWhitespace !=
-                                AuthService
-                                    .auth.currentUser!.phoneNumber) {
+                                .removeAllWhitespace);
+                        if (newMessageViewModel!.isThisUserExist &&
+                            mobileNumber
+                                    .toString()
+                                    .trim()
+                                    .removeAllWhitespace !=
+                                AuthService.auth.currentUser!.phoneNumber) {
                           Get.toNamed(RouteHelper.getChattingScreen(),
                               arguments: {
                                 'members': [
-                                  AuthService
-                                      .auth.currentUser!.phoneNumber!,
+                                  AuthService.auth.currentUser!.phoneNumber!,
                                   mobileNumber
                                       .toString()
                                       .removeAllWhitespace
@@ -223,13 +206,10 @@ class NewMessagePage extends StatelessWidget {
                       },
                       leading: InkWell(
                           onTap: () {
-                            Get.toNamed(
-                                RouteHelper.getChatProfileScreen());
+                            Get.toNamed(RouteHelper.getChatProfileScreen());
                           },
                           child: StreamBuilder(
-                            //   stream: controller.getProfile("+911234567890"),
-
-                            stream: controller.getUserData(mobileNumber
+                            stream: controller.getProfile(mobileNumber
                                 .toString()
                                 .trim()
                                 .removeAllWhitespace),
@@ -243,28 +223,31 @@ class NewMessagePage extends StatelessWidget {
                                 return const AppText('');
                               }
                               final data = snapshot.data!.docs;
-                              //data[0]["photoUrl"].toString().contains("https://")
-                              return (false)
-                                  ? Container(
-                                height: 48.px,
-                                width: 48.px,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            data[0]["photoUrl"]),
-                                        fit: BoxFit.cover)),
-                              )
+                              return (controller.userList.contains(mobileNumber
+                                          .toString()
+                                          .trim()
+                                          .removeAllWhitespace) &&
+                                      data.first["photoUrl"]
+                                          .toString()
+                                          .contains("https://"))
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(700),
+                                      child: AppImageAsset(
+                                        image: data[0]["photoUrl"],
+                                        fit: BoxFit.cover,
+                                        height: 40.px,
+                                        width: 40.px,
+                                      ))
                                   : CircleAvatar(
-                                  maxRadius: 20.px,
-                                  backgroundColor: AppColorConstant
-                                      .appYellow
-                                      .withOpacity(0.8),
-                                  child: AppText(
-                                    firstLetter,
-                                    color: AppColorConstant.appWhite,
-                                    fontSize: 20.px,
-                                  ));
+                                      maxRadius: 20.px,
+                                      backgroundColor: AppColorConstant
+                                          .appYellow
+                                          .withOpacity(0.8),
+                                      child: AppText(
+                                        firstLetter,
+                                        color: AppColorConstant.appWhite,
+                                        fontSize: 20.px,
+                                      ));
                             },
                           )),
                       title: AppText(
@@ -278,11 +261,10 @@ class NewMessagePage extends StatelessWidget {
                   ],
                 ),
               ),
-            )
-                : Container();
+            );
           },
-        );
-      },
+        )
+      ],
     );
   }
 }

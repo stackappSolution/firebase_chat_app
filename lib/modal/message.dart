@@ -4,43 +4,46 @@
 
 import 'dart:convert';
 
-Message messageFromJson(String str) => Message.fromJson(json.decode(str));
+MessageModel messageFromJson(String str) => MessageModel.fromJson(json.decode(str));
 
-String messageToJson(Message data) => json.encode(data.toJson());
+String messageToJson(MessageModel data) => json.encode(data.toJson());
 
-class Message {
-  String message;
-  bool isSender;
-  var messageTimestamp;
-  bool messageStatus;
-  String messageType;
-  String sender;
+class MessageModel {
+  String? message;
+  bool? isSender;
+  final messageTimestamp;
+  bool? messageStatus;
+  String? messageType;
+  String? sender;
+  String? text;
 
-
-  Message({
-    required this.messageStatus,
-    required this.message,
-    required this.isSender,
-    required this.messageTimestamp,
-    required this.messageType,
-    required this.sender,
+  MessageModel({
+    this.messageStatus,
+    this.message,
+    this.isSender,
+    this.messageTimestamp,
+    this.messageType,
+    this.sender,
+    this.text,
   });
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
-    messageStatus: json['messageStatus'],
-    message: json["message"],
-    isSender: json["isSender"],
-    messageTimestamp: json["messageTimestamp"],
-    messageType: json["messageType"],
-    sender: json["sender"],
-  );
+  factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
+        messageStatus: json['messageStatus'],
+        message: json["message"],
+        isSender: json["isSender"],
+        messageTimestamp: json["messageTimestamp"],
+        messageType: json["messageType"],
+        sender: json["sender"],
+        text: json["text"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "messageStatus": messageStatus,
-    "message": message,
-    "isSender": isSender,
-    "messageTimestamp": messageTimestamp,
-    "messageType": messageType,
-    "sender": sender,
-  };
+        "messageStatus": messageStatus,
+        "message": message,
+        "isSender": isSender,
+        "messageTimestamp": messageTimestamp,
+        "messageType": messageType,
+        "sender": sender,
+        "text": text,
+      };
 }

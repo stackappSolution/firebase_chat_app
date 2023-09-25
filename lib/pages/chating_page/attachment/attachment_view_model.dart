@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:signal/constant/app_asset.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
@@ -12,13 +11,14 @@ import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 
 import '../../../app/app/utills/app_utills.dart';
 import '../../../app/app/utills/toast_util.dart';
-import '../../../app/app/utills/toast_util.dart';
+import '../../../modal/send_message_model.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/database_service.dart';
 import 'package:video_player/video_player.dart';
 
 class AttachmentViewModel {
   AttachmentScreen? attachmentScreen;
+  final textController = TextEditingController();
   Map<String, dynamic> argument = {};
   dynamic selectedImage = "";
   CroppedFile? croppedFile;
@@ -28,6 +28,7 @@ class AttachmentViewModel {
   ChatingPageController? controller;
   bool isLoading = false;
   bool isVideo = false;
+  String? fileSizes;
 
   //final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -36,19 +37,24 @@ class AttachmentViewModel {
   Duration duration = const Duration();
   Duration position = const Duration();
 
+  RxBool isAudioPlay = false.obs;
+  Duration audioDuration = Duration.zero;
+  Duration audioPosition = Duration.zero;
+  late Stream<Duration?> streamDuration;
+  final audioPlayer = AudioPlayer();
+
   AttachmentViewModel(this.attachmentScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
-          () {
+      () {
         controller = Get.find<ChatingPageController>();
       },
     );
   }
 
   void stopVideoPlayback() {
-    if (videoPlayerController != null &&
-        videoPlayerController!.value.isPlaying) {
-      videoPlayerController!.pause();
+    if (videoPlayerController.value.isPlaying) {
+      videoPlayerController.pause();
     }
   }
 
@@ -90,71 +96,123 @@ class AttachmentViewModel {
       );
 
       selectedImage = croppedFile!.path;
+      fileSize(selectedImage);
       controller.update();
     } else {
       logs("Please select Image");
     }
   }
 
-  // void initAudioPlayer() {
-  //   audioPlayer.onDurationChanged.listen((Duration duration) {
-  //     duration = duration;
-  //   });
-  //
-  //   audioPlayer.onPositionChanged.listen((Duration position) {
-  //     position = position;
-  //   });
-  // }
-
-  // void play(controller, path) async {
-  //   logs("Audio Path --- $path");
-  //   await audioPlayer.play(AssetSource(path));
-  //
-  //   isPlaying = true;
-  //   controller.update();
-  // }
-
-  // void pause(controller) async {
-  //   await audioPlayer.pause();
-  //   isPlaying = false;
-  //   controller.update();
-  // }
-
   void imageButtonTap(AttachmentController controller) {
-    checkImageSize(File(selectedImage),controller);
+    onSendMessage("image", controller, "");
   }
 
   void videoButtonTap(AttachmentController controller) {
-    onSendMessage("video", controller);
+    onSendMessage("video", controller, "");
   }
 
-  onSendMessage(String msgType, AttachmentController controller) async {
-    DatabaseService.uploadVideo(File(selectedImage), controller).then((value) {
-      logs('message---> $value');
-      DatabaseService().addNewMessage(
-          type: msgType,
-          members: argument['members'],
-          massage: value,
-          sender: AuthService.auth.currentUser!.phoneNumber!,
-          isGroup: false);
-    });
+  void documentButtonTap(AttachmentController controller, extension) {
+    onSendMessage("doc", controller, extension);
   }
 
-  Future<void> checkImageSize(File imageFile,controller) async {
+  void audioButtonTap(AttachmentController controller) {
+    onSendMessage("audio", controller, "");
+  }
+
+  onSendMessage(
+      String msgType, AttachmentController controller, extension) async {
+    if (await isFileLarge(File(selectedImage), controller) == false) {
+      if (msgType == "image") {
+        DatabaseService.uploadImage(File(selectedImage), controller)
+            .then((value) {
+          logs('message---> $value');
+          SendMessageModel sendMessageModel = SendMessageModel(
+              type: msgType,
+              members: argument['members'],
+              message: value,
+              sender: AuthService.auth.currentUser!.phoneNumber!,
+              isGroup: false,
+              text: textController.text.trim());
+          DatabaseService.instance
+              .addNewMessage(sendMessageModel: sendMessageModel);
+        });
+      }
+      if (msgType == "video") {
+        DatabaseService.uploadVideo(File(selectedImage), controller)
+            .then((value) {
+          logs('message---> $value');
+          SendMessageModel sendMessageModel = SendMessageModel(
+              type: msgType,
+              members: argument['members'],
+              message: value,
+              sender: AuthService.auth.currentUser!.phoneNumber!,
+              isGroup: false,
+              text: textController.text.trim());
+          DatabaseService.instance
+              .addNewMessage(sendMessageModel: sendMessageModel);
+        });
+      }
+      if (msgType == "doc") {
+        DatabaseService.uploadDoc(File(selectedImage), controller, extension)
+            .then((value) {
+          logs('message---> $value');
+          SendMessageModel sendMessageModel = SendMessageModel(
+              type: msgType,
+              members: argument['members'],
+              message: value,
+              sender: AuthService.auth.currentUser!.phoneNumber!,
+              isGroup: false,
+              text: textController.text.trim());
+          DatabaseService.instance
+              .addNewMessage(sendMessageModel: sendMessageModel);
+        });
+      }
+
+      if (msgType == "audio") {
+        DatabaseService.uploadAudio(File(selectedImage), controller)
+            .then((value) {
+          logs('message---> $value');
+          SendMessageModel sendMessageModel = SendMessageModel(
+              type: msgType,
+              members: argument['members'],
+              message: value,
+              sender: AuthService.auth.currentUser!.phoneNumber!,
+              isGroup: false,
+              text: textController.text.trim());
+          DatabaseService.instance
+              .addNewMessage(sendMessageModel: sendMessageModel);
+        });
+      }
+    }
+  }
+
+  Future<bool> isFileLarge(File imageFile, controller) async {
     int fileSizeInBytes = await imageFile.length();
 
     double fileSizeInMB = (fileSizeInBytes / (1024 * 1024)).toDouble();
 
     if (fileSizeInMB < 2) {
-      onSendMessage("image", controller);
-
-
-      logs('Image is smaller than 2 MB. Performing action...');
+      logs('Image is smaller than 2 MB.');
+      return false;
     } else {
-      ToastUtil.successToast("Image is larger than 2 MB.");
-
+      ToastUtil.successToast("File is larger than 2 MB.");
       logs('Image is larger than 2 MB.');
+      return true;
     }
   }
 
+  Future fileSize(controller) async {
+    int fileSizeInBytes = await File(selectedImage).length();
+    double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+    double fileSizeInKB = fileSizeInBytes / 1024;
+
+    if (fileSizeInMB >= 1.0) {
+      fileSizes = '${fileSizeInMB.toStringAsFixed(2)} MB';
+    } else {
+      fileSizes = '${fileSizeInKB.toStringAsFixed(2)} KB';
+    }
+
+    logs(fileSizes!);
+    controller.update();
+  }
 }
