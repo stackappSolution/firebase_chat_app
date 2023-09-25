@@ -204,4 +204,11 @@ class StringConstant {
   static const String logOut = 'Log Out';
   static const String yes = 'yes';
 
+  ///naimish add remaining String ///
+  static const String privacyOverprofit = 'Privacy Over Profit';
+  static const String privacyOverprofitdis = 'Private messaging, funded by you. No ads,\nno tracking,no compromise.Donate Now \nto Support ChatApp.';
+  static const String donatetochatapp = 'Donate to Chat App';
+  static const String otherwayto = 'other way to Give Up';
+  static const String donatefriend = 'Donate For Friend';
+  static const String enteramount = 'Enter Amount';
 }

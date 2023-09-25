@@ -5,12 +5,14 @@ import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/pages/chating_page/image_view/image_view.dart';
 import 'package:signal/pages/chating_page/video_view/video_player_view.dart';
+import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
 import 'package:signal/pages/chats/chat_theme/chat_wallpaper.dart';
 import 'package:signal/pages/chats/chat_theme/wallpaper_preview_screen.dart';
+import 'package:signal/pages/donate_amount_page/donate_page.dart';
+import 'package:signal/pages/donate_to_chat_app/donate_to_chat_page.dart';
 import 'package:signal/pages/edit_profile/add_photo_screen.dart';
-import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/pages/groups/view/new_group_screen.dart';
 import 'package:signal/pages/home/home_screen.dart';
@@ -28,6 +30,7 @@ import 'package:signal/pages/settings/privacy/privacy_screen.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/pages/sign_in_page/sign_in_page.dart';
 import 'package:signal/routes/routes_constant.dart';
+
 import '../pages/account/account/account_screen.dart';
 import '../pages/account/addvance_pin_setting/advance_pin_setting.dart';
 import '../pages/account/pin_setting/pin_setting_screen.dart';
@@ -53,6 +56,7 @@ class RouteHelper {
   static String getIntroScreen() => RouteConstant.introScreen;
 
   static String getSplashScreen() => RouteConstant.splashScreen;
+
   static String getVideoPlayerScreen() => RouteConstant.videoPlayerView;
 
   static String getChatColorWallpaperScreen() =>
@@ -86,6 +90,7 @@ class RouteHelper {
   static String getChatProfileScreen() => RouteConstant.chatProfileScreen;
 
   static String getPrivacyScreen() => RouteConstant.privacyScreen;
+
   static String getImageViewScreen() => RouteConstant.imageViewScreen;
 
   static String getBlockedUsersScreen() => RouteConstant.blockedUsersScreen;
@@ -95,12 +100,22 @@ class RouteHelper {
   static String getNewMessageScreen() => RouteConstant.newMessageScreen;
 
   static String getChatPhoneScreen() => RouteConstant.changePhoneScreen;
+
   static String getInviteMemberScreen() => RouteConstant.inviteMemberScreen;
+
   static String getNewGroupScreen() => RouteConstant.newGroupsScreen;
+
   static String getGroupNameScreen() => RouteConstant.groupNameScreen;
+
   static String getAttachmentScreen() => RouteConstant.attachmentScreen;
+
   static String getChatContactScreen() => RouteConstant.chatScreen;
+
   static String getFileView() => RouteConstant.fileView;
+
+  static String getDonateToChatScreen() => RouteConstant.donateToChatScreen;
+
+  static String getDonateScreen() => RouteConstant.donateScreen;
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
@@ -113,14 +128,16 @@ class RouteHelper {
     GetPage(name: RouteConstant.newMessageScreen, page: () => NewMessagePage()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
-    GetPage(name: RouteConstant.splashScreen, page: () =>  SplashScreen()),
+    GetPage(name: RouteConstant.splashScreen, page: () => SplashScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
     GetPage(name: RouteConstant.chatingScreen, page: () => ChatingPage()),
     GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
-    GetPage(name: RouteConstant.inviteMemberScreen, page: () =>  InviteMemberScreen()),
+    GetPage(
+        name: RouteConstant.inviteMemberScreen,
+        page: () => InviteMemberScreen()),
     GetPage(name: RouteConstant.newGroupsScreen, page: () => NewGroupScreen()),
-    GetPage(name: RouteConstant.groupNameScreen, page: () =>  GroupNameScreen()),
-    GetPage(name: RouteConstant.videoPlayerView, page: () =>  VideoPlayerView()),
+    GetPage(name: RouteConstant.groupNameScreen, page: () => GroupNameScreen()),
+    GetPage(name: RouteConstant.videoPlayerView, page: () => VideoPlayerView()),
     GetPage(
         name: RouteConstant.chatColorWallpaperScreen,
         page: () => ChatColorWallpaperScreen()),
@@ -131,11 +148,10 @@ class RouteHelper {
     GetPage(
         name: RouteConstant.wallpaperPreviewScreen,
         page: () => WallpaperPreviewScreen()),
-    GetPage(
-        name: RouteConstant.privacyScreen, page: () =>  PrivacyScreen()),
+    GetPage(name: RouteConstant.privacyScreen, page: () => PrivacyScreen()),
     GetPage(
         name: RouteConstant.blockedUsersScreen,
-        page: () =>  BlockedUsersScreen()),
+        page: () => BlockedUsersScreen()),
     GetPage(
         name: RouteConstant.disappearingScreen, page: () => DisappearScreen()),
     GetPage(
@@ -286,10 +302,15 @@ class RouteHelper {
         name: RouteConstant.chatProfileScreen, page: () => ChatProfileScreen()),
     GetPage(
         name: RouteConstant.attachmentScreen, page: () => AttachmentScreen()),
-
+    GetPage(name: RouteConstant.chatScreen, page: () => ChatScreen()),
+    GetPage(name: RouteConstant.fileView, page: () => FileViews()),
     GetPage(
-        name: RouteConstant.chatScreen, page: () => ChatScreen()),
+      name: RouteConstant.donateToChatScreen,
+      page: () => DonateToChatPage(),
+    ),
     GetPage(
-        name: RouteConstant.fileView, page: () => FileViews()),
+      name: RouteConstant.donateScreen,
+      page: () => DonatePage(),
+    )
   ];
 }

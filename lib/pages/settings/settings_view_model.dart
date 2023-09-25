@@ -26,6 +26,12 @@ class SettingViewModel {
           Get.toNamed(RouteHelper.getAppearanceScreen());
         }
         break;
+      case 4:
+        {
+          Get.toNamed(RouteHelper.getDonateToChatScreen());
+
+        }
+        break;
       case 5:
         {
           goToChatContactScreen();
