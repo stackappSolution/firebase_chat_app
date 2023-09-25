@@ -50,7 +50,9 @@ class IntroPage extends StatelessWidget {
                   padding: const EdgeInsets.all(10.0),
                   child: AppElevatedButton(
                     buttonRadius: 10.px,
-                    onPressed: () => Get.to(goToSignInPage()),
+                    onPressed: () {
+                      goToSignInPage();
+                    },
                     buttonColor: AppColorConstant.appYellow,
                     buttonHeight: 50.px,
                     buttonWidth: 200.px,
@@ -124,7 +126,7 @@ class IntroPage extends StatelessWidget {
   void introPageInitState(context) {
     NetworkConnectivity.initialise();
     NetworkConnectivity.instance.myStream.listen(
-          (source) {
+      (source) {
         source = source;
         logs('source $source');
         switch (source.keys.toList()[0]) {
@@ -136,7 +138,7 @@ class IntroPage extends StatelessWidget {
             break;
           case ConnectivityResult.wifi:
             controller.introPageViewModal.string =
-            source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
+                source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
             controller.introPageViewModal.isConnected = true;
             break;
           case ConnectivityResult.none:
@@ -146,41 +148,41 @@ class IntroPage extends StatelessWidget {
         }
         (controller.introPageViewModal.isConnected == false)
             ? showDialog(
-          context: context,
-          builder: (context) {
-            return AppAlertDialog(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const AppText(
-                    "networkError",
-                    fontWeight: FontWeight.bold,
-                  ),
-                  AppText(
-                    "pleaseCheckYourInternet",
-                    fontSize: 15.px,
-                  )
-                ],
-              ),
-              actions: [
-                AppButton(
-                  onTap: () {
-                    Get.back();
-                  },
-                  fontColor: AppColorConstant.appWhite,
-                  string: "back",
-                  fontSize: 20,
-                  borderRadius: BorderRadius.circular(15),
-                  height: 40,
-                  color: AppColorConstant.appYellow,
-                  stringChild: false,
-                  width: 100,
-                )
-              ],
-              insetPadding: EdgeInsets.zero,
-            );
-          },
-        )
+                context: context,
+                builder: (context) {
+                  return AppAlertDialog(
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AppText(
+                          "networkError",
+                          fontWeight: FontWeight.bold,
+                        ),
+                        AppText(
+                          "pleaseCheckYourInternet",
+                          fontSize: 15.px,
+                        )
+                      ],
+                    ),
+                    actions: [
+                      AppButton(
+                        onTap: () {
+                          Get.back();
+                        },
+                        fontColor: AppColorConstant.appWhite,
+                        string: "back",
+                        fontSize: 20,
+                        borderRadius: BorderRadius.circular(15),
+                        height: 40,
+                        color: AppColorConstant.appYellow,
+                        stringChild: false,
+                        width: 100,
+                      )
+                    ],
+                    insetPadding: EdgeInsets.zero,
+                  );
+                },
+              )
             : null;
       },
     );

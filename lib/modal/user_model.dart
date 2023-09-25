@@ -11,6 +11,7 @@ class UserModel {
   String? phone;
   String? fcmToken;
   String? photoUrl;
+  String? about;
 
   UserModel({
     this.firstName,
@@ -19,6 +20,7 @@ class UserModel {
     this.phone,
     this.fcmToken,
     this.photoUrl,
+    this.about,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -28,6 +30,7 @@ class UserModel {
         phone: json["phone"],
         fcmToken: json["fcmToken"],
         photoUrl: json["photoUrl"],
+        about: json["about"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +40,6 @@ class UserModel {
         "phone": phone,
         "fcmToken": fcmToken,
         "photoUrl": photoUrl,
+        "about": about,
       };
 }

@@ -65,7 +65,6 @@ class ProfileViewModel {
 
   onTapNext(context, GetxController controller) async {
     logs("NextTapped");
-    isLoadingOnSave = true;
     controller.update();
     onSaveProfile();
     goToHomeScreen();
@@ -184,7 +183,7 @@ class ProfileViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(selectedImage!);
+      uploadImageStorage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
     }
@@ -196,13 +195,13 @@ class ProfileViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(selectedImage!);
+      uploadImageStorage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
     }
   }
 
-  uploadImage(File imageUrl) async {
+  uploadImageStorage(File filepath) async {
     isLoading = true;
     logs("load--> $isLoading");
     controller!.update();
@@ -210,12 +209,14 @@ class ProfileViewModel {
         .ref('profile')
         .child(AuthService.auth.currentUser!.phoneNumber!)
         .child('profile.jpg');
-    await storage.putFile(imageUrl);
+    await storage.putFile(filepath);
     userProfilePicture = await storage.getDownloadURL();
-    logs("profile........ $userProfilePicture");
+    logs("profile------> $userProfilePicture");
     isLoading = false;
     logs("load--> $isLoading");
     controller!.update();
+    return await storage.getDownloadURL();
+
   }
 
   Future<void> onSaveProfile() async {
@@ -228,6 +229,7 @@ class ProfileViewModel {
       phone: FirebaseAuth.instance.currentUser?.phoneNumber
           ?.trim()
           .replaceAll(' ', '```'),
+      about: "Heyy!!! i am using ChatApp!!"
     );
     bool isUserAdded = await UsersService.instance.addUser(userModel);
     if (isUserAdded) {

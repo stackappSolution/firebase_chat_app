@@ -54,6 +54,13 @@ class EditProfileAboutScreen extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.only(left: 20.px),
                           child: TextField(
+                            onChanged: (value) {
+                              editProfileAboutScreenViewModel!
+                                      .captionController.selection =
+                                  TextSelection.collapsed(
+                                      offset: editProfileAboutScreenViewModel!
+                                          .captionController.text.length);
+                            },
                             autofocus: false,
                             controller: editProfileAboutScreenViewModel!
                                 .captionController,
@@ -80,7 +87,8 @@ class EditProfileAboutScreen extends StatelessWidget {
               ),
               Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.all(10.px),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.px, vertical: 40.px),
                   itemCount: editProfileAboutScreenViewModel!.caption.length,
                   itemBuilder: (context, index) {
                     return SizedBox(
@@ -90,11 +98,15 @@ class EditProfileAboutScreen extends StatelessWidget {
                           editProfileAboutScreenViewModel!
                                   .captionController.text =
                               editProfileAboutScreenViewModel!.caption[index];
+                          editProfileAboutScreenViewModel!
+                                  .captionController.selection =
+                              TextSelection.collapsed(
+                                  offset: editProfileAboutScreenViewModel!
+                                      .captionController.text.length);
                           controller.update();
                         },
                         child: AppText(
                             editProfileAboutScreenViewModel!.caption[index],
-                            fontSize: 18.px,
                             fontWeight: FontWeight.w100),
                       ),
                     );
@@ -110,13 +122,13 @@ class EditProfileAboutScreen extends StatelessWidget {
                     },
                     buttonHeight: 45.px,
                     widget: AppText('Save',
-                        color: AppColorConstant.appWhite, fontSize: 22.px),
+                        color: AppColorConstant.appWhite, fontSize: 18.px),
                     isBorderShape: true,
                     buttonColor: AppColorConstant.appYellow),
               ),
             ],
           ),
-          if (editProfileAboutScreenViewModel!.isLoading) const AppLoader()
+          if (editProfileAboutScreenViewModel!.isLoading)  AppLoader()
         ],
       ),
     );

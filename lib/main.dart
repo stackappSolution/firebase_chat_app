@@ -22,15 +22,16 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
-  await NotificationService.instance.initializeNotification();
+  //await NotificationService.instance.initializeNotification();
   NotificationService.instance.initialize();
   SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarIconBrightness:(ThemeUtil.isDark)?Brightness.light:Brightness.dark,
     statusBarColor: (ThemeUtil.isDark)
         ? AppColorConstant.darkPrimary
         : AppColorConstant.appWhite,
     statusBarBrightness:
-    (ThemeUtil.isDark) ? Brightness.dark : Brightness.light,
+    (ThemeUtil.isDark) ? Brightness.light : Brightness.dark,
   ));
   // String? token = await FirebaseMessaging.instance.getToken();
   // logs('Token---------------------> $token');

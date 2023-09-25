@@ -87,7 +87,7 @@ class DateFormation {
         dateTime.day == now.day + 1) {
       return 'Tomorrow';
     } else {
-      DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+      DateFormat dateFormat = DateFormat('yyyy/MM/dd');
       return dateFormat.format(dateTime);
     }
   }

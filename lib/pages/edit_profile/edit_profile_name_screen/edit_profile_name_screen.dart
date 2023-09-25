@@ -91,7 +91,7 @@ class EditProfileNameScreen extends StatelessWidget {
                 onPressed: () {
                   editProfileNameScreenViewModel!.updateUserName(
                       editProfileNameScreenViewModel!.firstNameController.text,
-                      editProfileNameScreenViewModel!.lastNameController.text);
+                      editProfileNameScreenViewModel!.lastNameController.text,controller);
                   controller.update();
                 },
                 buttonHeight: 45.px,

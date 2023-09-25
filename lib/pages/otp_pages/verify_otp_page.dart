@@ -94,7 +94,6 @@ class VerifyOtpPage extends StatelessWidget {
   buildVerifyotpScreen(controller, BuildContext context) {
     return Stack(
       children: [
-        if (AuthService.isResend) const AppLoader(),
         Container(
           height: double.infinity,
           width: double.infinity,
@@ -186,9 +185,9 @@ class VerifyOtpPage extends StatelessWidget {
                       if (AuthService.countdownSeconds != 0)
                         Container(
                             alignment: Alignment.centerRight,
-                            width: 50.px,
+                            width: 60.px,
                             child: AppText(
-                                "00 : ${AuthService.countdownSeconds.toString()} ")),
+                                "00 : ${AuthService.countdownSeconds.toString()}",maxLines: 1,)),
                       Padding(
                         padding: EdgeInsets.all(5.0.px),
                         child: InkWell(
@@ -264,6 +263,8 @@ class VerifyOtpPage extends StatelessWidget {
             ),
           ),
         ),
+        if (AuthService.isResend) AppLoader(),
+
       ],
     );
   }

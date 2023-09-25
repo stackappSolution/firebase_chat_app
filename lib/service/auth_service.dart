@@ -26,7 +26,6 @@ class AuthService {
   bool isOtpSent = false;
   static bool isTimerRunning = false;
   static int countdownSeconds = 30; // Set the countdown duration in seconds
-  TextEditingController otpcontroller = TextEditingController();
   static bool isVerifyLoading = false;
   static bool isResend = false;
 
@@ -38,22 +37,13 @@ class AuthService {
     countryCode,
     contact,
   ) async {
-    Future.delayed(
-      const Duration(milliseconds: 300),
-      () async {
-        signInController = Get.find<SignInController>();
-      },
-    );
+    signInController = Get.find<SignInController>();
+    //verifyOtpController = Get.put(VerifyOtpController());
 
-    // Future.delayed(
-    //   const Duration(milliseconds: 300),
-    //   () async {
-    //     verifyOtpController = Get.find<VerifyOtpController>();
-    //   },
-    // );
+
     isResend = true;
-    logs("isResend  --- ${isResend}");
-    // verifyOtpController!.update();
+    logs("isResend  --- $isResend");
+   // verifyOtpController!.update();
 
     logs("entred contact IS------------->   $contact");
 
@@ -71,8 +61,10 @@ class AuthService {
       ToastUtil.successToast("OTP sent Successfully");
       logs("OTP Sent to your phone");
       isResend = false;
+
       startTimer(); // Start the timer when OTP is sent
       signInController!.update();
+      //verifyOtpController!.update();
 
       logs("verfication id :::::${verificationID}");
 

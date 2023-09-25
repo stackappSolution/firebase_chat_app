@@ -3,6 +3,7 @@ class SendMessageModel {
   final List? members;
   final String? message;
   final String? sender;
+  final String? text;
   final bool? isGroup;
 
   SendMessageModel({
@@ -11,6 +12,7 @@ class SendMessageModel {
     this.message,
     this.sender,
     this.isGroup,
+    this.text,
   });
 
   // Create a factory constructor to convert JSON to a Message object.
@@ -20,6 +22,7 @@ class SendMessageModel {
       members: json['members'],
       message: json['message'],
       sender: json['sender'],
+      text: json['text'],
       isGroup: json['isGroup'],
     );
   }
@@ -31,6 +34,7 @@ class SendMessageModel {
       'members': members,
       'message': message,
       'sender': sender,
+      'text': text,
       'isGroup': isGroup,
     };
   }

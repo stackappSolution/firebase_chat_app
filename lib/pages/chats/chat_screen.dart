@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
@@ -264,7 +263,7 @@ class ChatScreen extends StatelessWidget {
           return AppText('Error: ${snapshot.error}');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const AppLoader();
+          return AppLoader();
         }
         final documents = snapshot.data!.docs;
         return (documents.length != null)
@@ -353,19 +352,19 @@ class ChatScreen extends StatelessWidget {
                                         return const AppText('');
                                       }
                                       final data = snapshot.data!.docs;
-                                      return (data[0]["photoUrl"]
+                                      return (data.first["photoUrl"]
                                               .toString()
                                               .contains("https://"))
-                                          ? Container(
-                                              height: 48.px,
-                                              width: 48.px,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          data[0]["photoUrl"]),
-                                                      fit: BoxFit.cover)),
-                                            )
+                                          ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(700),
+                                          child: AppImageAsset(
+                                            image: data.first["photoUrl"],
+                                            fit: BoxFit.cover,
+                                            height: 40.px,
+                                            width: 40.px,
+                                          ))
+
+
                                           : CircleAvatar(
                                               maxRadius: 24.px,
                                               backgroundColor: AppColorConstant
@@ -418,18 +417,55 @@ class ChatScreen extends StatelessWidget {
                                       }
                                       final data = snapshot.data!.docs;
                                       return AppText(
-                                          "${data[0]["firstName"]} | ${messageData[0]["message"]}",
+                                          "${data.first["firstName"]} | ${messageData.first["message"]}",
                                           color: AppColorConstant.grey,
                                           fontSize: 12.px);
                                     },
                                   )
-                                : AppText(
-                                    messageData[0]["message"] ?? "",
-                                    color: AppColorConstant.grey,
-                                    fontSize: 12.px,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  );
+                                : (messageData.first["messageType"] == "image")
+                                    ? Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Icon(
+                                          Icons.image,
+                                          size: 13.px,color: AppColorConstant.appYellow
+                                        ))
+                                    : (messageData.first["messageType"] ==
+                                            "doc")
+                                        ? Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Icon(
+                                              Icons.file_copy,
+                                              size: 13.px,color: AppColorConstant.appYellow
+                                            ))
+                                        : ((messageData.first["messageType"] ==
+                                                "video"))
+                                            ? Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Icon(
+                                                  Icons.video_collection,
+                                                  size: 13.px,color: AppColorConstant.appYellow
+                                                ))
+                                            : (messageData
+                                                        .first["messageType"] ==
+                                                    "audio")
+                                                ? Align(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Icon(
+                                                      Icons.multitrack_audio,
+                                                      size: 13.px,color: AppColorConstant.appYellow,
+                                                    ))
+                                                : AppText(
+                                                    messageData
+                                                            .first["message"] ??
+                                                        "",
+                                                    color:
+                                                        AppColorConstant.grey,
+                                                    fontSize: 12.px,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  );
                           },
                         ),
                       ));

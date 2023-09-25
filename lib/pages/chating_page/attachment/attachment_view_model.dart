@@ -2,16 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:signal/constant/app_asset.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
 
 import '../../../app/app/utills/app_utills.dart';
-import '../../../app/app/utills/toast_util.dart';
 import '../../../app/app/utills/toast_util.dart';
 import '../../../modal/send_message_model.dart';
 import '../../../service/auth_service.dart';
@@ -20,6 +18,7 @@ import 'package:video_player/video_player.dart';
 
 class AttachmentViewModel {
   AttachmentScreen? attachmentScreen;
+  final textController = TextEditingController();
   Map<String, dynamic> argument = {};
   dynamic selectedImage = "";
   CroppedFile? croppedFile;
@@ -38,6 +37,12 @@ class AttachmentViewModel {
   Duration duration = const Duration();
   Duration position = const Duration();
 
+  RxBool isAudioPlay = false.obs;
+  Duration audioDuration = Duration.zero;
+  Duration audioPosition = Duration.zero;
+  late Stream<Duration?> streamDuration;
+  final audioPlayer = AudioPlayer();
+
   AttachmentViewModel(this.attachmentScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
@@ -48,9 +53,8 @@ class AttachmentViewModel {
   }
 
   void stopVideoPlayback() {
-    if (videoPlayerController != null &&
-        videoPlayerController!.value.isPlaying) {
-      videoPlayerController!.pause();
+    if (videoPlayerController.value.isPlaying) {
+      videoPlayerController.pause();
     }
   }
 
@@ -92,6 +96,7 @@ class AttachmentViewModel {
       );
 
       selectedImage = croppedFile!.path;
+      fileSize(selectedImage);
       controller.update();
     } else {
       logs("Please select Image");
@@ -99,31 +104,85 @@ class AttachmentViewModel {
   }
 
   void imageButtonTap(AttachmentController controller) {
-    onSendMessage("image", controller);
+    onSendMessage("image", controller, "");
   }
 
   void videoButtonTap(AttachmentController controller) {
-    onSendMessage("video", controller);
+    onSendMessage("video", controller, "");
   }
 
-  void documentButtonTap(AttachmentController controller) {
-    onSendMessage("doc", controller);
+  void documentButtonTap(AttachmentController controller, extension) {
+    onSendMessage("doc", controller, extension);
   }
 
-  onSendMessage(String msgType, AttachmentController controller) async {
+  void audioButtonTap(AttachmentController controller) {
+    onSendMessage("audio", controller, "");
+  }
+
+  onSendMessage(
+      String msgType, AttachmentController controller, extension) async {
     if (await isFileLarge(File(selectedImage), controller) == false) {
-      DatabaseService.uploadVideo(File(selectedImage), controller)
-          .then((value) {
-        logs('message---> $value');
-        SendMessageModel sendMessageModel = SendMessageModel(
-            type: msgType,
-            members: argument['members'],
-            message: value,
-            sender: AuthService.auth.currentUser!.phoneNumber!,
-            isGroup: false);
-        DatabaseService.instance
-            .addNewMessage(sendMessageModel: sendMessageModel);
-      });
+      if (msgType == "image") {
+        DatabaseService.uploadImage(File(selectedImage), controller)
+            .then((value) {
+          logs('message---> $value');
+          SendMessageModel sendMessageModel = SendMessageModel(
+              type: msgType,
+              members: argument['members'],
+              message: value,
+              sender: AuthService.auth.currentUser!.phoneNumber!,
+              isGroup: false,
+              text: textController.text.trim());
+          DatabaseService.instance
+              .addNewMessage(sendMessageModel: sendMessageModel);
+        });
+      }
+      if (msgType == "video") {
+        DatabaseService.uploadVideo(File(selectedImage), controller)
+            .then((value) {
+          logs('message---> $value');
+          SendMessageModel sendMessageModel = SendMessageModel(
+              type: msgType,
+              members: argument['members'],
+              message: value,
+              sender: AuthService.auth.currentUser!.phoneNumber!,
+              isGroup: false,
+              text: textController.text.trim());
+          DatabaseService.instance
+              .addNewMessage(sendMessageModel: sendMessageModel);
+        });
+      }
+      if (msgType == "doc") {
+        DatabaseService.uploadDoc(File(selectedImage), controller, extension)
+            .then((value) {
+          logs('message---> $value');
+          SendMessageModel sendMessageModel = SendMessageModel(
+              type: msgType,
+              members: argument['members'],
+              message: value,
+              sender: AuthService.auth.currentUser!.phoneNumber!,
+              isGroup: false,
+              text: textController.text.trim());
+          DatabaseService.instance
+              .addNewMessage(sendMessageModel: sendMessageModel);
+        });
+      }
+
+      if (msgType == "audio") {
+        DatabaseService.uploadAudio(File(selectedImage), controller)
+            .then((value) {
+          logs('message---> $value');
+          SendMessageModel sendMessageModel = SendMessageModel(
+              type: msgType,
+              members: argument['members'],
+              message: value,
+              sender: AuthService.auth.currentUser!.phoneNumber!,
+              isGroup: false,
+              text: textController.text.trim());
+          DatabaseService.instance
+              .addNewMessage(sendMessageModel: sendMessageModel);
+        });
+      }
     }
   }
 
@@ -133,10 +192,10 @@ class AttachmentViewModel {
     double fileSizeInMB = (fileSizeInBytes / (1024 * 1024)).toDouble();
 
     if (fileSizeInMB < 2) {
-      logs('Image is smaller than 2 MB. Performing action...');
+      logs('Image is smaller than 2 MB.');
       return false;
     } else {
-      ToastUtil.successToast("Image is larger than 2 MB.");
+      ToastUtil.successToast("File is larger than 2 MB.");
       logs('Image is larger than 2 MB.');
       return true;
     }
@@ -144,7 +203,15 @@ class AttachmentViewModel {
 
   Future fileSize(controller) async {
     int fileSizeInBytes = await File(selectedImage).length();
-    fileSizes = (fileSizeInBytes / (1024 * 1024)).toDouble().toString();
+    double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+    double fileSizeInKB = fileSizeInBytes / 1024;
+
+    if (fileSizeInMB >= 1.0) {
+      fileSizes = '${fileSizeInMB.toStringAsFixed(2)} MB';
+    } else {
+      fileSizes = '${fileSizeInKB.toStringAsFixed(2)} KB';
+    }
+
     logs(fileSizes!);
     controller.update();
   }

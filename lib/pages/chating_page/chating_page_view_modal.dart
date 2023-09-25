@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
@@ -17,6 +21,9 @@ import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -50,8 +57,14 @@ class ChatingPageViewModal {
   List<DateTime> messageTimeStamp = [];
   ScrollController scrollController = ScrollController();
   String? fontSize;
+  String? fileSizes;
   List<String> chats = [];
   File? selectedFile;
+
+  List isFileDownLoadingList = [];
+  List isFileDownLoadedList = [];
+  List isPlayList = [];
+  List thumbnailList = [];
 
   TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;
@@ -62,6 +75,21 @@ class ChatingPageViewModal {
       fontSize = await getStringValue(StringConstant.setFontSize);
       controller!.update();
     });
+  }
+
+  Future fileSize(controller, path) async {
+    int fileSizeInBytes = await File(path).length();
+    double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+    double fileSizeInKB = fileSizeInBytes / 1024;
+
+    if (fileSizeInMB >= 1.0) {
+      fileSizes = '${fileSizeInMB.toStringAsFixed(2)} MB';
+    } else {
+      fileSizes = '${fileSizeInKB.toStringAsFixed(2)} KB';
+    }
+
+    logs(fileSizes!);
+    controller.update();
   }
 
   Future<String?> fontSizeInitState() async {
@@ -96,7 +124,7 @@ class ChatingPageViewModal {
     }
   }
 
-  //========================= files =============================//
+  //========================= docs =============================//
 
   Future<void> pickDocument(ChatingPageController controller) async {
     logs("on Doc Pic");
@@ -109,15 +137,216 @@ class ChatingPageViewModal {
     if (result != null) {
       logs("selected files ---- > ${selectedFile.toString()}");
       selectedFile = File(result.files.single.path!);
-      goToAttachmentScreen(selectedFile!.path, arguments['members']);
-    }
-    else
-    {
-      logs("not selected file");
+      if (result.files.single.path!.contains(".mp3") ||
+          result.files.single.path!.contains(".mp4") ||
+          result.files.single.path!.contains(".jpg") ||
+          result.files.single.path!.contains(".png")) {
+        ToastUtil.successToast("Select valid file:  'Pdf','doc','docx'");
+      } else {
+        String extension = "";
+        if (result.files.single.name.contains(".pdf")) {
+          extension = "pdf";
+          controller.update();
+        }
 
+        if (result.files.single.name.contains(".doc")) {
+          extension = "doc";
+          controller.update();
+        }
+
+        if (result.files.single.name.contains(".dotx")) {
+          extension = "dotx";
+          controller.update();
+        }
+        logs("file Extension ---  > $extension");
+        goToAttachmentScreen(
+            selectedFile!.path, arguments['members'], extension);
+      }
+    } else {
+      ToastUtil.messageToast("File not Selected");
     }
   }
 
+  Future<String> downloadAndSavePDF(String pdfURL, folderName,
+      ChatingPageController controller, int index) async {
+    isFileDownLoadingList[index] = true;
+    controller.update();
+    logs("isFileDownLoadingList[index]---> ${isFileDownLoadingList[index]}");
+
+    List splitUrl = pdfURL.split("/");
+    final response = await http.get(Uri.parse(pdfURL));
+    String? fileName;
+    var dirPath =
+        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+
+    Directory dir = Directory(dirPath);
+    if (!await dir.exists()) {
+      dir.create();
+    }
+    fileName =
+        "myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}";
+    File file = File("${dir.path}/$fileName");
+
+    await file.writeAsBytes(response.bodyBytes);
+    logs("saved file path --->  ${file.path}");
+
+    isFileDownLoadingList[index] = false;
+    isFileDownLoadedList[index] = true;
+    controller.update();
+    logs("isFileDownLoadingList[index]---> ${isFileDownLoadingList[index]}");
+    logs("downloaded path --- > $fileName");
+
+    return file.path;
+  }
+
+  Future<void> viewFile(
+      pdfURL, folderName, ChatingPageController controller, int index) async {
+    logs(" View FIle Entred");
+    final PermissionStatus permissionStatus =
+        await Permission.manageExternalStorage.status;
+    if (!permissionStatus.isGranted) {
+      getPermission();
+    }
+    logs("downloadAndOpenPDF Entered");
+    downloadAndSavePDF(pdfURL, folderName, controller, index);
+
+    var dirPath =
+        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+    Directory dir = Directory(dirPath);
+    List splitUrl = pdfURL.split("/");
+
+    final filePath =
+        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
+
+    logs("ckeck file  --- > ${filePath}");
+
+    if (await File(filePath).exists()) {
+      isFileDownLoadedList[index] = true;
+      controller.update();
+      logs(" The file has already been downloaded, open it.");
+      logs("saved file path  ---- > $filePath");
+
+      if (extensionCheck(pdfURL) == "mp4") {
+        logs("Its video");
+
+        Get.toNamed(RouteHelper.getVideoPlayerScreen(),
+            arguments: {'video': filePath});
+      }
+      if (extensionCheck(pdfURL) == "jpg" || extensionCheck(pdfURL) == "png") {
+        logs("Its Image");
+        Get.toNamed(RouteHelper.getImageViewScreen(),
+            arguments: {'image': filePath, 'name': arguments['name']});
+      }
+
+      if (extensionCheck(pdfURL) == "mp3") {
+        logs("Its audio");
+
+        controller.index = index;
+        controller.update();
+
+        if (controller.isPlayList[index].value) {
+          await controller.player.pause();
+          //await controller.player.dispose();
+        } else {
+          await controller.player.setUrl(filePath);
+          await controller.player.play();
+        }
+      } else {
+        OpenFile.open(filePath);
+      }
+    } else {
+      logs("Downloading Start");
+      downloadAndSavePDF(pdfURL, folderName, controller, index);
+    }
+  }
+
+  Future<void> isFileDownloadedCheck(
+      index, folderName, pdfURL, ChatingPageController controller) async {
+    var dirPath =
+        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+    Directory dir = Directory(dirPath);
+    List splitUrl = pdfURL.split("/");
+    final filePath =
+        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
+
+    if (await File(filePath).exists()) {
+      isFileDownLoadedList[index] = true;
+      controller.update();
+    }
+  }
+
+  getVideoThumbnail(
+      pdfURL, folderName, ChatingPageController controller, int index)
+  async {
+
+    //data/user/0/com.js.signal/cache/chat%2Fvideo%2F%2B919988776655%2FsentDoc.png
+
+    var dirPath =
+        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+  Directory dir = Directory(dirPath);
+  List splitUrl = pdfURL.split("/");
+  final filePath =
+  '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
+
+  if (await File(filePath).exists()) {
+    thumbnailList[index] = (await VideoThumbnail.thumbnailFile(
+      video: filePath,
+      thumbnailPath: (await getTemporaryDirectory()).path,
+      imageFormat: ImageFormat.PNG,
+      maxHeight: 64,
+      quality: 40,
+    ))!;
+  controller.update();
+  }
+
+
+  }
+
+  extensionCheck(pdfURL) {
+    if (pdfURL.toString().contains("sentDoc.${"jpg"}")) {
+      return "jpg";
+    }
+    if (pdfURL.toString().contains("sentDoc.${"png"}")) {
+      return "png";
+    }
+    if (pdfURL.toString().contains("sentDoc.${"mp4"}")) {
+      return "mp4";
+    }
+    if (pdfURL.toString().contains("sentDoc.${"mp3"}")) {
+      return "mp3";
+    }
+    if (pdfURL.toString().contains("sentDoc.${"pdf"}")) {
+      return "pdf";
+    }
+    if (pdfURL.toString().contains("sentDoc.${"doc"}")) {
+      return "doc";
+    }
+    if (pdfURL.toString().contains("sentDoc.${"docx"}")) {
+      return "docx";
+    }
+  }
+
+  Future<void> getPermission() async {
+    await Permission.storage.request();
+    await Permission.manageExternalStorage.request();
+    await Permission.accessMediaLocation.request();
+
+    final PermissionStatus permissionStatus1 = await Permission.storage.status;
+    final PermissionStatus permissionStatus2 =
+        await Permission.manageExternalStorage.status;
+    final PermissionStatus permissionStatus3 =
+        await Permission.accessMediaLocation.status;
+
+    if (permissionStatus1.isGranted &&
+        permissionStatus2.isGranted &&
+        permissionStatus3.isGranted) {
+      //do
+    } else {
+      await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
+      await Permission.accessMediaLocation.request();
+    }
+  }
 
   //=========================== audio =============================//
 
@@ -133,7 +362,7 @@ class ChatingPageViewModal {
         audioFile = File(file.path!);
         // ignore: unrelated_type_equality_checks
         if (await isFileLarge(File(file.path!)) == false) {
-          onSendAudio("audio", controller);
+          goToAttachmentScreen(file.path, arguments['members'], "");
         }
       } else {}
 
@@ -168,7 +397,8 @@ class ChatingPageViewModal {
     if (pickedFile != null) {
       if (await isFileLarge(File(pickedFile.path)) == false) {
         selectedVideo = (File(pickedFile.path));
-        goToAttachmentScreen(selectedVideo!.path, members);
+
+        goToAttachmentScreen(selectedVideo!.path, members, "");
         logs(selectedVideo.toString());
         controller.update();
       }
@@ -198,12 +428,12 @@ class ChatingPageViewModal {
   //========================= pick images =============================//
 
   Future<void> pickImageGallery(GetxController controller, members) async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 10);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(selectedImage!.path, members);
+      goToAttachmentScreen(selectedImage!.path, members, "");
       // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
@@ -211,12 +441,12 @@ class ChatingPageViewModal {
   }
 
   Future<void> pickImageCamera(GetxController controller, members) async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    final pickedFile = await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 10);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(selectedImage!.path, members);
+      goToAttachmentScreen(selectedImage!.path, members, "");
       // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
@@ -264,15 +494,12 @@ class ChatingPageViewModal {
         }
         if (value == 1) {
           audioSendTap();
-          Get.back();
         }
         if (value == 2) {
           videoSendTap();
-          Get.back();
         }
         if (value == 3) {
           pickDocument(controller!);
-          Get.back();
         }
       },
       elevation: 0.5,

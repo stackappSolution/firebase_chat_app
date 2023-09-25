@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
@@ -21,15 +23,15 @@ class ImageView extends StatelessWidget {
     return GetBuilder<ChatingPageController>(
       initState: (state) {
         imageViewModel!.arguments = Get.arguments;
-        Future.delayed(const Duration(milliseconds: 10),() {
-          controller= Get.find<ChatingPageController>();
-        },);
-
+        Future.delayed(
+          const Duration(milliseconds: 10),
+          () {
+            controller = Get.find<ChatingPageController>();
+          },
+        );
 
         logs('image------------> ${imageViewModel!.arguments['image']}');
-        imageViewModel!.imageUrl= imageViewModel!.arguments['image'];
-
-
+        imageViewModel!.imageUrl = imageViewModel!.arguments['image'];
       },
       init: ChatingPageController(),
       builder: (controller) {
@@ -45,7 +47,7 @@ class ImageView extends StatelessWidget {
   getAppbar(BuildContext context) {
     return AppAppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
-      title: AppText(imageViewModel!.arguments['name']),
+      title: AppText(imageViewModel!.arguments['name'],color: Theme.of(context).colorScheme.primary,),
     );
   }
 
@@ -54,23 +56,19 @@ class ImageView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.all(5.px),
-          height: 350.px,
-          width: double.infinity,
-          child: PhotoView(minScale: PhotoViewComputedScale.contained * 1.0,
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(5.px),
+            height: 350.px,
+            width: double.infinity,
+            child: PhotoView(
+              minScale: PhotoViewComputedScale.contained * 1.0,
               maxScale: PhotoViewComputedScale.covered * 0.8,
               backgroundDecoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background),
-              imageProvider: NetworkImage(imageViewModel!.imageUrl!)),
-        )
+              imageProvider:
+                  FileImage(File(imageViewModel!.arguments['image'])),
+            ))
       ],
     );
   }
-
-
-
-
 }
-
-

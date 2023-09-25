@@ -108,7 +108,7 @@ class GroupNameScreen extends StatelessWidget {
             buildMembersList()
           ],
         ),
-        if (groupNameViewModel!.isLoading) const AppLoader(),
+        if (groupNameViewModel!.isLoading)  AppLoader(),
       ],
     );
   }

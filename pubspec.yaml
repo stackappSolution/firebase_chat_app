@@ -54,19 +54,37 @@ dependencies:
   flutter_typeahead: ^4.6.2
 
   #audio
-  on_audio_query: ^2.9.0
   just_audio: ^0.9.35
+
 
   #Video
   video_player: ^2.7.1
-
+  video_thumbnail: ^0.5.3
 
   # file
   file_picker: ^5.5.0
 
-  
   # success & error
   bot_toast: ^4.1.1
+
+  #pdf View
+  flutter_pdfview: ^1.2.7
+
+  #http
+  http: ^1.1.0
+
+  #file View
+  flutter_file_view: ^2.2.1
+
+  #File Downloader
+  flutter_downloader: ^1.11.2
+
+  #path provider
+  external_path: ^1.0.3
+
+  #file Opner
+  open_file: ^3.3.2
+
 
 
 

@@ -89,7 +89,7 @@ class SettingScreen extends StatelessWidget {
             return const AppText('');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const AppLoader();
+            return  AppLoader();
           }
           final data = snapshot.data!.docs;
           return Row(

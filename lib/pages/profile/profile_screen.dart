@@ -50,7 +50,6 @@ class ProfileScreen extends StatelessWidget {
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;
     return Stack(
       children: [
-        if (profileViewModel!.isLoadingOnSave) AppLoader(),
         SingleChildScrollView(
             child: Padding(
                 padding: EdgeInsets.only(left: 22.px, right: 22.px),
@@ -192,6 +191,8 @@ class ProfileScreen extends StatelessWidget {
                         onPressed: (profileViewModel!.isButtonActive &&
                                 profileViewModel!.isLoading == false)
                             ? () {
+                                profileViewModel!.isLoadingOnSave = true;
+                                controller.update();
                                 profileViewModel!
                                     .onTapNext(context, controller);
                               }
@@ -200,6 +201,7 @@ class ProfileScreen extends StatelessWidget {
                     )
                   ],
                 ))),
+        if (profileViewModel!.isLoadingOnSave)  AppLoader(),
       ],
     );
   }

@@ -69,12 +69,6 @@ class ChatViewModel {
     controller!.update();
   }
 
-
-
-
-
-
-
   getNameFromContact(String number) {
     for (var contact in DataBaseHelper.contactData) {
       if (contact["contact"].toString().trim().removeAllWhitespace == number) {

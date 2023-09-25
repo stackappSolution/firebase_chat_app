@@ -77,9 +77,16 @@ goToChatContactScreen() {
   Get.toNamed(RouteHelper.getChatContactScreen());
 }
 
-goToAttachmentScreen(selectedImage, members) {
+goToFileView( filePath) {
+  Get.toNamed(RouteHelper.getFileView(),arguments:{
+  "filePath": filePath,
+  },);
+}
+
+goToAttachmentScreen(selectedImage, members, String extension) {
   Get.toNamed(RouteHelper.getAttachmentScreen(), arguments: {
     "image": selectedImage,
     "members": members,
+    "extension": extension,
   },);
 }

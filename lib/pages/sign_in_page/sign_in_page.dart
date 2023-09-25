@@ -265,8 +265,6 @@ class SignInPage extends StatelessWidget {
                                       signInViewModel.isLoading = false;
                                       controller.update();
                                     }
-                                    var data;
-                                    if (data.passParameter['id'] != null) {}
                                   },
                             buttonColor: AppColorConstant.appYellow,
                             buttonHeight: 50.px,

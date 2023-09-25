@@ -136,7 +136,7 @@ class NewMessagePage extends StatelessWidget {
   buildContactList(BuildContext context, NewMessageController controller) {
     return Stack(
       children: [
-        if (newMessageViewModel!.isLoading) const AppLoader(),
+        if (newMessageViewModel!.isLoading)  AppLoader(),
         ListView.builder(
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
@@ -151,7 +151,7 @@ class NewMessagePage extends StatelessWidget {
                 ? contact.phones!.first.value
                 : 'N/A';
             String? displayName = contact.displayName ?? 'unknown';
-            String firstLetter = displayName.substring(0, 1).toUpperCase();
+            String firstLetter = displayName.substring(0, 1).toUpperCase()?? "  ";
             logs(
                 "Sqf Contacts  ====  >  ${DataBaseHelper.contactData[index]["name"]}");
 
