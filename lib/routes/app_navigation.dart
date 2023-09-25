@@ -90,3 +90,12 @@ goToAttachmentScreen(selectedImage, members, String extension) {
     "extension": extension,
   },);
 }
+
+goToDonateToChatScreen(){
+  Get.toNamed(RouteHelper.getDonateToChatScreen());
+}
+
+goToDonateScreen(){
+  Get.toNamed(RouteHelper.getDonateScreen());
+}
+
