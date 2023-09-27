@@ -73,6 +73,8 @@ class ChatingPage extends StatelessWidget {
             controller = Get.find<ChatingPageController>();
             controller!.durationList = List.filled(100, Duration.zero);
             controller!.positionList = List.filled(100, Duration.zero);
+            controller!.isPlayList = List.filled(100, false.obs);
+            controller!.playerList = List.filled(100, AudioPlayer());
             chatingPageViewModal!.isBlocked = await UsersService.instance
                 .isBlockedByLoggedInUser(
                     chatingPageViewModal!.arguments['number']);
@@ -93,6 +95,7 @@ class ChatingPage extends StatelessWidget {
 
             DatabaseService.instance.markMessagesAsSeen(snapshots.docs.first.id,
                 chatingPageViewModal!.arguments['number']);
+
             Future<String?> key = getStringValue(wallPaperColor);
             chatingPageViewModal!.wallpaperPath = await key;
 
@@ -160,9 +163,14 @@ class ChatingPage extends StatelessWidget {
                               .map((doc) => doc.data() as Map<String, dynamic>)
                               .toList();
 
-                          DatabaseService.instance.markMessagesAsSeen(
-                              chatingPageViewModal!.snapshots.docs.first.id,
-                              chatingPageViewModal!.arguments['number']);
+                          Future.delayed(
+                            const Duration(milliseconds: 300),
+                            () {
+                              DatabaseService.instance.markMessagesAsSeen(
+                                  chatingPageViewModal!.snapshots.docs.first.id,
+                                  chatingPageViewModal!.arguments['number']);
+                            },
+                          );
 
                           return GroupedListView(
                             itemBuilder: (context, element) {
@@ -691,7 +699,16 @@ class ChatingPage extends StatelessWidget {
                             padding: EdgeInsets.all(4.px),
                             child: AppText(
                               message.text.toString(),
-                              fontSize: 10.px,
+                              fontSize: chatingPageViewModal!.fontSize ==
+                                      S.of(context).small
+                                  ? 10.px
+                                  : chatingPageViewModal!.fontSize ==
+                                          S.of(context).large
+                                      ? 20.px
+                                      : chatingPageViewModal!.fontSize ==
+                                              S.of(context).extraLarge
+                                          ? 25.px
+                                          : 15.px,
                               color: AppColorConstant.appWhite,
                             ),
                           ))
@@ -770,7 +787,16 @@ class ChatingPage extends StatelessWidget {
                                 padding: EdgeInsets.all(4.px),
                                 child: AppText(
                                   message.text.toString(),
-                                  fontSize: 10.px,
+                                  fontSize: chatingPageViewModal!.fontSize ==
+                                          S.of(context).small
+                                      ? 10.px
+                                      : chatingPageViewModal!.fontSize ==
+                                              S.of(context).large
+                                          ? 20.px
+                                          : chatingPageViewModal!.fontSize ==
+                                                  S.of(context).extraLarge
+                                              ? 25.px
+                                              : 15.px,
                                   color: AppColorConstant.appWhite,
                                 ),
                               ))
@@ -891,9 +917,6 @@ class ChatingPage extends StatelessWidget {
                             controller.index = index;
                             controller.update();
 
-                            chatingPageViewModal!.isPlayList[index] =
-                                !chatingPageViewModal!.isPlayList[index];
-
                             chatingPageViewModal!.viewFile(message.message,
                                 "SENT/AUDIO", controller!, index);
                           },
@@ -915,7 +938,16 @@ class ChatingPage extends StatelessWidget {
                             vertical: 5.px, horizontal: 8.px),
                         child: AppText(
                           message.text.toString(),
-                          fontSize: 10.px,
+                          fontSize: chatingPageViewModal!.fontSize ==
+                                  S.of(context).small
+                              ? 10.px
+                              : chatingPageViewModal!.fontSize ==
+                                      S.of(context).large
+                                  ? 20.px
+                                  : chatingPageViewModal!.fontSize ==
+                                          S.of(context).extraLarge
+                                      ? 25.px
+                                      : 15.px,
                           color: AppColorConstant.blackOff,
                         ),
                       ))
@@ -1033,9 +1065,6 @@ class ChatingPage extends StatelessWidget {
                               controller.index = index;
                               controller.update();
 
-                              chatingPageViewModal!.isPlayList[index] =
-                                  !chatingPageViewModal!.isPlayList[index];
-
                               chatingPageViewModal!.viewFile(
                                   message.message, "AUDIO", controller!, index);
                             },
@@ -1083,7 +1112,16 @@ class ChatingPage extends StatelessWidget {
                             vertical: 5.px, horizontal: 8.px),
                         child: AppText(
                           message.text.toString(),
-                          fontSize: 10.px,
+                          fontSize: chatingPageViewModal!.fontSize ==
+                                  S.of(context).small
+                              ? 10.px
+                              : chatingPageViewModal!.fontSize ==
+                                      S.of(context).large
+                                  ? 20.px
+                                  : chatingPageViewModal!.fontSize ==
+                                          S.of(context).extraLarge
+                                      ? 25.px
+                                      : 15.px,
                           color: AppColorConstant.appWhite,
                         ),
                       ))
@@ -1183,7 +1221,16 @@ class ChatingPage extends StatelessWidget {
                               padding: EdgeInsets.all(4.px),
                               child: AppText(
                                 message.text.toString(),
-                                fontSize: 10.px,
+                                fontSize: chatingPageViewModal!.fontSize ==
+                                        S.of(context).small
+                                    ? 10.px
+                                    : chatingPageViewModal!.fontSize ==
+                                            S.of(context).large
+                                        ? 20.px
+                                        : chatingPageViewModal!.fontSize ==
+                                                S.of(context).extraLarge
+                                            ? 25.px
+                                            : 15.px,
                                 color: AppColorConstant.appWhite,
                               ),
                             ))
@@ -1287,10 +1334,8 @@ class ChatingPage extends StatelessWidget {
                                       color: AppColorConstant.appYellow,
                                     ),
                                   )
-
-                                else
-                                  if(chatingPageViewModal!
-                                      .isFileDownLoadedList[index])
+                                else if (chatingPageViewModal!
+                                    .isFileDownLoadedList[index])
                                   InkWell(
                                     onTap: () {
                                       chatingPageViewModal!.viewFile(
@@ -1299,13 +1344,12 @@ class ChatingPage extends StatelessWidget {
                                           controller!,
                                           index);
                                     },
-                                    child:Icon(
+                                    child: Icon(
                                       Icons.play_circle_outline,
                                       size: 45.px,
                                       color: AppColorConstant.appYellow,
                                     ),
                                   ),
-
                                 if (!chatingPageViewModal!
                                         .isFileDownLoadedList[index] &&
                                     !chatingPageViewModal!
@@ -1326,7 +1370,16 @@ class ChatingPage extends StatelessWidget {
                             padding: EdgeInsets.all(4.px),
                             child: AppText(
                               message.text.toString(),
-                              fontSize: 10.px,
+                              fontSize: chatingPageViewModal!.fontSize ==
+                                      S.of(context).small
+                                  ? 10.px
+                                  : chatingPageViewModal!.fontSize ==
+                                          S.of(context).large
+                                      ? 20.px
+                                      : chatingPageViewModal!.fontSize ==
+                                              S.of(context).extraLarge
+                                          ? 25.px
+                                          : 15.px,
                               color: AppColorConstant.appWhite,
                             ),
                           )),
@@ -1411,20 +1464,50 @@ class ChatingPage extends StatelessWidget {
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsets.all(8.px),
-                                        child: const Column(
+                                        child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             AppText(
-                                              "PDF..",
+                                              "Document",
                                               color: AppColorConstant.appWhite,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
+                                              fontSize: chatingPageViewModal!
+                                                          .fontSize ==
+                                                      S.of(context).small
+                                                  ? 10.px
+                                                  : chatingPageViewModal!
+                                                              .fontSize ==
+                                                          S.of(context).large
+                                                      ? 20.px
+                                                      : chatingPageViewModal!
+                                                                  .fontSize ==
+                                                              S
+                                                                  .of(context)
+                                                                  .extraLarge
+                                                          ? 25.px
+                                                          : 15.px,
                                             ),
                                             AppText(
-                                              "kb",
+                                              "File",
                                               color: AppColorConstant.appWhite,
+                                              fontSize: chatingPageViewModal!
+                                                          .fontSize ==
+                                                      S.of(context).small
+                                                  ? 10.px
+                                                  : chatingPageViewModal!
+                                                              .fontSize ==
+                                                          S.of(context).large
+                                                      ? 20.px
+                                                      : chatingPageViewModal!
+                                                                  .fontSize ==
+                                                              S
+                                                                  .of(context)
+                                                                  .extraLarge
+                                                          ? 25.px
+                                                          : 15.px,
                                             ),
                                           ],
                                         ),
@@ -1444,7 +1527,16 @@ class ChatingPage extends StatelessWidget {
                               padding: EdgeInsets.all(4.px),
                               child: AppText(
                                 message.text.toString(),
-                                fontSize: 10.px,
+                                fontSize: chatingPageViewModal!.fontSize ==
+                                        S.of(context).small
+                                    ? 10.px
+                                    : chatingPageViewModal!.fontSize ==
+                                            S.of(context).large
+                                        ? 20.px
+                                        : chatingPageViewModal!.fontSize ==
+                                                S.of(context).extraLarge
+                                            ? 25.px
+                                            : 15.px,
                                 color: AppColorConstant.appBlack,
                               ),
                             ))
@@ -1553,20 +1645,44 @@ class ChatingPage extends StatelessWidget {
                               Expanded(
                                 child: Padding(
                                   padding: EdgeInsets.all(8.px),
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       AppText(
-                                        "PDF..",
+                                        "Document",
                                         color: AppColorConstant.appWhite,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
+                                        fontSize: chatingPageViewModal!
+                                                    .fontSize ==
+                                                S.of(context).small
+                                            ? 10.px
+                                            : chatingPageViewModal!.fontSize ==
+                                                    S.of(context).large
+                                                ? 20.px
+                                                : chatingPageViewModal!
+                                                            .fontSize ==
+                                                        S.of(context).extraLarge
+                                                    ? 25.px
+                                                    : 15.px,
                                       ),
                                       AppText(
-                                        "kb",
+                                        "File",
                                         color: AppColorConstant.appWhite,
+                                        fontSize: chatingPageViewModal!
+                                                    .fontSize ==
+                                                S.of(context).small
+                                            ? 10.px
+                                            : chatingPageViewModal!.fontSize ==
+                                                    S.of(context).large
+                                                ? 20.px
+                                                : chatingPageViewModal!
+                                                            .fontSize ==
+                                                        S.of(context).extraLarge
+                                                    ? 25.px
+                                                    : 15.px,
                                       ),
                                     ],
                                   ),
@@ -1583,7 +1699,16 @@ class ChatingPage extends StatelessWidget {
                               padding: EdgeInsets.all(4.px),
                               child: AppText(
                                 message.text.toString(),
-                                fontSize: 10.px,
+                                fontSize: chatingPageViewModal!.fontSize ==
+                                        S.of(context).small
+                                    ? 10.px
+                                    : chatingPageViewModal!.fontSize ==
+                                            S.of(context).large
+                                        ? 20.px
+                                        : chatingPageViewModal!.fontSize ==
+                                                S.of(context).extraLarge
+                                            ? 25.px
+                                            : 15.px,
                                 color: AppColorConstant.appWhite,
                               ),
                             ))

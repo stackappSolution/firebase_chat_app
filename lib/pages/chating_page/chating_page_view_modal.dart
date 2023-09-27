@@ -200,7 +200,7 @@ class ChatingPageViewModal {
   }
 
   Future<void> viewFile(
-      pdfURL, folderName, ChatingPageController controller, int index) async {
+      mainURL, folderName, ChatingPageController controller, int index) async {
     logs(" View FIle Entred");
     final PermissionStatus permissionStatus =
         await Permission.manageExternalStorage.status;
@@ -208,15 +208,15 @@ class ChatingPageViewModal {
       getPermission();
     }
     logs("downloadAndOpenPDF Entered");
-    downloadAndSavePDF(pdfURL, folderName, controller, index);
+    downloadAndSavePDF(mainURL, folderName, controller, index);
 
     var dirPath =
         "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
     Directory dir = Directory(dirPath);
-    List splitUrl = pdfURL.split("/");
+    List splitUrl = mainURL.split("/");
 
     final filePath =
-        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
+        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
 
     logs("ckeck file  --- > ${filePath}");
 
@@ -226,37 +226,67 @@ class ChatingPageViewModal {
       logs(" The file has already been downloaded, open it.");
       logs("saved file path  ---- > $filePath");
 
-      if (extensionCheck(pdfURL) == "mp4") {
+      if (extensionCheck(mainURL) == "mp4") {
         logs("Its video");
 
         Get.toNamed(RouteHelper.getVideoPlayerScreen(),
             arguments: {'video': filePath});
       }
-      if (extensionCheck(pdfURL) == "jpg" || extensionCheck(pdfURL) == "png") {
+      if (extensionCheck(mainURL) == "jpg" ||
+          extensionCheck(mainURL) == "png") {
         logs("Its Image");
         Get.toNamed(RouteHelper.getImageViewScreen(),
             arguments: {'image': filePath, 'name': arguments['name']});
       }
 
-      if (extensionCheck(pdfURL) == "mp3") {
+      if (extensionCheck(mainURL) == "mp3") {
         logs("Its audio");
 
         controller.index = index;
         controller.update();
 
-        if (controller.isPlayList[index].value) {
-          await controller.player.pause();
-          //await controller.player.dispose();
+        isPlayList[index] = !isPlayList[index];
+        controller.update();
+
+        logs(isPlayList.toString());
+
+//false
+        if (!controller.playerList[index].playing) {
+          logs("Entered if");
+          for (int i = 0; i < controller.playerList.length; i++) {
+            logs(i.toString());
+            if (await controller.playerList[i].playing) {
+              isPlayList[i] = false;
+              controller.update();
+              await controller.playerList[i].stop();
+              controller.update();
+            }
+          }
+          await controller.playerList[index].setUrl(filePath);
+          await controller.playerList[index].play();
+          controller.update();
+
+          //true
         } else {
-          await controller.player.setUrl(filePath);
-          await controller.player.play();
+          logs("Entered else if");
+          for (int x = 0; x < controller.playerList.length; x++) {
+            logs(x.toString());
+            if (controller.playerList[x].playing) {
+              if (controller.playerList[x] != index) {
+                isPlayList[x] = false;
+                controller.update();
+                await controller.playerList[x].stop();
+                controller.update();
+              }
+            }
+          }
         }
       } else {
         OpenFile.open(filePath);
       }
     } else {
       logs("Downloading Start");
-      downloadAndSavePDF(pdfURL, folderName, controller, index);
+      downloadAndSavePDF(mainURL, folderName, controller, index);
     }
   }
 
@@ -276,30 +306,26 @@ class ChatingPageViewModal {
   }
 
   getVideoThumbnail(
-      pdfURL, folderName, ChatingPageController controller, int index)
-  async {
-
+      pdfURL, folderName, ChatingPageController controller, int index) async {
     //data/user/0/com.js.signal/cache/chat%2Fvideo%2F%2B919988776655%2FsentDoc.png
 
     var dirPath =
         "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
-  Directory dir = Directory(dirPath);
-  List splitUrl = pdfURL.split("/");
-  final filePath =
-  '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
+    Directory dir = Directory(dirPath);
+    List splitUrl = pdfURL.split("/");
+    final filePath =
+        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
 
-  if (await File(filePath).exists()) {
-    thumbnailList[index] = (await VideoThumbnail.thumbnailFile(
-      video: filePath,
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      imageFormat: ImageFormat.PNG,
-      maxHeight: 64,
-      quality: 40,
-    ))!;
-  controller.update();
-  }
-
-
+    if (await File(filePath).exists()) {
+      thumbnailList[index] = (await VideoThumbnail.thumbnailFile(
+        video: filePath,
+        thumbnailPath: (await getTemporaryDirectory()).path,
+        imageFormat: ImageFormat.PNG,
+        maxHeight: 64,
+        quality: 40,
+      ))!;
+      controller.update();
+    }
   }
 
   extensionCheck(pdfURL) {
