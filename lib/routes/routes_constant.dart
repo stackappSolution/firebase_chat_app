@@ -39,7 +39,7 @@ class RouteConstant{
   static const String newMessageScreen = '/NewMessagePage';
   static const String attachmentScreen = '/attachmentScreen';
   static const String fileView = '/fileView';
-
-
+  static const String donateToChatScreen = '/DonateToChat';
+  static const String donateScreen = '/DonateScreen';
 
 }
