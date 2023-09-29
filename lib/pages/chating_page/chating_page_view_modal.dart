@@ -22,8 +22,6 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -242,44 +240,39 @@ class ChatingPageViewModal {
       if (extensionCheck(mainURL) == "mp3") {
         logs("Its audio");
 
-        controller.index = index;
-        controller.update();
-
         isPlayList[index] = !isPlayList[index];
         controller.update();
 
         logs(isPlayList.toString());
 
 //false
-        if (!controller.playerList[index].playing) {
-          logs("Entered if");
-          for (int i = 0; i < controller.playerList.length; i++) {
-            logs(i.toString());
-            if (await controller.playerList[i].playing) {
-              isPlayList[i] = false;
-              controller.update();
-              await controller.playerList[i].stop();
-              controller.update();
-            }
-          }
-          await controller.playerList[index].setUrl(filePath);
-          await controller.playerList[index].play();
-          controller.update();
+        if (!controller.player.playing) {
+            controller!.positionList = List.filled(100, Duration.zero);
+            controller!.isPlayList = List.filled(100, false.obs);
+            isPlayList[index] = true;
+            controller.update();
+            controller.player.setUrl(filePath);
+            controller.player.play();
+            controller.update();
 
           //true
         } else {
-          logs("Entered else if");
-          for (int x = 0; x < controller.playerList.length; x++) {
-            logs(x.toString());
-            if (controller.playerList[x].playing) {
-              if (controller.playerList[x] != index) {
-                isPlayList[x] = false;
-                controller.update();
-                await controller.playerList[x].stop();
-                controller.update();
-              }
-            }
+          if (isPlayList[index]) {
+            controller.player.pause();
+            controller.update();
+            controller!.positionList = List.filled(100, Duration(seconds: 0));
+            controller!.isPlayList = List.filled(100, false.obs);
+          } else {
+            controller!.positionList = List.filled(100, Duration(seconds: 0));
+            controller!.isPlayList = List.filled(100, false.obs);
+            controller.update();
+            controller.player.setUrl(filePath);
+            controller.player.play();
           }
+
+          //  controller!.positionList = List.filled(100, Duration.zero);
+          // controller!.isPlayList = List.filled(100, false.obs);
+          controller.update();
         }
       } else {
         OpenFile.open(filePath);
@@ -305,28 +298,28 @@ class ChatingPageViewModal {
     }
   }
 
-  getVideoThumbnail(
-      pdfURL, folderName, ChatingPageController controller, int index) async {
-    //data/user/0/com.js.signal/cache/chat%2Fvideo%2F%2B919988776655%2FsentDoc.png
-
-    var dirPath =
-        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
-    Directory dir = Directory(dirPath);
-    List splitUrl = pdfURL.split("/");
-    final filePath =
-        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
-
-    if (await File(filePath).exists()) {
-      thumbnailList[index] = (await VideoThumbnail.thumbnailFile(
-        video: filePath,
-        thumbnailPath: (await getTemporaryDirectory()).path,
-        imageFormat: ImageFormat.PNG,
-        maxHeight: 64,
-        quality: 40,
-      ))!;
-      controller.update();
-    }
-  }
+  // getVideoThumbnail(
+  //     pdfURL, folderName, ChatingPageController controller, int index) async {
+  //   //data/user/0/com.js.signal/cache/chat%2Fvideo%2F%2B919988776655%2FsentDoc.png
+  //
+  //   var dirPath =
+  //       "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+  //   Directory dir = Directory(dirPath);
+  //   List splitUrl = pdfURL.split("/");
+  //   final filePath =
+  //       '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
+  //
+  //   if (await File(filePath).exists()) {
+  //     thumbnailList[index] = (await VideoThumbnail.thumbnailFile(
+  //       video: filePath,
+  //       thumbnailPath: (await getTemporaryDirectory()).path,
+  //       imageFormat: ImageFormat.PNG,
+  //       maxHeight: 64,
+  //       quality: 40,
+  //     ))!;
+  //     controller.update();
+  //   }
+  // }
 
   extensionCheck(pdfURL) {
     if (pdfURL.toString().contains("sentDoc.${"jpg"}")) {

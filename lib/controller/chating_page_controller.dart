@@ -16,33 +16,42 @@ class ChatingPageController extends GetxController {
   List<Duration> durationList = [];
   List<Duration> positionList = [];
   List isPlayList = [];
-  List playerList = [];
 
   late Stream<Duration?> streamDuration;
 
   int index = 0;
 
-  // @override
-  // void onInit() {
-  //   // TODO: implement onInit
-  //   super.onInit();
-  //
-  //   player.playerStateStream.listen((state) {
-  //     isPlayList[index].value = state.playing;
-  //     logs("play index --- > ${index}");
-  //     update();
-  //   });
-  //
-  //   player.durationStream.listen((event) {
-  //     durationList[index] = event!;
-  //     update();
-  //   });
-  //
-  //   player.positionStream.listen((event) {
-  //     positionList[index] = event;
-  //     update();
-  //   });
-  // }
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+
+    player.playerStateStream.listen((event) async {
+      if (event.processingState == ProcessingState.completed) {
+        positionList[index] = const Duration(seconds: 0);
+        isPlayList = List.filled(100, false);
+        update();
+        player.stop();
+        update();
+      }
+    });
+
+    player.playerStateStream.listen((state) {
+      isPlayList[index].value = state.playing;
+      logs("play index --- > ${index}");
+      update();
+    });
+
+    player.durationStream.listen((event) {
+      durationList[index] = event!;
+      update();
+    });
+
+    player.positionStream.listen((event) {
+      positionList[index] = event;
+      update();
+    });
+  }
 
   @override
   void dispose() {

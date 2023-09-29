@@ -74,7 +74,6 @@ class ChatingPage extends StatelessWidget {
             controller!.durationList = List.filled(100, Duration.zero);
             controller!.positionList = List.filled(100, Duration.zero);
             controller!.isPlayList = List.filled(100, false.obs);
-            controller!.playerList = List.filled(100, AudioPlayer());
             chatingPageViewModal!.isBlocked = await UsersService.instance
                 .isBlockedByLoggedInUser(
                     chatingPageViewModal!.arguments['number']);
@@ -895,23 +894,17 @@ class ChatingPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      IconButton(
-                          onPressed: () {
-                            controller.player.dispose();
-                          },
-                          icon: const Icon(
-                            Icons.disabled_by_default,
-                          )),
-                      // Container(
-                      //   width: 50.px,
-                      //   alignment: Alignment.center,
-                      //   child: AppText(
-                      //     DateFormation()
-                      //         .formatTime(controller.positionList[index]),
-                      //     color: AppColorConstant.appWhite,
-                      //     fontSize: 10.px,
-                      //   ),
-                      // ),
+
+                      Container(
+                        width: 50.px,
+                        alignment: Alignment.center,
+                        child: AppText(
+                          DateFormation()
+                              .formatTime(controller.positionList[index]),
+                          color: AppColorConstant.appWhite,
+                          fontSize: 10.px,
+                        ),
+                      ),
                       IconButton(
                           onPressed: () async {
                             controller.index = index;
