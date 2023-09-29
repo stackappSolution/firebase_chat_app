@@ -19,10 +19,7 @@ class ThemeUtil {
       selectedTheme = value;
       logs("loadThemeMode----> $value");
 
-      // var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-      // bool isDark = brightness == Brightness.dark;
-      // logs("Current Brightness ---- > $isDark");
-      // controller.update();
+
 
       if (selectedTheme == ThemeMode.dark) {
         isDark = true;
@@ -42,6 +39,12 @@ class ThemeUtil {
       ));
       logs("loadThemeMode IsDark?----> $isDark");
     });
+  }
+
+  static checkCurrentTheme()
+  {
+
+    logs("Current Brightness ---- > $isDark");
   }
 
   static Future<ThemeMode> getThemeMode() async {

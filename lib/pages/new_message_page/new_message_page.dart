@@ -32,7 +32,9 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
+        DataBaseHelper.getContactDetails();
         Future.delayed(const Duration(milliseconds: 300), () async {
+
           newMessageController!.getUserPhoneList();
           newMessageController = Get.find<NewMessageController>();
         });

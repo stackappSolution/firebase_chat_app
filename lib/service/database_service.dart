@@ -158,7 +158,7 @@ class DatabaseService {
         .ref('chat')
         .child("audio")
         .child(AuthService.auth.currentUser!.phoneNumber!)
-        .child('sentDoc.mp3');
+        .child('${DateTime.now()}sentDoc.mp3');
 
     final UploadTask uploadTask = storage.putFile(
       url,
@@ -197,7 +197,7 @@ class DatabaseService {
         .ref('chat')
         .child("images")
         .child(AuthService.auth.currentUser!.phoneNumber!)
-        .child('sentDoc.jpg');
+        .child('${DateTime.now()}sentDoc.jpg');
 
     final UploadTask uploadTask = storage.putFile(
       url,
@@ -272,7 +272,7 @@ class DatabaseService {
         .ref('chat')
         .child("video")
         .child(AuthService.auth.currentUser!.phoneNumber!)
-        .child('sentDoc.mp4');
+        .child('${DateTime.now()}sentDoc.mp4');
 
     final UploadTask uploadTask = storage.putFile(
       url,
@@ -310,7 +310,7 @@ class DatabaseService {
         .ref('chat')
         .child("doc")
         .child(AuthService.auth.currentUser!.phoneNumber!)
-        .child('sentDoc.$extension');
+        .child('${DateTime.now()}sentDoc.$extension');
 
     final UploadTask uploadTask = storage.putFile(
       url,

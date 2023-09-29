@@ -22,8 +22,6 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -200,7 +198,7 @@ class ChatingPageViewModal {
   }
 
   Future<void> viewFile(
-      pdfURL, folderName, ChatingPageController controller, int index) async {
+      mainURL, folderName, ChatingPageController controller, int index) async {
     logs(" View FIle Entred");
     final PermissionStatus permissionStatus =
         await Permission.manageExternalStorage.status;
@@ -208,15 +206,15 @@ class ChatingPageViewModal {
       getPermission();
     }
     logs("downloadAndOpenPDF Entered");
-    downloadAndSavePDF(pdfURL, folderName, controller, index);
+    downloadAndSavePDF(mainURL, folderName, controller, index);
 
     var dirPath =
         "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
     Directory dir = Directory(dirPath);
-    List splitUrl = pdfURL.split("/");
+    List splitUrl = mainURL.split("/");
 
     final filePath =
-        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
+        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
 
     logs("ckeck file  --- > ${filePath}");
 
@@ -226,37 +224,62 @@ class ChatingPageViewModal {
       logs(" The file has already been downloaded, open it.");
       logs("saved file path  ---- > $filePath");
 
-      if (extensionCheck(pdfURL) == "mp4") {
+      if (extensionCheck(mainURL) == "mp4") {
         logs("Its video");
 
         Get.toNamed(RouteHelper.getVideoPlayerScreen(),
             arguments: {'video': filePath});
       }
-      if (extensionCheck(pdfURL) == "jpg" || extensionCheck(pdfURL) == "png") {
+      if (extensionCheck(mainURL) == "jpg" ||
+          extensionCheck(mainURL) == "png") {
         logs("Its Image");
         Get.toNamed(RouteHelper.getImageViewScreen(),
             arguments: {'image': filePath, 'name': arguments['name']});
       }
 
-      if (extensionCheck(pdfURL) == "mp3") {
+      if (extensionCheck(mainURL) == "mp3") {
         logs("Its audio");
 
-        controller.index = index;
+        isPlayList[index] = !isPlayList[index];
         controller.update();
 
-        if (controller.isPlayList[index].value) {
-          await controller.player.pause();
-          //await controller.player.dispose();
+        logs(isPlayList.toString());
+
+//false
+        if (!controller.player.playing) {
+            controller!.positionList = List.filled(100, Duration.zero);
+            controller!.isPlayList = List.filled(100, false.obs);
+            isPlayList[index] = true;
+            controller.update();
+            controller.player.setUrl(filePath);
+            controller.player.play();
+            controller.update();
+
+          //true
         } else {
-          await controller.player.setUrl(filePath);
-          await controller.player.play();
+          if (isPlayList[index]) {
+            controller.player.pause();
+            controller.update();
+            controller!.positionList = List.filled(100, Duration(seconds: 0));
+            controller!.isPlayList = List.filled(100, false.obs);
+          } else {
+            controller!.positionList = List.filled(100, Duration(seconds: 0));
+            controller!.isPlayList = List.filled(100, false.obs);
+            controller.update();
+            controller.player.setUrl(filePath);
+            controller.player.play();
+          }
+
+          //  controller!.positionList = List.filled(100, Duration.zero);
+          // controller!.isPlayList = List.filled(100, false.obs);
+          controller.update();
         }
       } else {
         OpenFile.open(filePath);
       }
     } else {
       logs("Downloading Start");
-      downloadAndSavePDF(pdfURL, folderName, controller, index);
+      downloadAndSavePDF(mainURL, folderName, controller, index);
     }
   }
 
@@ -275,32 +298,28 @@ class ChatingPageViewModal {
     }
   }
 
-  getVideoThumbnail(
-      pdfURL, folderName, ChatingPageController controller, int index)
-  async {
-
-    //data/user/0/com.js.signal/cache/chat%2Fvideo%2F%2B919988776655%2FsentDoc.png
-
-    var dirPath =
-        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
-  Directory dir = Directory(dirPath);
-  List splitUrl = pdfURL.split("/");
-  final filePath =
-  '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
-
-  if (await File(filePath).exists()) {
-    thumbnailList[index] = (await VideoThumbnail.thumbnailFile(
-      video: filePath,
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      imageFormat: ImageFormat.PNG,
-      maxHeight: 64,
-      quality: 40,
-    ))!;
-  controller.update();
-  }
-
-
-  }
+  // getVideoThumbnail(
+  //     pdfURL, folderName, ChatingPageController controller, int index) async {
+  //   //data/user/0/com.js.signal/cache/chat%2Fvideo%2F%2B919988776655%2FsentDoc.png
+  //
+  //   var dirPath =
+  //       "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+  //   Directory dir = Directory(dirPath);
+  //   List splitUrl = pdfURL.split("/");
+  //   final filePath =
+  //       '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
+  //
+  //   if (await File(filePath).exists()) {
+  //     thumbnailList[index] = (await VideoThumbnail.thumbnailFile(
+  //       video: filePath,
+  //       thumbnailPath: (await getTemporaryDirectory()).path,
+  //       imageFormat: ImageFormat.PNG,
+  //       maxHeight: 64,
+  //       quality: 40,
+  //     ))!;
+  //     controller.update();
+  //   }
+  // }
 
   extensionCheck(pdfURL) {
     if (pdfURL.toString().contains("sentDoc.${"jpg"}")) {
