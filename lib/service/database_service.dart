@@ -31,7 +31,7 @@ class DatabaseService {
       FirstMessageModel? firstMessageModel}) async {
     logs("database-----> ${sendMessageModel!.members!}");
 
-    bool isFirst = await checkFirst(sendMessageModel!.members!);
+    bool isFirst = await checkFirst(sendMessageModel.members!);
     if (true) {
       addChatMessage(sendMessageModel);
     }

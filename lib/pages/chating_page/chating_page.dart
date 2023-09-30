@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/date_formation.dart';
@@ -27,6 +27,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 import 'package:signal/service/users_service.dart';
+
 import '../../controller/chating_page_controller.dart';
 import '../../modal/send_message_model.dart';
 
@@ -1287,10 +1288,8 @@ class ChatingPage extends StatelessWidget {
                                       color: AppColorConstant.appYellow,
                                     ),
                                   )
-
-                                else
-                                  if(chatingPageViewModal!
-                                      .isFileDownLoadedList[index])
+                                else if (chatingPageViewModal!
+                                    .isFileDownLoadedList[index])
                                   InkWell(
                                     onTap: () {
                                       chatingPageViewModal!.viewFile(
@@ -1299,13 +1298,12 @@ class ChatingPage extends StatelessWidget {
                                           controller!,
                                           index);
                                     },
-                                    child:Icon(
+                                    child: Icon(
                                       Icons.play_circle_outline,
                                       size: 45.px,
                                       color: AppColorConstant.appYellow,
                                     ),
                                   ),
-
                                 if (!chatingPageViewModal!
                                         .isFileDownLoadedList[index] &&
                                     !chatingPageViewModal!
