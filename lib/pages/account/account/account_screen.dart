@@ -6,8 +6,6 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/routes/routes_helper.dart';
-import 'package:signal/service/auth_service.dart';
 
 import 'account_view_model.dart';
 
@@ -16,7 +14,6 @@ class AccountScreen extends StatelessWidget {
   AccountViewModel? accountViewModel;
 
   AccountScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     accountViewModel ?? (accountViewModel = AccountViewModel(this));

@@ -298,28 +298,6 @@ class ChatingPageViewModal {
     }
   }
 
-  // getVideoThumbnail(
-  //     pdfURL, folderName, ChatingPageController controller, int index) async {
-  //   //data/user/0/com.js.signal/cache/chat%2Fvideo%2F%2B919988776655%2FsentDoc.png
-  //
-  //   var dirPath =
-  //       "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
-  //   Directory dir = Directory(dirPath);
-  //   List splitUrl = pdfURL.split("/");
-  //   final filePath =
-  //       '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}';
-  //
-  //   if (await File(filePath).exists()) {
-  //     thumbnailList[index] = (await VideoThumbnail.thumbnailFile(
-  //       video: filePath,
-  //       thumbnailPath: (await getTemporaryDirectory()).path,
-  //       imageFormat: ImageFormat.PNG,
-  //       maxHeight: 64,
-  //       quality: 40,
-  //     ))!;
-  //     controller.update();
-  //   }
-  // }
 
   extensionCheck(pdfURL) {
     if (pdfURL.toString().contains("sentDoc.${"jpg"}")) {

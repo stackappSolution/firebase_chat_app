@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/modal/transaction_model.dart';
 
 import '../modal/user_model.dart';
 import 'auth_service.dart';
@@ -9,6 +11,10 @@ class UsersService {
 
   static final UsersService instance = UsersService._privateConstructor();
   static final usersCollection = FirebaseFirestore.instance.collection('users');
+  static final transactionCollection =
+      FirebaseFirestore.instance.collection('transaction');
+
+  //static final transactionCollection = FirebaseFirestore.instance.collection('transaction').doc(AuthService.auth.currentUser!.uid);
 
   //==========================addUsers=======================================
 
@@ -104,5 +110,69 @@ class UsersService {
         .where('id', isEqualTo: AuthService.auth.currentUser!.uid)
         .limit(1)
         .snapshots();
+  }
+
+  //============================= save transaction detail =====================//
+
+  Future<void> saveTransactionToFirestore(TransactionsModel transaction) async {
+    try {
+      await transactionCollection.add({
+        'userid':FirebaseAuth.instance.currentUser!.uid,
+        'paymentId': transaction.paymentId,
+        'status': transaction.status,
+        'amount': transaction.amount,
+        'time': transaction.time,
+      });
+      print('Transaction saved to Firestore.');
+    } catch (e) {
+      print('Error saving transaction to Firestore: $e');
+    }
+  }
+
+//==============================get transaction History =======================//
+
+  // Future<List<TransactionsModel>> getTransactionHistory() async {
+  //   try {
+  //     List<TransactionsModel> transactionModelList = [];
+  //     QuerySnapshot allUserQuery = await transactionCollection.get();
+  //     if (allUserQuery.docs.isNotEmpty) {
+  //       for (QueryDocumentSnapshot element in allUserQuery.docs) {
+  //         TransactionsModel transactionsModel =
+  //         TransactionsModel.fromJson(element.data() as Map<String, dynamic>);
+  //         logs('Users History --> ${transactionsModel.toJson()}');
+  //         transactionModelList.add(transactionsModel);
+  //       }
+  //     }
+  //     return transactionModelList;
+  //   } on FirebaseException catch (e) {
+  //     logs('Catch exception in  transaction History --> ${e.message}');
+  //     return [];
+  //   }
+  // }
+
+  /// user id wise get transaction History
+
+  Future<List<TransactionsModel>> getTransactionHistory() async {
+    try {
+      List<TransactionsModel> transactionModelList = [];
+      QuerySnapshot userTransactionQuery = await transactionCollection
+          .where('userid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      logs('userid-->${FirebaseAuth.instance.currentUser!.uid}');
+      logs('Query result length --> ${userTransactionQuery.docs.length}');
+
+      if (userTransactionQuery.docs.isNotEmpty) {
+        for (QueryDocumentSnapshot element in userTransactionQuery.docs) {
+          TransactionsModel transactionsModel = TransactionsModel.fromJson(
+              element.data() as Map<String, dynamic>);
+          logs('User History --> ${transactionsModel.toJson()}');
+          transactionModelList.add(transactionsModel);
+        }
+      }
+      return transactionModelList;
+    } on FirebaseException catch (e) {
+      logs('Catch exception in transaction History --> ${e.message}');
+      return [];
+    }
   }
 }

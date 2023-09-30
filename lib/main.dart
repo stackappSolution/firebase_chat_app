@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
-  //await NotificationService.instance.initializeNotification();
+  await NotificationService.instance.initializeNotification();
   NotificationService.instance.initialize();
   SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -33,8 +32,8 @@ Future<void> main() async {
     statusBarBrightness:
     (ThemeUtil.isDark) ? Brightness.light : Brightness.dark,
   ));
-  // String? token = await FirebaseMessaging.instance.getToken();
-  // logs('Token---------------------> $token');
+  String? token = await FirebaseMessaging.instance.getToken();
+  logs('Token---------------------> $token');
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
