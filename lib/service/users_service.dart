@@ -129,26 +129,6 @@ class UsersService {
     }
   }
 
-//==============================get transaction History =======================//
-
-  // Future<List<TransactionsModel>> getTransactionHistory() async {
-  //   try {
-  //     List<TransactionsModel> transactionModelList = [];
-  //     QuerySnapshot allUserQuery = await transactionCollection.get();
-  //     if (allUserQuery.docs.isNotEmpty) {
-  //       for (QueryDocumentSnapshot element in allUserQuery.docs) {
-  //         TransactionsModel transactionsModel =
-  //         TransactionsModel.fromJson(element.data() as Map<String, dynamic>);
-  //         logs('Users History --> ${transactionsModel.toJson()}');
-  //         transactionModelList.add(transactionsModel);
-  //       }
-  //     }
-  //     return transactionModelList;
-  //   } on FirebaseException catch (e) {
-  //     logs('Catch exception in  transaction History --> ${e.message}');
-  //     return [];
-  //   }
-  // }
 
   /// user id wise get transaction History
 
@@ -175,4 +155,6 @@ class UsersService {
       return [];
     }
   }
+
+
 }

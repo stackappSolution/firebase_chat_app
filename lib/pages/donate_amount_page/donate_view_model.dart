@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/toast_util.dart';
+import 'package:signal/controller/donate_controller.dart';
 import 'package:signal/pages/donate_amount_page/donate_page.dart';
 import 'package:signal/service/users_service.dart';
 
@@ -18,7 +20,7 @@ class DonateViewModel {
   String? currentPaymentId;
   final TextEditingController amountController = TextEditingController();
   double paymentAmount = 0.0;
-  double totalHistoryAmount = 0.00;
+  double totalHistoryAmount = 0.0;
 
   DonateViewModel(this.donatePage);
 
@@ -92,5 +94,23 @@ class DonateViewModel {
     ToastUtil.messageToast("paymentWallet");
     debugPrint('External wallet selected: ${response.walletName}');
     totalAmount.toString();
+  }
+
+  getTotal(DonateController donateController) async {
+    logs('totallllll-->$totalHistoryAmount');
+    final data = await FirebaseFirestore.instance.collection('transaction')
+        .where('userid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    final total = data;
+    logs('llen-->${total.docs.length}');
+
+    for(int i=0;i< total.docs.length;i++)
+    {
+      double totalamount = total.docs[i]["amount"];
+      totalHistoryAmount = (totalHistoryAmount + totalamount );
+    }
+    logs('totallllll23444-->${totalHistoryAmount}');
+    donateController.update();
+
   }
 }
