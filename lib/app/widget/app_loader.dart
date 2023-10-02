@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/constant/color_constant.dart';
 
 class AppLoader extends StatelessWidget {
@@ -16,14 +15,14 @@ class AppLoader extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           color: Theme.of(context).colorScheme.background.withOpacity(0.5),
-          child:  Center(
+          child: Center(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const CircularProgressIndicator(
                 color: AppColorConstant.appYellow,
               ),
-              widget?? const SizedBox()
+              widget ?? const SizedBox()
             ],
           )),
         ));

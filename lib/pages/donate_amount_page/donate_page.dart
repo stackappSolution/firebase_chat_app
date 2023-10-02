@@ -8,13 +8,9 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
-import 'package:signal/app/widget/app_elevated_button.dart';
 import 'package:signal/app/widget/app_text.dart';
-import 'package:signal/app/widget/app_textForm_field.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/donate_controller.dart';
 import 'package:signal/modal/transaction_model.dart';
 import 'package:signal/pages/donate_amount_page/donate_view_model.dart';
@@ -35,6 +31,7 @@ class DonatePage extends StatelessWidget {
       initState: (state) {
         Future.delayed(const Duration(milliseconds: 300), () async {
           donateController = Get.find<DonateController>();
+          donateViewModel!.getTotal(donateController!);
         });
         donateViewModel!.razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
             donateViewModel!.handlePaymentSuccess);
@@ -42,167 +39,168 @@ class DonatePage extends StatelessWidget {
             Razorpay.EVENT_PAYMENT_ERROR, donateViewModel!.handlePaymentError);
         donateViewModel!.razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
             donateViewModel!.handleExternalWallet);
+
+
       },
       dispose: (state) {
         donateViewModel!.razorpay.clear();
       },
       builder: (DonateController controller) {
         return Scaffold(
-          appBar: const AppAppBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: AppAppBar(
               title: AppText(
-            'Payent to chat App',
+            'Wallet',
             fontSize: 20,
+            color: Theme.of(context).colorScheme.primary,
           )),
-          body: buildBody(controller),
+          body: buildBody(controller, context),
         );
       },
     );
   }
 
-  buildBody(DonateController controller) {
+  buildBody(DonateController controller, context) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.px),
-                      child: AppTextFormField(
-                        controller: donateViewModel!.amountController,
-                        hintText: StringConstant.enteramount,
-                        style: TextStyle(
-                          fontSize: 22.px,
-                          fontWeight: FontWeight.w400,
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Container(
+                  height: 180.px,
+                  decoration: BoxDecoration(
+                      color: AppColorConstant.appYellow,
+                      borderRadius: BorderRadius.circular(10.px)),
+                  child: Padding(
+                    padding: EdgeInsets.all(22.px),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AppText(
+                          'Signal App',
+                          fontSize: 25,
+                          color: AppColorConstant.appWhite,
+                          fontWeight: FontWeight.w700,
                         ),
-                        keyboardType: TextInputType.number,
-                        fontSize: 20.px,
-                      ),
+                        SizedBox(height: 20.px),
+                        const AppText(
+                          'Total Balance',
+                          color: AppColorConstant.appWhite,
+                        ),
+                        SizedBox(height: 2.px),
+                         AppText(
+                           '₹ ${donateViewModel!.totalHistoryAmount.toStringAsFixed(2) ?? '0.00'}',
+                          color: AppColorConstant.appWhite,
+                          fontSize: 30,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ))
             ],
-          ),
-          SizedBox(
-            height: 25.px,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 80.px),
-            child: AppElevatedButton(
-              onPressed: () async {
-                donateViewModel!.amountController.text;
-                controller.update();
-                donateViewModel!
-                    .startPayment(donateViewModel!.amountController.text);
-                donateViewModel!.amountController.clear();
-                await UsersService.instance.getTransactionHistory();
-              },
-              buttonColor: AppColorConstant.appYellowBorder,
-              buttonHeight: 50,
-              widget: const AppText(StringConstant.payment,
-                  color: AppColorConstant.appWhite, fontSize: 20),
-            ),
           ),
           SizedBox(
             height: 10.px,
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Divider(
+              color: AppColorConstant.grey,
+              thickness: 1,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: AppText('Transaction',fontSize: 20),
+          ),
           Expanded(
-              child: FutureBuilder<List<TransactionsModel>>(
-                future: UsersService.instance.getTransactionHistory(),
-                builder:
-                    (context, AsyncSnapshot<List<TransactionsModel>> snapshot) {
-                  if (snapshot.hasError) {
-                    return AppText('${snapshot.error}');
-                  }
-                  if (snapshot.hasData) {
-                    if (snapshot.data != null &&
-                        (snapshot.data?.isNotEmpty ?? false)) {
-                      donateViewModel!.totalHistoryAmount = (snapshot.data!
-                          .map((transaction) => transaction.amount ?? 0)
-                          .reduce((sum, amount) => sum + amount))
-                          .toDouble(); // Convert the result to a double
-
-                      logs('total Amount-->${donateViewModel!.totalHistoryAmount}');
-                      return ListView.separated(
+            child: FutureBuilder<List<TransactionsModel>>(
+              future: UsersService.instance.getTransactionHistory(),
+              builder:
+                  (context, AsyncSnapshot<List<TransactionsModel>> snapshot) {
+                if (snapshot.hasError) {
+                  return AppText(
+                    '${snapshot.error}',
+                    color: Theme.of(context).colorScheme.primary,
+                  );
+                }
+                if (snapshot.hasData) {
+                  if (snapshot.data != null &&
+                      (snapshot.data?.isNotEmpty ?? false)) {
+                    snapshot.data!
+                        .sort((a, b) => b.time!.compareTo(a.time.toString()));
+                    return ListView.separated(
                         physics: const BouncingScrollPhysics(),
-                          reverse: true,
-                          itemBuilder: (context, index) {
-                            TransactionsModel transaction =
-                                snapshot.data![index];
-                            Color textColor = snapshot.data![index].status ==
-                                    'Payment Successful'
-                                ? Colors.green
-                                : Colors.red;
-                            return Column(
-                              children: [
-                                ListTile(
-                                  onTap: () {
-                                    createPDF(transaction);
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  title: Text(snapshot.data?[index].paymentId ?? '',
-                                      overflow: TextOverflow.ellipsis),
-                                  subtitle: Text(snapshot.data?[index].status ?? '',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(color: textColor)),
-                                  trailing: Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          textAlign: TextAlign.end,
-                                          '₹ ${(snapshot.data?[index].amount ?? 0).toString()}',
-                                          style: TextStyle(
-                                              fontSize: 15, color: textColor),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          snapshot.data?[index].time ?? '',
-                                          style: const TextStyle(fontSize: 13),
-                                        ),
-                                      ],
-                                    ),
+                        itemBuilder: (context, index) {
+                          TransactionsModel transaction = snapshot.data![index];
+                          Color textColor = snapshot.data![index].status ==
+                                  'Payment Successful'
+                              ? Colors.green
+                              : Colors.red;
+                          return Column(
+                            children: [
+                              ListTile(
+                                onTap: () {
+                                  createPDF(transaction);
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                title: AppText(
+                                  snapshot.data?[index].paymentId ?? '',
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                subtitle: Text(
+                                    snapshot.data?[index].status ?? '',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: textColor)),
+                                trailing: Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        textAlign: TextAlign.end,
+                                        '₹ ${(snapshot.data?[index].amount ?? 0).toString()}',
+                                        style: TextStyle(
+                                            fontSize: 15, color: textColor),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        snapshot.data?[index].time ?? '',
+                                        style: const TextStyle(fontSize: 13),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const Divider(
+                              ),
+                            ],
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Divider(
                               color: AppColorConstant.grey,
                               thickness: 1,
-                            );
-                          },
-                          itemCount: snapshot.data?.length ?? 0);
-                    }
+                            ),
+                          );
+                        },
+                        itemCount: snapshot.data?.length ?? 0);
                   }
-                  return Container();
-                },
-              )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              tileColor: AppColorConstant.appYellowBorder,
-              title: const AppText(
-                'Total Amount  :',
-                fontSize: 20,
-                color: AppColorConstant.appWhite,
-              ),
-              trailing:  AppText('₹ ${donateViewModel!.totalHistoryAmount.toInt()}',
-                  overflow: TextOverflow.ellipsis,
-                  fontSize: 20, color: AppColorConstant.appWhite),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),),
+                }
+                return Container();
+              },
             ),
-          )
+          ),
         ]);
   }
 

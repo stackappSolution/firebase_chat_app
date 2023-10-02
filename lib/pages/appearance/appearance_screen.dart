@@ -44,7 +44,6 @@ class AppearanceScreen extends StatelessWidget {
             if (getStringValue(StringConstant.setFontSize) == null) {
               setStringValue(StringConstant.setFontSize, "Normal");
             }
-
             controller!.update();
           },
         );
