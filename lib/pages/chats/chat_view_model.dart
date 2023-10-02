@@ -15,7 +15,6 @@ import '../../constant/color_constant.dart';
 import '../../constant/string_constant.dart';
 import '../../service/users_service.dart';
 
-import 'package:signal/service/users_service.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;

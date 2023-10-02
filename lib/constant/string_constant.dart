@@ -161,7 +161,7 @@ class StringConstant {
   static const String ok = 'ok';
   static const String save = 'save';
   static const String presets = 'presets';
-  static const String payment = 'payment';
+  static const String payment = 'Payment';
   static const String advance = 'advance';
   static const String paymentLock = 'paymentLock';
   static const String advanceDescription = 'advanceDescription';
