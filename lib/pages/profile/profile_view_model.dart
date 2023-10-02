@@ -216,22 +216,11 @@ class ProfileViewModel {
     logs("load--> $isLoading");
     controller!.update();
     return await storage.getDownloadURL();
+
   }
 
   Future<void> onSaveProfile(String pin) async {
     UserModel userModel = UserModel(
-        id: FirebaseAuth.instance.currentUser?.uid,
-        firstName: firstNameController.text,
-        lastName: lastNameController.text,
-        photoUrl: userProfilePicture ?? '',
-        fcmToken: NotificationService.instance.fcmToken,
-
-        phone: FirebaseAuth.instance.currentUser?.phoneNumber
-            ?.trim()
-            .replaceAll(' ', '```'),
-        about: "Heyy!!! i am using ChatApp!!",
-        blockedNumbers: []);
-
       id: FirebaseAuth.instance.currentUser?.uid,
       firstName: firstNameController.text,
       lastName: lastNameController.text,

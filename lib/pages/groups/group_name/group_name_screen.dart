@@ -36,7 +36,6 @@ class GroupNameScreen extends StatelessWidget {
             controller = Get.find<GroupController>();
             groupNameViewModel!.membersList = Get.arguments;
             logs("length---> ${groupNameViewModel!.membersList.length}");
-            logs("members---> ${groupNameViewModel!.membersList}");
             controller!.update();
           },
         );
@@ -46,6 +45,7 @@ class GroupNameScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppbar(context),
           body: buildGroupInfoView(context),
+          floatingActionButton: buildFloatingActionButton(context),
         );
       },
     );
@@ -54,16 +54,13 @@ class GroupNameScreen extends StatelessWidget {
   buildGroupInfoView(BuildContext context) {
     return Stack(
       children: [
-        ListView(physics: const PageScrollPhysics(),
+        ListView(
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20.px, horizontal: 10.px),
               child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                   title: TextFormField(
-                    onChanged: (value) {
-                      groupNameViewModel!.onChangeName(value,controller!);
-                    },
                       controller: groupNameViewModel!.groupNameController,
                       decoration: InputDecoration(
                           border: InputBorder.none,
@@ -85,7 +82,7 @@ class GroupNameScreen extends StatelessWidget {
                               },
                               icon: const Icon(
                                 Icons.camera_alt_outlined,
-                                color: AppColorConstant.appWhite,
+                                color: AppColorConstant.appBlack,
                               )),
                         )),
             ),
@@ -108,12 +105,10 @@ class GroupNameScreen extends StatelessWidget {
                         color: AppColorConstant.appGrey, fontSize: 12.px),
                   ),
                 )),
-            buildMembersList(),
-        buildFloatingActionButton(context),
-
+            buildMembersList()
           ],
         ),
-        if (groupNameViewModel!.isLoading) AppLoader(),
+        if (groupNameViewModel!.isLoading)  AppLoader(),
       ],
     );
   }
@@ -123,37 +118,38 @@ class GroupNameScreen extends StatelessWidget {
   }
 
   buildMembersList() {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: groupNameViewModel!.membersList.length,
-      itemBuilder: (context, index) {
-        Contact contact = groupNameViewModel!.membersList[index];
-        String? mobileNumber = contact.phones!.isNotEmpty
-            ? contact.phones!.first.value!.trim().removeAllWhitespace
-            : 'N/A';
+    return SizedBox(
+      height: 350.px,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: groupNameViewModel!.membersList.length,
+        itemBuilder: (context, index) {
+          Contact contact = groupNameViewModel!.membersList[index];
+          String? mobileNumber =
+              contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
 
-        addNumbers(mobileNumber!);
-        logs('mobileNumbers----------> ${groupNameViewModel!.mobileNo.toSet().toList()}');
+          addNumbers(mobileNumber!);
+          logs('mobileNumbers----------> ${groupNameViewModel!.mobileNo}');
 
-        String? displayName = contact.displayName ?? 'unknown';
-        String firstLetter = displayName.substring(0, 1).toUpperCase();
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            leading: CircleAvatar(
-                backgroundColor: AppColorConstant.appYellow,
-                child: AppText(
-                  firstLetter,
-                  color: AppColorConstant.appWhite,
-                )),
-            title: AppText(
-              displayName,
-              color: Theme.of(context).colorScheme.primary,
+          String? displayName = contact.displayName ?? 'unknown';
+          String firstLetter = displayName.substring(0, 1).toUpperCase();
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+              leading: CircleAvatar(
+                  backgroundColor: AppColorConstant.appYellow,
+                  child: AppText(
+                    firstLetter,
+                    color: AppColorConstant.appWhite,
+                  )),
+              title: AppText(
+                displayName,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -167,28 +163,45 @@ class GroupNameScreen extends StatelessWidget {
       ),
     );
   }
- // if(groupNameViewModel!.isButtonActive && !groupNameViewModel!.isLoading)
+
   buildFloatingActionButton(BuildContext context) {
-    return InkWell(
-      onTap: (groupNameViewModel!.isButtonActive && !groupNameViewModel!.isLoading)? () {
-        groupNameViewModel!.onCreateGroup(controller!);
-      } : null,
-      child: Align(alignment:Alignment.bottomCenter ,
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 30.px, horizontal: 20.px),
-          alignment: Alignment.center,
-          height: 50.px,
-          width: 200.px,
-          decoration: BoxDecoration(
-              color:(groupNameViewModel!.isButtonActive && !groupNameViewModel!.isLoading)? AppColorConstant.appYellow : AppColorConstant.blackOff ,
-              borderRadius: BorderRadius.all(Radius.circular(50.px))),
-          child: (!groupNameViewModel!.isButtonLoading)?AppText(
+    return Stack(
+      children: [
+        AppButton(
+          onTap: () {
+            onCreateGroup();
+          },
+          height: 40.px,
+          color: AppColorConstant.appYellow.withOpacity(0.5),
+          stringChild: true,
+          borderRadius: BorderRadius.circular(20.px),
+          width: 100.px,
+          child: AppText(
             S.of(context).create,
-            color: AppColorConstant.appWhite,
-          ):const CircularProgressIndicator(color: AppColorConstant.appWhite,),
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
-      ),
+        if (groupNameViewModel!.isLoading)
+          const CircularProgressIndicator(
+              backgroundColor: AppColorConstant.appYellow),
+      ],
     );
   }
 
+  onCreateGroup() async {
+    groupNameViewModel!.mobileNo
+        .add(AuthService.auth.currentUser!.phoneNumber!);
+
+    List<dynamic> members = groupNameViewModel!.mobileNo.toSet().toList();
+
+    FirstMessageModel firstMessageModel = FirstMessageModel(
+        type: 'text',
+        createdBy: AuthService.auth.currentUser!.phoneNumber!,
+        groupName: groupNameViewModel!.groupNameController.text,
+        profile: groupNameViewModel!.userProfile,
+        members: members,
+        isGroup: true);
+    DatabaseService.instance
+        .addNewMessage(firstMessageModel: firstMessageModel);
+  }
 }

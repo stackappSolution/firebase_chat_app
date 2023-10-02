@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -25,7 +23,6 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -38,7 +35,6 @@ import '../../service/notification_api_services.dart';
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
-  Stream<QuerySnapshot>? getChatsStream;
 
   Color? chatBubbleColor;
   Color? wallpaperColor;
@@ -65,9 +61,10 @@ class ChatingPageViewModal {
   List<String> chats = [];
   File? selectedFile;
 
-  List<bool> isFileDownLoadingList = <bool>[];
+  List isFileDownLoadingList = [];
   List isFileDownLoadedList = [];
-  List downloadedVideoList = [];
+  List isPlayList = [];
+  List thumbnailList = [];
 
   TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;
@@ -182,9 +179,7 @@ class ChatingPageViewModal {
         }
         logs("file Extension ---  > $extension");
         goToAttachmentScreen(
-            selectedImage: selectedFile!.path,
-            members: arguments['members'],
-            extension: extension);
+            selectedFile!.path, arguments['members'], extension);
       }
     } else {
       ToastUtil.messageToast("File not Selected");
@@ -230,71 +225,82 @@ class ChatingPageViewModal {
         await Permission.manageExternalStorage.status;
     if (!permissionStatus.isGranted) {
       getPermission();
-    } else {
-      logs("downloadAndOpenPDF Entered");
-      downloadAndSavePDF(mainURL, folderName, controller, index);
+    }
+    logs("downloadAndOpenPDF Entered");
+    downloadAndSavePDF(mainURL, folderName, controller, index);
 
-      var dirPath =
-          "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
-      Directory dir = Directory(dirPath);
-      List splitUrl = mainURL.split("/");
+    var dirPath =
+        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+    Directory dir = Directory(dirPath);
+    List splitUrl = mainURL.split("/");
 
-      final filePath =
-          '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
+    final filePath =
+        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
 
-      logs("ckeck file  --- > ${filePath}");
+    logs("ckeck file  --- > ${filePath}");
 
-      if (await File(filePath).exists()) {
-        isFileDownLoadedList[index] = true;
+    if (await File(filePath).exists()) {
+      isFileDownLoadedList[index] = true;
+      controller.update();
+      logs(" The file has already been downloaded, open it.");
+      logs("saved file path  ---- > $filePath");
+
+      if (extensionCheck(mainURL) == "mp4") {
+        logs("Its video");
+
+        Get.toNamed(RouteHelper.getVideoPlayerScreen(),
+            arguments: {'video': filePath});
+      }
+      if (extensionCheck(mainURL) == "jpg" ||
+          extensionCheck(mainURL) == "png") {
+        logs("Its Image");
+        Get.toNamed(RouteHelper.getImageViewScreen(),
+            arguments: {'image': filePath, 'name': arguments['name']});
+      }
+
+      if (extensionCheck(mainURL) == "mp3") {
+        logs("Its audio");
+
+        isPlayList[index] = !isPlayList[index];
         controller.update();
-        logs(" The file has already been downloaded, open it.");
-        logs("saved file path  ---- > $filePath");
 
-        if (extensionCheck(mainURL) == "mp4") {
-          logs("Its video");
-
-          Get.toNamed(RouteHelper.getVideoPlayerScreen(),
-              arguments: {'video': filePath});
-        }
-        if (extensionCheck(mainURL) == "jpg" ||
-            extensionCheck(mainURL) == "png") {
-          logs("Its Image");
-          Get.toNamed(RouteHelper.getImageViewScreen(),
-              arguments: {'image': filePath, 'name': arguments['name']});
-        }
-
-        if (extensionCheck(mainURL) == "mp3") {
-          logs("Its audio");
-
-          controller.isPlayingList[index] = !controller.isPlayingList[index];
-          controller.update();
-          logs(
-              "isPlayList =------------------------> ${controller.isPlayingList.toString()}");
+        logs(isPlayList.toString());
 
 //false
-          if (!controller.player.playing) {
-            logs("Music not playing");
-            controller.isPlayingList = List.filled(100, false);
+        if (!controller.player.playing) {
+            controller!.positionList = List.filled(100, Duration.zero);
+            controller!.isPlayList = List.filled(100, false.obs);
+            isPlayList[index] = true;
             controller.update();
             controller.player.setUrl(filePath);
             controller.player.play();
-            controller.isPlayingList[index] = true;
             controller.update();
-            //true
-          } else {
-            logs("Music already playing");
-            controller.player.stop();
-            controller.update();
-            controller.isPlayingList = List.filled(100, false);
-            controller.update();
-          }
+
+          //true
         } else {
-          OpenFile.open(filePath);
+          if (isPlayList[index]) {
+            controller.player.pause();
+            controller.update();
+            controller!.positionList = List.filled(100, Duration(seconds: 0));
+            controller!.isPlayList = List.filled(100, false.obs);
+          } else {
+            controller!.positionList = List.filled(100, Duration(seconds: 0));
+            controller!.isPlayList = List.filled(100, false.obs);
+            controller.update();
+            controller.player.setUrl(filePath);
+            controller.player.play();
+          }
+
+          //  controller!.positionList = List.filled(100, Duration.zero);
+          // controller!.isPlayList = List.filled(100, false.obs);
+          controller.update();
         }
       } else {
-        logs("Downloading Start");
-        downloadAndSavePDF(mainURL, folderName, controller, index);
+        OpenFile.open(filePath);
       }
+    } else {
+      logs("Downloading Start");
+      downloadAndSavePDF(mainURL, folderName, controller, index);
     }
   }
 
@@ -309,9 +315,6 @@ class ChatingPageViewModal {
 
     if (await File(filePath).exists()) {
       isFileDownLoadedList[index] = true;
-      if (filePath.contains(".mp4")) {
-        // downloadedVideoList[index] = filePath;
-      }
       controller.update();
     }
   }
@@ -377,10 +380,7 @@ class ChatingPageViewModal {
         audioFile = File(file.path!);
         // ignore: unrelated_type_equality_checks
         if (await isFileLarge(File(file.path!)) == false) {
-          goToAttachmentScreen(
-              selectedImage: file.path,
-              members: arguments['members'],
-              extension: "");
+          goToAttachmentScreen(file.path, arguments['members'], "");
         }
       } else {}
 
@@ -400,7 +400,8 @@ class ChatingPageViewModal {
           message: value,
           sender: AuthService.auth.currentUser!.phoneNumber!,
           isGroup: false);
-      DatabaseService.instance.addNewMessage(sendMessageModel);
+      DatabaseService.instance
+          .addNewMessage(sendMessageModel: sendMessageModel);
     });
     controller.update();
   }
@@ -415,33 +416,11 @@ class ChatingPageViewModal {
       if (await isFileLarge(File(pickedFile.path)) == false) {
         selectedVideo = (File(pickedFile.path));
 
-        goToAttachmentScreen(
-            selectedImage: selectedVideo!.path,
-            members: members,
-            thumbnail: await getVideoThumb(pickedFile.path));
+        goToAttachmentScreen(selectedVideo!.path, members, "");
         logs(selectedVideo.toString());
         controller.update();
       }
     }
-  }
-
-  Future getVideoThumb(file) async {
-    var dirPath =
-        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/THUMB";
-
-    Directory dir = Directory(dirPath);
-    if (!await dir.exists()) {
-      dir.create();
-    }
-
-    return await VideoThumbnail.thumbnailFile(
-      video: file,
-      thumbnailPath:
-          "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/THUMB",
-      imageFormat: ImageFormat.PNG,
-      maxHeight: 64,
-      quality: 75,
-    );
   }
 
   videoSendTap() {
@@ -458,7 +437,8 @@ class ChatingPageViewModal {
           message: value,
           sender: AuthService.auth.currentUser!.phoneNumber!,
           isGroup: false);
-      DatabaseService.instance.addNewMessage(sendMessageModel);
+      DatabaseService.instance
+          .addNewMessage(sendMessageModel: sendMessageModel);
     });
     controller.update();
   }
@@ -471,10 +451,7 @@ class ChatingPageViewModal {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(
-          selectedImage: selectedImage!.path,
-          members: members,
-          thumbnail: await compressFile(File(selectedImage!.path)));
+      goToAttachmentScreen(selectedImage!.path, members, "");
       // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
@@ -487,22 +464,11 @@ class ChatingPageViewModal {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(
-          selectedImage: selectedImage!.path,
-          members: members,
-          thumbnail: await compressFile(File(selectedImage!.path)));
+      goToAttachmentScreen(selectedImage!.path, members, "");
       // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
     }
-  }
-
-  Future<String> compressFile(File file) async {
-    File compressedFile = await FlutterNativeImage.compressImage(
-      file.path,
-      quality: 1,
-    );
-    return compressedFile.path;
   }
 
   uploadImage(File imageUrl) async {
@@ -537,16 +503,10 @@ class ChatingPageViewModal {
     }
   }
 
-  buildPopupMenu(BuildContext context, ChatingPageController controller) {
+  buildPopupMenu(BuildContext context) {
     return PopupMenuButton(
       offset: const Offset(-10, kToolbarHeight),
       onSelected: (value) {
-        isFileDownLoadingList = isFileDownLoadingList.toList();
-        isFileDownLoadingList.add(false);
-        isFileDownLoadedList = isFileDownLoadedList.toList();
-        isFileDownLoadedList.add(false);
-
-        controller.update();
         if (value == 0) {
           buildImagePickerMenu(context);
         }
@@ -824,86 +784,4 @@ class ChatingPageViewModal {
       ),
     );
   }
-
-  getChatLength() async {
-    final chatStream = await FirebaseFirestore.instance
-        .collection('rooms')
-        .doc(snapshots.docs.first.id)
-        .collection('chats')
-        .get();
-    final chatLength = chatStream.docs.length;
-
-    if (isFileDownLoadingList.isEmpty) {
-      isFileDownLoadingList = List.filled(chatLength, false);
-      isFileDownLoadedList = List.filled(chatLength, false);
-      downloadedVideoList = List.filled(chatLength, false);
-      controller!.durationList = List.filled(chatLength, Duration.zero);
-      controller!.positionList = List.filled(chatLength, Duration.zero);
-      controller!.isPlayingList = List.filled(chatLength, false);
-      controller!.isPlayingList = List.filled(chatLength, false);
-    } else {
-      // isFileDownLoadingList = isFileDownLoadingList.toList();
-      // isFileDownLoadingList.add(false);
-      // isFileDownLoadedList = isFileDownLoadedList.toList();
-      // isFileDownLoadedList.add(false);
-
-      // controller!.durationList = controller!.durationList.toList();
-      // controller!.durationList.add(Duration.zero);
-      // controller!.positionList = controller!.positionList.toList();
-      // controller!.positionList.add(Duration.zero);
-      // controller!.isPlayingList = controller!.isPlayingList.toList();
-      // controller!.isPlayingList.add(false);
-    }
-  }
-
-  updateChatLength(int length) {
-    if (length >= isFileDownLoadedList.length) {
-      int lenDiff = length - isFileDownLoadedList.length;
-      for (int i = 0; i < lenDiff; i++) {
-        isFileDownLoadingList = isFileDownLoadingList.toList();
-        isFileDownLoadingList.add(false);
-        isFileDownLoadedList = isFileDownLoadedList.toList();
-        isFileDownLoadedList.add(false);
-
-        downloadedVideoList = downloadedVideoList.toList();
-        downloadedVideoList.add(false);
-        controller!.durationList = controller!.durationList.toList();
-        controller!.durationList.add(Duration.zero);
-        controller!.positionList = controller!.positionList.toList();
-        controller!.positionList.add(Duration.zero);
-        controller!.isPlayingList = controller!.isPlayingList.toList();
-        controller!.isPlayingList.add(false);
-      }
-    }
-  }
-
-  getBlockedList() async {
-    if(!arguments["isGroup"]) {
-      isBlocked = await UsersService.instance.isBlockedByLoggedInUser(arguments['number']);
-      logs('blocked----------> ${isBlocked}');
-    }
-  }
-  getChatId()
-  async {
-    snapshots = await DatabaseService.instance
-        .getChatDoc(arguments['members']);
-
-  }
-
-  chatStream()
-  {
-    getChatsStream =
-        DatabaseService.instance.getChatStream(
-          snapshots.docs.first.id,
-        );
-
-  }
-  markMessage()
-  {
-    DatabaseService.instance.markMessagesAsSeen(
-     snapshots.docs.first.id,
-        arguments['number']);
-  }
-
-
 }

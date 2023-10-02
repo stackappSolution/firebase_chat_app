@@ -62,13 +62,9 @@ class ChatViewModel {
     logs("saved contact length----->  ${contacts.length}");
     for (int i = 0; i < contacts.length; i++) {
       Contact contact = contacts[i];
-      // String? mobileNumber = contact.phones!.isNotEmpty ? contact.phones!.first.value!.trim().removeAllWhitespace : 'N/A';
-      if(contact.phones!.isNotEmpty && contact.displayName!.isNotEmpty)
-        {
-          await DataBaseHelper.setContactDetails(
-              contact.displayName, contact.phones!.first.value ?? "");
-        }
-
+      logs(contact.displayName.toString());
+      await DataBaseHelper.setContactDetails(
+          contact.displayName, contact.phones!.first.value ?? "");
     }
     DataBaseHelper.getContactDetails();
     controller!.update();

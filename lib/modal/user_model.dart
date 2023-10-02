@@ -12,7 +12,6 @@ class UserModel {
   String? fcmToken;
   String? photoUrl;
   String? about;
-  List<String>? blockedNumbers;
   String? pin;
 
   UserModel({
@@ -23,7 +22,6 @@ class UserModel {
     this.fcmToken,
     this.photoUrl,
     this.about,
-    this.blockedNumbers
     this.pin,
   });
 
@@ -35,7 +33,6 @@ class UserModel {
         fcmToken: json["fcmToken"],
         photoUrl: json["photoUrl"],
         about: json["about"],
-    blockedNumbers: json["blockedNumbers"],
         pin: json["pin"],
       );
 
@@ -47,7 +44,6 @@ class UserModel {
         "fcmToken": fcmToken,
         "photoUrl": photoUrl,
         "about": about,
-        "blockedNumbers": blockedNumbers,
         "pin": pin,
       };
 }

@@ -57,7 +57,6 @@ class NewGroupScreen extends StatelessWidget {
                           EdgeInsets.symmetric(vertical: 0, horizontal: 20.px)),
                 ),
               ),
-              if(newGroupViewModel!.selectedItemsIndex.isNotEmpty)
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.px),
                 child: SizedBox(
@@ -100,18 +99,7 @@ class NewGroupScreen extends StatelessWidget {
                                     onPressed: () {
                                       newGroupViewModel!.groupMembers
                                           .remove(contact);
-                                      newGroupViewModel!.selectedItems[
-                                              newGroupViewModel!
-                                                  .selectedItemsIndex[index]] =
-                                          false;
-                                      newGroupViewModel!.selectedItemsIndex
-                                          .removeAt(index);
-                                      logs(
-                                          "index --- >  ${newGroupViewModel!.selectedItemsIndex.toString()}");
-                                      logs(newGroupViewModel!.selectedItemsIndex
-                                          .toString());
-                                      logs(
-                                          "length -- ${newGroupViewModel!.groupMembers.length}");
+
 
                                       controller.update();
                                     },
@@ -130,7 +118,7 @@ class NewGroupScreen extends StatelessWidget {
               Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 12.px,horizontal: 12.px),
+                    padding: const EdgeInsets.all(8.0),
                     child: AppText(
                       S.of(context).contacts,
                       color: Theme.of(context).colorScheme.primary,
@@ -153,7 +141,8 @@ class NewGroupScreen extends StatelessWidget {
                       String? displayName = contact.displayName ?? 'unknown';
                       String firstLetter =
                           displayName.substring(0, 1).toUpperCase();
-
+                      newGroupViewModel!.selectedItems = List.filled(
+                          newGroupViewModel!.contacts.length, false);
                       return Container(
                         margin: EdgeInsets.only(top: 10.px),
                         height: 50.px,
@@ -175,14 +164,9 @@ class NewGroupScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: 200.px,
-                                  child: AppText(
-                                    displayName,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                AppText(
+                                  displayName,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                                 AppText(
                                   mobileNumber!,
@@ -198,40 +182,28 @@ class NewGroupScreen extends StatelessWidget {
                               children: [
                                 Padding(
                                     padding: EdgeInsets.only(right: 0.px),
-                                    child: Checkbox(
+                                    child: CustomCheckbox(
+                                      value: newGroupViewModel!
+                                          .selectedItems[index],
                                       onChanged: (value) {
-                                        newGroupViewModel!
-                                            .selectedItems[index] = value!;
-                                        logs(
-                                            'isChecked-----> ${newGroupViewModel!.selectedItems[index]}');
+                                        newGroupViewModel!.selectedItems[index] =
+                                        value!;
+                                        logs('isChecked-----> ${ newGroupViewModel!.selectedItems[index]}');
                                         if (newGroupViewModel!
-                                                .selectedItems[index] ==
+                                            .selectedItems[index] ==
                                             true) {
                                           newGroupViewModel!.groupMembers
                                               .add(contact);
-                                          newGroupViewModel!.selectedItemsIndex
-                                              .add(index);
-                                          logs(
-                                              "selected Items Index -->  ${newGroupViewModel!.selectedItemsIndex}");
-                                          logs(
-                                              "lenth -- ${newGroupViewModel!.groupMembers.length}");
-
                                           controller.update();
-                                        } else {
+                                        }
+                                        else{
                                           newGroupViewModel!.groupMembers
                                               .remove(contact);
                                           controller.update();
-                                          newGroupViewModel!.selectedItemsIndex
-                                              .removeWhere((element) =>
-                                                  element == index);
-                                          logs(
-                                              "selected Items Index -->  ${newGroupViewModel!.selectedItemsIndex}");
-                                          logs(
-                                              "lenth -- ${newGroupViewModel!.groupMembers.length}");
                                         }
+                                        logs(
+                                            'members---> ${newGroupViewModel!.groupMembers.length}');
                                       },
-                                      value: newGroupViewModel!
-                                          .selectedItems[index],
                                     )),
                               ],
                             ),
