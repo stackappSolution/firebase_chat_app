@@ -20,6 +20,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 import '../../service/users_service.dart';
+import '../notifications.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -218,6 +219,9 @@ class ChatScreen extends StatelessWidget {
         }
         if (value == 2) {
           goToSettingPage();
+        } if (value == 4) {
+          UsersService.instance.getAllNotifications();
+          Get.to( NotificationsScreen());
         }
       },
       elevation: 0.5,
@@ -239,7 +243,7 @@ class ChatScreen extends StatelessWidget {
             value: 0,
             child: AppText(
               S.of(Get.context!).newGroup,
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.primary
             ),
           ),
           PopupMenuItem(
@@ -253,6 +257,9 @@ class ChatScreen extends StatelessWidget {
           PopupMenuItem(
               value: 3,
               child: AppText(S.of(Get.context!).inviteFriends,
+                  color: Theme.of(context).colorScheme.primary)), PopupMenuItem(
+              value: 4,
+              child: AppText(S.of(Get.context!).notification,
                   color: Theme.of(context).colorScheme.primary)),
         ];
       },

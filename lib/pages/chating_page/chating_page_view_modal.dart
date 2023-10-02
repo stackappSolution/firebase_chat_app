@@ -17,6 +17,7 @@ import 'package:signal/app/widget/app_button.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/modal/notification_model.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:get/get.dart';
 import 'package:signal/controller/chating_page_controller.dart';
@@ -33,6 +34,7 @@ import '../../constant/string_constant.dart';
 import '../../modal/send_message_model.dart';
 import '../../service/auth_service.dart';
 import '../../service/database_service.dart';
+import '../../service/notification_api_services.dart';
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
@@ -78,6 +80,31 @@ class ChatingPageViewModal {
     });
   }
 
+  Future<void> notification(String message) async {
+    logs("Chatting page members ---- > ${arguments['members']}");
+    String a = await controller!.getUserFcmToken(arguments['number']);
+    ResponseService.postRestUrl(message, a);
+
+    NotificationModel notificationModel = NotificationModel(
+        time:' ${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+        sender: AuthService.auth.currentUser!.phoneNumber,
+        receiver: arguments['number'],
+        receiverName:  await UsersService.instance.getUserName('${arguments['number']}'),
+        senderName: await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}'),
+        message: message,
+    );
+
+
+    logs('receiver name----> ${await UsersService.instance.getUserName('${arguments['number']}')}');
+    logs('receiver number----> ${arguments['number']}');
+    logs('sender name----> ${await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}')}');
+    logs('sender number----> ${AuthService.auth.currentUser!.phoneNumber}');
+    logs('message ----> $message');
+
+    await UsersService.instance.notification(notificationModel);
+    a = '';
+  }
+
   Future fileSize(controller, path) async {
     int fileSizeInBytes = await File(path).length();
     double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
@@ -98,12 +125,6 @@ class ChatingPageViewModal {
     logs('getStringValue(StringConstant.selectedFontSize) : $fontSize');
     return fontSize;
   }
-
-  List<PopupMenuEntry<String>> popupMenu = [
-    const PopupMenuItem<String>(value: '/appearance', child: Text('Option 1')),
-    const PopupMenuItem<String>(value: '/intro', child: Text('Option 2')),
-    const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3'))
-  ];
 
   bool iconChange = false;
 

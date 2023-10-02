@@ -10,6 +10,7 @@ import '../pages/chating_page/chating_page_view_modal.dart';
 class ChatingPageController extends GetxController {
   ChatingPage? chatingPage;
   ChatingPageViewModal chatingPageViewModal = ChatingPageViewModal();
+  final users = FirebaseFirestore.instance.collection("users");
 
   final player = AudioPlayer();
   VideoPlayerController? controller;
@@ -54,6 +55,12 @@ class ChatingPageController extends GetxController {
       }
       update();
     });
+  }
+
+  getUserFcmToken(number) async {
+    final t = await users.where('phone', isEqualTo: number).get();
+    final data = t.docs;
+    return data[0]["fcmToken"];
   }
 
   @override

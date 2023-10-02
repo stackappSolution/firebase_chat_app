@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -20,15 +21,21 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/modal/message.dart';
+import 'package:signal/modal/notification_model.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
 import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
+import 'package:signal/pages/notifications.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
+import 'package:signal/service/notification_api_services.dart';
 import 'package:signal/service/users_service.dart';
+
 import '../../controller/chating_page_controller.dart';
 import '../../modal/send_message_model.dart';
+import '../../service/notification_api_services.dart';
+import '../../service/notification_api_services.dart';
 
 // ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
@@ -1775,6 +1782,8 @@ class ChatingPage extends StatelessWidget {
                   : chatingPageViewModal!.arguments['name']
                       .substring(0, 1)
                       .toUpperCase(),
+                  ? chatingPageViewModal!.arguments['groupName'].substring(0, 1).toUpperCase()
+                  : chatingPageViewModal!.arguments['name'].substring(0, 1).toUpperCase(),
               color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               fontWeight: FontWeight.w500,
@@ -1853,6 +1862,7 @@ class ChatingPage extends StatelessWidget {
     logs(
         "Chatting page members ---- > ${chatingPageViewModal!.arguments['members']}");
 
+   chatingPageViewModal!.notification(message);
     SendMessageModel sendMessageModel = SendMessageModel(
         type: 'text',
         members: chatingPageViewModal!.arguments['members'],
@@ -1866,7 +1876,6 @@ class ChatingPage extends StatelessWidget {
         : DatabaseService.instance.addNewMessage(sendMessageModel);
 
     logs('message---> $message');
-
     controller.update();
   }
 
@@ -1910,23 +1919,6 @@ class ChatingPage extends StatelessWidget {
         ),
       ),
       controller: chatingPageViewModal!.chatController,
-    );
-  }
-
-  AppButton micButton() {
-    return AppButton(
-      onTap: () {},
-      margin: EdgeInsets.only(left: 3.px),
-      width: 27.px,
-      height: 27.px,
-      color: Colors.transparent,
-      stringChild: true,
-      borderRadius: BorderRadius.circular(27.px),
-      child: Icon(
-        Icons.mic,
-        size: 27.px,
-        color: AppColorConstant.offBlack,
-      ),
     );
   }
 }
