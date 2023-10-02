@@ -127,7 +127,7 @@ class AccountViewModel {
                           children: [
                             InkWell(
                                 onTap: () {
-                                  Get.back();
+                                  ();
                                 },
                                 child: AppText(
                                   S.of(context).cancel,
