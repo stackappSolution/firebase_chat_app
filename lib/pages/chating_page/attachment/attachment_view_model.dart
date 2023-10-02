@@ -8,13 +8,17 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_screen.dart';
+import 'package:signal/service/notification_api_services.dart';
 
 import '../../../app/app/utills/app_utills.dart';
 import '../../../app/app/utills/toast_util.dart';
+import '../../../modal/notification_model.dart';
 import '../../../modal/send_message_model.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/database_service.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../../service/users_service.dart';
 
 class AttachmentViewModel {
   AttachmentScreen? attachmentScreen;
@@ -29,6 +33,7 @@ class AttachmentViewModel {
   bool isLoading = false;
   bool isVideo = false;
   String? fileSizes;
+  String ?rN ;
 
   //final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -42,6 +47,50 @@ class AttachmentViewModel {
   Duration audioPosition = Duration.zero;
   late Stream<Duration?> streamDuration;
   final audioPlayer = AudioPlayer();
+
+  Future<void> notification(String message) async {
+
+// ---------------------receiver Number get -----------------------------
+
+    List r = argument["members"];
+    String? currentUserPhoneNumber = AuthService.auth.currentUser?.phoneNumber;
+
+    try {
+      if (r.contains(currentUserPhoneNumber)) {
+        List filteredList = r.where((element) => element != currentUserPhoneNumber).toList();
+         rN = filteredList.join("").toString().trim();
+        logs('receiver number after exclusion ----> $rN');
+      }
+    } catch (e) {
+      logs('An error occurred: $e');
+    }
+
+
+// --------------------- notification save data --------------------------
+
+    NotificationModel notificationModel = NotificationModel(
+      time:'${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+      sender: AuthService.auth.currentUser!.phoneNumber,
+      receiver: rN,
+      receiverName: await UsersService.instance.getUserName(rN ??''),
+      senderName: await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}'),
+      message: message,
+    );
+
+    logs('receiver name----> ${await UsersService.instance.getUserName(rN ?? '')}');
+    logs('receiver number----> $rN');
+    logs('sender name----> ${await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}')}');
+    logs('sender number----> ${AuthService.auth.currentUser!.phoneNumber}');
+    logs('message ----> $message');
+
+// ---------------------receiver FCM token get and send notification --------------------------
+
+    String a = await controller!.getUserFcmToken(rN);
+    ResponseService.postRestUrl(message, a);
+
+    await UsersService.instance.notification(notificationModel);
+
+  }
 
   AttachmentViewModel(this.attachmentScreen) {
     Future.delayed(
@@ -136,6 +185,7 @@ class AttachmentViewModel {
           DatabaseService.instance
               .addNewMessage(sendMessageModel: sendMessageModel);
         });
+        notification('📷 photo');
       }
       if (msgType == "video") {
         DatabaseService.uploadVideo(File(selectedImage), controller)
@@ -150,6 +200,7 @@ class AttachmentViewModel {
               text: textController.text.trim());
           DatabaseService.instance
               .addNewMessage(sendMessageModel: sendMessageModel);
+          notification('🎥 video');
         });
       }
       if (msgType == "doc") {
@@ -165,6 +216,7 @@ class AttachmentViewModel {
               text: textController.text.trim());
           DatabaseService.instance
               .addNewMessage(sendMessageModel: sendMessageModel);
+          notification('📃 document');
         });
       }
 
@@ -181,6 +233,7 @@ class AttachmentViewModel {
               text: textController.text.trim());
           DatabaseService.instance
               .addNewMessage(sendMessageModel: sendMessageModel);
+          notification('🎶 audio');
         });
       }
     }
