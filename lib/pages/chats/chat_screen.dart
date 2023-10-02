@@ -35,9 +35,10 @@ class ChatScreen extends StatelessWidget {
     return GetBuilder<ContactController>(
       init: ContactController(),
       initState: (state) {
-        var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-         ThemeUtil.isDark = brightness == Brightness.dark;
-         logs("ThemeUtil.isDark--- > ${ThemeUtil.isDark}");
+        var brightness =
+            SchedulerBinding.instance.platformDispatcher.platformBrightness;
+        ThemeUtil.isDark = brightness == Brightness.dark;
+        logs("ThemeUtil.isDark--- > ${ThemeUtil.isDark}");
         DataBaseHelper.createDB();
         chatViewModel!.getPermission();
         Future.delayed(
@@ -283,6 +284,8 @@ class ChatScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
+                  logs("${index} --- ${documents[index]["id"]} ");
+
                   bool isGroup = documents[index]['isGroup'];
                   List receiver = documents[index]["members"];
                   receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
@@ -340,15 +343,57 @@ class ChatScreen extends StatelessWidget {
                         leading: InkWell(
                             onTap: () {},
                             child: (isGroup)
-                                ? CircleAvatar(
-                                    maxRadius: 22.px,
-                                    backgroundColor: AppColorConstant.appYellow
-                                        .withOpacity(0.8),
-                                    child: AppText(
-                                      firstLetter,
-                                      color: AppColorConstant.appWhite,
-                                      fontSize: 24.px,
-                                    ),
+                                ? StreamBuilder(
+                                    stream: controller
+                                        .getGroupName(documents[index]['id']),
+                                    builder: (context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return const AppText('');
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const AppText('');
+                                      }
+                                      final data = snapshot.data!.docs;
+                                      logs(
+                                          "g name -- ${data.first["groupName"]}");
+                                      return (data.first["groupProfile"]
+                                                  .toString()
+                                                  .isNotEmpty)
+                                          ? ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(700),
+                                          child: AppImageAsset(
+                                            image: data.first["groupProfile"],
+                                            fit: BoxFit.cover,
+                                            height: 48.px,
+                                            width: 48.px,
+                                          ))
+                                          : CircleAvatar(
+                                              maxRadius: 22.px,
+                                              backgroundColor: AppColorConstant
+                                                  .appYellow
+                                                  .withOpacity(0.8),
+                                              child: (data.first["groupProfile"]
+                                                      .toString()
+                                                      .isNotEmpty)
+                                                  ? AppText(
+                                                      data.first["groupName"]
+                                                          .toString()
+                                                          .substring(0, 1),
+                                                      color: AppColorConstant
+                                                          .appWhite,
+                                                      fontSize: 24.px,
+                                                    )
+                                                  : AppText(
+                                                      "G",
+                                                      color: AppColorConstant
+                                                          .appWhite,
+                                                      fontSize: 24.px,
+                                                    ),
+                                            );
+                                    },
                                   )
                                 : StreamBuilder(
                                     stream:
@@ -372,8 +417,8 @@ class ChatScreen extends StatelessWidget {
                                               child: AppImageAsset(
                                                 image: data.first["photoUrl"],
                                                 fit: BoxFit.cover,
-                                                height: 40.px,
-                                                width: 40.px,
+                                                height: 48.px,
+                                                width: 48.px,
                                               ))
                                           : CircleAvatar(
                                               maxRadius: 24.px,
@@ -390,10 +435,27 @@ class ChatScreen extends StatelessWidget {
                                     },
                                   )),
                         title: (isGroup)
-                            ? AppText(
-                                documents[index]['groupName'] ?? "",
-                                fontSize: 15.px,
-                                color: AppColorConstant.appWhite,
+                            ? StreamBuilder(
+                                stream: controller
+                                    .getGroupName(documents[index]['id']),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return const AppText('');
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const AppText('');
+                                  }
+                                  final data = snapshot.data!.docs;
+                                  logs(
+                                      "nsme--- ${data.first['groupName'].toString()}");
+                                  return AppText(
+                                    data.first['groupName'],
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  );
+                                },
                               )
                             : AppText(
                                 chatViewModel!
@@ -427,9 +489,12 @@ class ChatScreen extends StatelessWidget {
                                       }
                                       final data = snapshot.data!.docs;
                                       return AppText(
-                                          "${data.first["firstName"]} | ${messageData.first["message"]}",
-                                          color: AppColorConstant.grey,
-                                          fontSize: 12.px);
+                                        "${data.first["firstName"]} | ${messageData.first["message"]}",
+                                        color: AppColorConstant.appYellow,
+                                        fontSize: 12.px,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      );
                                     },
                                   )
                                 : (messageData.first["messageType"] == "image")

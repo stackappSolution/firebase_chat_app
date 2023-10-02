@@ -32,11 +32,12 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
+        logs("contacts === >  ${DataBaseHelper.contactData}");
         DataBaseHelper.getContactDetails();
         Future.delayed(const Duration(milliseconds: 300), () async {
+          newMessageController = Get.find<NewMessageController>();
 
           newMessageController!.getUserPhoneList();
-          newMessageController = Get.find<NewMessageController>();
         });
         DataBaseHelper.createDB();
         newMessageViewModel!.getContactPermission();
@@ -154,8 +155,6 @@ class NewMessagePage extends StatelessWidget {
                 : 'N/A';
             String? displayName = contact.displayName ?? 'unknown';
             String firstLetter = displayName.substring(0, 1).toUpperCase()?? "  ";
-            logs(
-                "Sqf Contacts  ====  >  ${DataBaseHelper.contactData[index]["name"]}");
 
             return Container(
               margin: EdgeInsets.only(top: 5.px),

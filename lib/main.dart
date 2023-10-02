@@ -22,7 +22,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
   await NotificationService.instance.initializeNotification();
-  NotificationService.instance.initialize();
+   NotificationService.instance.initialize();
   SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarIconBrightness:(ThemeUtil.isDark)?Brightness.light:Brightness.dark,

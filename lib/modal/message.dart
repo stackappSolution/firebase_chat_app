@@ -16,6 +16,7 @@ class MessageModel {
   String? messageType;
   String? sender;
   String? text;
+  String? thumb;
 
   MessageModel({
     this.messageStatus,
@@ -25,6 +26,7 @@ class MessageModel {
     this.messageType,
     this.sender,
     this.text,
+    this.thumb,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
@@ -35,6 +37,7 @@ class MessageModel {
         messageType: json["messageType"],
         sender: json["sender"],
         text: json["text"],
+    thumb: json["thumb"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,5 +48,6 @@ class MessageModel {
         "messageType": messageType,
         "sender": sender,
         "text": text,
+        "thumb": thumb,
       };
 }
