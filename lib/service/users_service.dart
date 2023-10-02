@@ -3,11 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/modal/transaction_model.dart';
 
+import '../modal/notification_model.dart';
 import '../modal/user_model.dart';
 import 'auth_service.dart';
 
 class UsersService {
-  UsersService._privateConstructor();
+  UsersService. _privateConstructor();
 
   static final UsersService instance = UsersService._privateConstructor();
   static final usersCollection = FirebaseFirestore.instance.collection('users');
@@ -15,6 +16,45 @@ class UsersService {
       FirebaseFirestore.instance.collection('transaction');
 
   //static final transactionCollection = FirebaseFirestore.instance.collection('transaction').doc(AuthService.auth.currentUser!.uid);
+  static final notificationCollection = FirebaseFirestore.instance.collection('notification');
+
+  //================================ notification ================================//
+
+  Future<bool> notification(NotificationModel notificationModel) async {
+    try {
+      notificationCollection
+          // .doc(AuthService.auth.currentUser!.uid)
+          .doc()
+          .set(notificationModel.toJson());
+      return true;
+    } on FirebaseException catch (e) {
+      logs('Catch exception in addUser --> ${e.message}');
+      return false;
+    }
+  }
+  //================================ Get all notification ================================//
+
+  Future<List<NotificationModel>> getAllNotifications() async {
+    List<NotificationModel> notifications = [];
+
+    try {
+      String currentUserPhoneNumber = AuthService.auth.currentUser!.phoneNumber ?? '';
+
+      QuerySnapshot querySnapshot = await notificationCollection.where('receiver', isEqualTo: currentUserPhoneNumber).get();
+
+      for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+        Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+        notifications.add(NotificationModel.fromJson(data));
+        logs('Notification: $data');
+      }
+
+      return notifications;
+    } on FirebaseException catch (e) {
+      logs('Catch exception in getAllNotifications --> ${e.message}');
+      return [];
+    }
+  }
+
 
   //==========================addUsers=======================================
 
@@ -156,5 +196,15 @@ class UsersService {
     }
   }
 
+
+
+   Future<String> getUserName(String number) async {
+    final userData = await usersCollection
+        .where('phone', isEqualTo: number)
+        .limit(1)
+        .get();
+
+    return userData.docs[0]["firstName"];
+  }
 
 }

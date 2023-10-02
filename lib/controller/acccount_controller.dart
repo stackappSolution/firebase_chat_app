@@ -59,4 +59,5 @@ class AttachmentController extends GetxController {
     goToIntroPage();
     logs("Delete Account");
   }
+
 }
