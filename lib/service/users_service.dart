@@ -73,7 +73,7 @@ class UsersService {
 
   //============================getBlockedUsersList===========================
 
-  Future<List<String>> getBlockedUsers() async {
+  Future getBlockedUsers() async {
     QuerySnapshot querySnapshot = await usersCollection
         .where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber!)
         .get();

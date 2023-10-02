@@ -22,8 +22,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await ThemeUtil.loadThemeMode();
-  //await NotificationService.instance.initializeNotification();
-  NotificationService.instance.initialize();
+  await NotificationService.instance.initializeNotification();
+   NotificationService.instance.initialize();
   SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarIconBrightness:(ThemeUtil.isDark)?Brightness.light:Brightness.dark,
@@ -33,8 +33,8 @@ Future<void> main() async {
     statusBarBrightness:
     (ThemeUtil.isDark) ? Brightness.light : Brightness.dark,
   ));
-  // String? token = await FirebaseMessaging.instance.getToken();
-  // logs('Token---------------------> $token');
+  String? token = await FirebaseMessaging.instance.getToken();
+  logs('Token---------------------> $token');
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

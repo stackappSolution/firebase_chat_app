@@ -25,7 +25,7 @@ class AttachmentViewModel {
   late VideoPlayerController videoPlayerController;
   Future<void>? initializeVideoPlayer;
 
-  ChatingPageController? controller;
+  ChatingPageController? chatController;
   bool isLoading = false;
   bool isVideo = false;
   String? fileSizes;
@@ -47,7 +47,7 @@ class AttachmentViewModel {
     Future.delayed(
       const Duration(milliseconds: 0),
       () {
-        controller = Get.find<ChatingPageController>();
+        chatController = Get.find<ChatingPageController>();
       },
     );
   }
@@ -121,36 +121,58 @@ class AttachmentViewModel {
 
   onSendMessage(
       String msgType, AttachmentController controller, extension) async {
+    chatController!.durationList = chatController!.durationList.toList();
+    chatController!.durationList.add(Duration.zero);
+    chatController!.positionList = chatController!.positionList.toList();
+    chatController!.positionList.add(Duration.zero);
+    chatController!.isPlayingList = chatController!.isPlayingList.toList();
+    chatController!.isPlayingList.add(false);
+
     if (await isFileLarge(File(selectedImage), controller) == false) {
       if (msgType == "image") {
-        DatabaseService.uploadImage(File(selectedImage), controller)
-            .then((value) {
-          logs('message---> $value');
-          SendMessageModel sendMessageModel = SendMessageModel(
-              type: msgType,
-              members: argument['members'],
-              message: value,
-              sender: AuthService.auth.currentUser!.phoneNumber!,
-              isGroup: false,
-              text: textController.text.trim());
-          DatabaseService.instance
-              .addNewMessage(sendMessageModel: sendMessageModel);
-        });
+        DatabaseService.uploadThumb(File(argument["thumbnail"]),controller).then((thumb) {
+          DatabaseService.uploadImage(File(selectedImage), controller)
+              .then((value) {
+            logs('message---> $value');
+            SendMessageModel sendMessageModel = SendMessageModel(
+                type: msgType,
+                members: argument['members'],
+                message: value,
+                thumb: thumb,
+                sender: AuthService.auth.currentUser!.phoneNumber!,
+                isGroup: false,
+                text: textController.text.trim());
+            DatabaseService.instance
+                .addNewMessage( sendMessageModel);
+          });
+        },);
+
+
+
       }
       if (msgType == "video") {
-        DatabaseService.uploadVideo(File(selectedImage), controller)
-            .then((value) {
-          logs('message---> $value');
-          SendMessageModel sendMessageModel = SendMessageModel(
-              type: msgType,
-              members: argument['members'],
-              message: value,
-              sender: AuthService.auth.currentUser!.phoneNumber!,
-              isGroup: false,
-              text: textController.text.trim());
-          DatabaseService.instance
-              .addNewMessage(sendMessageModel: sendMessageModel);
-        });
+        DatabaseService.uploadThumb(File(selectedImage), controller).then(
+              (thumb) {
+            logs("Image Thumb URL --- >  ${thumb}");
+            DatabaseService.uploadVideo(File(selectedImage), controller)
+                .then((value) {
+              logs('message---> $value');
+              SendMessageModel sendMessageModel = SendMessageModel(
+                  type: msgType,
+                  members: argument['members'],
+                  message: value,
+                  sender: AuthService.auth.currentUser!.phoneNumber!,
+                  isGroup: false,
+                  thumb: thumb,
+                  text: textController.text.trim());
+              DatabaseService.instance
+                  .addNewMessage(sendMessageModel);
+            });
+
+          },
+        );
+
+
       }
       if (msgType == "doc") {
         DatabaseService.uploadDoc(File(selectedImage), controller, extension)
@@ -164,7 +186,7 @@ class AttachmentViewModel {
               isGroup: false,
               text: textController.text.trim());
           DatabaseService.instance
-              .addNewMessage(sendMessageModel: sendMessageModel);
+              .addNewMessage(sendMessageModel);
         });
       }
 
@@ -180,7 +202,7 @@ class AttachmentViewModel {
               isGroup: false,
               text: textController.text.trim());
           DatabaseService.instance
-              .addNewMessage(sendMessageModel: sendMessageModel);
+              .addNewMessage(sendMessageModel);
         });
       }
     }

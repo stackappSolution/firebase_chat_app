@@ -36,6 +36,7 @@ class GroupNameScreen extends StatelessWidget {
             controller = Get.find<GroupController>();
             groupNameViewModel!.membersList = Get.arguments;
             logs("length---> ${groupNameViewModel!.membersList.length}");
+            logs("members---> ${groupNameViewModel!.membersList}");
             controller!.update();
           },
         );
@@ -45,7 +46,6 @@ class GroupNameScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppbar(context),
           body: buildGroupInfoView(context),
-          floatingActionButton: buildFloatingActionButton(context),
         );
       },
     );
@@ -82,7 +82,7 @@ class GroupNameScreen extends StatelessWidget {
                               },
                               icon: const Icon(
                                 Icons.camera_alt_outlined,
-                                color: AppColorConstant.appBlack,
+                                color: AppColorConstant.appWhite,
                               )),
                         )),
             ),
@@ -108,7 +108,8 @@ class GroupNameScreen extends StatelessWidget {
             buildMembersList()
           ],
         ),
-        if (groupNameViewModel!.isLoading)  AppLoader(),
+        buildFloatingActionButton(context),
+        if (groupNameViewModel!.isLoading) AppLoader(),
       ],
     );
   }
@@ -125,8 +126,9 @@ class GroupNameScreen extends StatelessWidget {
         itemCount: groupNameViewModel!.membersList.length,
         itemBuilder: (context, index) {
           Contact contact = groupNameViewModel!.membersList[index];
-          String? mobileNumber =
-              contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
+          String? mobileNumber = contact.phones!.isNotEmpty
+              ? contact.phones!.first.value!.trim().removeAllWhitespace
+              : 'N/A';
 
           addNumbers(mobileNumber!);
           logs('mobileNumbers----------> ${groupNameViewModel!.mobileNo}');
@@ -165,43 +167,43 @@ class GroupNameScreen extends StatelessWidget {
   }
 
   buildFloatingActionButton(BuildContext context) {
-    return Stack(
-      children: [
-        AppButton(
-          onTap: () {
-            onCreateGroup();
-          },
-          height: 40.px,
-          color: AppColorConstant.appYellow.withOpacity(0.5),
-          stringChild: true,
-          borderRadius: BorderRadius.circular(20.px),
+    return InkWell(
+      onTap: () {
+        onCreateGroup();
+      },
+      child: Align(alignment:Alignment.bottomCenter ,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 30.px, horizontal: 20.px),
+          alignment: Alignment.center,
+          height: 50.px,
           width: 100.px,
+          decoration: BoxDecoration(
+              color: AppColorConstant.appYellow,
+              borderRadius: BorderRadius.all(Radius.circular(50.px))),
           child: AppText(
             S.of(context).create,
             color: Theme.of(context).colorScheme.primary,
           ),
         ),
-        if (groupNameViewModel!.isLoading)
-          const CircularProgressIndicator(
-              backgroundColor: AppColorConstant.appYellow),
-      ],
+      ),
     );
   }
 
   onCreateGroup() async {
     groupNameViewModel!.mobileNo
         .add(AuthService.auth.currentUser!.phoneNumber!);
-
     List<dynamic> members = groupNameViewModel!.mobileNo.toSet().toList();
+    logs("members -- >>  ${members}");
 
-    FirstMessageModel firstMessageModel = FirstMessageModel(
+    SendMessageModel sendMessageModel = SendMessageModel(
         type: 'text',
-        createdBy: AuthService.auth.currentUser!.phoneNumber!,
+        createdBy: AuthService.auth.currentUser!.phoneNumber,
         groupName: groupNameViewModel!.groupNameController.text,
         profile: groupNameViewModel!.userProfile,
         members: members,
-        isGroup: true);
-    DatabaseService.instance
-        .addNewMessage(firstMessageModel: firstMessageModel);
+        isGroup: true,
+        message: "welcome",
+        text: "New Group");
+    DatabaseService.instance.addNewMessage(sendMessageModel);
   }
 }

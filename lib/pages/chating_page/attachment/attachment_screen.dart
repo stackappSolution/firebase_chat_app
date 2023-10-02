@@ -37,8 +37,8 @@ class AttachmentScreen extends StatelessWidget {
         attachmentViewModel!.selectedImage =
             attachmentViewModel!.argument['image'];
         logs("parameter data---->${attachmentViewModel!.selectedImage}");
-        logs(
-            "parameter data---->${attachmentViewModel!.argument["extension"]}");
+        logs("parameter data---->${attachmentViewModel!.argument["extension"]}");
+        logs("parameter data thumb---->${attachmentViewModel!.argument["thumbnail"]}");
 
         attachmentViewModel!.videoPlayerController =
             VideoPlayerController.networkUrl(
