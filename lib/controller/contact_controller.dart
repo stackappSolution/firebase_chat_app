@@ -37,6 +37,10 @@ class ContactController extends GetxController {
     return users.where('phone', isEqualTo: number).snapshots();
   }
 
+  getGroupName(id) {
+    return rooms.where('id', isEqualTo: id).snapshots();
+  }
+
   getMyChatContactList(number) {
     return rooms.where('members', arrayContains: number).snapshots();
   }

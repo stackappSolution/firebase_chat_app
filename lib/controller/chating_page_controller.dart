@@ -11,13 +11,14 @@ class ChatingPageController extends GetxController {
   ChatingPage? chatingPage;
   ChatingPageViewModal chatingPageViewModal = ChatingPageViewModal();
   final users = FirebaseFirestore.instance.collection("users");
+  final rooms = FirebaseFirestore.instance.collection("rooms");
 
   final player = AudioPlayer();
   VideoPlayerController? controller;
 
   List<Duration> durationList = [];
   List<Duration> positionList = [];
-  List isPlayList = [];
+  List isPlayingList = [];
 
   late Stream<Duration?> streamDuration;
 
@@ -31,7 +32,7 @@ class ChatingPageController extends GetxController {
     player.playerStateStream.listen((event) async {
       if (event.processingState == ProcessingState.completed) {
         positionList[index] = const Duration(seconds: 0);
-        isPlayList = List.filled(100, false);
+        isPlayingList = List.filled(100, false);
         update();
         player.stop();
         update();
@@ -39,7 +40,7 @@ class ChatingPageController extends GetxController {
     });
 
     player.playerStateStream.listen((state) {
-      isPlayList[index].value = state.playing;
+      isPlayingList[index].value = state.playing;
       logs("play index --- > ${index}");
       update();
     });
@@ -66,5 +67,13 @@ class ChatingPageController extends GetxController {
     // TODO: implement dispose
     super.dispose();
     player.dispose();
+  }
+
+  getChatLength(members) {
+    return rooms.where('members', isEqualTo: members).count().get();
+  }
+
+  getUserName(number) {
+    return users.where('phone', isEqualTo: number).snapshots();
   }
 }

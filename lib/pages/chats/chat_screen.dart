@@ -20,7 +20,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 import '../../service/users_service.dart';
-import '../notifications.dart';
+import '../notifications/notifications.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});

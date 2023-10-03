@@ -227,17 +227,7 @@ class ProfileViewModel {
       photoUrl: userProfilePicture ?? '',
       pin: pin,
       phone: FirebaseAuth.instance.currentUser?.phoneNumber?.trim().replaceAll(' ', '```'),
-      about: "Heyy!!! i am using ChatApp!!"
-        id: FirebaseAuth.instance.currentUser?.uid,
-        firstName: firstNameController.text,
-        lastName: lastNameController.text,
-        photoUrl: userProfilePicture ?? '',
-        fcmToken: NotificationService.instance.fcmToken,
-
-        phone: FirebaseAuth.instance.currentUser?.phoneNumber
-            ?.trim()
-            .replaceAll(' ', '```'),
-        about: "Heyy!!! i am using ChatApp!!",
+      about: "Heyy!!! i am using ChatApp!!",
         blockedNumbers: []);
 
     bool isUserAdded = await UsersService.instance.addUser(userModel);
