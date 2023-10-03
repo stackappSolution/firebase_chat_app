@@ -5,6 +5,8 @@ class SendMessageModel {
   final String? sender;
   final String? text;
   final bool? isGroup;
+  final String? emoji;
+  final String? messageId;
 
   SendMessageModel({
     this.type,
@@ -13,6 +15,8 @@ class SendMessageModel {
     this.sender,
     this.isGroup,
     this.text,
+    this.emoji,
+    this.messageId,
   });
 
   // Create a factory constructor to convert JSON to a Message object.
@@ -24,6 +28,8 @@ class SendMessageModel {
       sender: json['sender'],
       text: json['text'],
       isGroup: json['isGroup'],
+      emoji: json['emoji'],
+      messageId: json['messageId'],
     );
   }
 
@@ -36,6 +42,8 @@ class SendMessageModel {
       'sender': sender,
       'text': text,
       'isGroup': isGroup,
+      'emoji': emoji,
+      'messageId': messageId,
     };
   }
 }

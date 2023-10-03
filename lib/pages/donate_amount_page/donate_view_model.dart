@@ -96,7 +96,7 @@ class DonateViewModel {
     totalAmount.toString();
   }
 
-  getTotal(DonateController donateController) async {
+  void getTotal(DonateController donateController) async {
     logs('totallllll-->$totalHistoryAmount');
     final data = await FirebaseFirestore.instance.collection('transaction')
         .where('userid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
