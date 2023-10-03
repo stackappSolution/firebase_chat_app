@@ -19,6 +19,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/generated/intl/messages_en_US.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/modal/notification_model.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
@@ -31,6 +32,7 @@ import '../../constant/string_constant.dart';
 import '../../modal/send_message_model.dart';
 import '../../service/auth_service.dart';
 import '../../service/database_service.dart';
+import '../../service/notification_api_services.dart';
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
@@ -47,7 +49,8 @@ class ChatingPageViewModal {
   dynamic snapshots;
 
   String? formatedTime;
-  bool isBlocked = false;
+  bool isBlockedByLoggedInUser = false;
+  bool isBlockedByReceiver = false;
   File? selectedImage;
   File? selectedVideo;
   File? audioFile;
@@ -77,6 +80,35 @@ class ChatingPageViewModal {
     });
   }
 
+  Future<void> notification(String message) async {
+    logs("Chatting page members ---- > ${arguments['members']}");
+    String a = await controller!.getUserFcmToken(arguments['number']);
+    ResponseService.postRestUrl(message, a);
+
+    NotificationModel notificationModel = NotificationModel(
+      time:
+          ' ${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+      sender: AuthService.auth.currentUser!.phoneNumber,
+      receiver: arguments['number'],
+      receiverName:
+          await UsersService.instance.getUserName('${arguments['number']}'),
+      senderName: await UsersService.instance
+          .getUserName('${AuthService.auth.currentUser!.phoneNumber}'),
+      message: message,
+    );
+
+    logs(
+        'receiver name----> ${await UsersService.instance.getUserName('${arguments['number']}')}');
+    logs('receiver number----> ${arguments['number']}');
+    logs(
+        'sender name----> ${await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}')}');
+    logs('sender number----> ${AuthService.auth.currentUser!.phoneNumber}');
+    logs('message ----> $message');
+
+    await UsersService.instance.notification(notificationModel);
+    a = '';
+  }
+
   Future fileSize(controller, path) async {
     int fileSizeInBytes = await File(path).length();
     double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
@@ -97,12 +129,6 @@ class ChatingPageViewModal {
     logs('getStringValue(StringConstant.selectedFontSize) : $fontSize');
     return fontSize;
   }
-
-  List<PopupMenuEntry<String>> popupMenu = [
-    const PopupMenuItem<String>(value: '/appearance', child: Text('Option 1')),
-    const PopupMenuItem<String>(value: '/intro', child: Text('Option 2')),
-    const PopupMenuItem<String>(value: '/SignInPage', child: Text('Option 3'))
-  ];
 
   bool iconChange = false;
 
@@ -299,7 +325,6 @@ class ChatingPageViewModal {
       controller.update();
     }
   }
-
 
   extensionCheck(pdfURL) {
     if (pdfURL.toString().contains("sentDoc.${"jpg"}")) {
@@ -703,10 +728,15 @@ class ChatingPageViewModal {
               value: 3,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppText(S.of(Get.context!).block),
-                  const Icon(Icons.block),
-                ],
+                children: (isBlockedByLoggedInUser)
+                    ? [
+                        AppText(S.of(Get.context!).block),
+                        const Icon(Icons.block),
+                      ]
+                    : [
+                        const AppText(StringConstant.unBlock),
+                        const Icon(Icons.block),
+                      ],
               )),
         ];
       },
@@ -725,8 +755,14 @@ class ChatingPageViewModal {
       });
     }
     if (value == 3) {
-      blockedNumbers.add(arguments['number']);
-      UsersService.instance.blockUser(blockedNumbers, arguments['number']);
+      if (isBlockedByLoggedInUser) {
+        blockedNumbers.remove(arguments['number']);
+        UsersService.instance.unblockUser(arguments['number']);
+        getBlockedList();
+      } else {
+        blockedNumbers.add(arguments['number']);
+        UsersService.instance.blockUser(blockedNumbers, arguments['number']);
+      }
 
       controller!.update();
     }
@@ -833,5 +869,82 @@ class ChatingPageViewModal {
     };
     logs('data-->$Data');
     await documentReference.update(Data);
+=======
+  getChatLength() async {
+    final chatStream = await FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(snapshots.docs.first.id)
+        .collection('chats')
+        .get();
+    final chatLength = chatStream.docs.length;
+
+    if (isFileDownLoadingList.isEmpty) {
+      isFileDownLoadingList = List.filled(chatLength, false);
+      isFileDownLoadedList = List.filled(chatLength, false);
+      downloadedVideoList = List.filled(chatLength, false);
+      controller!.durationList = List.filled(chatLength, Duration.zero);
+      controller!.positionList = List.filled(chatLength, Duration.zero);
+      controller!.isPlayingList = List.filled(chatLength, false);
+      controller!.isPlayingList = List.filled(chatLength, false);
+    } else {
+      // isFileDownLoadingList = isFileDownLoadingList.toList();
+      // isFileDownLoadingList.add(false);
+      // isFileDownLoadedList = isFileDownLoadedList.toList();
+      // isFileDownLoadedList.add(false);
+
+      // controller!.durationList = controller!.durationList.toList();
+      // controller!.durationList.add(Duration.zero);
+      // controller!.positionList = controller!.positionList.toList();
+      // controller!.positionList.add(Duration.zero);
+      // controller!.isPlayingList = controller!.isPlayingList.toList();
+      // controller!.isPlayingList.add(false);
+    }
+  }
+
+  updateChatLength(int length) {
+    if (length >= isFileDownLoadedList.length) {
+      int lenDiff = length - isFileDownLoadedList.length;
+      for (int i = 0; i < lenDiff; i++) {
+        isFileDownLoadingList = isFileDownLoadingList.toList();
+        isFileDownLoadingList.add(false);
+        isFileDownLoadedList = isFileDownLoadedList.toList();
+        isFileDownLoadedList.add(false);
+
+        downloadedVideoList = downloadedVideoList.toList();
+        downloadedVideoList.add(false);
+        controller!.durationList = controller!.durationList.toList();
+        controller!.durationList.add(Duration.zero);
+        controller!.positionList = controller!.positionList.toList();
+        controller!.positionList.add(Duration.zero);
+        controller!.isPlayingList = controller!.isPlayingList.toList();
+        controller!.isPlayingList.add(false);
+      }
+    }
+  }
+
+  getBlockedList() async {
+    if (!arguments["isGroup"]) {
+      isBlockedByLoggedInUser = await UsersService.instance
+          .isBlockedByLoggedInUser(arguments['number']);
+      isBlockedByReceiver =
+          await UsersService.instance.isBlockedByReceiver(arguments['number']);
+      logs('isBlockedByLoggedInUser----------> $isBlockedByLoggedInUser');
+      logs('isBlockedByReceiver----------> $isBlockedByReceiver');
+    }
+  }
+
+  getChatId() async {
+    snapshots = await DatabaseService.instance.getChatDoc(arguments['members']);
+  }
+
+  chatStream() {
+    getChatsStream = DatabaseService.instance.getChatStream(
+      snapshots.docs.first.id,
+    );
+  }
+
+  markMessage() {
+    DatabaseService.instance
+        .markMessagesAsSeen(snapshots.docs.first.id, arguments['number']);
   }
 }

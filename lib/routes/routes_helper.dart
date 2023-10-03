@@ -126,11 +126,11 @@ class RouteHelper {
     GetPage(name: RouteConstant.imageViewScreen, page: () => ImageView()),
     GetPage(name: RouteConstant.newMessageScreen, page: () => NewMessagePage()),
     GetPage(name: RouteConstant.homeScreen, page: () => HomeScreen()),
-    GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
+    // GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.splashScreen, page: () => SplashScreen()),
     GetPage(name: RouteConstant.initial, page: () => IntroPage()),
     GetPage(name: RouteConstant.chatingScreen, page: () => ChatingPage()),
-    GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
+    // GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(
         name: RouteConstant.inviteMemberScreen,
         page: () => InviteMemberScreen()),
@@ -157,7 +157,7 @@ class RouteHelper {
       name: RouteConstant.verifyOtpScreen,
       page: () => VerifyOtpPage(),
     ),
-    GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
+    // GetPage(name: RouteConstant.profileScreen, page: () => ProfileScreen()),
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
     GetPage(
       name: RouteConstant.appearanceScreen,

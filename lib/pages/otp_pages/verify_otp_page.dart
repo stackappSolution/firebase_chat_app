@@ -238,9 +238,7 @@ class VerifyOtpPage extends StatelessWidget {
                                 try {
                                   AuthService.isVerifyLoading = true;
                                   controller.update();
-
-                                  await AuthService.signInWithOTP(
-                                      verifyOtpViewModel!.otpcontroller.text);
+                                  await AuthService.instance.signInWithOTP(verifyOtpViewModel!.otpcontroller.text,verifyOtpViewModel!.parameter["phoneNo"]);
                                 } catch (e) {
                                   ToastUtil.warningToast("Enter Valid OTP");
                                   logs("OTP Verification Failed: $e");

@@ -85,7 +85,9 @@ class ChatingPage extends StatelessWidget {
                 .where('members',
                 isEqualTo: chatingPageViewModal!.arguments['members'])
                 .get();
-
+            await chatingPageViewModal!.getBlockedList();
+            await chatingPageViewModal!.getChatId();
+            await chatingPageViewModal!.getChatLength();
             chats = DatabaseService.instance.getChatStream(
               snapshots.docs.first.id,
             );
@@ -164,6 +166,8 @@ class ChatingPage extends StatelessWidget {
                           final data = snapshot.data!.docs;
                           List<Map<String, dynamic>> message = snapshot.data!
                               .docs
+                          chatingPageViewModal!.updateChatLength(data.length);
+                          final message = snapshot.data!.docs
                               .map((doc) => doc.data() as Map<String, dynamic>)
                               .toList();
 
@@ -262,6 +266,13 @@ class ChatingPage extends StatelessWidget {
                       chatingPageViewModal!.arguments['number']))
                       ? buildUnblockView(context, controller)
                       : buildTextFormField(context, controller),
+                  (chatingPageViewModal!.isBlockedByLoggedInUser)
+                      ? buildUnblockView(context, controller)
+                      : (chatingPageViewModal!.isBlockedByLoggedInUser)
+                          ? buildBlockView(context)
+                          : buildTextFormField(context, controller),
+
+                  // chatingPageViewModal!.blockedNumbers.contains(chatingPageViewModal!.arguments['number'])
                 ],
               ),
             ),
@@ -345,9 +356,14 @@ class ChatingPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const AppText(
-                'cancel',
-                color: AppColorConstant.appYellow,
+              InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: const AppText(
+                  'cancel',
+                  color: AppColorConstant.appYellow,
+                ),
               ),
               AppButton(
                 onTap: () {
@@ -355,6 +371,7 @@ class ChatingPage extends StatelessWidget {
                       .remove(chatingPageViewModal!.arguments['number']);
                   UsersService.instance
                       .unblockUser(chatingPageViewModal!.arguments['number']);
+                  chatingPageViewModal!.getBlockedList();
                   controller.update();
                 },
                 borderRadius: BorderRadius.circular(12.px),
@@ -562,6 +579,60 @@ class ChatingPage extends StatelessWidget {
                     fontSize: 10.px,
                   ),
                   AppText(
+          ChatBubble(
+            elevation: 0,
+            margin: EdgeInsets.only(right: 100.px),
+            clipper: ChatBubbleClipper2(
+                type: BubbleType.receiverBubble,
+                nipHeight: 10.px,
+                nipWidth: 6.px,
+                radius: 5.px),
+            backGroundColor: AppColorConstant.appGrey.withOpacity(0.3),
+            child: (chatingPageViewModal!.arguments['isGroup'])
+                ? Column(
+                    children: [
+                      AppText(
+                        message.sender.toString(),
+                        fontSize: 10.px,
+                      StreamBuilder(
+                        stream: controller!.getUserName(message.sender
+                            .toString()
+                            .trim()
+                            .removeAllWhitespace),
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return const AppText('');
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const AppText('');
+                          }
+                          final data = snapshot.data!.docs;
+
+                          return AppText(
+                            data.first['firstName'],
+                            fontSize: 10.px,
+                          );
+                        },
+                      ),
+                      AppText(
+                        message.message.toString(),
+                        color: AppColorConstant.appBlack,
+                        fontSize: chatingPageViewModal!.fontSize ==
+                                S.of(context).small
+                            ? 10.px
+                            : chatingPageViewModal!.fontSize ==
+                                    S.of(context).large
+                                ? 20.px
+                                : chatingPageViewModal!.fontSize ==
+                                        S.of(context).extraLarge
+                                    ? 25.px
+                                    : 15.px,
+                      ),
+                    ],
+                  )
+                : AppText(
                     message.message.toString(),
                     color: AppColorConstant.appBlack,
                     fontSize: chatingPageViewModal!.fontSize ==
@@ -733,6 +804,8 @@ class ChatingPage extends StatelessWidget {
   //===========================  image =============================//
 
   buildReceiverImageView(MessageModel message, BuildContext context, index) {
+
+
     chatingPageViewModal!.isFileDownloadedCheck(
       index,
       "IMAGE",
@@ -765,6 +838,52 @@ class ChatingPage extends StatelessWidget {
                 width: 150.px,
                 child: Column(
                   children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.px, vertical: 3.px),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.account_circle_rounded,
+                              size: 12.px,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.px),
+                              child: StreamBuilder(
+                                stream: controller!.getUserName(message.sender
+                                    .toString()
+                                    .trim()
+                                    .removeAllWhitespace),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return const AppText('');
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const AppText('');
+                                  }
+                                  final data = snapshot.data!.docs;
+                                  logs("name -- > ${data.first['firstName']}");
+                                  logs("length -- > ${data.length}");
+
+                                  return AppText(
+                                    data.first['firstName'],
+                                    fontSize: 10.px,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    color: AppColorConstant.appWhite,
+                                    fontWeight: FontWeight.bold,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     Stack(
                       alignment: Alignment.center,
                       children: [
@@ -1193,6 +1312,50 @@ class ChatingPage extends StatelessWidget {
             width: 265.px,
             child: Column(
               children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.px, vertical: 3.px),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.account_circle_rounded,
+                          size: 12.px,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4.px),
+                          child: StreamBuilder(
+                            stream: controller!.getUserName(message.sender
+                                .toString()
+                                .trim()
+                                .removeAllWhitespace),
+                            builder: (context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return const AppText('');
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const AppText('');
+                              }
+                              final data = snapshot.data!.docs;
+
+                              return AppText(
+                                data.first['firstName'],
+                                fontSize: 10.px,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                color: AppColorConstant.appWhite,
+                                fontWeight: FontWeight.bold,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Container(
                   width: 265.px,
                   height: 45.px,
@@ -1522,6 +1685,50 @@ class ChatingPage extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10.px))),
                 child: Column(
                   children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.px, vertical: 3.px),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.account_circle_rounded,
+                              size: 12.px,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.px),
+                              child: StreamBuilder(
+                                stream: controller!.getUserName(message.sender
+                                    .toString()
+                                    .trim()
+                                    .removeAllWhitespace),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return const AppText('');
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const AppText('');
+                                  }
+                                  final data = snapshot.data!.docs;
+
+                                  return AppText(
+                                    data.first['firstName'],
+                                    fontSize: 10.px,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    color: AppColorConstant.appWhite,
+                                    fontWeight: FontWeight.bold,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     Stack(
                       alignment: Alignment.center,
                       children: [
@@ -1874,6 +2081,50 @@ class ChatingPage extends StatelessWidget {
                   },
                   child: Column(
                     children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.px, vertical: 3.px),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.account_circle_rounded,
+                                size: 12.px,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4.px),
+                                child: StreamBuilder(
+                                  stream: controller!.getUserName(message.sender
+                                      .toString()
+                                      .trim()
+                                      .removeAllWhitespace),
+                                  builder: (context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return const AppText('');
+                                    }
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const AppText('');
+                                    }
+                                    final data = snapshot.data!.docs;
+
+                                    return AppText(
+                                      data.first['firstName'],
+                                      fontSize: 10.px,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      color: AppColorConstant.appWhite,
+                                      fontWeight: FontWeight.bold,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       Container(
                         width: 200.px,
                         decoration: BoxDecoration(
@@ -2072,6 +2323,9 @@ class ChatingPage extends StatelessWidget {
                   .of(context)
                   .colorScheme
                   .primary,
+                  ? chatingPageViewModal!.arguments['groupName'].substring(0, 1).toUpperCase()
+                  : chatingPageViewModal!.arguments['name'].substring(0, 1).toUpperCase(),
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               fontWeight: FontWeight.w500,
             ),
@@ -2143,6 +2397,7 @@ class ChatingPage extends StatelessWidget {
         "Chatting page members ---- > ${chatingPageViewModal!
             .arguments['members']}");
 
+   chatingPageViewModal!.notification(message);
     SendMessageModel sendMessageModel = SendMessageModel(
       type: 'text',
       members: chatingPageViewModal!.arguments['members'],
@@ -2158,7 +2413,6 @@ class ChatingPage extends StatelessWidget {
         : DatabaseService.instance
         .addNewMessage(sendMessageModel: sendMessageModel);
     logs('message---> $message');
-
     controller.update();
   }
 
@@ -2207,23 +2461,6 @@ class ChatingPage extends StatelessWidget {
         ),
       ),
       controller: chatingPageViewModal!.chatController,
-    );
-  }
-
-  AppButton micButton() {
-    return AppButton(
-      onTap: () {},
-      margin: EdgeInsets.only(left: 3.px),
-      width: 27.px,
-      height: 27.px,
-      color: Colors.transparent,
-      stringChild: true,
-      borderRadius: BorderRadius.circular(27.px),
-      child: Icon(
-        Icons.mic,
-        size: 27.px,
-        color: AppColorConstant.offBlack,
-      ),
     );
   }
 }

@@ -1,54 +1,52 @@
 import 'dart:convert';
 
-NotificationModel notificationModelFromJson(String str) => NotificationModel.fromJson(json.decode(str));
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-String notificationModelToJson(NotificationModel data) => json.encode(data.toJson());
+NotificationModel notificationModelFromJson(String str) =>
+    NotificationModel.fromJson(json.decode(str));
+
+String notificationModelToJson(NotificationModel data) =>
+    json.encode(data.toJson());
 
 class NotificationModel {
-  double multicastId;
-  int success;
-  int failure;
-  int canonicalIds;
-  List<Result> results;
+  String? message;
+  String? sender;
+  String? senderName;
+  String? receiver;
+  String? receiverName;
+  String? time;
 
   NotificationModel({
-    required this.multicastId,
-    required this.success,
-    required this.failure,
-    required this.canonicalIds,
-    required this.results,
+    this.message,
+    this.sender,
+    this.senderName,
+    this.receiver,
+    this.receiverName,
+    this.time,
   });
 
-  factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
-    multicastId: json["multicast_id"]?.toDouble(),
-    success: json["success"],
-    failure: json["failure"],
-    canonicalIds: json["canonical_ids"],
-    results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
-  );
+  factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    String timestamp = json["time"];
+    String dateTime = timestamp;
+
+    String formattedTime = dateTime;
+
+    return NotificationModel(
+      message: json["message"],
+      sender: json["sender"],
+      senderName: json["senderName"],
+      receiver: json["receiver"],
+      receiverName: json["receiverName"],
+      time: formattedTime,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-    "multicast_id": multicastId,
-    "success": success,
-    "failure": failure,
-    "canonical_ids": canonicalIds,
-    "results": List<dynamic>.from(results.map((x) => x.toJson())),
-  };
-}
-
-
-class Result {
-  String messageId;
-
-  Result({
-    required this.messageId,
-  });
-
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-    messageId: json["message_id"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "message_id": messageId,
+    "message": message,
+    "sender": sender,
+    "senderName": senderName,
+    "receiver": receiver,
+    "receiverName": receiverName,
+    "time": time,
   };
 }

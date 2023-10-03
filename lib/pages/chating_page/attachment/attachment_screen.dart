@@ -9,6 +9,7 @@ import 'package:signal/app/widget/app_textForm_field.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/pages/chating_page/attachment/attachment_view_model.dart';
+import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
 import 'package:signal/service/database_service.dart';
 import 'package:video_player/video_player.dart';
 

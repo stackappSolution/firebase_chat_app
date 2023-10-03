@@ -15,7 +15,6 @@ import 'package:signal/pages/chats/chat_profile/chat_profile_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 
-// ignore: must_be_immutable
 class ChatProfileScreen extends StatelessWidget {
   ChatProfileScreen({Key? key}) : super(key: key);
   ChatProfileController? controller;
@@ -26,11 +25,11 @@ class ChatProfileScreen extends StatelessWidget {
     BuildContext context,
   ) {
     chatProfileViewModel ?? (chatProfileViewModel = ChatProfileViewModel(this));
-    getBlockedUsersList();
     return GetBuilder<ChatProfileController>(
       init: ChatProfileController(),
       initState: (state) {
         chatProfileViewModel!.arguments = Get.arguments;
+        getBlockedUsersList();
 
         Future.delayed(
           const Duration(milliseconds: 0),
@@ -48,14 +47,14 @@ class ChatProfileScreen extends StatelessWidget {
           ),
           onWillPop: () async {
             Get.back();
-            Get.offAndToNamed(RouteHelper.getChattingScreen(), arguments: {
-              'name': chatProfileViewModel!.arguments['name'],
-              'number': chatProfileViewModel!.arguments['number'],
-              'id': chatProfileViewModel!.arguments['id'],
-              'isGroup': chatProfileViewModel!.arguments['isGroup'],
-              'members': chatProfileViewModel!.arguments['members'],
-              'about': chatProfileViewModel!.arguments['about'],
-            });
+            // Get.offAndToNamed(RouteHelper.getChattingScreen(), arguments: {
+            //   'name': chatProfileViewModel!.arguments['name'],
+            //   'number': chatProfileViewModel!.arguments['number'],
+            //   'id': chatProfileViewModel!.arguments['id'],
+            //   'isGroup': chatProfileViewModel!.arguments['isGroup'],
+            //   'members': chatProfileViewModel!.arguments['members'],
+            //   'about': chatProfileViewModel!.arguments['about'],
+            // });
 
             return true;
           },
@@ -69,14 +68,14 @@ class ChatProfileScreen extends StatelessWidget {
       leading: IconButton(
           onPressed: () {
             Get.back();
-            Get.off(ChatingPage(), arguments: {
-              'name': chatProfileViewModel!.arguments['name'],
-              'number': chatProfileViewModel!.arguments['number'],
-              'id': chatProfileViewModel!.arguments['id'],
-              'isGroup': chatProfileViewModel!.arguments['isGroup'],
-              'members': chatProfileViewModel!.arguments['members'],
-              'about': chatProfileViewModel!.arguments['about'],
-            });
+            // Get.off(ChatingPage(), arguments: {
+            //   'name': chatProfileViewModel!.arguments['name'],
+            //   'number': chatProfileViewModel!.arguments['number'],
+            //   'id': chatProfileViewModel!.arguments['id'],
+            //   'isGroup': chatProfileViewModel!.arguments['isGroup'],
+            //   'members': chatProfileViewModel!.arguments['members'],
+            //   'about': chatProfileViewModel!.arguments['about'],
+            // });
           },
           icon: const Icon(Icons.arrow_back_outlined)),
     );
@@ -436,6 +435,8 @@ class ChatProfileScreen extends StatelessWidget {
   }
 
   getBlockedUsersList() async {
+    logs('blockkkkk-----------start> ${chatProfileViewModel!.blockedNumbers}');
+
     chatProfileViewModel!.blockedNumbers =
         await UsersService.instance.getBlockedUsers();
     controller!.update();
