@@ -15,21 +15,23 @@ class ChatingPageController extends GetxController {
   final player = AudioPlayer();
   VideoPlayerController? controller;
 
-  List<Duration> durationList = List.filled(100, Duration(seconds: 0));
-  List<Duration> positionList = List.filled(100, Duration(seconds: 0));
-  List<bool> isPlayingList = [];
+  List<Duration> durationList = [];
+  List<Duration> positionList = [];
+  List isPlayList = [];
+
   late Stream<Duration?> streamDuration;
-  final rooms = FirebaseFirestore.instance.collection("rooms");
+
   int index = 0;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
     player.playerStateStream.listen((event) async {
       if (event.processingState == ProcessingState.completed) {
         positionList[index] = const Duration(seconds: 0);
-        isPlayingList = List.filled(100, false);
+        isPlayList = List.filled(100, false);
         update();
         player.stop();
         update();
@@ -37,7 +39,7 @@ class ChatingPageController extends GetxController {
     });
 
     player.playerStateStream.listen((state) {
-      isPlayingList[index] = state.playing;
+      isPlayList[index].value = state.playing;
       logs("play index --- > ${index}");
       update();
     });
@@ -48,11 +50,7 @@ class ChatingPageController extends GetxController {
     });
 
     player.positionStream.listen((event) {
-      if (event.inSeconds.toDouble() < 0) {
-        positionList[index] = Duration(seconds: 0);
-      } else {
-        positionList[index] = event;
-      }
+      positionList[index] = event;
       update();
     });
   }
@@ -68,13 +66,5 @@ class ChatingPageController extends GetxController {
     // TODO: implement dispose
     super.dispose();
     player.dispose();
-  }
-
-  getChatLength(members) {
-    return rooms.where('members', isEqualTo: members).count().get();
-  }
-
-  getUserName(number) {
-    return users.where('phone', isEqualTo: number).snapshots();
   }
 }

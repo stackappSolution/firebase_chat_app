@@ -12,13 +12,10 @@ goToSignInPage() {
 }
 
 goToVerifyPage({required String phonenumber, selectedCountry}) {
-  Get.toNamed(
-    RouteHelper.getVerifyOtpPage(),
-    parameters: {
-      "phoneNo": phonenumber,
-      "selectedCountry": selectedCountry.toString(),
-    },
-  );
+  Get.toNamed(RouteHelper.getVerifyOtpPage(), parameters: {
+    "phoneNo": phonenumber,
+     "selectedCountry": selectedCountry.toString(),
+  }, );
 }
 
 goToProfilePage() {
@@ -72,7 +69,6 @@ goToChatingScreen() {
 goToNewMessageScreen() {
   Get.toNamed(RouteHelper.getNewMessageScreen());
 }
-
 goToNewGroupScreen() {
   Get.toNamed(RouteHelper.getNewGroupScreen());
 }
@@ -81,32 +77,25 @@ goToChatContactScreen() {
   Get.toNamed(RouteHelper.getChatContactScreen());
 }
 
-goToFileView(filePath) {
-  Get.toNamed(
-    RouteHelper.getFileView(),
-    arguments: {
-      "filePath": filePath,
-    },
-  );
+goToFileView( filePath) {
+  Get.toNamed(RouteHelper.getFileView(),arguments:{
+  "filePath": filePath,
+  },);
 }
 
-goToAttachmentScreen(
-    {String? selectedImage, List? members, String? extension,String? thumbnail}) {
-  Get.toNamed(
-    RouteHelper.getAttachmentScreen(),
-    arguments: {
-      "image": selectedImage,
-      "members": members,
-      "extension": extension,
-      "thumbnail": thumbnail,
-    },
-  );
+goToAttachmentScreen(selectedImage, members, String extension) {
+  Get.toNamed(RouteHelper.getAttachmentScreen(), arguments: {
+    "image": selectedImage,
+    "members": members,
+    "extension": extension,
+  },);
 }
 
-goToDonateToChatScreen() {
+goToDonateToChatScreen(){
   Get.toNamed(RouteHelper.getDonateToChatScreen());
 }
 
-goToDonateScreen() {
+goToDonateScreen(){
   Get.toNamed(RouteHelper.getDonateScreen());
 }
+

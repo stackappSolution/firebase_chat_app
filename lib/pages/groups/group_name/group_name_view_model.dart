@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
@@ -12,13 +11,9 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/controller/new_group_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/service/auth_service.dart';
-
-import '../../../modal/first_message_model.dart';
-import '../../../service/database_service.dart';
 
 class GroupNameViewModel {
   GroupNameScreen? groupNameScreen;
@@ -26,56 +21,10 @@ class GroupNameViewModel {
   List membersList = [];
   List<String> mobileNo = [];
   bool isLoading = false;
-  bool isButtonLoading = false;
-  String userProfile = "";
-  CroppedFile? croppedFile;
-  bool isButtonActive = false;
-
-  TextEditingController groupNameController = TextEditingController();
+  String? userProfile;
+  TextEditingController groupNameController =TextEditingController();
 
   GroupNameViewModel(this.groupNameScreen);
-
-  onChangeName( value, GroupController controller)
-  {
-    if(value.length.toString()!=0)
-      {
-        isButtonActive = true;
-        controller.update();
-      }
-    else
-      {
-        isButtonActive = false;
-        controller.update();
-
-      }
-
-  }
-
-  onCreateGroup(GroupController controller) async {
-    isButtonLoading = true;
-    controller.update();
-    mobileNo
-        .add(AuthService.auth.currentUser!.phoneNumber!);
-    List<dynamic> members =mobileNo.toSet().toList();
-    logs("members -- >>  ${members}");
-
-    SendMessageModel sendMessageModel = SendMessageModel(
-        type: 'text',
-        createdBy: AuthService.auth.currentUser!.phoneNumber,
-        groupName: groupNameController.text,
-        profile: userProfile,
-        members: members,
-        isGroup: true,
-        message: "welcome",
-        text: "New Group",
-      sender: "+919999999999"
-    );
-    await DatabaseService.instance.addNewMessage(sendMessageModel);
-    isButtonLoading = false;
-    controller.update();
-
-  }
-
 
   showDialogs(context, GetxController controller) {
     showDialog(
@@ -83,7 +32,7 @@ class GroupNameViewModel {
       builder: (context) {
         return AppAlertDialog(
             backgroundColor: AppColorConstant.blackOff,
-            title: AppText(S.of(context).choose,
+            title:  AppText(S.of(context).choose,
                 color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
             actions: [
               Padding(
@@ -113,13 +62,13 @@ class GroupNameViewModel {
                     children: [
                       InkWell(
                           onTap: () {
-                            pickImageCamera(context,controller);
+                            pickImageCamera(controller);
                             Navigator.pop(context);
                           },
                           child: AppImageAsset(
                               height: 60.px,
                               color: AppColorConstant.appWhite,
-                              image: AppAsset.newCamera)),
+                              image: AppAsset.camera)),
                       Padding(
                         padding: EdgeInsets.only(top: 9.px),
                         child: AppText(
@@ -135,7 +84,7 @@ class GroupNameViewModel {
                     children: [
                       InkWell(
                           onTap: () {
-                            pickImageGallery(context,controller);
+                            pickImageGallery(controller);
                             Navigator.pop(context);
                           },
                           child: AppImageAsset(
@@ -144,7 +93,7 @@ class GroupNameViewModel {
                               image: AppAsset.gallery)),
                       Padding(
                         padding: EdgeInsets.only(top: 9.px),
-                        child: AppText(
+                        child:  AppText(
                           S.of(context).gallery,
                           fontSize: 15,
                           color: AppColorConstant.appWhite,
@@ -159,69 +108,30 @@ class GroupNameViewModel {
     );
   }
 
-  Future<void> pickImageGallery(context,GetxController controller) async {
+  Future<void> pickImageGallery(GetxController controller) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      imageCrop(context, controller);
+      uploadImage(selectedImage!,controller);
       logs(selectedImage.toString());
+
       controller.update();
     }
   }
 
-  Future<void> pickImageCamera( context,controller) async {
+  Future<void> pickImageCamera(GetxController controller) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      imageCrop(context, controller);
-
+      uploadImage(selectedImage!,controller);
       logs(selectedImage.toString());
       controller.update();
     }
   }
-
-  void imageCrop( context,  controller) async {
-    if (selectedImage != null) {
-      croppedFile = await ImageCropper().cropImage(
-        sourcePath: selectedImage!.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ],
-        uiSettings: [
-          AndroidUiSettings(
-              toolbarTitle: 'Crop Image',
-              toolbarColor: AppColorConstant.appWhite,
-              toolbarWidgetColor: AppColorConstant.blackOff,
-              initAspectRatio: CropAspectRatioPreset.original,
-              activeControlsWidgetColor: AppColorConstant.appYellow,
-              backgroundColor: AppColorConstant.appWhite,
-              cropFrameColor: AppColorConstant.appYellow,
-              lockAspectRatio: false),
-          IOSUiSettings(
-            title: 'Crop Image',
-          ),
-          WebUiSettings(
-            context: context,
-          ),
-        ],
-      );
-      selectedImage = File(croppedFile!.path);
-      uploadImage(selectedImage!, controller);
-
-      controller.update();
-    } else {
-      logs("Please select Image");
-    }
-  }
-
 
   uploadImage(File imageUrl, GetxController controller) async {
     isLoading = true;

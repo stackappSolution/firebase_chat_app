@@ -1,7 +1,5 @@
 import 'package:signal/modal/notification_model.dart';
-import 'package:signal/pages/notifications.dart';
-
-import '../modal/notification_model.dart';
+import 'notifications.dart';
 
 class NotificationsViewModel {
   NotificationsScreen? notificationsScreen;

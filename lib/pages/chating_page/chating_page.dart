@@ -21,21 +21,15 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/modal/message.dart';
-import 'package:signal/modal/notification_model.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
 import 'package:signal/pages/home/home_screen.dart';
-import 'package:signal/routes/app_navigation.dart';
-import 'package:signal/pages/notifications.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
-import 'package:signal/service/notification_api_services.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../controller/chating_page_controller.dart';
 import '../../modal/send_message_model.dart';
-import '../../service/notification_api_services.dart';
-import '../../service/notification_api_services.dart';
 
 // ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
@@ -44,6 +38,7 @@ class ChatingPage extends StatelessWidget {
   ChatingPageViewModal? chatingPageViewModal;
   static String date = '';
   ChatingPageController? controller;
+  Stream<QuerySnapshot>? chats;
 
   getBlockedList() async {
     chatingPageViewModal!.blockedNumbers =
@@ -55,13 +50,17 @@ class ChatingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     chatingPageViewModal ?? (chatingPageViewModal = ChatingPageViewModal(this));
 
-    //  getBlockedList();
+    getBlockedList();
 
     return GetBuilder<ChatingPageController>(
       dispose: (state) {
         controller!.player.dispose();
       },
       initState: (state) async {
+        chatingPageViewModal!.isFileDownLoadingList = List.filled(100, false);
+        chatingPageViewModal!.isFileDownLoadedList = List.filled(100, false);
+        chatingPageViewModal!.isPlayList = List.filled(100, false);
+        chatingPageViewModal!.thumbnailList = List.filled(100, "");
         chatingPageViewModal!.parameter = Get.parameters;
         chatingPageViewModal!.arguments = Get.arguments;
         chatingPageViewModal!.fontSize =
@@ -72,15 +71,32 @@ class ChatingPage extends StatelessWidget {
           const Duration(milliseconds: 0),
           () async {
             logs('arg--> ${chatingPageViewModal!.arguments}');
-            logs('era--> ${chatingPageViewModal!.parameter}');
             controller = Get.find<ChatingPageController>();
+            controller!.durationList = List.filled(100, Duration.zero);
+            controller!.positionList = List.filled(100, Duration.zero);
+            controller!.isPlayList = List.filled(100, false.obs);
+            chatingPageViewModal!.isBlocked = await UsersService.instance
+                .isBlockedByLoggedInUser(
+                    chatingPageViewModal!.arguments['number']);
+            logs('blocked----------> ${chatingPageViewModal!.isBlocked}');
 
+            final snapshots = await FirebaseFirestore.instance
+                .collection('rooms')
+                .where('members',
+                    isEqualTo: chatingPageViewModal!.arguments['members'])
+                .get();
             await chatingPageViewModal!.getBlockedList();
             await chatingPageViewModal!.getChatId();
             await chatingPageViewModal!.getChatLength();
+            chats = DatabaseService.instance.getChatStream(
+              snapshots.docs.first.id,
+            );
 
-            chatingPageViewModal!.chatStream();
-            chatingPageViewModal!.markMessage();
+            chatingPageViewModal!.snapshots = await DatabaseService.instance
+                .getChatDoc(chatingPageViewModal!.arguments['members']);
+
+            DatabaseService.instance.markMessagesAsSeen(snapshots.docs.first.id,
+                chatingPageViewModal!.arguments['number']);
 
             Future<String?> key = getStringValue(wallPaperColor);
             chatingPageViewModal!.wallpaperPath = await key;
@@ -99,7 +115,7 @@ class ChatingPage extends StatelessWidget {
         return WillPopScope(
           onWillPop: () async {
             controller!.player.dispose();
-            goToChatingScreen();
+
             return true;
           },
           child: Scaffold(
@@ -116,9 +132,28 @@ class ChatingPage extends StatelessWidget {
                       : Colors.transparent),
               child: Column(
                 children: [
+                  (chatingPageViewModal!.arguments['isGroup'])
+                      ? Container(
+                          padding: EdgeInsets.all(8.px),
+                          margin: EdgeInsets.all(8.px),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.px),
+                                color:
+                                    AppColorConstant.appWhite.withOpacity(0.3)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AppText(
+                                '${chatingPageViewModal!.arguments['createdBy']} created this group',
+                                fontSize: 10.px,
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                   Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: chatingPageViewModal!.getChatsStream,
+                      stream: chats,
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
@@ -127,7 +162,6 @@ class ChatingPage extends StatelessWidget {
                         if (snapshot.hasData) {
                           final data = snapshot.data!.docs;
                           chatingPageViewModal!.updateChatLength(data.length);
-
                           final message = snapshot.data!.docs
                               .map((doc) => doc.data() as Map<String, dynamic>)
                               .toList();
@@ -141,110 +175,78 @@ class ChatingPage extends StatelessWidget {
                             },
                           );
 
-                          return Column(
-                            children: [
-                              (chatingPageViewModal!.arguments['isGroup'] &&
-                                      message.isEmpty)
-                                  ? Container(
-                                      padding: EdgeInsets.all(8.px),
-                                      margin: EdgeInsets.all(8.px),
-                                      child: DecoratedBox(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15.px),
-                                            color: AppColorConstant.appWhite
-                                                .withOpacity(0.3)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: AppText(
-                                            '${chatingPageViewModal!.arguments['createdBy']} created this group',
-                                            fontSize: 10.px,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                              Expanded(
-                                child: GroupedListView(
-                                  itemBuilder: (context, element) {
-                                    int index = message.indexOf(element);
+                          return GroupedListView(
+                            itemBuilder: (context, element) {
+                              int index = message.indexOf(element);
 
-                                    String formattedTime = DateFormation()
-                                        .getChatTimeFormate(
-                                            element['messageTimestamp']);
+                              String formattedTime = DateFormation()
+                                  .getChatTimeFormate(
+                                      element['messageTimestamp']);
 
-                                    DateTime dateTime = DateFormation()
-                                        .getDatetime(
-                                            element['messageTimestamp']);
+                              DateTime dateTime = DateFormation()
+                                  .getDatetime(element['messageTimestamp']);
 
-                                    chatingPageViewModal!.messageTimeStamp
-                                        .add(dateTime);
+                              chatingPageViewModal!.messageTimeStamp
+                                  .add(dateTime);
 
-                                    return buildMessage(
-                                        MessageModel(
-                                            messageStatus:
-                                                element['messageStatus'],
-                                            message: element['message'],
-                                            isSender: element['isSender'],
-                                            messageTimestamp: formattedTime,
-                                            messageType: element['messageType'],
-                                            sender: element['sender'],
-                                            text: element['text'],
-                                            thumb: element['thumb']),
-                                        context,
-                                        controller,
-                                        index);
-                                  },
-                                  reverse: true,
-                                  physics: const BouncingScrollPhysics(),
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  order: GroupedListOrder.DESC,
-                                  useStickyGroupSeparators: true,
-                                  floatingHeader: true,
-                                  elements: message,
-                                  groupBy: (element) {
-                                    String formatDate(DateTime dateTime) {
-                                      return DateFormat('MMM d, y')
-                                          .format(dateTime);
-                                    }
+                              return buildMessage(
+                                  MessageModel(
+                                      messageStatus: element['messageStatus'],
+                                      message: element['message'],
+                                      isSender: element['isSender'],
+                                      messageTimestamp: formattedTime,
+                                      messageType: element['messageType'],
+                                      sender: element['sender'],
+                                      text: element['text']),
+                                  context,
+                                  controller,
+                                  index);
+                            },
+                            reverse: true,
+                            physics: const BouncingScrollPhysics(),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            order: GroupedListOrder.DESC,
+                            useStickyGroupSeparators: true,
+                            floatingHeader: true,
+                            elements: message,
+                            groupBy: (element) {
+                              String formatDate(DateTime dateTime) {
+                                return DateFormat('MMM d, y').format(dateTime);
+                              }
 
-                                    int timestamp = element['messageTimestamp'];
-                                    DateTime date =
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            timestamp);
-                                    return formatDate(date);
-                                  },
-                                  groupHeaderBuilder: (value) {
-                                    var timestamp = value['messageTimestamp'];
-                                    String formatDate = DateFormation()
-                                        .headerTimestamp(timestamp);
-                                    return Container(
-                                      margin: EdgeInsets.all(15.px),
-                                      alignment: Alignment.center,
-                                      height: 25.px,
-                                      child: Container(
-                                        padding: EdgeInsets.all(5.px),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5.px),
-                                          color: AppColorConstant.appGrey
-                                              .withOpacity(0.3),
-                                        ),
-                                        alignment: Alignment.center,
-                                        height: 25.px,
-                                        width: 100.px,
-                                        child: Text(
-                                          formatDate,
-                                          style: const TextStyle(
-                                            color: AppColorConstant.appBlack,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
+                              int timestamp = element['messageTimestamp'];
+                              DateTime date =
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      timestamp);
+                              return formatDate(date);
+                            },
+                            groupHeaderBuilder: (value) {
+                              var timestamp = value['messageTimestamp'];
+                              String formatDate =
+                                  DateFormation().headerTimestamp(timestamp);
+                              return Container(
+                                margin: EdgeInsets.all(15.px),
+                                alignment: Alignment.center,
+                                height: 25.px,
+                                child: Container(
+                                  padding: EdgeInsets.all(5.px),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.px),
+                                    color: AppColorConstant.appGrey
+                                        .withOpacity(0.3),
+                                  ),
+                                  alignment: Alignment.center,
+                                  height: 25.px,
+                                  width: 100.px,
+                                  child: Text(
+                                    formatDate,
+                                    style: const TextStyle(
+                                      color: AppColorConstant.appBlack,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              );
+                            },
                           );
                         }
                         return AppLoader();
@@ -294,7 +296,7 @@ class ChatingPage extends StatelessWidget {
   buildTextFormField(BuildContext context, ChatingPageController controller) {
     return Row(
       children: [
-        chatingPageViewModal!.buildPopupMenu(context, controller),
+        chatingPageViewModal!.buildPopupMenu(context),
         Expanded(
             child: Container(
                 margin: EdgeInsets.only(right: 15.px, bottom: 5.px, top: 5.px),
@@ -445,13 +447,9 @@ class ChatingPage extends StatelessWidget {
                             AppColorConstant.appGrey.withOpacity(0.3),
                         child: AppText(
                           (chatingPageViewModal!.arguments['isGroup'] != false)
-                              ? (chatingPageViewModal!.arguments['groupName']
-                                      .toString()
-                                      .isNotEmpty)
-                                  ? chatingPageViewModal!.arguments['groupName']
-                                      .substring(0, 1)
-                                      .toUpperCase()
-                                  : ""
+                              ? chatingPageViewModal!.arguments['groupName']
+                                  .substring(0, 1)
+                                  .toUpperCase()
                               : chatingPageViewModal!.arguments['name']
                                   .substring(0, 1)
                                   .toUpperCase(),
@@ -509,6 +507,9 @@ class ChatingPage extends StatelessWidget {
             child: (chatingPageViewModal!.arguments['isGroup'])
                 ? Column(
                     children: [
+                      AppText(
+                        message.sender.toString(),
+                        fontSize: 10.px,
                       StreamBuilder(
                         stream: controller!.getUserName(message.sender
                             .toString()
@@ -733,10 +734,7 @@ class ChatingPage extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12.px),
-                          child: (chatingPageViewModal!
-                                  .isFileDownLoadedList[index])
-                              ? AppImageAsset(image: message.thumb)
-                              : AppImageAsset(image: message.message),
+                          child: AppImageAsset(image: message.message),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -857,8 +855,9 @@ class ChatingPage extends StatelessWidget {
                       children: [
                         ClipRRect(
                             borderRadius: BorderRadius.circular(12.px),
-                            child: (true)
-                                ? AppImageAsset(image: message.thumb)
+                            child: (chatingPageViewModal!
+                                    .isFileDownLoadedList[index])
+                                ? AppImageAsset(image: message.message)
                                 : AppImageAsset(image: message.message)),
                         if (message.text!.isNotEmpty)
                           Align(
@@ -960,19 +959,11 @@ class ChatingPage extends StatelessWidget {
                           width: 150.px,
                           child: Slider(
                             activeColor: AppColorConstant.appWhite,
-                            min: 0.0,
-                            max: (controller.durationList[index].inSeconds
-                                        .toDouble() <
-                                    0.0)
-                                ? 1.0
-                                : controller.durationList[index].inSeconds
-                                    .toDouble(),
-                            value: (controller.positionList[index].inSeconds
-                                        .toDouble() <
-                                    0.0)
-                                ? 1.0
-                                : controller.positionList[index].inSeconds
-                                    .toDouble(),
+                            min: 0,
+                            max: controller.durationList[index].inSeconds
+                                .toDouble(),
+                            value: controller.positionList[index].inSeconds
+                                .toDouble(),
                             onChanged: (value) async {
                               controller.positionList[index] =
                                   Duration(seconds: value.toInt());
@@ -983,6 +974,7 @@ class ChatingPage extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       Container(
                         width: 50.px,
                         alignment: Alignment.center,
@@ -1001,7 +993,7 @@ class ChatingPage extends StatelessWidget {
                             chatingPageViewModal!.viewFile(message.message,
                                 "SENT/AUDIO", controller!, index);
                           },
-                          icon: (controller!.isPlayingList[index])
+                          icon: (chatingPageViewModal!.isPlayList[index])
                               ? const Icon(
                                   Icons.pause_circle,
                                   color: AppColorConstant.appWhite,
@@ -1193,7 +1185,7 @@ class ChatingPage extends StatelessWidget {
                               chatingPageViewModal!.viewFile(
                                   message.message, "AUDIO", controller!, index);
                             },
-                            icon: (controller!.isPlayingList[index])
+                            icon: (chatingPageViewModal!.isPlayList[index])
                                 ? const Icon(
                                     Icons.pause_circle,
                                     color: AppColorConstant.appWhite,
@@ -1319,10 +1311,12 @@ class ChatingPage extends StatelessWidget {
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            const AppImageAsset(
-                              image: AppAsset.signIn,
-                              fit: BoxFit.fill,
-                            ),
+                            if (chatingPageViewModal!.thumbnailList[index] ==
+                                "")
+                              const AppImageAsset(
+                                image: AppAsset.signIn,
+                                fit: BoxFit.fill,
+                              ),
                             InkWell(
                               onTap: () {
                                 chatingPageViewModal!.viewFile(message.message,
@@ -1967,7 +1961,7 @@ class ChatingPage extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
             onPressed: () {
-              goToHomeScreen();
+              Get.to(HomeScreen());
             },
           ),
           CircleAvatar(
@@ -1975,16 +1969,8 @@ class ChatingPage extends StatelessWidget {
             backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
             child: AppText(
               (chatingPageViewModal!.arguments['isGroup'] != false)
-                  ? (chatingPageViewModal!.arguments['groupName']
-                          .toString()
-                          .isNotEmpty)
-                      ? chatingPageViewModal!.arguments['groupName']
-                          .substring(0, 1)
-                          .toUpperCase()
-                      : ""
-                  : chatingPageViewModal!.arguments['name']
-                      .substring(0, 1)
-                      .toUpperCase(),
+                  ? chatingPageViewModal!.arguments['groupName'].substring(0, 1).toUpperCase()
+                  : chatingPageViewModal!.arguments['name'].substring(0, 1).toUpperCase(),
               color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               fontWeight: FontWeight.w500,
@@ -2044,26 +2030,7 @@ class ChatingPage extends StatelessWidget {
   }
 
   onSendMessage(message, ChatingPageController controller) async {
-    chatingPageViewModal!.isFileDownLoadingList =
-        chatingPageViewModal!.isFileDownLoadingList.toList();
-    chatingPageViewModal!.isFileDownLoadingList.add(false);
-    chatingPageViewModal!.isFileDownLoadedList =
-        chatingPageViewModal!.isFileDownLoadedList.toList();
-    chatingPageViewModal!.isFileDownLoadedList.add(false);
-
-    controller.durationList = controller.durationList.toList();
-    controller!.durationList.add(Duration.zero);
-    controller!.positionList = controller!.positionList.toList();
-    controller!.positionList.add(Duration.zero);
-    controller!.isPlayingList = controller!.isPlayingList.toList();
-    controller!.isPlayingList.add(false);
-
-    controller.update();
-
-    logs(
-        "Chatting page members ---- > ${chatingPageViewModal!.arguments['members']}");
-
-    chatingPageViewModal!.notification(message);
+   chatingPageViewModal!.notification(message);
     SendMessageModel sendMessageModel = SendMessageModel(
         type: 'text',
         members: chatingPageViewModal!.arguments['members'],
@@ -2074,8 +2041,8 @@ class ChatingPage extends StatelessWidget {
     (chatingPageViewModal!.blockedNumbers
             .contains(chatingPageViewModal!.arguments['number']))
         ? null
-        : DatabaseService.instance.addNewMessage(sendMessageModel);
-
+        : DatabaseService.instance
+            .addNewMessage(sendMessageModel: sendMessageModel);
     logs('message---> $message');
     controller.update();
   }
@@ -2112,7 +2079,7 @@ class ChatingPage extends StatelessWidget {
           onTap: () {
             if (chatingPageViewModal!.chatController.text.isNotEmpty) {
               onSendMessage(
-                  chatingPageViewModal!.chatController.text.trim(), controller);
+                  chatingPageViewModal!.chatController.text, controller);
               controller.update();
               chatingPageViewModal!.chatController.clear();
             }

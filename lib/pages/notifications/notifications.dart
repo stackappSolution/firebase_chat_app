@@ -5,11 +5,11 @@ import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/pages/notifications_view_model.dart';
+import 'package:signal/pages/notifications/notifications_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/users_service.dart';
 
-import '../modal/notification_model.dart';
+import '../../modal/notification_model.dart';
 
 class NotificationsScreen extends StatelessWidget {
   NotificationsViewModel? notificationsViewModel;

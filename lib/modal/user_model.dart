@@ -12,8 +12,8 @@ class UserModel {
   String? fcmToken;
   String? photoUrl;
   String? about;
-  List<String>? blockedNumbers;
   String? pin;
+  List? blockedNumbers;
 
   UserModel({
     this.pin,
@@ -35,8 +35,8 @@ class UserModel {
         fcmToken: json["fcmToken"],
         photoUrl: json["photoUrl"],
         about: json["about"],
-    blockedNumbers: json["blockedNumbers"],
         pin: json["pin"],
+    blockedNumbers: json["blockedNumbers"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,7 +47,7 @@ class UserModel {
         "fcmToken": fcmToken,
         "photoUrl": photoUrl,
         "about": about,
-        "blockedNumbers": blockedNumbers,
         "pin": pin,
+        "blockedNumbers": blockedNumbers,
       };
 }

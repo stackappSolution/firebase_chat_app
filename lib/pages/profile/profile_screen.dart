@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
   ProfileViewModel? profileViewModel;
   ProfileController? profileController;
 
-  String? pin;
+  String pin;
 
   ProfileScreen(this.pin, {super.key});
 
@@ -196,7 +196,7 @@ class ProfileScreen extends StatelessWidget {
                                 profileViewModel!.isLoadingOnSave = true;
                                 controller.update();
                                 profileViewModel!
-                                    .onTapNext(context, controller,pin!);
+                                    .onTapNext(context, controller,pin);
                               }
                             : null,
                       ),
