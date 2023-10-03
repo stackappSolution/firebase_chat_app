@@ -1,14 +1,12 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
@@ -16,14 +14,15 @@ import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_button.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/controller/chating_page_controller.dart';
-import 'package:signal/generated/intl/messages_en_US.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/modal/notification_model.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
+import 'package:get/get.dart';
+import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
+import 'package:http/http.dart' as http;
 
 import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -67,7 +66,6 @@ class ChatingPageViewModal {
   List isFileDownLoadedList = [];
   List isPlayList = [];
   List thumbnailList = [];
-  String selectedEmoji = '';
 
   TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;
@@ -405,8 +403,7 @@ class ChatingPageViewModal {
           members: arguments['members'],
           message: value,
           sender: AuthService.auth.currentUser!.phoneNumber!,
-          isGroup: false,
-      );
+          isGroup: false);
       DatabaseService.instance
           .addNewMessage(sendMessageModel: sendMessageModel);
     });
@@ -803,73 +800,6 @@ class ChatingPageViewModal {
     );
   }
 
-  void showEmojiMenu(BuildContext context, Offset position,roomId, messageId) async {
-    final RenderBox overlay =
-    Overlay.of(context).context.findRenderObject() as RenderBox;
-
-    final selectedEmoji = await showMenu<String>(
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.px)),
-      position: RelativeRect.fromRect(position & const Size(0, 0),
-          overlay.localToGlobal(Offset(-200, 100)) & overlay.size),
-      context: context,
-      items: [
-        PopupMenuItem(
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              GestureDetector(onTap: () async {
-                addEmoji(roomId,messageId, "🙏");
-                Navigator.pop(context, "🙏");
-              },
-                  child: AppText("🙏", fontSize: 22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId,"😂");
-                Navigator.pop(context, "😂");
-              },
-                  child: AppText('😂', fontSize: 22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId,"😮");
-                Navigator.pop(context, "😮");
-              },
-                  child: AppText('😮', fontSize: 22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId, "❤️");
-                Navigator.pop(context, "❤️");
-
-              },child: AppText('❤️', fontSize:22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId,"👍");
-                Navigator.pop(context, "👍");
-
-              },child: AppText('👍', fontSize: 22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId, "😥");
-                Navigator.pop(context, "😥");
-
-              },child: AppText('😥', fontSize: 22.px)),
-            ],
-          ),
-        ),
-      ],
-    );
-    if (selectedEmoji != null) {
-      this.selectedEmoji = selectedEmoji;
-      controller!.update();
-    }
-  }
-
-  addEmoji(roomId,messageId,emoji) async {
-    logs('messageidddddd-->${messageId}');
-    DocumentReference documentReference  =  FirebaseFirestore.instance
-        .collection('rooms').doc(roomId).collection('chats').doc(messageId);
-    logs('documentReference-->$documentReference');
-
-    Map<String, dynamic> Data = {
-      'emoji': emoji,
-    };
-    logs('data-->$Data');
-    await documentReference.update(Data);
-=======
   getChatLength() async {
     final chatStream = await FirebaseFirestore.instance
         .collection('rooms')
