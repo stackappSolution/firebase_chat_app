@@ -15,14 +15,12 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
-import 'package:signal/pages/set_pin/set_pin_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 import '../../service/users_service.dart';
-import '../notifications/notifications.dart';
-import '../sign_in_page/sign_in_page.dart';
+import '../notifications.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -37,9 +35,10 @@ class ChatScreen extends StatelessWidget {
     return GetBuilder<ContactController>(
       init: ContactController(),
       initState: (state) {
-        var brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
-         ThemeUtil.isDark = brightness == Brightness.dark;
-         logs("ThemeUtil.isDark--- > ${ThemeUtil.isDark}");
+        var brightness =
+            SchedulerBinding.instance.platformDispatcher.platformBrightness;
+        ThemeUtil.isDark = brightness == Brightness.dark;
+        logs("ThemeUtil.isDark--- > ${ThemeUtil.isDark}");
         DataBaseHelper.createDB();
         chatViewModel!.getPermission();
         Future.delayed(
@@ -79,7 +78,7 @@ class ChatScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-       Padding(
+        Padding(
           padding: EdgeInsets.only(bottom: 10.px),
           child: FloatingActionButton(
             heroTag: 'camera',
@@ -89,9 +88,7 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: AppColorConstant.appYellow,
             child: AppImageAsset(
                 image: AppAsset.camera, height: 22.px, width: 22.px),
-            onPressed: () {
-              // Get.to(EnterPinScreen());
-            },
+            onPressed: () {},
           ),
         ),
         Padding(
@@ -222,9 +219,10 @@ class ChatScreen extends StatelessWidget {
         }
         if (value == 2) {
           goToSettingPage();
-        } if (value == 4) {
+        }
+        if (value == 4) {
           UsersService.instance.getAllNotifications();
-          Get.to( NotificationsScreen());
+          Get.to(NotificationsScreen());
         }
       },
       elevation: 0.5,
@@ -244,10 +242,8 @@ class ChatScreen extends StatelessWidget {
         return [
           PopupMenuItem(
             value: 0,
-            child: AppText(
-              S.of(Get.context!).newGroup,
-              color: Theme.of(context).colorScheme.primary
-            ),
+            child: AppText(S.of(Get.context!).newGroup,
+                color: Theme.of(context).colorScheme.primary),
           ),
           PopupMenuItem(
               value: 1,
@@ -260,7 +256,8 @@ class ChatScreen extends StatelessWidget {
           PopupMenuItem(
               value: 3,
               child: AppText(S.of(Get.context!).inviteFriends,
-                  color: Theme.of(context).colorScheme.primary)), PopupMenuItem(
+                  color: Theme.of(context).colorScheme.primary)),
+          PopupMenuItem(
               value: 4,
               child: AppText(S.of(Get.context!).notification,
                   color: Theme.of(context).colorScheme.primary)),
@@ -287,6 +284,8 @@ class ChatScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
+                  logs("${index} --- ${documents[index]["id"]} ");
+
                   bool isGroup = documents[index]['isGroup'];
                   List receiver = documents[index]["members"];
                   receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
@@ -344,15 +343,58 @@ class ChatScreen extends StatelessWidget {
                         leading: InkWell(
                             onTap: () {},
                             child: (isGroup)
-                                ? CircleAvatar(
-                                    maxRadius: 22.px,
-                                    backgroundColor: AppColorConstant.appYellow
-                                        .withOpacity(0.8),
-                                    child: AppText(
-                                      firstLetter,
-                                      color: AppColorConstant.appWhite,
-                                      fontSize: 24.px,
-                                    ),
+                                ? StreamBuilder(
+                                    stream: controller
+                                        .getGroupName(documents[index]['id']),
+                                    builder: (context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        return const AppText('');
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const AppText('');
+                                      }
+                                      final data = snapshot.data!.docs;
+                                      logs(
+                                          "g name -- ${data.first["groupName"]}");
+                                      return (data.first["groupProfile"]
+                                              .toString()
+                                              .isNotEmpty)
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(700),
+                                              child: AppImageAsset(
+                                                image:
+                                                    data.first["groupProfile"],
+                                                fit: BoxFit.cover,
+                                                height: 48.px,
+                                                width: 48.px,
+                                              ))
+                                          : CircleAvatar(
+                                              maxRadius: 22.px,
+                                              backgroundColor: AppColorConstant
+                                                  .appYellow
+                                                  .withOpacity(0.8),
+                                              child: (data.first["groupProfile"]
+                                                      .toString()
+                                                      .isNotEmpty)
+                                                  ? AppText(
+                                                      data.first["groupName"]
+                                                          .toString()
+                                                          .substring(0, 1),
+                                                      color: AppColorConstant
+                                                          .appWhite,
+                                                      fontSize: 24.px,
+                                                    )
+                                                  : AppText(
+                                                      "G",
+                                                      color: AppColorConstant
+                                                          .appWhite,
+                                                      fontSize: 24.px,
+                                                    ),
+                                            );
+                                    },
                                   )
                                 : StreamBuilder(
                                     stream:
@@ -376,8 +418,8 @@ class ChatScreen extends StatelessWidget {
                                               child: AppImageAsset(
                                                 image: data.first["photoUrl"],
                                                 fit: BoxFit.cover,
-                                                height: 40.px,
-                                                width: 40.px,
+                                                height: 48.px,
+                                                width: 48.px,
                                               ))
                                           : CircleAvatar(
                                               maxRadius: 24.px,
@@ -394,10 +436,26 @@ class ChatScreen extends StatelessWidget {
                                     },
                                   )),
                         title: (isGroup)
-                            ? AppText(
-                                documents[index]['groupName'] ?? "",
-                                fontSize: 15.px,
-                                color: AppColorConstant.appWhite,
+                            ? StreamBuilder(
+                                stream: controller
+                                    .getGroupName(documents[index]['id']),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return const AppText('');
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const AppText('');
+                                  }
+                                  final data = snapshot.data!.docs;
+                                  logs(
+                                      "name---> ${data.first['groupName'].toString()}");
+                                  return AppText(data.first['groupName'],
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary);
+                                },
                               )
                             : AppText(
                                 chatViewModel!
@@ -417,24 +475,255 @@ class ChatScreen extends StatelessWidget {
                             }
                             final messageData = snapshot.data!.docs;
                             return (isGroup)
-                                ? StreamBuilder(
-                                    stream: controller.getUserName(
-                                        messageData.first["sender"]),
-                                    builder: (context,
-                                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      if (snapshot.hasError) {
-                                        return const AppText('');
-                                      }
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const AppText('');
-                                      }
-                                      final data = snapshot.data!.docs;
-                                      return AppText(
-                                          "${data.first["firstName"]} | ${messageData.first["message"]}",
-                                          color: AppColorConstant.grey,
-                                          fontSize: 12.px);
-                                    },
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      StreamBuilder(
+                                        stream: controller.getUserName(
+                                            messageData.first["sender"]),
+                                        builder: (context,
+                                            AsyncSnapshot<QuerySnapshot>
+                                                snapshot) {
+                                          if (snapshot.hasError) {
+                                            return const AppText('');
+                                          }
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const AppText('');
+                                          }
+                                          final data = snapshot.data!.docs;
+                                          return AppText(
+                                            "${data.first["firstName"]}",
+                                            color: AppColorConstant.appYellow,
+                                            fontSize: 12.px,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          );
+                                        },
+                                      ),
+                                      AppText(
+                                        " | ",
+                                        fontSize: 12.px,
+                                        color: AppColorConstant.appYellow,
+                                      ),
+                                      Container(
+                                        width: 140.px,
+                                        child: (messageData
+                                                    .first["messageType"] ==
+                                                "image")
+                                            ? Row(
+                                                children: [
+                                                  Icon(Icons.image,
+                                                      size: 13.px,
+                                                      color: AppColorConstant
+                                                          .appYellow),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 5.px,
+                                                        right: 5.px),
+                                                    child: AppText(
+                                                      "photo",
+                                                      color: AppColorConstant
+                                                          .appYellow,
+                                                      fontSize: 10.px,
+                                                    ),
+                                                  ),
+                                                  if (messageData
+                                                      .first["messageStatus"])
+                                                    Icon(
+                                                      Icons.done_all,
+                                                      size: 13.px,
+                                                      color: AppColorConstant
+                                                          .extraLightSky,
+                                                    )
+                                                  else
+                                                    Icon(
+                                                      Icons.done,
+                                                      size: 13.px,
+                                                      color: AppColorConstant
+                                                          .appYellow,
+                                                    )
+                                                ],
+                                              )
+                                            : (messageData
+                                                        .first["messageType"] ==
+                                                    "doc")
+                                                ? Row(
+                                                    children: [
+                                                      Icon(Icons.file_copy,
+                                                          size: 13.px,
+                                                          color:
+                                                              AppColorConstant
+                                                                  .appYellow),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5.px,
+                                                                right: 5.px),
+                                                        child: AppText(
+                                                          "document",
+                                                          color:
+                                                              AppColorConstant
+                                                                  .appYellow,
+                                                          fontSize: 10.px,
+                                                        ),
+                                                      ),
+                                                      if (messageData.first[
+                                                          "messageStatus"])
+                                                        Icon(
+                                                          Icons.done_all,
+                                                          size: 13.px,
+                                                          color: AppColorConstant
+                                                              .extraLightSky,
+                                                        )
+                                                      else
+                                                        Icon(
+                                                          Icons.done,
+                                                          size: 13.px,
+                                                          color:
+                                                              AppColorConstant
+                                                                  .appYellow,
+                                                        )
+                                                    ],
+                                                  )
+                                                : ((messageData.first[
+                                                            "messageType"] ==
+                                                        "video"))
+                                                    ? Row(
+                                                        children: [
+                                                          Icon(
+                                                              Icons
+                                                                  .video_collection,
+                                                              size: 13.px,
+                                                              color:
+                                                                  AppColorConstant
+                                                                      .appYellow),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 5.px,
+                                                                    right:
+                                                                        5.px),
+                                                            child: AppText(
+                                                              "video",
+                                                              color:
+                                                                  AppColorConstant
+                                                                      .appYellow,
+                                                              fontSize: 10.px,
+                                                            ),
+                                                          ),
+                                                          if (messageData.first[
+                                                              "messageStatus"])
+                                                            Icon(
+                                                              Icons.done_all,
+                                                              size: 13.px,
+                                                              color: AppColorConstant
+                                                                  .extraLightSky,
+                                                            )
+                                                          else
+                                                            Icon(
+                                                              Icons.done,
+                                                              size: 13.px,
+                                                              color:
+                                                                  AppColorConstant
+                                                                      .appYellow,
+                                                            )
+                                                        ],
+                                                      )
+                                                    : (messageData.first[
+                                                                "messageType"] ==
+                                                            "audio")
+                                                        ? Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons
+                                                                    .multitrack_audio,
+                                                                size: 13.px,
+                                                                color: AppColorConstant
+                                                                    .appYellow,
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left: 5
+                                                                            .px,
+                                                                        right: 5
+                                                                            .px),
+                                                                child: AppText(
+                                                                  "audio",
+                                                                  color: AppColorConstant
+                                                                      .appYellow,
+                                                                  fontSize:
+                                                                      10.px,
+                                                                ),
+                                                              ),
+                                                              if (messageData
+                                                                      .first[
+                                                                  "messageStatus"])
+                                                                Icon(
+                                                                  Icons
+                                                                      .done_all,
+                                                                  size: 13.px,
+                                                                  color: AppColorConstant
+                                                                      .extraLightSky,
+                                                                )
+                                                              else
+                                                                Icon(
+                                                                  Icons.done,
+                                                                  size: 13.px,
+                                                                  color: AppColorConstant
+                                                                      .appYellow,
+                                                                )
+                                                            ],
+                                                          )
+                                                        : Row(
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: 5
+                                                                            .px),
+                                                                child:
+                                                                    Container(
+                                                                  width: 100.px,
+                                                                  height: 20.px,
+                                                                  child:
+                                                                      AppText(
+                                                                    messageData.first[
+                                                                            "message"] ??
+                                                                        "",
+                                                                    color: AppColorConstant
+                                                                        .appYellow,
+                                                                    fontSize:
+                                                                        12.px,
+                                                                    maxLines: 1,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              if (messageData
+                                                                      .first[
+                                                                  "messageStatus"])
+                                                                Icon(
+                                                                  Icons
+                                                                      .done_all,
+                                                                  size: 13.px,
+                                                                  color: AppColorConstant
+                                                                      .extraLightSky,
+                                                                )
+                                                              else
+                                                                Icon(
+                                                                  Icons.done,
+                                                                  size: 13.px,
+                                                                  color: AppColorConstant
+                                                                      .appYellow,
+                                                                )
+                                                            ],
+                                                          ),
+                                      )
+                                    ],
                                   )
                                 : (messageData.first["messageType"] == "image")
                                     ? Row(

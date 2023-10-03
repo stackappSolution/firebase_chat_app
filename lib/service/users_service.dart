@@ -94,15 +94,19 @@ class UsersService {
   //==========================checkBlockedUser=================================
 
   Future<bool> isBlockedByLoggedInUser(String receiverNumber) async {
-    QuerySnapshot querySnapshot =
-        await usersCollection.where('phone', isEqualTo: receiverNumber).get();
-    final docSnapshot =
-        await usersCollection.doc(querySnapshot.docs.first.id).get();
-    final blockedUsersList =
-        docSnapshot.data()!['blockedNumbers'] ?? <String>[];
+    final snapshot = await usersCollection.where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber).get();
+    final docSnapshot = await usersCollection.doc(snapshot.docs.first.id).get();
+     List blockedUsersList = docSnapshot.data()!['blockedNumbers'];
+    return blockedUsersList.contains(receiverNumber);
+  }
 
-    return blockedUsersList
-        .contains(AuthService.auth.currentUser!.phoneNumber!);
+  //==========================checkBlockedUser=================================
+
+  Future<bool> isBlockedByReceiver(String receiverNumber) async {
+    final snapshot = await usersCollection.where('phone', isEqualTo: receiverNumber).get();
+    final docSnapshot = await usersCollection.doc(snapshot.docs.first.id).get();
+     List isBlockedByReceiver = docSnapshot.data()!['blockedNumbers'];
+    return isBlockedByReceiver.contains(AuthService.auth.currentUser!.phoneNumber);
   }
 
   //===========================blockUsers=====================================

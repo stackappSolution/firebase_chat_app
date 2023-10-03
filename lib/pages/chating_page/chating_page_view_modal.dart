@@ -48,7 +48,8 @@ class ChatingPageViewModal {
   dynamic snapshots;
 
   String? formatedTime;
-  bool isBlocked = false;
+  bool isBlockedByLoggedInUser = false;
+  bool isBlockedByReceiver = false;
   File? selectedImage;
   File? selectedVideo;
   File? audioFile;
@@ -83,18 +84,22 @@ class ChatingPageViewModal {
     ResponseService.postRestUrl(message, a);
 
     NotificationModel notificationModel = NotificationModel(
-        time:' ${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
-        sender: AuthService.auth.currentUser!.phoneNumber,
-        receiver: arguments['number'],
-        receiverName:  await UsersService.instance.getUserName('${arguments['number']}'),
-        senderName: await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}'),
-        message: message,
+      time:
+          ' ${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+      sender: AuthService.auth.currentUser!.phoneNumber,
+      receiver: arguments['number'],
+      receiverName:
+          await UsersService.instance.getUserName('${arguments['number']}'),
+      senderName: await UsersService.instance
+          .getUserName('${AuthService.auth.currentUser!.phoneNumber}'),
+      message: message,
     );
 
-
-    logs('receiver name----> ${await UsersService.instance.getUserName('${arguments['number']}')}');
+    logs(
+        'receiver name----> ${await UsersService.instance.getUserName('${arguments['number']}')}');
     logs('receiver number----> ${arguments['number']}');
-    logs('sender name----> ${await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}')}');
+    logs(
+        'sender name----> ${await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}')}');
     logs('sender number----> ${AuthService.auth.currentUser!.phoneNumber}');
     logs('message ----> $message');
 
@@ -318,7 +323,6 @@ class ChatingPageViewModal {
       controller.update();
     }
   }
-
 
   extensionCheck(pdfURL) {
     if (pdfURL.toString().contains("sentDoc.${"jpg"}")) {
@@ -721,10 +725,15 @@ class ChatingPageViewModal {
               value: 3,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppText(S.of(Get.context!).block),
-                  const Icon(Icons.block),
-                ],
+                children: (isBlockedByLoggedInUser)
+                    ? [
+                        AppText(S.of(Get.context!).block),
+                        const Icon(Icons.block),
+                      ]
+                    : [
+                        const AppText(StringConstant.unBlock),
+                        const Icon(Icons.block),
+                      ],
               )),
         ];
       },
@@ -743,8 +752,14 @@ class ChatingPageViewModal {
       });
     }
     if (value == 3) {
-      blockedNumbers.add(arguments['number']);
-      UsersService.instance.blockUser(blockedNumbers, arguments['number']);
+      if (isBlockedByLoggedInUser) {
+        blockedNumbers.remove(arguments['number']);
+        UsersService.instance.unblockUser(arguments['number']);
+        getBlockedList();
+      } else {
+        blockedNumbers.add(arguments['number']);
+        UsersService.instance.blockUser(blockedNumbers, arguments['number']);
+      }
 
       controller!.update();
     }
@@ -783,5 +798,83 @@ class ChatingPageViewModal {
         size: 12.px,
       ),
     );
+  }
+
+  getChatLength() async {
+    final chatStream = await FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(snapshots.docs.first.id)
+        .collection('chats')
+        .get();
+    final chatLength = chatStream.docs.length;
+
+    if (isFileDownLoadingList.isEmpty) {
+      isFileDownLoadingList = List.filled(chatLength, false);
+      isFileDownLoadedList = List.filled(chatLength, false);
+      downloadedVideoList = List.filled(chatLength, false);
+      controller!.durationList = List.filled(chatLength, Duration.zero);
+      controller!.positionList = List.filled(chatLength, Duration.zero);
+      controller!.isPlayingList = List.filled(chatLength, false);
+      controller!.isPlayingList = List.filled(chatLength, false);
+    } else {
+      // isFileDownLoadingList = isFileDownLoadingList.toList();
+      // isFileDownLoadingList.add(false);
+      // isFileDownLoadedList = isFileDownLoadedList.toList();
+      // isFileDownLoadedList.add(false);
+
+      // controller!.durationList = controller!.durationList.toList();
+      // controller!.durationList.add(Duration.zero);
+      // controller!.positionList = controller!.positionList.toList();
+      // controller!.positionList.add(Duration.zero);
+      // controller!.isPlayingList = controller!.isPlayingList.toList();
+      // controller!.isPlayingList.add(false);
+    }
+  }
+
+  updateChatLength(int length) {
+    if (length >= isFileDownLoadedList.length) {
+      int lenDiff = length - isFileDownLoadedList.length;
+      for (int i = 0; i < lenDiff; i++) {
+        isFileDownLoadingList = isFileDownLoadingList.toList();
+        isFileDownLoadingList.add(false);
+        isFileDownLoadedList = isFileDownLoadedList.toList();
+        isFileDownLoadedList.add(false);
+
+        downloadedVideoList = downloadedVideoList.toList();
+        downloadedVideoList.add(false);
+        controller!.durationList = controller!.durationList.toList();
+        controller!.durationList.add(Duration.zero);
+        controller!.positionList = controller!.positionList.toList();
+        controller!.positionList.add(Duration.zero);
+        controller!.isPlayingList = controller!.isPlayingList.toList();
+        controller!.isPlayingList.add(false);
+      }
+    }
+  }
+
+  getBlockedList() async {
+    if (!arguments["isGroup"]) {
+      isBlockedByLoggedInUser = await UsersService.instance
+          .isBlockedByLoggedInUser(arguments['number']);
+      isBlockedByReceiver =
+          await UsersService.instance.isBlockedByReceiver(arguments['number']);
+      logs('isBlockedByLoggedInUser----------> $isBlockedByLoggedInUser');
+      logs('isBlockedByReceiver----------> $isBlockedByReceiver');
+    }
+  }
+
+  getChatId() async {
+    snapshots = await DatabaseService.instance.getChatDoc(arguments['members']);
+  }
+
+  chatStream() {
+    getChatsStream = DatabaseService.instance.getChatStream(
+      snapshots.docs.first.id,
+    );
+  }
+
+  markMessage() {
+    DatabaseService.instance
+        .markMessagesAsSeen(snapshots.docs.first.id, arguments['number']);
   }
 }
