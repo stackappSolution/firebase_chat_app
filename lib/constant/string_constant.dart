@@ -211,4 +211,5 @@ class StringConstant {
   static const String otherwayto = 'other way to Give Up';
   static const String donatefriend = 'Donate For Friend';
   static const String enteramount = 'Enter Amount';
+  static const String unBlock = 'UnBlock';
 }
