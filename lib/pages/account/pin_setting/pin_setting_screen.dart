@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/pin_setting_controller.dart';
@@ -39,18 +40,13 @@ class PinSettingScreen extends StatelessWidget {
   ) {
     Color primaryTheme = Theme.of(context).colorScheme.primary;
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;
-    return Column(
-      children: [
-        if (!pinSettingViewModel!.isConformPage)
-          createPinView(primaryTheme, secondaryTheme, controller,context)
-        else
-          conformPinView(primaryTheme, secondaryTheme, controller,context),
-      ],
-    );
+    return (!pinSettingViewModel!.isConformPage)
+        ? createPinView(primaryTheme, secondaryTheme, controller, context)
+        : conformPinView(primaryTheme, secondaryTheme, controller, context);
   }
 
   createPinView(Color primaryTheme, Color secondaryTheme,
-      PinSettingController controller,BuildContext context) {
+      PinSettingController controller, BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -71,14 +67,12 @@ class PinSettingScreen extends StatelessWidget {
           padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
           child: TextField(
             style: const TextStyle(color: AppColorConstant.appBlack),
-
             controller: pinSettingViewModel!.pinController,
             keyboardType: (pinSettingViewModel!.changeKeyBoard)
                 ? TextInputType.text
                 : TextInputType.number,
             textAlign: TextAlign.center,
             focusNode: pinSettingViewModel!.focusNode,
-
             autofocus: true,
             obscureText: true,
             inputFormatters: (!pinSettingViewModel!.changeKeyBoard)
@@ -151,46 +145,52 @@ class PinSettingScreen extends StatelessWidget {
   }
 
   conformPinView(Color primaryTheme, Color secondaryTheme,
-      PinSettingController controller,BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        AppText(
-          S.of(context).conformYourPin,
-          fontSize: 27.px,
-          color: primaryTheme,
-        ),
+      PinSettingController controller, BuildContext context) {
+    return Stack(
+      children: [
         Padding(
-          padding: EdgeInsets.only(top: 10.px),
-          child: AppText(
-            S.of(context).reEnterThePin,
-            color: secondaryTheme,
-            fontSize: 13.px,
-          ),
+          padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            AppText(
+              S.of(context).conformYourPin,
+              fontSize: 27.px,
+              color: primaryTheme,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10.px),
+              child: AppText(
+                S.of(context).reEnterThePin,
+                color: secondaryTheme,
+                fontSize: 13.px,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
+              child: TextField(
+                style: const TextStyle(color: AppColorConstant.appBlack),
+                controller: pinSettingViewModel!.conformPinController,
+                keyboardType: TextInputType.text,
+                textAlign: TextAlign.center,
+                focusNode: pinSettingViewModel!.focusNode,
+                autofocus: true,
+                obscureText: true,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'))
+                ],
+                decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: AppColorConstant.yellowLight,
+                    border: UnderlineInputBorder()),
+                onChanged: (value) {
+                  pinSettingViewModel!.onPinConformChanged(value, controller);
+                },
+              ),
+            ),
+          ]),
         ),
-        Padding(
-          padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
-          child: TextField(
-            style: const TextStyle(color: AppColorConstant.appBlack),
-            controller: pinSettingViewModel!.conformPinController,
-            keyboardType:TextInputType.text,
-            textAlign: TextAlign.center,
-            focusNode: pinSettingViewModel!.focusNode,
-            autofocus: true,
-            obscureText: true,
-            inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
-                  ],
-            decoration: const InputDecoration(
-                filled: true,
-                fillColor: AppColorConstant.yellowLight,
-                border: UnderlineInputBorder()),
-            onChanged: (value) {
-              pinSettingViewModel!.onPinConformChanged(value, controller);
-            },
-          ),
-        ),
-      ]),
+        if (pinSettingViewModel!.isLoading) AppLoader()
+      ],
     );
   }
 
@@ -201,8 +201,8 @@ class PinSettingScreen extends StatelessWidget {
           ? InkWell(
               onTap: (pinSettingViewModel!.isButtonActive)
                   ? () {
-                FocusScope.of(context).nextFocus();
-                pinSettingViewModel!.nextCreateButtonTap(controller);
+                      FocusScope.of(context).nextFocus();
+                      pinSettingViewModel!.nextCreateButtonTap(controller);
                     }
                   : null,
               child: Container(
@@ -224,8 +224,8 @@ class PinSettingScreen extends StatelessWidget {
           : InkWell(
               onTap: (pinSettingViewModel!.isButtonActive)
                   ? () {
-                FocusScope.of(context).nextFocus();
-                pinSettingViewModel!.nextConformButtonTap(controller);
+                      FocusScope.of(context).nextFocus();
+                      pinSettingViewModel!.nextConformButtonTap(controller);
                     }
                   : null,
               child: Container(

@@ -63,10 +63,10 @@ class ProfileViewModel {
     }
   }
 
-  onTapNext(context, GetxController controller) async {
+  onTapNext(context, GetxController controller, String pin) async {
     logs("NextTapped");
     controller.update();
-    onSaveProfile();
+    onSaveProfile(pin);
     goToHomeScreen();
   }
 
@@ -218,7 +218,7 @@ class ProfileViewModel {
     return await storage.getDownloadURL();
   }
 
-  Future<void> onSaveProfile() async {
+  Future<void> onSaveProfile(String pin) async {
     UserModel userModel = UserModel(
         id: FirebaseAuth.instance.currentUser?.uid,
         firstName: firstNameController.text,
@@ -232,6 +232,16 @@ class ProfileViewModel {
         about: "Heyy!!! i am using ChatApp!!",
         blockedNumbers: []);
 
+      id: FirebaseAuth.instance.currentUser?.uid,
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      fcmToken: NotificationService.instance.fcmToken,
+      photoUrl: userProfilePicture ?? '',
+      pin: pin,
+      phone: FirebaseAuth.instance.currentUser?.phoneNumber?.trim().replaceAll(' ', '```'),
+      about: "Heyy!!! i am using ChatApp!!"
+
+    );
     bool isUserAdded = await UsersService.instance.addUser(userModel);
     if (isUserAdded) {
       ToastUtil.successToast("Logged successfully");

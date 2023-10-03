@@ -11,6 +11,7 @@ import 'package:signal/controller/vreify_otp_controller.dart';
 import 'package:signal/routes/app_navigation.dart';
 
 import '../app/app/utills/toast_util.dart';
+import '../pages/set_pin/set_pin_screen.dart';
 
 class AuthService {
   static final FirebaseAuth auth = FirebaseAuth.instance;
@@ -104,7 +105,8 @@ class AuthService {
       if (userCredential.user != null) {
         logs("OTP verified and logged in");
         ToastUtil.successToast("OTP Verified");
-        goToProfilePage();
+        // goToProfilePage();
+        Get.to(SetPinScreen());
       } else {
         isVerifyLoading = false;
         logs("Incorrect OTP");
