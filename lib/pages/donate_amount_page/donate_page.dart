@@ -39,6 +39,8 @@ class DonatePage extends StatelessWidget {
             Razorpay.EVENT_PAYMENT_ERROR, donateViewModel!.handlePaymentError);
         donateViewModel!.razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
             donateViewModel!.handleExternalWallet);
+
+
       },
       dispose: (state) {
         donateViewModel!.razorpay.clear();
@@ -253,8 +255,6 @@ class DonatePage extends StatelessWidget {
                       fontSize: 30, fontWeight: pw.FontWeight.bold)),
               pw.SizedBox(height: 20),
               table,
-              pw.Text("Thank You",style: pw.TextStyle(
-                  fontSize: 30, fontWeight: pw.FontWeight.bold))
             ],
           );
         },
