@@ -16,6 +16,7 @@ class UserModel {
   String? pin;
 
   UserModel({
+    this.pin,
     this.firstName,
     this.lastName,
     this.id,
@@ -24,7 +25,6 @@ class UserModel {
     this.photoUrl,
     this.about,
     this.blockedNumbers
-    this.pin,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(

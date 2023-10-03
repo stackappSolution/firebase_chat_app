@@ -47,14 +47,14 @@ class ChatProfileScreen extends StatelessWidget {
           ),
           onWillPop: () async {
             Get.back();
-            Get.offAndToNamed(RouteHelper.getChattingScreen(), arguments: {
-              'name': chatProfileViewModel!.arguments['name'],
-              'number': chatProfileViewModel!.arguments['number'],
-              'id': chatProfileViewModel!.arguments['id'],
-              'isGroup': chatProfileViewModel!.arguments['isGroup'],
-              'members': chatProfileViewModel!.arguments['members'],
-              'about': chatProfileViewModel!.arguments['about'],
-            });
+            // Get.offAndToNamed(RouteHelper.getChattingScreen(), arguments: {
+            //   'name': chatProfileViewModel!.arguments['name'],
+            //   'number': chatProfileViewModel!.arguments['number'],
+            //   'id': chatProfileViewModel!.arguments['id'],
+            //   'isGroup': chatProfileViewModel!.arguments['isGroup'],
+            //   'members': chatProfileViewModel!.arguments['members'],
+            //   'about': chatProfileViewModel!.arguments['about'],
+            // });
 
             return true;
           },
@@ -68,14 +68,14 @@ class ChatProfileScreen extends StatelessWidget {
       leading: IconButton(
           onPressed: () {
             Get.back();
-            Get.off(ChatingPage(), arguments: {
-              'name': chatProfileViewModel!.arguments['name'],
-              'number': chatProfileViewModel!.arguments['number'],
-              'id': chatProfileViewModel!.arguments['id'],
-              'isGroup': chatProfileViewModel!.arguments['isGroup'],
-              'members': chatProfileViewModel!.arguments['members'],
-              'about': chatProfileViewModel!.arguments['about'],
-            });
+            // Get.off(ChatingPage(), arguments: {
+            //   'name': chatProfileViewModel!.arguments['name'],
+            //   'number': chatProfileViewModel!.arguments['number'],
+            //   'id': chatProfileViewModel!.arguments['id'],
+            //   'isGroup': chatProfileViewModel!.arguments['isGroup'],
+            //   'members': chatProfileViewModel!.arguments['members'],
+            //   'about': chatProfileViewModel!.arguments['about'],
+            // });
           },
           icon: const Icon(Icons.arrow_back_outlined)),
     );
