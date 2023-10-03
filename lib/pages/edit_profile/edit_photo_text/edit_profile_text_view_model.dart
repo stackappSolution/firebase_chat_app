@@ -20,12 +20,7 @@ class EditProfileTextViewModel {
   TextEditingController textEditingController = TextEditingController();
 
   EditProfileTextViewModel(this.editProfileText) {
-    Future.delayed(
-      const Duration(milliseconds: 100),
-      () {
-        editProfileTextController = Get.find<EditProfileTextController>();
-      },
-    );
+
   }
 
 // Update the user's profile picture

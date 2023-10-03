@@ -8,7 +8,6 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/modal/message.dart';
-import 'package:signal/modal/send_message_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,20 +25,18 @@ class DatabaseService {
 
   //================================addNewMessage============================
 
-  void addNewMessage(
-      {SendMessageModel? sendMessageModel,
-      FirstMessageModel? firstMessageModel}) async {
-    logs("database-----> ${sendMessageModel!.members!}");
+   Future addNewMessage(sendMessageModel) async {
+    logs("database-----> ${sendMessageModel!.message}");
 
     bool isFirst = await checkFirst(sendMessageModel.members!);
     if (true) {
+      logs("msg----> ${sendMessageModel.message}");
       addChatMessage(sendMessageModel);
     }
     if (isFirst) {
       addChatMessage(sendMessageModel);
 
-      DocumentReference doc =
-          await FirebaseFirestore.instance.collection('rooms').add({
+      DocumentReference doc = await FirebaseFirestore.instance.collection('rooms').add({
         'id': '',
         'members': sendMessageModel!.members,
         'isGroup': sendMessageModel!.isGroup,
@@ -47,21 +44,22 @@ class DatabaseService {
       });
       await doc.update({'id': doc.id});
 
-      if (firstMessageModel!.isGroup == true) {
+      if (sendMessageModel!.isGroup == true) {
         await doc.update({'id': doc.id});
         await FirebaseFirestore.instance
             .collection('rooms')
             .doc(doc.id)
             .update({
-          'groupProfile': firstMessageModel.profile,
-          'groupName': firstMessageModel.groupName,
-          'createdBy': firstMessageModel.createdBy,
-        }).then((value) =>
-                Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
-                  'isGroup': true,
-                  'groupName': firstMessageModel.groupName!,
-                  'members': firstMessageModel.members,
-                }));
+          'groupProfile': sendMessageModel.profile,
+          'groupName': sendMessageModel.groupName ?? "Give Group Name",
+          'createdBy': sendMessageModel.createdBy,
+        }).then((value) {
+          Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
+            'isGroup': true,
+            'groupName': sendMessageModel.groupName!,
+            'members': sendMessageModel.members,
+          });
+        },);
       }
     }
   }
@@ -78,7 +76,7 @@ class DatabaseService {
 
   //===============================addChatMessage=============================
 
-  void addChatMessage(SendMessageModel sendMessageModel) async {
+  void addChatMessage(sendMessageModel) async {
     logs("Members---${sendMessageModel.members}");
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -90,13 +88,13 @@ class DatabaseService {
 
     MessageModel messageModel = MessageModel(
         messageStatus: false,
-        message: sendMessageModel.message,
+        message: sendMessageModel.message ,
         isSender: true,
         messageTimestamp: DateTime.now().millisecondsSinceEpoch,
         messageType: sendMessageModel.type,
         sender: sendMessageModel.sender,
-      text:  sendMessageModel.text
-    );
+        text: sendMessageModel.text,
+        thumb: sendMessageModel.thumb);
 
     FirebaseFirestore.instance
         .collection('rooms')
@@ -223,6 +221,36 @@ class DatabaseService {
     return await storage.getDownloadURL();
   }
 
+  //======================== upload image thumb ===========================//
+
+  static Future<String> uploadThumb(
+      File url, AttachmentController controller) async {
+    isLoading = true;
+    controller.update();
+    logs("isLoading-----$isLoading");
+    final storage = FirebaseStorage.instance
+        .ref('chat')
+        .child("thumbnails")
+        .child("thumb.png");
+
+    final UploadTask uploadTask = storage.putFile(
+      url,
+      SettableMetadata(contentType: 'IMAGE'), // Specify the content type
+    );
+    uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+      double progress = (snapshot.bytesTransferred / snapshot.totalBytes);
+      downloadPercentage = (progress * 100).round();
+      logs("download ---- > ${progress.toString()}");
+      controller.update();
+    });
+
+    await uploadTask.whenComplete(() {
+      logs('File uploaded successfully');
+    });
+
+    return await storage.getDownloadURL();
+  }
+
 //======================== markMessageAsSeen ===========================//
 
   void markMessagesAsSeen(String chatRoomId, String receiverId) {
@@ -265,6 +293,7 @@ class DatabaseService {
   }
 
   static String videoURL = "";
+
   static Future<String> uploadVideo(File url, controller) async {
     isLoading = true;
     controller.update();
@@ -336,7 +365,6 @@ class DatabaseService {
     return await storage.getDownloadURL();
   }
 
-
   static var rootPath;
 
   static ChatingPageController? controller;
@@ -353,7 +381,8 @@ class DatabaseService {
     final response = await http.get(Uri.parse(pdfURL));
     String? fileName;
     var rootPath;
-    rootPath ??= await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
+    rootPath ??= await ExternalPath.getExternalStoragePublicDirectory(
+        ExternalPath.DIRECTORY_DOWNLOADS);
     var dirPath = "$rootPath/CHATAPP/$folderName";
     logs("dir path -- $dirPath");
     Directory dir = Directory(dirPath);
