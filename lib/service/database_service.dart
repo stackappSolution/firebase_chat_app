@@ -38,11 +38,10 @@ class DatabaseService {
     if (isFirst) {
       addChatMessage(sendMessageModel);
 
-      DocumentReference doc =
-          await FirebaseFirestore.instance.collection('rooms').add({
+      DocumentReference doc = await FirebaseFirestore.instance.collection('rooms').add({
         'id': '',
-        'members': sendMessageModel!.members,
-        'isGroup': sendMessageModel!.isGroup,
+        'members': sendMessageModel.members,
+        'isGroup': sendMessageModel.isGroup,
         'time': DateTime.now().millisecondsSinceEpoch,
       });
       await doc.update({'id': doc.id});
@@ -95,14 +94,23 @@ class DatabaseService {
         messageTimestamp: DateTime.now().millisecondsSinceEpoch,
         messageType: sendMessageModel.type,
         sender: sendMessageModel.sender,
-      text:  sendMessageModel.text
+        text:  sendMessageModel.text,
+      messageId:  sendMessageModel.messageId
+
+
     );
 
-    FirebaseFirestore.instance
+    DocumentReference messageRef = await FirebaseFirestore.instance
         .collection('rooms')
         .doc(querySnapshot.docs.first.id)
         .collection('chats')
         .add(messageModel.toJson());
+    String messageId = messageRef.id;
+    await messageRef.update({'messageid': messageId});
+
+
+
+
   }
 
   //=============================getChats====================================
