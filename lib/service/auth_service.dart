@@ -24,6 +24,7 @@ class AuthService {
   static String verificationID = '';
 
   static final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+  final users = FirebaseFirestore.instance.collection("users");
   bool isOtpSent = false;
   static bool isTimerRunning = false;
   static int countdownSeconds = 30; // Set the countdown duration in seconds
@@ -34,17 +35,15 @@ class AuthService {
     return !isTimerRunning;
   }
 
-  static Future verifyPhoneNumber(
-    countryCode,
-    contact,
-  ) async {
+  static Future verifyPhoneNumber(countryCode,
+      contact,) async {
     signInController = Get.find<SignInController>();
     //verifyOtpController = Get.put(VerifyOtpController());
 
 
     isResend = true;
     logs("isResend  --- $isResend");
-   // verifyOtpController!.update();
+    // verifyOtpController!.update();
 
     logs("entred contact IS------------->   $contact");
 
@@ -90,7 +89,7 @@ class AuthService {
     signInController!.update();
   }
 
-  static Future signInWithOTP(String otp) async {
+  Future signInWithOTP(String otp, String number) async {
     logs("Entered OTP is: $otp");
 
     try {
@@ -100,13 +99,16 @@ class AuthService {
       );
 
       UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(authCredential);
+      await FirebaseAuth.instance.signInWithCredential(authCredential);
 
       if (userCredential.user != null) {
         logs("OTP verified and logged in");
         ToastUtil.successToast("OTP Verified");
+        bool result = await chakIt(number);
+        String pin =await chekPin(number) ?? "";
+        logs('result for user ----> $result');
         // goToProfilePage();
-        Get.to(SetPinScreen());
+        result ? Get.to(EnterPinScreen(pin)) : Get.to(SetPinScreen());
       } else {
         isVerifyLoading = false;
         logs("Incorrect OTP");
@@ -122,7 +124,7 @@ class AuthService {
   static void startTimer() {
     Future.delayed(
       const Duration(milliseconds: 200),
-      () async {
+          () async {
         verifyOtpController = Get.find<VerifyOtpController>();
       },
     );
@@ -139,4 +141,27 @@ class AuthService {
       }
     });
   }
+
+  Future<bool> chakIt(String number) async {
+    QuerySnapshot querySnapshot = await users.where('phone', isEqualTo: number).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      logs('User che');
+      logs('querySnapshot ----------> ${querySnapshot.docs[0]['pin']}');
+      return true;
+    } else {
+      logs('User nathi');
+      return false;
+    }
+  }
+
+  Future<String?> chekPin(String number) async {
+    QuerySnapshot querySnapshot = await users.where('phone', isEqualTo: number).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      logs('querySnapshot ----------> ${querySnapshot.docs[0]['pin']}');
+      return querySnapshot.docs[0]['pin'].toString();
+    }
+    return null;
+  }
+
 }

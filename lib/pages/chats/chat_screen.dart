@@ -15,12 +15,14 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_view_model.dart';
+import 'package:signal/pages/set_pin/set_pin_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 import '../../service/users_service.dart';
-import '../notifications.dart';
+import '../notifications/notifications.dart';
+import '../sign_in_page/sign_in_page.dart';
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -77,7 +79,7 @@ class ChatScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Padding(
+       Padding(
           padding: EdgeInsets.only(bottom: 10.px),
           child: FloatingActionButton(
             heroTag: 'camera',
@@ -87,7 +89,9 @@ class ChatScreen extends StatelessWidget {
             backgroundColor: AppColorConstant.appYellow,
             child: AppImageAsset(
                 image: AppAsset.camera, height: 22.px, width: 22.px),
-            onPressed: () {},
+            onPressed: () {
+              // Get.to(EnterPinScreen());
+            },
           ),
         ),
         Padding(

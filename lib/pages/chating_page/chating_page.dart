@@ -21,20 +21,15 @@ import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/modal/message.dart';
-import 'package:signal/modal/notification_model.dart';
 import 'package:signal/pages/chating_page/chating_page_view_modal.dart';
 import 'package:signal/pages/home/home_screen.dart';
-import 'package:signal/pages/notifications.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
-import 'package:signal/service/notification_api_services.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../controller/chating_page_controller.dart';
 import '../../modal/send_message_model.dart';
-import '../../service/notification_api_services.dart';
-import '../../service/notification_api_services.dart';
 
 // ignore: must_be_immutable
 class ChatingPage extends StatelessWidget {
