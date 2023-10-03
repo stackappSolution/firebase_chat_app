@@ -11,7 +11,6 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
@@ -229,8 +228,18 @@ class ProfileViewModel {
       pin: pin,
       phone: FirebaseAuth.instance.currentUser?.phoneNumber?.trim().replaceAll(' ', '```'),
       about: "Heyy!!! i am using ChatApp!!"
+        id: FirebaseAuth.instance.currentUser?.uid,
+        firstName: firstNameController.text,
+        lastName: lastNameController.text,
+        photoUrl: userProfilePicture ?? '',
+        fcmToken: NotificationService.instance.fcmToken,
 
-    );
+        phone: FirebaseAuth.instance.currentUser?.phoneNumber
+            ?.trim()
+            .replaceAll(' ', '```'),
+        about: "Heyy!!! i am using ChatApp!!",
+        blockedNumbers: []);
+
     bool isUserAdded = await UsersService.instance.addUser(userModel);
     if (isUserAdded) {
       ToastUtil.successToast("Logged successfully");

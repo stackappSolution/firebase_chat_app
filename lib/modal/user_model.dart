@@ -13,8 +13,10 @@ class UserModel {
   String? photoUrl;
   String? about;
   String? pin;
+  List? blockedNumbers;
 
   UserModel({
+    this.pin,
     this.firstName,
     this.lastName,
     this.id,
@@ -22,7 +24,7 @@ class UserModel {
     this.fcmToken,
     this.photoUrl,
     this.about,
-    this.pin,
+    this.blockedNumbers
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -34,6 +36,7 @@ class UserModel {
         photoUrl: json["photoUrl"],
         about: json["about"],
         pin: json["pin"],
+    blockedNumbers: json["blockedNumbers"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,5 +48,6 @@ class UserModel {
         "photoUrl": photoUrl,
         "about": about,
         "pin": pin,
+        "blockedNumbers": blockedNumbers,
       };
 }
