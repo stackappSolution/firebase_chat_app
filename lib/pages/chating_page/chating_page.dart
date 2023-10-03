@@ -74,7 +74,7 @@ class ChatingPage extends StatelessWidget {
             controller = Get.find<ChatingPageController>();
             controller!.durationList = List.filled(100, Duration.zero);
             controller!.positionList = List.filled(100, Duration.zero);
-            controller!.isPlayList = List.filled(100, false.obs);
+            controller!.isPlayingList = List.filled(100, false.obs);
             chatingPageViewModal!.isBlocked = await UsersService.instance
                 .isBlockedByLoggedInUser(
                 chatingPageViewModal!.arguments['number']);
@@ -164,8 +164,6 @@ class ChatingPage extends StatelessWidget {
                         }
                         if (snapshot.hasData) {
                           final data = snapshot.data!.docs;
-                          List<Map<String, dynamic>> message = snapshot.data!
-                              .docs
                           chatingPageViewModal!.updateChatLength(data.length);
                           final message = snapshot.data!.docs
                               .map((doc) => doc.data() as Map<String, dynamic>)
@@ -260,12 +258,6 @@ class ChatingPage extends StatelessWidget {
                       },
                     ),
                   ),
-                  (chatingPageViewModal!.isBlocked)
-                      ? buildBlockView(context)
-                      : (chatingPageViewModal!.blockedNumbers.contains(
-                      chatingPageViewModal!.arguments['number']))
-                      ? buildUnblockView(context, controller)
-                      : buildTextFormField(context, controller),
                   (chatingPageViewModal!.isBlockedByLoggedInUser)
                       ? buildUnblockView(context, controller)
                       : (chatingPageViewModal!.isBlockedByLoggedInUser)
@@ -578,7 +570,7 @@ class ChatingPage extends StatelessWidget {
                     message.sender.toString(),
                     fontSize: 10.px,
                   ),
-                  AppText(
+
           ChatBubble(
             elevation: 0,
             margin: EdgeInsets.only(right: 100.px),
@@ -593,7 +585,7 @@ class ChatingPage extends StatelessWidget {
                     children: [
                       AppText(
                         message.sender.toString(),
-                        fontSize: 10.px,
+                        fontSize: 10.px,),
                       StreamBuilder(
                         stream: controller!.getUserName(message.sender
                             .toString()
@@ -651,8 +643,7 @@ class ChatingPage extends StatelessWidget {
                             .extraLarge
                         ? 25.px
                         : 15.px,
-                  ),
-                ],
+                  ))                ],
               )
                   : AppText(
                 message.message.toString(),
@@ -2319,12 +2310,6 @@ class ChatingPage extends StatelessWidget {
                   : chatingPageViewModal!.arguments['name']
                   .substring(0, 1)
                   .toUpperCase(),
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .primary,
-                  ? chatingPageViewModal!.arguments['groupName'].substring(0, 1).toUpperCase()
-                  : chatingPageViewModal!.arguments['name'].substring(0, 1).toUpperCase(),
               color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               fontWeight: FontWeight.w500,

@@ -67,7 +67,9 @@ class ChatingPageViewModal {
   List isFileDownLoadedList = [];
   List isPlayList = [];
   List thumbnailList = [];
+  List downloadedVideoList = [];
   String selectedEmoji = '';
+  bool isBlocked = false;
 
   TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;
@@ -276,7 +278,7 @@ class ChatingPageViewModal {
 //false
         if (!controller.player.playing) {
             controller!.positionList = List.filled(100, Duration.zero);
-            controller!.isPlayList = List.filled(100, false.obs);
+            controller!.isPlayingList = List.filled(100, false.obs);
             isPlayList[index] = true;
             controller.update();
             controller.player.setUrl(filePath);
@@ -289,10 +291,10 @@ class ChatingPageViewModal {
             controller.player.pause();
             controller.update();
             controller!.positionList = List.filled(100, Duration(seconds: 0));
-            controller!.isPlayList = List.filled(100, false.obs);
+            controller!.isPlayingList = List.filled(100, false.obs);
           } else {
             controller!.positionList = List.filled(100, Duration(seconds: 0));
-            controller!.isPlayList = List.filled(100, false.obs);
+            controller!.isPlayingList = List.filled(100, false.obs);
             controller.update();
             controller.player.setUrl(filePath);
             controller.player.play();
@@ -803,7 +805,7 @@ class ChatingPageViewModal {
     );
   }
 
-  void showEmojiMenu(BuildContext context, Offset position,roomId, messageId) async {
+   showEmojiMenu(BuildContext context, Offset position,roomId, messageId) async {
     final RenderBox overlay =
     Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -860,7 +862,7 @@ class ChatingPageViewModal {
 
   addEmoji(roomId,messageId,emoji) async {
     logs('messageidddddd-->${messageId}');
-    DocumentReference documentReference  =  FirebaseFirestore.instance
+    DocumentReference documentReference = FirebaseFirestore.instance
         .collection('rooms').doc(roomId).collection('chats').doc(messageId);
     logs('documentReference-->$documentReference');
 
@@ -869,7 +871,8 @@ class ChatingPageViewModal {
     };
     logs('data-->$Data');
     await documentReference.update(Data);
-=======
+  }
+
   getChatLength() async {
     final chatStream = await FirebaseFirestore.instance
         .collection('rooms')
@@ -937,11 +940,11 @@ class ChatingPageViewModal {
     snapshots = await DatabaseService.instance.getChatDoc(arguments['members']);
   }
 
-  chatStream() {
-    getChatsStream = DatabaseService.instance.getChatStream(
-      snapshots.docs.first.id,
-    );
-  }
+  // chatStream() {
+  //   getChatsStream = DatabaseService.instance.getChatStream(
+  //     snapshots.docs.first.id,
+  //   );
+  // }
 
   markMessage() {
     DatabaseService.instance
