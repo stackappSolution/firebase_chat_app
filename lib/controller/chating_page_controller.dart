@@ -73,4 +73,8 @@ class ChatingPageController extends GetxController {
   getChatLength(members) {
     return rooms.where('members', isEqualTo: members).count().get();
   }
+
+  getUserName(number) {
+    return users.where('phone', isEqualTo: number).snapshots();
+  }
 }

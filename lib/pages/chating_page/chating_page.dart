@@ -75,8 +75,7 @@ class ChatingPage extends StatelessWidget {
             logs('era--> ${chatingPageViewModal!.parameter}');
             controller = Get.find<ChatingPageController>();
 
-            chatingPageViewModal!.getBlockedList();
-
+           await chatingPageViewModal!.getBlockedList();
             await chatingPageViewModal!.getChatId();
             await chatingPageViewModal!.getChatLength();
 
@@ -504,9 +503,25 @@ class ChatingPage extends StatelessWidget {
             child: (chatingPageViewModal!.arguments['isGroup'])
                 ? Column(
                     children: [
-                      AppText(
-                        message.sender.toString(),
-                        fontSize: 10.px,
+                      StreamBuilder(
+                        stream:
+                            controller!.getUserName(message.sender.toString()),
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return const AppText('');
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const AppText('');
+                          }
+                          final data = snapshot.data!.docs;
+
+                          return AppText(
+                            data.first['firstName'],
+                            fontSize: 10.px,
+                          );
+                        },
                       ),
                       AppText(
                         message.message.toString(),
@@ -1782,8 +1797,6 @@ class ChatingPage extends StatelessWidget {
                   : chatingPageViewModal!.arguments['name']
                       .substring(0, 1)
                       .toUpperCase(),
-                  ? chatingPageViewModal!.arguments['groupName'].substring(0, 1).toUpperCase()
-                  : chatingPageViewModal!.arguments['name'].substring(0, 1).toUpperCase(),
               color: Theme.of(context).colorScheme.primary,
               fontSize: 18.px,
               fontWeight: FontWeight.w500,
@@ -1862,7 +1875,7 @@ class ChatingPage extends StatelessWidget {
     logs(
         "Chatting page members ---- > ${chatingPageViewModal!.arguments['members']}");
 
-   chatingPageViewModal!.notification(message);
+    chatingPageViewModal!.notification(message);
     SendMessageModel sendMessageModel = SendMessageModel(
         type: 'text',
         members: chatingPageViewModal!.arguments['members'],

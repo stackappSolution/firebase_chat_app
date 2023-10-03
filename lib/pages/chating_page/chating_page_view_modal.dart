@@ -878,9 +878,8 @@ class ChatingPageViewModal {
   }
 
   getBlockedList() async {
-    if(arguments["isGroup"]) {
-      isBlocked = await UsersService.instance
-          .isBlockedByLoggedInUser(arguments['number']);
+    if(!arguments["isGroup"]) {
+      isBlocked = await UsersService.instance.isBlockedByLoggedInUser(arguments['number']);
       logs('blocked----------> ${isBlocked}');
     }
   }
@@ -905,4 +904,6 @@ class ChatingPageViewModal {
      snapshots.docs.first.id,
         arguments['number']);
   }
+
+
 }

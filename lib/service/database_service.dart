@@ -25,7 +25,7 @@ class DatabaseService {
 
   //================================addNewMessage============================
 
-  void addNewMessage(sendMessageModel) async {
+   Future addNewMessage(sendMessageModel) async {
     logs("database-----> ${sendMessageModel!.message}");
 
     bool isFirst = await checkFirst(sendMessageModel.members!);
@@ -88,7 +88,7 @@ class DatabaseService {
 
     MessageModel messageModel = MessageModel(
         messageStatus: false,
-        message: sendMessageModel.message,
+        message: sendMessageModel.message ,
         isSender: true,
         messageTimestamp: DateTime.now().millisecondsSinceEpoch,
         messageType: sendMessageModel.type,

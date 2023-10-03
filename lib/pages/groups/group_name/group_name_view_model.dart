@@ -12,9 +12,13 @@ import 'package:signal/app/widget/app_image_assets.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
+import 'package:signal/controller/new_group_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/service/auth_service.dart';
+
+import '../../../modal/first_message_model.dart';
+import '../../../service/database_service.dart';
 
 class GroupNameViewModel {
   GroupNameScreen? groupNameScreen;
@@ -22,12 +26,56 @@ class GroupNameViewModel {
   List membersList = [];
   List<String> mobileNo = [];
   bool isLoading = false;
+  bool isButtonLoading = false;
   String userProfile = "";
   CroppedFile? croppedFile;
+  bool isButtonActive = false;
 
   TextEditingController groupNameController = TextEditingController();
 
   GroupNameViewModel(this.groupNameScreen);
+
+  onChangeName( value, GroupController controller)
+  {
+    if(value.length.toString()!=0)
+      {
+        isButtonActive = true;
+        controller.update();
+      }
+    else
+      {
+        isButtonActive = false;
+        controller.update();
+
+      }
+
+  }
+
+  onCreateGroup(GroupController controller) async {
+    isButtonLoading = true;
+    controller.update();
+    mobileNo
+        .add(AuthService.auth.currentUser!.phoneNumber!);
+    List<dynamic> members =mobileNo.toSet().toList();
+    logs("members -- >>  ${members}");
+
+    SendMessageModel sendMessageModel = SendMessageModel(
+        type: 'text',
+        createdBy: AuthService.auth.currentUser!.phoneNumber,
+        groupName: groupNameController.text,
+        profile: userProfile,
+        members: members,
+        isGroup: true,
+        message: "welcome",
+        text: "New Group",
+      sender: "+919999999999"
+    );
+    await DatabaseService.instance.addNewMessage(sendMessageModel);
+    isButtonLoading = false;
+    controller.update();
+
+  }
+
 
   showDialogs(context, GetxController controller) {
     showDialog(

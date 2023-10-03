@@ -223,7 +223,6 @@ class ProfileViewModel {
         id: FirebaseAuth.instance.currentUser?.uid,
         firstName: firstNameController.text,
         lastName: lastNameController.text,
-        fcmToken: NotificationService.instance.fcmToken,
         photoUrl: userProfilePicture ?? '',
         fcmToken: NotificationService.instance.fcmToken,
 
