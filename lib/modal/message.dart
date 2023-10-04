@@ -27,7 +27,7 @@ class MessageModel {
     this.messageType,
     this.sender,
     this.text,
-    this.emoji,
+    this.emoji ="",
     this.messageId,
   });
 

@@ -17,7 +17,6 @@ import 'package:signal/app/widget/app_button.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/chating_page_controller.dart';
-import 'package:signal/generated/intl/messages_en_US.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/modal/notification_model.dart';
 import 'package:signal/pages/chating_page/chating_page.dart';
@@ -277,13 +276,13 @@ class ChatingPageViewModal {
 
 //false
         if (!controller.player.playing) {
-            controller!.positionList = List.filled(100, Duration.zero);
-            controller!.isPlayingList = List.filled(100, false.obs);
-            isPlayList[index] = true;
-            controller.update();
-            controller.player.setUrl(filePath);
-            controller.player.play();
-            controller.update();
+          controller!.positionList = List.filled(100, Duration.zero);
+          controller!.isPlayingList = List.filled(100, false.obs);
+          isPlayList[index] = true;
+          controller.update();
+          controller.player.setUrl(filePath);
+          controller.player.play();
+          controller.update();
 
           //true
         } else {
@@ -403,11 +402,11 @@ class ChatingPageViewModal {
         .then((value) {
       logs('message---> $value');
       SendMessageModel sendMessageModel = SendMessageModel(
-          type: msgType,
-          members: arguments['members'],
-          message: value,
-          sender: AuthService.auth.currentUser!.phoneNumber!,
-          isGroup: false,
+        type: msgType,
+        members: arguments['members'],
+        message: value,
+        sender: AuthService.auth.currentUser!.phoneNumber!,
+        isGroup: false,
       );
       DatabaseService.instance
           .addNewMessage(sendMessageModel: sendMessageModel);
@@ -805,9 +804,10 @@ class ChatingPageViewModal {
     );
   }
 
-   showEmojiMenu(BuildContext context, Offset position,roomId, messageId) async {
+  showEmojiMenu(
+      BuildContext context, Offset position, roomId, messageId, existEmoji) async {
     final RenderBox overlay =
-    Overlay.of(context).context.findRenderObject() as RenderBox;
+        Overlay.of(context).context.findRenderObject() as RenderBox;
 
     final selectedEmoji = await showMenu<String>(
       elevation: 1,
@@ -817,38 +817,45 @@ class ChatingPageViewModal {
       context: context,
       items: [
         PopupMenuItem(
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              GestureDetector(onTap: () async {
-                addEmoji(roomId,messageId, "🙏");
-                Navigator.pop(context, "🙏");
-              },
+              GestureDetector(
+                  onTap: () async {
+                    addEmoji(roomId, messageId, "🙏", existEmoji,);
+                    Navigator.pop(context, "🙏");
+                  },
                   child: AppText("🙏", fontSize: 22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId,"😂");
-                Navigator.pop(context, "😂");
-              },
+              GestureDetector(
+                  onTap: () {
+                    addEmoji(roomId, messageId, "😂", existEmoji,);
+                    Navigator.pop(context, "😂");
+                  },
                   child: AppText('😂', fontSize: 22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId,"😮");
-                Navigator.pop(context, "😮");
-              },
+              GestureDetector(
+                  onTap: () {
+                    addEmoji(roomId, messageId, "😮", existEmoji,);
+                    Navigator.pop(context, "😮");
+                  },
                   child: AppText('😮', fontSize: 22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId, "❤️");
-                Navigator.pop(context, "❤️");
-
-              },child: AppText('❤️', fontSize:22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId,"👍");
-                Navigator.pop(context, "👍");
-
-              },child: AppText('👍', fontSize: 22.px)),
-              GestureDetector(onTap: () {
-                addEmoji(roomId,messageId, "😥");
-                Navigator.pop(context, "😥");
-
-              },child: AppText('😥', fontSize: 22.px)),
+              GestureDetector(
+                  onTap: () {
+                    addEmoji(roomId, messageId, "❤️", existEmoji,);
+                    Navigator.pop(context, "❤️");
+                  },
+                  child: AppText('❤️', fontSize: 22.px)),
+              GestureDetector(
+                  onTap: () {
+                    addEmoji(roomId, messageId, "👍", existEmoji,);
+                    Navigator.pop(context, "👍");
+                  },
+                  child: AppText('👍', fontSize: 22.px)),
+              GestureDetector(
+                  onTap: () {
+                    addEmoji(roomId, messageId, "😥", existEmoji,);
+                    Navigator.pop(context, "😥");
+                  },
+                  child: AppText('😥', fontSize: 22.px)),
             ],
           ),
         ),
@@ -860,14 +867,20 @@ class ChatingPageViewModal {
     }
   }
 
-  addEmoji(roomId,messageId,emoji) async {
+  addEmoji(roomId, messageId, emoji,existEmoji) async {
     logs('messageidddddd-->${messageId}');
+    logs('roomidddddddd-->${roomId}');
     DocumentReference documentReference = FirebaseFirestore.instance
-        .collection('rooms').doc(roomId).collection('chats').doc(messageId);
+        .collection('rooms')
+        .doc(roomId)
+        .collection('chats')
+        .doc(messageId);
     logs('documentReference-->$documentReference');
-
+    existEmoji = existEmoji + emoji;
+    logs('totttttalEWmoji-->$existEmoji}');
+    //await documentReference.update({'emoji': "$emoji"});
     Map<String, dynamic> Data = {
-      'emoji': emoji,
+      'emoji': existEmoji,
     };
     logs('data-->$Data');
     await documentReference.update(Data);
