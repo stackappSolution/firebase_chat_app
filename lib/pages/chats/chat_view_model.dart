@@ -62,9 +62,12 @@ class ChatViewModel {
     logs("saved contact length----->  ${contacts.length}");
     for (int i = 0; i < contacts.length; i++) {
       Contact contact = contacts[i];
-      logs(contact.displayName.toString());
-      await DataBaseHelper.setContactDetails(
-          contact.displayName, contact.phones!.first.value ?? "");
+      if(contact.phones!.isNotEmpty && contact.displayName!.isNotEmpty)
+      {
+        await DataBaseHelper.setContactDetails(
+            contact.displayName, contact.phones!.first.value ?? "");
+      }
+
     }
     DataBaseHelper.getContactDetails();
     controller!.update();

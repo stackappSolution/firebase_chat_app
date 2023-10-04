@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
@@ -15,17 +16,64 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/service/auth_service.dart';
 
+import '../../../controller/new_group_controller.dart';
+import '../../../modal/send_message_model.dart';
+import '../../../service/database_service.dart';
+
 class GroupNameViewModel {
   GroupNameScreen? groupNameScreen;
   File? selectedImage;
   List membersList = [];
   List<String> mobileNo = [];
   bool isLoading = false;
-  String? userProfile;
-  TextEditingController groupNameController =TextEditingController();
+  bool isButtonLoading = false;
+  String userProfile = "";
+  CroppedFile? croppedFile;
+  bool isButtonActive = false;
+
+  TextEditingController groupNameController = TextEditingController();
 
   GroupNameViewModel(this.groupNameScreen);
+  onChangeName( value, GroupController controller)
+  {
+    if(value.length.toString()!=0)
+    {
+      isButtonActive = true;
+      controller.update();
+    }
+    else
+    {
+      isButtonActive = false;
+      controller.update();
 
+    }
+
+  }
+
+  onCreateGroup(GroupController controller) async {
+    isButtonLoading = true;
+    controller.update();
+    mobileNo
+        .add(AuthService.auth.currentUser!.phoneNumber!);
+    List<dynamic> members =mobileNo.toSet().toList();
+    logs("members -- >>  ${members}");
+
+    SendMessageModel sendMessageModel = SendMessageModel(
+        type: 'text',
+        createdBy: AuthService.auth.currentUser!.phoneNumber,
+        groupName: groupNameController.text,
+        profile: userProfile,
+        members: members,
+        isGroup: true,
+        message: "welcome",
+        text: "New Group",
+        sender: "+919999999999"
+    );
+    await DatabaseService.instance.addNewMessage(sendMessageModel);
+    isButtonLoading = false;
+    controller.update();
+
+  }
   showDialogs(context, GetxController controller) {
     showDialog(
       context: context,
@@ -68,7 +116,7 @@ class GroupNameViewModel {
                           child: AppImageAsset(
                               height: 60.px,
                               color: AppColorConstant.appWhite,
-                              image: AppAsset.camera)),
+                              image: AppAsset.newCamera)),
                       Padding(
                         padding: EdgeInsets.only(top: 9.px),
                         child: AppText(
@@ -106,6 +154,44 @@ class GroupNameViewModel {
             ));
       },
     );
+  }
+
+  void imageCrop( context,  controller) async {
+    if (selectedImage != null) {
+      croppedFile = await ImageCropper().cropImage(
+        sourcePath: selectedImage!.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: AppColorConstant.appWhite,
+              toolbarWidgetColor: AppColorConstant.blackOff,
+              initAspectRatio: CropAspectRatioPreset.original,
+              activeControlsWidgetColor: AppColorConstant.appYellow,
+              backgroundColor: AppColorConstant.appWhite,
+              cropFrameColor: AppColorConstant.appYellow,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Crop Image',
+          ),
+          WebUiSettings(
+            context: context,
+          ),
+        ],
+      );
+      selectedImage = File(croppedFile!.path);
+      uploadImage(selectedImage!, controller);
+
+      controller.update();
+    } else {
+      logs("Please select Image");
+    }
   }
 
   Future<void> pickImageGallery(GetxController controller) async {
