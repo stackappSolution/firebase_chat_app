@@ -16,7 +16,7 @@ class MessageModel {
   String? messageType;
   String? sender;
   String? text;
-  String? emoji;
+  Map<String,dynamic>? emoji;
   String? messageId;
   String? thumb;
 
@@ -28,7 +28,7 @@ class MessageModel {
     this.messageType,
     this.sender,
     this.text,
-    this.emoji ="",
+    this.emoji,
     this.messageId,
     this.thumb,
   });
