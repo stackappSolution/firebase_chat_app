@@ -16,7 +16,7 @@ class MessageModel {
   String? messageType;
   String? sender;
   String? text;
-  String? emoji;
+  Map<String,dynamic>? emoji;
   String? messageId;
   String? thumb;
 
