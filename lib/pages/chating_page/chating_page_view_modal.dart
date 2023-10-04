@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:external_path/external_path.dart';
@@ -233,7 +234,7 @@ class ChatingPageViewModal {
       mainURL, folderName, ChatingPageController controller, int index) async {
     logs(" View FIle Entred");
     final PermissionStatus permissionStatus =
-        await Permission.manageExternalStorage.status;
+    await Permission.manageExternalStorage.status;
     if (!permissionStatus.isGranted) {
       getPermission();
     } else {
@@ -241,12 +242,17 @@ class ChatingPageViewModal {
       downloadAndSavePDF(mainURL, folderName, controller, index);
 
       var dirPath =
-          "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+          "${await ExternalPath.getExternalStoragePublicDirectory(
+          ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
       Directory dir = Directory(dirPath);
       List splitUrl = mainURL.split("/");
 
       final filePath =
-          '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
+          '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last
+          .toString()
+          .length - 10, splitUrl.last
+          .toString()
+          .length)}.${extensionCheck(mainURL)}';
 
       logs("ckeck file  --- > ${filePath}");
 
@@ -262,54 +268,65 @@ class ChatingPageViewModal {
               arguments: {'video': filePath});
         }
 
-        if (extensionCheck(mainURL) == "jpg" ||
-            extensionCheck(mainURL) == "png") {
-          logs("Its Image");
-          Get.toNamed(RouteHelper.getImageViewScreen(),
-              arguments: {'image': filePath, 'name': arguments['name']});
-        }
-        if (extensionCheck(mainURL) == "mp3") {
-          logs("Its audio");
-
-          controller.isPlayingList[index] = !controller.isPlayingList[index];
+        if (!controller.player.playing) {
+          controller!.positionList = List.filled(100, Duration.zero);
+          controller!.isPlayingList = List.filled(100, false.obs);
+          isPlayList[index] = true;
           controller.update();
-          logs(
-              "isPlayList =------------------------> ${controller.isPlayingList.toString()}");
+          controller.player.setUrl(filePath);
+          controller.player.play();
+          controller.update();
+          if (extensionCheck(mainURL) == "jpg" ||
+              extensionCheck(mainURL) == "png") {
+            logs("Its Image");
+            Get.toNamed(RouteHelper.getImageViewScreen(),
+                arguments: {'image': filePath, 'name': arguments['name']});
+          }
+          if (extensionCheck(mainURL) == "mp3") {
+            logs("Its audio");
 
-          if (!controller.player.playing) {
-            logs("Music not playing");
-            controller.isPlayingList = List.filled(100, false);
+            controller.isPlayingList[index] = !controller.isPlayingList[index];
             controller.update();
-            controller.player.setUrl(filePath);
-            controller.player.play();
-            controller.isPlayingList[index] = true;
+            logs(
+                "isPlayList =------------------------> ${controller
+                    .isPlayingList.toString()}");
 
-            controller.update();
-
-            //true
-          } else {
-            if (isPlayList[index]) {
-              controller.player.pause();
-              controller.update();
-              controller!.positionList = List.filled(100, Duration(seconds: 0));
-              controller!.isPlayingList = List.filled(100, false.obs);
-            } else {
-              logs("Music already playing");
-              controller.player.stop();
-              controller.update();
+            if (!controller.player.playing) {
+              logs("Music not playing");
               controller.isPlayingList = List.filled(100, false);
-            }
+              controller.update();
+              controller.player.setUrl(filePath);
+              controller.player.play();
+              controller.isPlayingList[index] = true;
 
-            //  controller!.positionList = List.filled(100, Duration.zero);
-            // controller!.isPlayList = List.filled(100, false.obs);
-            controller.update();
+              controller.update();
+
+              //true
+            } else {
+              if (isPlayList[index]) {
+                controller.player.pause();
+                controller.update();
+                controller!.positionList =
+                    List.filled(100, Duration(seconds: 0));
+                controller!.isPlayingList = List.filled(100, false.obs);
+              } else {
+                logs("Music already playing");
+                controller.player.stop();
+                controller.update();
+                controller.isPlayingList = List.filled(100, false);
+              }
+
+              //  controller!.positionList = List.filled(100, Duration.zero);
+              // controller!.isPlayList = List.filled(100, false.obs);
+              controller.update();
+            }
+          } else {
+            OpenFile.open(filePath);
           }
         } else {
-          OpenFile.open(filePath);
+          logs("Downloading Start");
+          downloadAndSavePDF(mainURL, folderName, controller, index);
         }
-      } else {
-        logs("Downloading Start");
-        downloadAndSavePDF(mainURL, folderName, controller, index);
       }
     }
   }
@@ -907,7 +924,7 @@ class ChatingPageViewModal {
   }
 
   showEmojiMenu(
-      BuildContext context, Offset position, roomId, messageId) async {
+      BuildContext context, Offset position, roomId,messageId, receiverNumber,) async {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -924,37 +941,37 @@ class ChatingPageViewModal {
             children: [
               GestureDetector(
                   onTap: () async {
-                    addEmoji(roomId, messageId, "🙏");
+                    addEmoji(roomId,messageId, receiverNumber, "🙏","🙏",);
                     Navigator.pop(context, "🙏");
                   },
                   child: AppText("🙏", fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId, messageId, "😂");
+                    addEmoji(roomId,messageId, receiverNumber, "😂","😂",);
                     Navigator.pop(context, "😂");
                   },
                   child: AppText('😂', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId, messageId, "😮");
+                    addEmoji(roomId,messageId, receiverNumber, "😮","😮",);
                     Navigator.pop(context, "😮");
                   },
                   child: AppText('😮', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId, messageId, "❤️");
+                    addEmoji(roomId,messageId, receiverNumber, "❤️","❤️",);
                     Navigator.pop(context, "❤️");
                   },
                   child: AppText('❤️', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId, messageId, "👍");
+                    addEmoji(roomId,messageId, receiverNumber, "👍","👍",);
                     Navigator.pop(context, "👍");
                   },
                   child: AppText('👍', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId, messageId, "😥");
+                    addEmoji(roomId,messageId, receiverNumber, "😥","😥",);
                     Navigator.pop(context, "😥");
                   },
                   child: AppText('😥', fontSize: 22.px)),
@@ -969,20 +986,39 @@ class ChatingPageViewModal {
     }
   }
 
-  addEmoji(roomId, messageId, emoji) async {
-    logs('messageidddddd-->${messageId}');
+  addEmoji(roomId, messageId,receiverNumber, receiverEmoji,senderEmoji) async {
+    logs('messageidddddd-->${receiverNumber}');
+    logs('roomidddddddd-->${roomId}');
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('rooms')
         .doc(roomId)
         .collection('chats')
         .doc(messageId);
     logs('documentReference-->$documentReference');
+    logs('totttttalEWmoji-->$emoji}');
+    // await documentReference.update({'emoji': "$emoji"});
 
+    final superMap = <String, Map>{
+      'senderEmoji': {
+        "id":AuthService.auth.currentUser!.phoneNumber,
+        "emoji":senderEmoji
+      },
+      'receiverEmoji': {
+        "id":receiverNumber,
+        "emoji":receiverEmoji
+      },
+
+    };
     Map<String, dynamic> Data = {
-      'emoji': emoji,
+      'emoji': superMap,
     };
     logs('data-->$Data');
     await documentReference.update(Data);
+  }
+
+  emoji(){
+
+
   }
 
   getChatLength() async {
