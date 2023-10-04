@@ -30,7 +30,7 @@ class DataBaseHelper {
         String qry = "INSERT INTO data VALUES(null, '$name', '$contact')";
         await db.rawInsert(qry);
       } else {
-        logs('Contact already exists.');
+        //logs('Contact already exists.');
       }
     } catch (e) {
       logs('Error : $e');
@@ -44,7 +44,6 @@ class DataBaseHelper {
         value.rawQuery(qry).then((value) {
           contactData = value;
         });
-        logs("SQF contacts ---> $contactData");
       });
     } catch (e) {
       logs('Error : $e');

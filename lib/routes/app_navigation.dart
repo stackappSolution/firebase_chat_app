@@ -83,11 +83,12 @@ goToFileView( filePath) {
   },);
 }
 
-goToAttachmentScreen(selectedImage, members, String extension) {
+goToAttachmentScreen({String ? selectedImage, List ? members, String? extension, String? thumbnail}) {
   Get.toNamed(RouteHelper.getAttachmentScreen(), arguments: {
     "image": selectedImage,
     "members": members,
     "extension": extension,
+    "thumbnail": thumbnail,
   },);
 }
 

@@ -9,9 +9,10 @@ class NewGroupViewModel {
   NewGroupScreen? newGroupScreen;
   GroupController? controller;
   List<Contact> items = [];
-  List<bool> selectedItems = [];
   List<Contact> contacts = [];
   List groupMembers = [];
+  List selectedItemsIndex = [];
+  List<bool>selectedItems = List.filled(2000, false);
   List<Contact> filteredContacts = [];
   bool isLoading = true;
   bool isIcon = true;

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/modal/transaction_model.dart';
 
 import '../modal/notification_model.dart';
@@ -123,7 +124,7 @@ class UsersService {
 
   //============================getBlockedUsersList===========================
 
-  Future<List<String>> getBlockedUsers() async {
+  Future getBlockedUsers() async {
     QuerySnapshot querySnapshot = await usersCollection
         .where('phone', isEqualTo: AuthService.auth.currentUser!.phoneNumber!)
         .get();

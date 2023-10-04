@@ -284,9 +284,9 @@ class ChatScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-                  logs("${index} --- ${documents[index]["id"]} ");
 
                   bool isGroup = documents[index]['isGroup'];
+                  logs("is grup  -- ${snapshot.data!.docs.length}");
                   List receiver = documents[index]["members"];
                   receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
                   String receiverNumber =
@@ -478,28 +478,30 @@ class ChatScreen extends StatelessWidget {
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      StreamBuilder(
-                                        stream: controller.getUserName(
-                                            messageData.first["sender"]),
-                                        builder: (context,
-                                            AsyncSnapshot<QuerySnapshot>
-                                                snapshot) {
-                                          if (snapshot.hasError) {
-                                            return const AppText('');
-                                          }
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const AppText('');
-                                          }
-                                          final data = snapshot.data!.docs;
-                                          return AppText(
-                                            "${data.first["firstName"]}",
-                                            color: AppColorConstant.appYellow,
-                                            fontSize: 12.px,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          );
-                                        },
+                                      Container(width: 30.px,
+                                        child: StreamBuilder(
+                                          stream: controller.getUserName(
+                                              messageData.first["sender"]),
+                                          builder: (context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  snapshot) {
+                                            if (snapshot.hasError) {
+                                              return const AppText('');
+                                            }
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const AppText('');
+                                            }
+                                            final data = snapshot.data!.docs;
+                                            return AppText(
+                                              "${data.first["firstName"]}",
+                                              color: AppColorConstant.appYellow,
+                                              fontSize: 12.px,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            );
+                                          },
+                                        ),
                                       ),
                                       AppText(
                                         " | ",
