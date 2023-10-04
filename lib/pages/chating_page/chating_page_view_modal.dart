@@ -5,6 +5,7 @@ import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -23,6 +24,7 @@ import 'package:signal/pages/chating_page/chating_page.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -35,6 +37,7 @@ import '../../service/notification_api_services.dart';
 
 class ChatingPageViewModal {
   ChatingPage? chatingPage;
+  Stream<QuerySnapshot>? getChatsStream;
 
   Color? chatBubbleColor;
   Color? wallpaperColor;
@@ -48,7 +51,6 @@ class ChatingPageViewModal {
   dynamic snapshots;
 
   String? formatedTime;
-  bool isBlockedByLoggedInUser = false;
   bool isBlockedByReceiver = false;
   File? selectedImage;
   File? selectedVideo;
@@ -62,13 +64,12 @@ class ChatingPageViewModal {
   List<String> chats = [];
   File? selectedFile;
 
-  List isFileDownLoadingList = [];
   List isFileDownLoadedList = [];
   List isPlayList = [];
-  List thumbnailList = [];
-  List downloadedVideoList = [];
+
   String selectedEmoji = '';
-  bool isBlocked = false;
+  bool isBlockedByLoggedInUser = false;
+  List<bool> isFileDownLoadingList = <bool>[];
 
   TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;
@@ -187,7 +188,9 @@ class ChatingPageViewModal {
         }
         logs("file Extension ---  > $extension");
         goToAttachmentScreen(
-            selectedFile!.path, arguments['members'], extension);
+            selectedImage: selectedFile!.path,
+            members: arguments['members'],
+            extension: extension);
       }
     } else {
       ToastUtil.messageToast("File not Selected");
@@ -233,46 +236,31 @@ class ChatingPageViewModal {
         await Permission.manageExternalStorage.status;
     if (!permissionStatus.isGranted) {
       getPermission();
-    }
-    logs("downloadAndOpenPDF Entered");
-    downloadAndSavePDF(mainURL, folderName, controller, index);
+    } else {
+      logs("downloadAndOpenPDF Entered");
+      downloadAndSavePDF(mainURL, folderName, controller, index);
 
-    var dirPath =
-        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
-    Directory dir = Directory(dirPath);
-    List splitUrl = mainURL.split("/");
+      var dirPath =
+          "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+      Directory dir = Directory(dirPath);
+      List splitUrl = mainURL.split("/");
 
-    final filePath =
-        '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
+      final filePath =
+          '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
 
-    logs("ckeck file  --- > ${filePath}");
+      logs("ckeck file  --- > ${filePath}");
 
-    if (await File(filePath).exists()) {
-      isFileDownLoadedList[index] = true;
-      controller.update();
-      logs(" The file has already been downloaded, open it.");
-      logs("saved file path  ---- > $filePath");
-
-      if (extensionCheck(mainURL) == "mp4") {
-        logs("Its video");
-
-        Get.toNamed(RouteHelper.getVideoPlayerScreen(),
-            arguments: {'video': filePath});
-      }
-      if (extensionCheck(mainURL) == "jpg" ||
-          extensionCheck(mainURL) == "png") {
-        logs("Its Image");
-        Get.toNamed(RouteHelper.getImageViewScreen(),
-            arguments: {'image': filePath, 'name': arguments['name']});
-      }
-
-      if (extensionCheck(mainURL) == "mp3") {
-        logs("Its audio");
-
-        isPlayList[index] = !isPlayList[index];
+      if (await File(filePath).exists()) {
+        isFileDownLoadedList[index] = true;
         controller.update();
+        logs(" The file has already been downloaded, open it.");
+        logs("saved file path  ---- > $filePath");
 
-        logs(isPlayList.toString());
+        if (extensionCheck(mainURL) == "mp4") {
+          logs("Its video");
+          Get.toNamed(RouteHelper.getVideoPlayerScreen(),
+              arguments: {'video': filePath});
+        }
 
 //false
         if (!controller.player.playing) {
@@ -283,32 +271,55 @@ class ChatingPageViewModal {
           controller.player.setUrl(filePath);
           controller.player.play();
           controller.update();
+        if (extensionCheck(mainURL) == "jpg" ||
+            extensionCheck(mainURL) == "png") {
+          logs("Its Image");
+          Get.toNamed(RouteHelper.getImageViewScreen(),
+              arguments: {'image': filePath, 'name': arguments['name']});
+        }
+        if (extensionCheck(mainURL) == "mp3") {
+          logs("Its audio");
 
-          //true
-        } else {
-          if (isPlayList[index]) {
-            controller.player.pause();
-            controller.update();
-            controller!.positionList = List.filled(100, Duration(seconds: 0));
-            controller!.isPlayingList = List.filled(100, false.obs);
-          } else {
-            controller!.positionList = List.filled(100, Duration(seconds: 0));
-            controller!.isPlayingList = List.filled(100, false.obs);
+          controller.isPlayingList[index] = !controller.isPlayingList[index];
+          controller.update();
+          logs(
+              "isPlayList =------------------------> ${controller.isPlayingList.toString()}");
+
+          if (!controller.player.playing) {
+            logs("Music not playing");
+            controller.isPlayingList = List.filled(100, false);
             controller.update();
             controller.player.setUrl(filePath);
             controller.player.play();
-          }
+            controller.isPlayingList[index] = true;
 
-          //  controller!.positionList = List.filled(100, Duration.zero);
-          // controller!.isPlayList = List.filled(100, false.obs);
-          controller.update();
+            controller.update();
+
+            //true
+          } else {
+            if (isPlayList[index]) {
+              controller.player.pause();
+              controller.update();
+              controller!.positionList = List.filled(100, Duration(seconds: 0));
+              controller!.isPlayingList = List.filled(100, false.obs);
+            } else {
+              logs("Music already playing");
+              controller.player.stop();
+              controller.update();
+              controller.isPlayingList = List.filled(100, false);
+            }
+
+            //  controller!.positionList = List.filled(100, Duration.zero);
+            // controller!.isPlayList = List.filled(100, false.obs);
+            controller.update();
+          }
+        } else {
+          OpenFile.open(filePath);
         }
       } else {
-        OpenFile.open(filePath);
+        logs("Downloading Start");
+        downloadAndSavePDF(mainURL, folderName, controller, index);
       }
-    } else {
-      logs("Downloading Start");
-      downloadAndSavePDF(mainURL, folderName, controller, index);
     }
   }
 
@@ -387,7 +398,10 @@ class ChatingPageViewModal {
         audioFile = File(file.path!);
         // ignore: unrelated_type_equality_checks
         if (await isFileLarge(File(file.path!)) == false) {
-          goToAttachmentScreen(file.path, arguments['members'], "");
+          goToAttachmentScreen(
+              selectedImage: file.path,
+              members: arguments['members'],
+              extension: "");
         }
       } else {}
 
@@ -408,8 +422,7 @@ class ChatingPageViewModal {
         sender: AuthService.auth.currentUser!.phoneNumber!,
         isGroup: false,
       );
-      DatabaseService.instance
-          .addNewMessage(sendMessageModel: sendMessageModel);
+      DatabaseService.instance.addNewMessage(sendMessageModel);
     });
     controller.update();
   }
@@ -424,7 +437,10 @@ class ChatingPageViewModal {
       if (await isFileLarge(File(pickedFile.path)) == false) {
         selectedVideo = (File(pickedFile.path));
 
-        goToAttachmentScreen(selectedVideo!.path, members, "");
+        goToAttachmentScreen(
+          selectedImage: selectedVideo!.path,
+          members: members,
+        );
         logs(selectedVideo.toString());
         controller.update();
       }
@@ -445,10 +461,28 @@ class ChatingPageViewModal {
           message: value,
           sender: AuthService.auth.currentUser!.phoneNumber!,
           isGroup: false);
-      DatabaseService.instance
-          .addNewMessage(sendMessageModel: sendMessageModel);
+      DatabaseService.instance.addNewMessage(sendMessageModel);
     });
     controller.update();
+  }
+
+  Future getVideoThumb(file) async {
+    var dirPath =
+        "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/THUMB";
+
+    Directory dir = Directory(dirPath);
+    if (!await dir.exists()) {
+      dir.create();
+    }
+
+    return await VideoThumbnail.thumbnailFile(
+      video: file,
+      thumbnailPath:
+          "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/THUMB",
+      imageFormat: ImageFormat.PNG,
+      maxHeight: 64,
+      quality: 75,
+    );
   }
 
   //========================= pick images =============================//
@@ -459,8 +493,11 @@ class ChatingPageViewModal {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(selectedImage!.path, members, "");
-      // uploadImage(selectedImage!);
+      goToAttachmentScreen(
+          selectedImage: selectedImage!.path,
+          members: members,
+          thumbnail: await compressFile(
+              File(selectedImage!.path))); // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
     }
@@ -472,8 +509,11 @@ class ChatingPageViewModal {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      goToAttachmentScreen(selectedImage!.path, members, "");
-      // uploadImage(selectedImage!);
+      goToAttachmentScreen(
+          selectedImage: selectedImage!.path,
+          members: members,
+          thumbnail: await compressFile(
+              File(selectedImage!.path))); // uploadImage(selectedImage!);
       logs(selectedImage.toString());
       controller.update();
     }
@@ -511,7 +551,7 @@ class ChatingPageViewModal {
     }
   }
 
-  buildPopupMenu(BuildContext context) {
+  buildPopupMenu(BuildContext context, ChatingPageController controller) {
     return PopupMenuButton(
       offset: const Offset(-10, kToolbarHeight),
       onSelected: (value) {
@@ -680,9 +720,23 @@ class ChatingPageViewModal {
     );
   }
 
-  buildNavigationMenu(BuildContext context) {
+  Future<String> compressFile(File file) async {
+    File compressedFile = await FlutterNativeImage.compressImage(
+      file.path,
+      quality: 1,
+    );
+    return compressedFile.path;
+  }
+
+  buildNavigationMenu(BuildContext context, ChatingPageController controller) {
     return PopupMenuButton(
       onSelected: (value) {
+        isFileDownLoadingList = isFileDownLoadingList.toList();
+        isFileDownLoadingList.add(false);
+        isFileDownLoadedList = isFileDownLoadedList.toList();
+        isFileDownLoadedList.add(false);
+
+        controller.update();
         onSelectItem(value);
       },
       elevation: 0.5,
@@ -729,7 +783,7 @@ class ChatingPageViewModal {
               value: 3,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: (isBlockedByLoggedInUser)
+                children: (!isBlockedByLoggedInUser)
                     ? [
                         AppText(S.of(Get.context!).block),
                         const Icon(Icons.block),
@@ -759,13 +813,14 @@ class ChatingPageViewModal {
       if (isBlockedByLoggedInUser) {
         blockedNumbers.remove(arguments['number']);
         UsersService.instance.unblockUser(arguments['number']);
-        getBlockedList();
+        getBlockedList(controller);
+        controller!.update();
       } else {
         blockedNumbers.add(arguments['number']);
         UsersService.instance.blockUser(blockedNumbers, arguments['number']);
+        getBlockedList(controller);
+        controller!.update();
       }
-
-      controller!.update();
     }
   }
 
@@ -806,6 +861,7 @@ class ChatingPageViewModal {
 
   showEmojiMenu(
       BuildContext context, Offset position, roomId, messageId, existEmoji) async {
+      BuildContext context, Offset position, roomId, messageId) async {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -823,24 +879,28 @@ class ChatingPageViewModal {
               GestureDetector(
                   onTap: () async {
                     addEmoji(roomId, messageId, "🙏", existEmoji,);
+                    addEmoji(roomId, messageId, "🙏");
                     Navigator.pop(context, "🙏");
                   },
                   child: AppText("🙏", fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
                     addEmoji(roomId, messageId, "😂", existEmoji,);
+                    addEmoji(roomId, messageId, "😂");
                     Navigator.pop(context, "😂");
                   },
                   child: AppText('😂', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
                     addEmoji(roomId, messageId, "😮", existEmoji,);
+                    addEmoji(roomId, messageId, "😮");
                     Navigator.pop(context, "😮");
                   },
                   child: AppText('😮', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
                     addEmoji(roomId, messageId, "❤️", existEmoji,);
+                    addEmoji(roomId, messageId, "❤️");
                     Navigator.pop(context, "❤️");
                   },
                   child: AppText('❤️', fontSize: 22.px)),
@@ -897,23 +957,10 @@ class ChatingPageViewModal {
     if (isFileDownLoadingList.isEmpty) {
       isFileDownLoadingList = List.filled(chatLength, false);
       isFileDownLoadedList = List.filled(chatLength, false);
-      downloadedVideoList = List.filled(chatLength, false);
       controller!.durationList = List.filled(chatLength, Duration.zero);
       controller!.positionList = List.filled(chatLength, Duration.zero);
       controller!.isPlayingList = List.filled(chatLength, false);
       controller!.isPlayingList = List.filled(chatLength, false);
-    } else {
-      // isFileDownLoadingList = isFileDownLoadingList.toList();
-      // isFileDownLoadingList.add(false);
-      // isFileDownLoadedList = isFileDownLoadedList.toList();
-      // isFileDownLoadedList.add(false);
-
-      // controller!.durationList = controller!.durationList.toList();
-      // controller!.durationList.add(Duration.zero);
-      // controller!.positionList = controller!.positionList.toList();
-      // controller!.positionList.add(Duration.zero);
-      // controller!.isPlayingList = controller!.isPlayingList.toList();
-      // controller!.isPlayingList.add(false);
     }
   }
 
@@ -926,8 +973,6 @@ class ChatingPageViewModal {
         isFileDownLoadedList = isFileDownLoadedList.toList();
         isFileDownLoadedList.add(false);
 
-        downloadedVideoList = downloadedVideoList.toList();
-        downloadedVideoList.add(false);
         controller!.durationList = controller!.durationList.toList();
         controller!.durationList.add(Duration.zero);
         controller!.positionList = controller!.positionList.toList();
@@ -938,14 +983,11 @@ class ChatingPageViewModal {
     }
   }
 
-  getBlockedList() async {
+  getBlockedList(ChatingPageController? controller) async {
     if (!arguments["isGroup"]) {
-      isBlockedByLoggedInUser = await UsersService.instance
-          .isBlockedByLoggedInUser(arguments['number']);
-      isBlockedByReceiver =
-          await UsersService.instance.isBlockedByReceiver(arguments['number']);
-      logs('isBlockedByLoggedInUser----------> $isBlockedByLoggedInUser');
-      logs('isBlockedByReceiver----------> $isBlockedByReceiver');
+      isBlockedByLoggedInUser = await UsersService.instance.isBlockedByLoggedInUser(arguments['number']);
+      controller!.update();
+      logs('blocked ----------> $isBlockedByLoggedInUser');
     }
   }
 
@@ -953,11 +995,11 @@ class ChatingPageViewModal {
     snapshots = await DatabaseService.instance.getChatDoc(arguments['members']);
   }
 
-  // chatStream() {
-  //   getChatsStream = DatabaseService.instance.getChatStream(
-  //     snapshots.docs.first.id,
-  //   );
-  // }
+  chatStream() {
+    getChatsStream = DatabaseService.instance.getChatStream(
+      snapshots.docs.first.id,
+    );
+  }
 
   markMessage() {
     DatabaseService.instance
