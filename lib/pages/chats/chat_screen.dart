@@ -284,7 +284,6 @@ class ChatScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-
                   bool isGroup = documents[index]['isGroup'];
                   logs("is grup  -- ${snapshot.data!.docs.length}");
                   List receiver = documents[index]["members"];
@@ -478,7 +477,8 @@ class ChatScreen extends StatelessWidget {
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Container(width: 30.px,
+                                      Container(
+                                        width: 30.px,
                                         child: StreamBuilder(
                                           stream: controller.getUserName(
                                               messageData.first["sender"]),

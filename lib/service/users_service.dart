@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/modal/transaction_model.dart';
@@ -104,9 +105,10 @@ class UsersService {
   //==========================checkBlockedUser=================================
 
   Future<bool> isBlockedByReceiver(String receiverNumber) async {
-    final snapshot = await usersCollection.where('phone', isEqualTo: receiverNumber).get();
+    final snapshot = await usersCollection.where('phone', isEqualTo: receiverNumber.trim().removeAllWhitespace).get();
     final docSnapshot = await usersCollection.doc(snapshot.docs.first.id).get();
      List isBlockedByReceiver = docSnapshot.data()!['blockedNumbers'];
+     logs("Blocked Nums --- > ${isBlockedByReceiver}");
     return isBlockedByReceiver.contains(AuthService.auth.currentUser!.phoneNumber);
   }
 

@@ -189,8 +189,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                setStringValue(
-                    chatColor, const Color(0xFFf69533).value.toRadixString(16));
+                setStringValue(chatColor, const Color(0xFFf69533).value.toRadixString(16));
                 setStringValue(wallpaper, '');
                 Get.back();
                 Get.off(ChatColorWallpaperScreen());

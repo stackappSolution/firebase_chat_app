@@ -719,6 +719,62 @@ class ChatingPageViewModal {
     return compressedFile.path;
   }
 
+  buildGroupNavigationMenu(BuildContext context, ChatingPageController controller) {
+    return PopupMenuButton(
+      onSelected: (value) {
+        isFileDownLoadingList = isFileDownLoadingList.toList();
+        isFileDownLoadingList.add(false);
+        isFileDownLoadedList = isFileDownLoadedList.toList();
+        isFileDownLoadedList.add(false);
+
+        controller.update();
+        onSelectItem(value);
+      },
+      elevation: 0.5,
+      position: PopupMenuPosition.under,
+      color: AppColorConstant.appLightGrey,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
+      icon: Padding(
+        padding: EdgeInsets.all(10.px),
+        child: AppImageAsset(
+          image: AppAsset.popup,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+              value: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).addContact),
+                  const Icon(Icons.add)
+                ],
+              )),
+          PopupMenuItem(
+              value: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).viewContact),
+                  const Icon(Icons.remove_red_eye_outlined),
+                ],
+              )),
+          PopupMenuItem(
+              value: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(S.of(Get.context!).files),
+                  const Icon(Icons.file_copy_outlined),
+                ],
+              )),
+        ];
+      },
+    );
+  }
+
   buildNavigationMenu(BuildContext context, ChatingPageController controller) {
     return PopupMenuButton(
       onSelected: (value) {
@@ -770,7 +826,7 @@ class ChatingPageViewModal {
                   const Icon(Icons.file_copy_outlined),
                 ],
               )),
-          PopupMenuItem(
+         PopupMenuItem(
               value: 3,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -6,15 +6,18 @@ import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../app/app/utills/app_utills.dart';
+
 class ChatProfileViewModel{
 
 
   ChatProfileScreen? chatProfileScreen;
   ChatProfileController? controller;
-
   Map<String,dynamic> arguments= {};
   List<String> blockedNumbers=[];
   List<dynamic> addBlockNumbers = [];
+  bool isBlockedByLoggedUser = false;
+  List totalMembers = [];
   ChatProfileViewModel(this.chatProfileScreen){
     Future.delayed(const Duration(milliseconds: 1),() {
       controller=Get.find<ChatProfileController>();
@@ -29,6 +32,13 @@ class ChatProfileViewModel{
     } else {
       throw 'Could not launch $url';
     }
+  }
+  totalMember(String numbers)
+  {
+    totalMembers = numbers.split("+");
+    totalMembers.removeAt(0);
+    logs("members list --- >  ${totalMembers}");
+
   }
 
   mainTap(index) {

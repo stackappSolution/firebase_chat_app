@@ -2125,6 +2125,7 @@ class ChatingPage extends StatelessWidget {
                 'isGroup': chatingPageViewModal!.arguments['isGroup'],
                 'members': chatingPageViewModal!.arguments['members'],
                 'about': chatingPageViewModal!.arguments['about'],
+                'groupName': chatingPageViewModal!.arguments['groupName'],
               },
             );
           }
@@ -2156,7 +2157,11 @@ class ChatingPage extends StatelessWidget {
                 size: 26.px,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              chatingPageViewModal!.buildNavigationMenu(context, controller),
+              if (chatingPageViewModal!.arguments["isGroup"])
+                chatingPageViewModal!
+                    .buildGroupNavigationMenu(context, controller)
+              else
+                chatingPageViewModal!.buildNavigationMenu(context, controller)
             ],
           ),
         ),
