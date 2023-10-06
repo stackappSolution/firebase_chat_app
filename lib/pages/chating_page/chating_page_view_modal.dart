@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:external_path/external_path.dart';
@@ -234,7 +233,7 @@ class ChatingPageViewModal {
       mainURL, folderName, ChatingPageController controller, int index) async {
     logs(" View FIle Entred");
     final PermissionStatus permissionStatus =
-    await Permission.manageExternalStorage.status;
+        await Permission.manageExternalStorage.status;
     if (!permissionStatus.isGranted) {
       getPermission();
     } else {
@@ -242,19 +241,14 @@ class ChatingPageViewModal {
       downloadAndSavePDF(mainURL, folderName, controller, index);
 
       var dirPath =
-          "${await ExternalPath.getExternalStoragePublicDirectory(
-          ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+          "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
       Directory dir = Directory(dirPath);
       List splitUrl = mainURL.split("/");
 
       final filePath =
-          '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last
-          .toString()
-          .length - 10, splitUrl.last
-          .toString()
-          .length)}.${extensionCheck(mainURL)}';
+          '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
 
-      logs("ckeck file  --- > ${filePath}");
+      logs("ckeck file  --- > $filePath");
 
       if (await File(filePath).exists()) {
         isFileDownLoadedList[index] = true;
@@ -288,8 +282,7 @@ class ChatingPageViewModal {
             controller.isPlayingList[index] = !controller.isPlayingList[index];
             controller.update();
             logs(
-                "isPlayList =------------------------> ${controller
-                    .isPlayingList.toString()}");
+                "isPlayList =------------------------> ${controller.isPlayingList.toString()}");
 
             if (!controller.player.playing) {
               logs("Music not playing");
@@ -307,7 +300,7 @@ class ChatingPageViewModal {
                 controller.player.pause();
                 controller.update();
                 controller!.positionList =
-                    List.filled(100, Duration(seconds: 0));
+                    List.filled(100, const Duration(seconds: 0));
                 controller!.isPlayingList = List.filled(100, false.obs);
               } else {
                 logs("Music already playing");
@@ -868,15 +861,19 @@ class ChatingPageViewModal {
   }
 
   showEmojiMenu(
-      BuildContext context, Offset position, roomId,messageId, receiverNumber,) async {
+    BuildContext context,
+    Offset position,
+    roomId,
+    messageId,
+    receiverNumber,
+  ) async {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
-
     final selectedEmoji = await showMenu<String>(
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.px)),
       position: RelativeRect.fromRect(position & const Size(0, 0),
-          overlay.localToGlobal(Offset(-200, 100)) & overlay.size),
+          overlay.localToGlobal(const Offset(-200, 100)) & overlay.size),
       context: context,
       items: [
         PopupMenuItem(
@@ -885,37 +882,73 @@ class ChatingPageViewModal {
             children: [
               GestureDetector(
                   onTap: () async {
-                    addEmoji(roomId,messageId, receiverNumber, "🙏","🙏",);
+                    addEmoji(
+                      roomId,
+                      messageId,
+                      receiverNumber,
+                      "🙏",
+                      "🙏",
+                    );
                     Navigator.pop(context, "🙏");
                   },
                   child: AppText("🙏", fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId,messageId, receiverNumber, "😂","😂",);
+                    addEmoji(
+                      roomId,
+                      messageId,
+                      receiverNumber,
+                      "😂",
+                      "😂",
+                    );
                     Navigator.pop(context, "😂");
                   },
                   child: AppText('😂', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId,messageId, receiverNumber, "😮","😮",);
+                    addEmoji(
+                      roomId,
+                      messageId,
+                      receiverNumber,
+                      "😮",
+                      "😮",
+                    );
                     Navigator.pop(context, "😮");
                   },
                   child: AppText('😮', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId,messageId, receiverNumber, "❤️","❤️",);
+                    addEmoji(
+                      roomId,
+                      messageId,
+                      receiverNumber,
+                      "❤️",
+                      "❤️",
+                    );
                     Navigator.pop(context, "❤️");
                   },
                   child: AppText('❤️', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId,messageId, receiverNumber, "👍","👍",);
+                    addEmoji(
+                      roomId,
+                      messageId,
+                      receiverNumber,
+                      "👍",
+                      "👍",
+                    );
                     Navigator.pop(context, "👍");
                   },
                   child: AppText('👍', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
-                    addEmoji(roomId,messageId, receiverNumber, "😥","😥",);
+                    addEmoji(
+                      roomId,
+                      messageId,
+                      receiverNumber,
+                      "😥",
+                      "😥",
+                    );
                     Navigator.pop(context, "😥");
                   },
                   child: AppText('😥', fontSize: 22.px)),
@@ -930,40 +963,170 @@ class ChatingPageViewModal {
     }
   }
 
-  addEmoji(roomId, messageId,receiverNumber, receiverEmoji,senderEmoji) async {
-    logs('messageidddddd-->${receiverNumber}');
-    logs('roomidddddddd-->${roomId}');
+  Future<void> addEmoji(
+    roomId,
+    messageId,
+    receiverNumber,
+    receiverEmoji,
+    senderEmoji,
+  ) async {
+    logs('messageidddddd-->$messageId');
+    logs('roomidddddddd-->$roomId');
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('rooms')
         .doc(roomId)
         .collection('chats')
         .doc(messageId);
     logs('documentReference-->$documentReference');
-    logs('totttttalEWmoji-->$emoji}');
-    // await documentReference.update({'emoji': "$emoji"});
 
-    final superMap = <String, Map>{
-      'senderEmoji': {
-        "id":AuthService.auth.currentUser!.phoneNumber,
-        "emoji":senderEmoji
-      },
-      'receiverEmoji': {
-        "id":receiverNumber,
-        "emoji":receiverEmoji
-      },
+    DocumentSnapshot documentSnapshot = await documentReference.get();
+    Map<String, dynamic> currentData =
+        documentSnapshot.data() as Map<String, dynamic>;
 
-    };
-    Map<String, dynamic> Data = {
-      'emoji': superMap,
-    };
-    logs('data-->$Data');
-    await documentReference.update(Data);
+    Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+    logs('receiver bhdbhdb-->$receiverNumber');
+
+    if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+      emojiData['receiverEmoji'] = {
+        "id": receiverNumber,
+        "emoji": receiverEmoji
+      };
+    } else {
+      emojiData['senderEmoji'] = {
+        "id": AuthService.auth.currentUser!.phoneNumber,
+        "emoji": senderEmoji
+      };
+    }
+
+    currentData['emoji'] = emojiData;
+    logs('emojiiiiiuppdate-->$currentData');
+    await documentReference.set(currentData);
   }
 
-  emoji(){
+  // Future<void>deleteEmoji(roomId, messageId, receiverNumber, receiverEmoji, senderEmoji) async {
+  //   DocumentReference documentReference = FirebaseFirestore.instance
+  //       .collection('rooms')
+  //       .doc(roomId)
+  //       .collection('chats')
+  //       .doc(messageId);
+  //   logs('documentReference-->$documentReference');
+  //   DocumentSnapshot documentSnapshot = await documentReference.get();
+  //   Map<String, dynamic> currentData =
+  //   documentSnapshot.data() as Map<String, dynamic>;
+  //   logs('messageidddddd-->$messageId');
+  //   logs('roomidddddddd-->$roomId');
+  //
+  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+  //   logs('receiver bhdbhdb-->$receiverNumber');
+  //
+  //   if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+  //     emojiData['receiverEmoji'] = {
+  //       "id": receiverNumber,
+  //       "emoji": receiverEmoji
+  //     };
+  //   } else {
+  //     emojiData['senderEmoji'] = {
+  //       "id": AuthService.auth.currentUser!.phoneNumber,
+  //       "emoji": senderEmoji
+  //     };
+  //   }
+  //   currentData['emoji'] = emojiData;
+  //   logs('emojiiiiiuppdate-->$currentData');
+  //   if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+  //     if (emojiData.containsKey('receiverEmoji')) {
+  //       emojiData.remove('receiverEmoji');
+  //     }
+  //   } else {
+  //     if (emojiData.containsKey('senderEmoji')) {
+  //       emojiData.remove('senderEmoji');
+  //     }
+  //   }
+  // }
+  Future<void> deleteEmoji(
+      roomId,
+      messageId,
+      receiverNumber,
+      receiverEmoji,
+      senderEmoji,
+      ) async {
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(roomId)
+        .collection('chats')
+        .doc(messageId);
 
+    DocumentSnapshot documentSnapshot = await documentReference.get();
+    Map<String, dynamic> currentData =
+    documentSnapshot.data() as Map<String, dynamic>;
 
+    Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+
+    if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+      if (emojiData.containsKey('receiverEmoji')) {
+        emojiData.remove('receiverEmoji');
+      }
+    } else {
+      if (emojiData.containsKey('senderEmoji')) {
+        emojiData.remove('senderEmoji');
+      }
+    }
+
+    currentData['emoji'] = emojiData;
+
+    await documentReference.set(currentData);
+
+    logs('currrrrrrrentDaata-->$currentData');
   }
+
+
+
+
+  // Future<void> addEmoji(
+  //     roomId, messageId, receiverNumber, receiverEmoji, senderEmoji,) async {
+  //   logs('messageidddddd-->$messageId');
+  //   logs('roomidddddddd-->$roomId');
+  //   DocumentReference documentReference = FirebaseFirestore.instance
+  //       .collection('rooms')
+  //       .doc(roomId)
+  //       .collection('chats')
+  //       .doc(messageId);
+  //   logs('documentReference-->$documentReference');
+  //
+  //   // Retrieve the current document data
+  //   DocumentSnapshot documentSnapshot = await documentReference.get();
+  //   Map<String, dynamic> currentData = documentSnapshot.data() as Map<String, dynamic>;
+  //
+  //   // Create emoji data or delete it
+  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+  //
+  //   if (deleteEmoji) {
+  //     // If deleteEmoji is true, remove the emoji data
+  //     if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+  //       emojiData.remove('receiverEmoji');
+  //     } else {
+  //       emojiData.remove('senderEmoji');
+  //     }
+  //   } else {
+  //     // Otherwise, add or update the emoji data
+  //     if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+  //       emojiData['receiverEmoji'] = {"id": receiverNumber, "emoji": receiverEmoji};
+  //     } else {
+  //       emojiData['senderEmoji'] = {
+  //         "id": AuthService.auth.currentUser!.phoneNumber,
+  //         "emoji": senderEmoji
+  //       };
+  //     }
+  //   }
+  //
+  //   // Update the emoji data within the current data
+  //   currentData['emoji'] = emojiData;
+  //   logs('emojiiiiiuppdate-->$currentData');
+  //
+  //   // Update the document with the combined data
+  //   await documentReference.set(currentData);
+  //   await currentData.remove('senderEmoji');
+  //
+  // }
 
   getChatLength() async {
     final chatStream = await FirebaseFirestore.instance
@@ -1004,7 +1167,8 @@ class ChatingPageViewModal {
 
   getBlockedList(ChatingPageController? controller) async {
     if (!arguments["isGroup"]) {
-      isBlockedByLoggedInUser = await UsersService.instance.isBlockedByLoggedInUser(arguments['number']);
+      isBlockedByLoggedInUser = await UsersService.instance
+          .isBlockedByLoggedInUser(arguments['number']);
       controller!.update();
       logs('blocked ----------> $isBlockedByLoggedInUser');
     }
