@@ -52,19 +52,34 @@ class NotificationsScreen extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              AppText(
-                                "${notificationsViewModel!.notification!.senderName}",
-                                color: AppColorConstant.appYellow,
-                                fontWeight: FontWeight.w500,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              AppText(
-                                " was sent you message ''${notificationsViewModel!.notification!.message}''",
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text:"${notificationsViewModel!.notification!.senderName}",
+                                  style: const TextStyle(
+                                    color: AppColorConstant.appYellow,
+                                    fontWeight: FontWeight.w500,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text: " sent you a message '",
+                                  style: TextStyle(
+                                    color: AppColorConstant.appBlack,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:"${notificationsViewModel!.notification!.message} '",
+                                  style: const TextStyle(
+                                    color: AppColorConstant.appBlack,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Align(
                             alignment: Alignment.bottomRight,

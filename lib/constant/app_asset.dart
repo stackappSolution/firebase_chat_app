@@ -3,6 +3,7 @@ class AppAsset {
 
   static const String imagePath = 'assets/images/';
   static const String iconPath = 'assets/icons/';
+  static const String animationsPath = 'assets/lottie/';
   static const String defaultFont2 = 'poppins';
 
   //     ======================= Sounds =======================     //
@@ -12,6 +13,8 @@ class AppAsset {
 
   //     ======================= Animations =======================     //
   /// static const String confirmationTickAnimation = '${animationsPath}confirmed_tick.json';
+  static const String microphone = '${animationsPath}microphone.json';
+  static const String recoding = '${animationsPath}recoding1.json';
 
   //     ======================= Images =======================     //
   static const String profile = '${imagePath}profile.png';

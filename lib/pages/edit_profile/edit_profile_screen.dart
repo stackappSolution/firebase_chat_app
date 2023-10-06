@@ -64,14 +64,14 @@ class EditProfileScreen extends StatelessWidget {
                             ? CircleAvatar(
                                 maxRadius: 40.px,
                                 backgroundColor:
-                                    AppColorConstant.appYellow.withOpacity(0.2),
+                                    AppColorConstant.appYellow.withOpacity(0.8),
                                 child: AppText(
                                     data[0]['firstName']
                                         .substring(0, 1)
                                         .toString()
                                         .toUpperCase(),
-                                    fontSize: 25.px,
-                                    color: primaryTheme),
+                                    fontSize: 35.px,
+                                    color: AppColorConstant.appWhite),
                               )
                             : CircleAvatar(
                                 maxRadius: 40.px,
@@ -84,11 +84,11 @@ class EditProfileScreen extends StatelessWidget {
                           Get.to(AddPhotoScreen());
                         },
                         child: Container(
-                          width: 100.px,
-                          height: 33.px,
+                          width: 97.px,
+                          height: 29.px,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: AppColorConstant.yellowLight,
+                            color: AppColorConstant.appYellow.withOpacity(0.8),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30.px)),
                           ),
@@ -96,7 +96,7 @@ class EditProfileScreen extends StatelessWidget {
                             S.of(context).editPhoto,
                             fontSize: 12.px,
                             fontWeight: FontWeight.bold,
-                            color: primaryTheme,
+                            color: AppColorConstant.appWhite,
                           ),
                         ),
                       ),
@@ -140,12 +140,15 @@ class EditProfileScreen extends StatelessWidget {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 20.px, vertical: 27),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppText(S.of(context).about),
-                          data[0]['about'] != ''? AppText(data[0]['about'] ,
-                              color: secondaryTheme, fontSize: 14.px):AppText( 'I am using ChatApp..!!!',
-                              color: secondaryTheme, fontSize: 14.px),
+                          AppText(S.of(context).about, color: primaryTheme),
+                          data[0]['about'] != ''
+                              ? AppText(data[0]['about'],
+                                  color: secondaryTheme, fontSize: 14.px)
+                              : AppText('I am using ChatApp..!!!',
+                                  color: secondaryTheme, fontSize: 14.px),
                         ],
                       ),
                     )

@@ -6,9 +6,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/pages/set_pin/set_pin_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
@@ -284,105 +286,95 @@ class EnterPinScreen extends StatelessWidget {
           return SafeArea(
             child: Scaffold(
               backgroundColor: Theme.of(context).colorScheme.background,
-              body: Padding(
-                padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AppText(
-                        'Enter pin',
-                        fontSize: 27.px,
-                        color: primaryTheme,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 10.px),
-                        child: AppText(
-                          S.of(context).pinCanHelp,
-                          color: secondaryTheme,
-                          fontSize: 13.px,
+              body: Stack(
+                children: [Padding(
+                  padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppText(
+                          'Enter pin',
+                          fontSize: 27.px,
+                          color: primaryTheme,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
-                        child: TextField(
-                          style:
-                          const TextStyle(color: AppColorConstant.appBlack),
-                          controller: enterPinViewModel!.pinController,
-                          keyboardType: enterPinViewModel!.changeKeyBoard
-                              ? TextInputType.text
-                              : TextInputType.number,
-                          textAlign: TextAlign.center,
-                          focusNode: enterPinViewModel!.focusNode,
-                          autofocus: true,
-                          obscureText: true,
-                          inputFormatters: (!enterPinViewModel!.changeKeyBoard)
-                              ? [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9]')),
-                          ]
-                              : [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-zA-Z0-9]')),
-                          ],
-                          decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: AppColorConstant.yellowLight,
-                              border: UnderlineInputBorder()),
-                          onChanged: (value) {
-                            enterPinViewModel!.onPinChanged(value, controller);
-                          },
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: (!enterPinViewModel!.changeKeyBoard)
-                            ? AppText(S.of(context).pinMustBeChar,
-                          color: secondaryTheme,
-                          fontSize: 12.px,
-                        )
-                            : AppText(S.of(context).pinMustBeChar,
-                          color: secondaryTheme,
-                          fontSize: 12.px,
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 60.px),
-                        child: AppElevatedButton(
-                          onPressed: enterPinViewModel!.isButtonActive
-                              ? () {
-                            FocusScope.of(context).nextFocus();
-                            logs('Enter PIN ------> ${enterPinViewModel!.pinController.text}');
-                            if (pin == enterPinViewModel!.pinController.text) {
-                              ToastUtil.successToast("Pin Verify");
-                              Get.to(goToHomeScreen());
-                            } else {
-                              ToastUtil.warningToast("Pin Wrong");
-
-                            }
-                            enterPinViewModel!.isButtonActive = false;
-                            enterPinViewModel!.pinController.clear();
-                            logs("next tapped");
-                            controller.update();
-                          }
-                              : null,
-                          buttonColor: enterPinViewModel!.isButtonActive
-                              ? AppColorConstant.appYellow
-                              : Theme.of(context).colorScheme.secondary,
-                          buttonHeight: 50.px,
-                          isBorderShape: true,
-                          widget: AppText(
-                            S.of(context).next,
-                            fontSize: 18.px,
-                            color: AppColorConstant.appWhite,
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.px),
+                          child: AppText(
+                            S.of(context).pinCanHelp,
+                            color: secondaryTheme,
+                            fontSize: 13.px,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15.px,
-                      )
-                    ]),
+                        Padding(
+                          padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
+                          child: TextField(
+                            style:
+                            const TextStyle(color: AppColorConstant.appBlack),
+                            controller: enterPinViewModel!.pinController,
+                            keyboardType: enterPinViewModel!.changeKeyBoard
+                                ? TextInputType.text
+                                : TextInputType.number,
+                            textAlign: TextAlign.center,
+                            focusNode: enterPinViewModel!.focusNode,
+                            autofocus: true,
+                            obscureText: true,
+                            inputFormatters: (!enterPinViewModel!.changeKeyBoard)
+                                ? [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[0-9]')),
+                            ]
+                                : [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z0-9]')),
+                            ],
+                            decoration: const InputDecoration(
+                                filled: true,
+                                fillColor: AppColorConstant.yellowLight,
+                                border: UnderlineInputBorder()),
+                            onChanged: (value) {
+                              enterPinViewModel!.onPinChanged(value, controller);
+                            },
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: (!enterPinViewModel!.changeKeyBoard)
+                              ? AppText(S.of(context).pinMustBeChar,
+                            color: secondaryTheme,
+                            fontSize: 12.px,
+                          )
+                              : AppText(S.of(context).pinMustBeChar,
+                            color: secondaryTheme,
+                            fontSize: 12.px,
+                          ),
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 60.px),
+                          child: AppElevatedButton(
+                            onPressed: enterPinViewModel!.isButtonActive
+                                ? () {
+                              enterPinViewModel!.rightPin(context, controller, pin);
+                            }
+                                : null,
+                            buttonColor: enterPinViewModel!.isButtonActive
+                                ? AppColorConstant.appYellow
+                                : Theme.of(context).colorScheme.secondary,
+                            buttonHeight: 50.px,
+                            isBorderShape: true,
+                            widget: AppText(
+                              S.of(context).next,
+                              fontSize: 18.px,
+                              color: AppColorConstant.appWhite,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15.px,
+                        )
+                      ]),
+                ),if(enterPinViewModel!.isLoading) AppLoader()],
               ),
             ),
           );

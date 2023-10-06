@@ -38,11 +38,13 @@ class EditProfileAboutScreen extends StatelessWidget {
   }
 
   getBody(EditProfileAboutController controller, context) {
-    return Padding(
-      padding: EdgeInsets.all(15.px),
-      child: Stack(
-        children: [
-          Column(
+    Color primaryTheme = Theme.of(context).colorScheme.primary;
+    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
+    return Stack(
+      children: [
+        Padding(
+          padding:  EdgeInsets.all(15.px),
+          child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.only(top: 15.px),
@@ -64,8 +66,9 @@ class EditProfileAboutScreen extends StatelessWidget {
                             autofocus: false,
                             controller: editProfileAboutScreenViewModel!
                                 .captionController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               hintText: 'Write a few words about yourself...',
+                              hintStyle: TextStyle(color: secondaryTheme),
                             ),
                           ),
                         ),
@@ -106,7 +109,7 @@ class EditProfileAboutScreen extends StatelessWidget {
                           controller.update();
                         },
                         child: AppText(
-                            editProfileAboutScreenViewModel!.caption[index],
+                            editProfileAboutScreenViewModel!.caption[index],color: primaryTheme,
                             fontWeight: FontWeight.w100),
                       ),
                     );
@@ -128,16 +131,18 @@ class EditProfileAboutScreen extends StatelessWidget {
               ),
             ],
           ),
-          if (editProfileAboutScreenViewModel!.isLoading)  AppLoader()
-        ],
-      ),
+        ),
+        if (editProfileAboutScreenViewModel!.isLoading)  AppLoader()
+      ],
     );
   }
 
   getAppBar(context) {
+    Color primaryTheme = Theme.of(context).colorScheme.primary;
+    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
     return AppAppBar(
-      leadingWidth: 50.px,
-      title: AppText('About', fontSize: 19.px),
+      leadingWidth: 50.px,backgroundColor: primaryTheme,
+      title: AppText('About', fontSize: 19.px,color: primaryTheme),
     );
   }
 }
