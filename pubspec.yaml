@@ -42,6 +42,7 @@ dependencies:
   #image Picker & cropper :
   image_picker: ^1.0.2
   image_cropper: ^5.0.0
+  lottie: ^2.6.0
 
   #slidable massge :
   flutter_slidable: ^3.0.0
@@ -56,6 +57,7 @@ dependencies:
   #audio
   on_audio_query: ^2.9.0
   just_audio: ^0.9.35
+  record_mp3: ^3.0.0
 
   #Video
   video_player: ^2.7.1
@@ -153,6 +155,7 @@ flutter:
     - assets/fonts/
     - assets/icons/
     - assets/images/
+    - assets/lottie/
 
 
   fonts:

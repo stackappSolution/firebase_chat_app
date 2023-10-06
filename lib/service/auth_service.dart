@@ -37,7 +37,8 @@ class AuthService {
 
   static Future verifyPhoneNumber(countryCode,
       contact,) async {
-    signInController = Get.find<SignInController>();
+    // signInController = Get.find<SignInController>();
+    signInController = Get.put(SignInController());
     //verifyOtpController = Get.put(VerifyOtpController());
 
 
@@ -146,7 +147,7 @@ class AuthService {
     QuerySnapshot querySnapshot = await users.where('phone', isEqualTo: number).get();
     if (querySnapshot.docs.isNotEmpty) {
       logs('User che');
-      logs('querySnapshot ----------> ${querySnapshot.docs[0]['pin']}');
+      logs('user PIN ----------> ${querySnapshot.docs[0]['pin']}');
       return true;
     } else {
       logs('User nathi');
