@@ -999,6 +999,7 @@ class ChatingPageViewModal {
       ) async {
     final RenderBox overlay =
     Overlay.of(context).context.findRenderObject() as RenderBox;
+
     final selectedEmoji = await showMenu<String>(
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.px)),
@@ -1100,6 +1101,7 @@ class ChatingPageViewModal {
       receiverEmoji,
       senderEmoji,
       ) async {
+
     logs('messageidddddd-->$messageId');
     logs('roomidddddddd-->$roomId');
     DocumentReference documentReference = FirebaseFirestore.instance

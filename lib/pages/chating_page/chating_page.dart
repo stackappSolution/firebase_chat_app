@@ -669,6 +669,7 @@ class ChatingPage extends StatelessWidget {
                       S.of(context).extraLarge
                       ? 20.px
                       : 12.px,
+
                 ),
                 if (message.emoji != null &&
                     message.emoji!.containsKey('receiverEmoji'))
@@ -716,6 +717,7 @@ class ChatingPage extends StatelessWidget {
       BuildContext context,
       MessageModel message,
       ) {
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
       alignment: Alignment.centerRight,
@@ -897,7 +899,8 @@ class ChatingPage extends StatelessWidget {
                                     return const AppText('');
                                   }
                                   final data = snapshot.data!.docs;
-                                  logs("name -- > ${data.first['firstName']}");
+                                  logs(
+                                      "name -- > ${data.first['firstName']}");
                                   logs("length -- > ${data.length}");
 
                                   return AppText(
@@ -988,6 +991,7 @@ class ChatingPage extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding:  EdgeInsets.only(left: 10.px),
+
                 child: Row(
                   children: [
                     AppText(
@@ -1011,10 +1015,12 @@ class ChatingPage extends StatelessWidget {
                           onTap: () {
                             Get.bottomSheet(
                               backgroundColor: AppColorConstant.appWhite,
+
                               shape:  RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(30.px),
                                       topRight: Radius.circular(30.px))),
+
                               ListTile(
                                 onTap: () {
                                   chatingPageViewModal!.deleteEmoji(
@@ -1032,6 +1038,7 @@ class ChatingPage extends StatelessWidget {
                                 trailing: AppText(
                                     message.emoji!['receiverEmoji']['emoji'],
                                     fontSize: 16.px),
+
                               ),
                             );
                           },
@@ -1117,6 +1124,38 @@ class ChatingPage extends StatelessWidget {
                             ))
                     ],
                   ),
+
+                  ),
+                  width: 150.px,
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(12.px),
+                          child: (false)
+                              ? AppImageAsset(image: message.thumb)
+                              : AppImageAsset(image: message.message)),
+                      if (message.text!.isNotEmpty)
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.all(4.px),
+                              child: AppText(
+                                message.text.toString(),
+                                fontSize: chatingPageViewModal!.fontSize ==
+                                        S.of(context).small
+                                    ? 10.px
+                                    : chatingPageViewModal!.fontSize ==
+                                            S.of(context).large
+                                        ? 20.px
+                                        : chatingPageViewModal!.fontSize ==
+                                                S.of(context).extraLarge
+                                            ? 25.px
+                                            : 15.px,
+                                color: AppColorConstant.appWhite,
+                              ),
+                            ))
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -1136,6 +1175,7 @@ class ChatingPage extends StatelessWidget {
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(30.px),
                                       topRight: Radius.circular(30.px))),
+
                               ListTile(
                                 onTap: () {
                                   chatingPageViewModal!.deleteEmoji(
@@ -1165,6 +1205,7 @@ class ChatingPage extends StatelessWidget {
                       message.messageTimestamp.toString(),
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: chatingPageViewModal!.fontSize ==
+
                           S.of(context).small
                           ? 8.px
                           : chatingPageViewModal!.fontSize ==
@@ -1174,11 +1215,13 @@ class ChatingPage extends StatelessWidget {
                           S.of(context).extraLarge
                           ? 20.px
                           : 12.px,
+
                     ),
                     SizedBox(
                       width: 10.px,
                     ),
                     (message.sender ==
+
                         AuthService.auth.currentUser!.phoneNumber)
                         ? (message.messageStatus == true)
                         ? chatingPageViewModal!.buildDoubleClickView()
@@ -1204,6 +1247,7 @@ class ChatingPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           GestureDetector(
+
             onDoubleTapDown: (details) {
               // chatingPageViewModal!.showEmojiMenu(
               //   context,
@@ -1492,6 +1536,7 @@ class ChatingPage extends StatelessWidget {
                                   ? 1.0
                                   : controller.positionList[index].inSeconds
                                   .toDouble(),
+
                               onChanged: (value) async {
                                 controller.positionList[index] =
                                     Duration(seconds: value.toInt());
@@ -1530,6 +1575,7 @@ class ChatingPage extends StatelessWidget {
                                   color: AppColorConstant.appWhite)),
                         if (!chatingPageViewModal!
                             .isFileDownLoadingList[index] &&
+
                             !chatingPageViewModal!.isFileDownLoadedList[index])
                           Padding(
                             padding: EdgeInsets.only(left: 10.px),
@@ -1582,6 +1628,7 @@ class ChatingPage extends StatelessWidget {
                                     S.of(context).extraLarge
                                     ? 25.px
                                     : 15.px,
+
                                 color: AppColorConstant.appWhite,
                               ),
                               if (message.emoji != null &&
@@ -2107,6 +2154,7 @@ class ChatingPage extends StatelessWidget {
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
+
                                         children: [
                                           AppText(
                                             "Document",
