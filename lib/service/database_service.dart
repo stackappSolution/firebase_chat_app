@@ -225,7 +225,7 @@ class DatabaseService {
 
 //======================== markMessageAsSeen ===========================//
 
-  void markMessagesAsSeen(String chatRoomId, String receiverId) {
+  Future<void> markMessagesAsSeen(String chatRoomId, String receiverId) async {
     FirebaseFirestore.instance
         .collection("rooms")
         .doc(chatRoomId)

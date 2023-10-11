@@ -40,7 +40,7 @@ class ChatingPageController extends GetxController {
     });
 
     player.playerStateStream.listen((state) {
-      isPlayingList[index].value = state.playing;
+      isPlayingList[index] = state.playing;
       logs("play index --- > ${index}");
       update();
     });
