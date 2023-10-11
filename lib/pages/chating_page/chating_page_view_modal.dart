@@ -379,7 +379,6 @@ class ChatingPageViewModal {
           '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
 
       logs("ckeck file  --- > $filePath");
-
       if (await File(filePath).exists()) {
         isFileDownLoadedList[index] = true;
         controller.update();
@@ -391,57 +390,64 @@ class ChatingPageViewModal {
           Get.toNamed(RouteHelper.getVideoPlayerScreen(),
               arguments: {'video': filePath});
         }
-
         if (!controller.player.playing) {
+          // Initialize lists with a sufficient number of elements
           controller!.positionList = List.filled(100, Duration.zero);
-          controller!.isPlayingList = List.filled(100, false.obs);
-          isPlayList[index] = true;
+          controller!.isPlayingList = List.filled(100, false);
+
+          if (index >= 0 && index < isPlayList.length) {
+            isPlayList[index] = true;
+          }
           controller.update();
           controller.player.setUrl(filePath);
           controller.player.play();
           controller.update();
+
           if (extensionCheck(mainURL) == "jpg" ||
               extensionCheck(mainURL) == "png") {
-            logs("Its Image");
+            logs("It's Image");
             Get.toNamed(RouteHelper.getImageViewScreen(),
                 arguments: {'image': filePath, 'name': arguments['name']});
           }
+
           if (extensionCheck(mainURL) == "mp3") {
-            logs("Its audio");
+            logs("It's audio");
 
-            controller.isPlayingList[index] = !controller.isPlayingList[index];
+            if (index >= 0 && index < controller.isPlayingList.length) {
+              controller.isPlayingList[index] =
+              !controller.isPlayingList[index];
+            }
+
             controller.update();
-            logs(
-                "isPlayList =------------------------> ${controller.isPlayingList.toString()}");
-
             if (!controller.player.playing) {
               logs("Music not playing");
               controller.isPlayingList = List.filled(100, false);
               controller.update();
               controller.player.setUrl(filePath);
               controller.player.play();
-              controller.isPlayingList[index] = true;
+              if (index >= 0 && index < controller.isPlayingList.length) {
+                controller.isPlayingList[index] = true;
+              }
+              controller.update();
+            } else {
+              if (index >= 0 && index < isPlayList.length) {
+                isPlayList[index] = !isPlayList[index];
+              }
 
               controller.update();
 
-              //true
-            } else {
               if (isPlayList[index]) {
                 controller.player.pause();
                 controller.update();
-                controller!.positionList =
+                controller.positionList =
                     List.filled(100, const Duration(seconds: 0));
-                controller!.isPlayingList = List.filled(100, false.obs);
+                controller.isPlayingList = List.filled(100, false);
               } else {
                 logs("Music already playing");
                 controller.player.stop();
                 controller.update();
                 controller.isPlayingList = List.filled(100, false);
               }
-
-              //  controller!.positionList = List.filled(100, Duration.zero);
-              // controller!.isPlayList = List.filled(100, false.obs);
-              controller.update();
             }
           } else {
             OpenFile.open(filePath);
@@ -995,7 +1001,7 @@ class ChatingPageViewModal {
       Offset position,
       roomId,
       messageId,
-      receiverNumber,
+      receiverNumber, isGroup,
       ) async {
     final RenderBox overlay =
     Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -1018,7 +1024,7 @@ class ChatingPageViewModal {
                       messageId,
                       receiverNumber,
                       "🙏",
-                      "🙏",
+                      "🙏",isGroup,
                     );
                     Navigator.pop(context, "🙏");
                   },
@@ -1030,7 +1036,7 @@ class ChatingPageViewModal {
                       messageId,
                       receiverNumber,
                       "😂",
-                      "😂",
+                      "😂",isGroup
                     );
                     Navigator.pop(context, "😂");
                   },
@@ -1042,7 +1048,7 @@ class ChatingPageViewModal {
                       messageId,
                       receiverNumber,
                       "😮",
-                      "😮",
+                      "😮",isGroup
                     );
                     Navigator.pop(context, "😮");
                   },
@@ -1054,7 +1060,7 @@ class ChatingPageViewModal {
                       messageId,
                       receiverNumber,
                       "❤️",
-                      "❤️",
+                      "❤️",isGroup
                     );
                     Navigator.pop(context, "❤️");
                   },
@@ -1066,7 +1072,7 @@ class ChatingPageViewModal {
                       messageId,
                       receiverNumber,
                       "👍",
-                      "👍",
+                      "👍",isGroup
                     );
                     Navigator.pop(context, "👍");
                   },
@@ -1078,7 +1084,7 @@ class ChatingPageViewModal {
                       messageId,
                       receiverNumber,
                       "😥",
-                      "😥",
+                      "😥",isGroup
                     );
                     Navigator.pop(context, "😥");
                   },
@@ -1093,6 +1099,252 @@ class ChatingPageViewModal {
       controller!.update();
     }
   }
+  ///=============================================///
+  // Future<void> addEmoji(
+  //     roomId,
+  //     messageId,
+  //     receiverNumber,
+  //     receiverEmoji,
+  //     senderEmoji, isGroup,
+  //     ) async {
+  //   logs('messageidddddd-->$messageId');
+  //   logs('roomidddddddd-->$roomId');
+  //   DocumentReference documentReference = FirebaseFirestore.instance
+  //       .collection('rooms')
+  //       .doc(roomId)
+  //       .collection('chats')
+  //       .doc(messageId);
+  //   logs('documentReference-->$documentReference');
+  //
+  //   DocumentSnapshot documentSnapshot = await documentReference.get();
+  //   Map<String, dynamic> currentData =
+  //   documentSnapshot.data() as Map<String, dynamic>;
+  //
+  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+  //   logs('receiver bhdbhdb-->$receiverNumber');
+  //
+  //   if(!isGroup) {
+  //     if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+  //       emojiData['receiverEmoji'] = {
+  //         "id": receiverNumber,
+  //         "emoji": receiverEmoji
+  //       };
+  //     } else {
+  //       emojiData['senderEmoji'] = {
+  //         "id": AuthService.auth.currentUser!.phoneNumber,
+  //         "emoji": senderEmoji
+  //       };
+  //     }
+  //     currentData['emoji'] = emojiData;
+  //     logs('emojiiiiiuppdate-->$currentData');
+  //     await documentReference.set(currentData);
+  //   }
+  //   else{
+  //
+  //   }
+  // }
+  ///====================================================///
+  // Future<void> addEmoji(
+  //     roomId,
+  //     messageId,
+  //     receiverNumber,
+  //     receiverEmoji,
+  //     senderEmoji,
+  //     isGroup,
+  //     ) async {
+  //   logs('messageidddddd-->$messageId');
+  //   logs('roomidddddddd-->$roomId');
+  //   DocumentReference documentReference = FirebaseFirestore.instance
+  //       .collection('rooms')
+  //       .doc(roomId)
+  //       .collection('chats')
+  //       .doc(messageId);
+  //   logs('documentReference-->$documentReference');
+  //
+  //   DocumentSnapshot documentSnapshot = await documentReference.get();
+  //   Map<String, dynamic> currentData =
+  //   documentSnapshot.data() as Map<String, dynamic>;
+  //
+  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+  //   logs('receiver bhdbhdb-->$receiverNumber');
+  //
+  //   if (!isGroup) {
+  //     if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+  //       emojiData['receiverEmoji'] = {
+  //         "id": receiverNumber,
+  //         "emoji": receiverEmoji,
+  //       };
+  //     } else {
+  //       emojiData['senderEmoji'] = {
+  //         "id": AuthService.auth.currentUser!.phoneNumber,
+  //         "emoji": senderEmoji,
+  //       };
+  //     }
+  //     currentData['emoji'] = emojiData;
+  //     logs('emojiiiiiuppdate-->$currentData');
+  //     await documentReference.set(currentData);
+  //   } else {
+  //     logs('groupppppemoji-->$isGroup');
+  //
+  //     String groupId = '7NiArFh14GulurfKRMKY'; // Replace with actual group ID
+  //     String? memberId = AuthService.auth.currentUser!.phoneNumber; // Current user's ID
+  //
+  //     DocumentReference groupMessageRef = FirebaseFirestore.instance
+  //         .collection('rooms')
+  //         .doc(groupId)
+  //         .collection('chats')
+  //         .doc(messageId);
+  //
+  //     DocumentReference emojiRef = groupMessageRef
+  //         .collection('emoji')
+  //         .doc(memberId);
+  //
+  //     await emojiRef.set({
+  //       'emoji': senderEmoji,
+  //     });
+  //   }
+  // }
+  ///===============================================///
+  // Future<void> addEmoji(
+  //     roomId,
+  //     messageId,
+  //     receiverNumber,
+  //     receiverEmoji,
+  //     senderEmoji,
+  //     isGroup,
+  //     ) async {
+  //   logs('messageidddddd-->$messageId');
+  //   logs('roomidddddddd-->$roomId');
+  //   DocumentReference documentReference = FirebaseFirestore.instance
+  //       .collection('rooms')
+  //       .doc(roomId)
+  //       .collection('chats')
+  //       .doc(messageId);
+  //   logs('documentReference-->$documentReference');
+  //
+  //   DocumentSnapshot documentSnapshot = await documentReference.get();
+  //   Map<String, dynamic> currentData =
+  //   documentSnapshot.data() as Map<String, dynamic>;
+  //
+  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+  //   logs('receivernumber-->$receiverNumber');
+  //   logs('senderNumber-->${AuthService.auth.currentUser!.phoneNumber}');
+  //
+  //     if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
+  //       emojiData['receiverEmoji'] = {
+  //         "id": receiverNumber,
+  //         "emoji": receiverEmoji,
+  //       };
+  //     } else {
+  //       emojiData['senderEmoji'] = {
+  //         "id": AuthService.auth.currentUser!.phoneNumber,
+  //         "emoji": senderEmoji,
+  //       };
+  //     }
+  //     currentData['emoji'] = emojiData;
+  //     logs('emojiiiiiuppdate-->$currentData');
+  //     await documentReference.set(currentData);
+  // }
+  /// =================================  Receiver And Sender All Emoji In List ============= ///
+  // Future<void> addEmoji(
+  //     roomId,
+  //     messageId,
+  //     receiverNumber,
+  //     receiverEmoji,
+  //     senderEmoji,
+  //     isGroup,
+  //     ) async {
+  //   logs('messageidddddd-->$messageId');
+  //   logs('roomidddddddd-->$roomId');
+  //
+  //   DocumentReference documentReference = FirebaseFirestore.instance
+  //       .collection('rooms')
+  //       .doc(roomId)
+  //       .collection('chats')
+  //       .doc(messageId);
+  //   logs('documentReference-->$documentReference');
+  //
+  //   DocumentSnapshot documentSnapshot = await documentReference.get();
+  //   Map<String, dynamic> currentData =
+  //   documentSnapshot.data() as Map<String, dynamic>;
+  //
+  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+  //   logs('receivernumber-->$receiverNumber');
+  //   logs('senderNumber-->${AuthService.auth.currentUser!.phoneNumber}');
+  //
+  //   if (receiverNumber != receiverNumber) {
+  //     emojiData['receiverEmojis'] ??= [];
+  //     emojiData['receiverEmojis'].add({
+  //       "id": receiverNumber,
+  //       "emoji": receiverEmoji,
+  //     });
+  //   } else {
+  //     emojiData['senderEmojis'] ??= [];
+  //     emojiData['senderEmojis'].add({
+  //       "id": AuthService.auth.currentUser!.phoneNumber,
+  //       "emoji": senderEmoji,
+  //     });
+  //   }
+  //
+  //   currentData['emoji'] = emojiData;
+  //   logs('emojiiiiiuppdate-->$currentData');
+  //
+  //   await documentReference.set(currentData);
+  // }
+
+  ///=================================================/// complete receiver inList sender map
+  // Future<void> addEmoji(
+  //     roomId,
+  //     messageId,
+  //     receiverNumber,
+  //     receiverEmoji,
+  //     senderEmoji,
+  //     isGroup,
+  //     ) async {
+  //   logs('messageidddddd-->$messageId');
+  //   logs('roomidddddddd-->$roomId');
+  //
+  //   DocumentReference documentReference = FirebaseFirestore.instance
+  //       .collection('rooms')
+  //       .doc(roomId)
+  //       .collection('chats')
+  //       .doc(messageId);
+  //   logs('documentReference-->$documentReference');
+  //
+  //   DocumentSnapshot documentSnapshot = await documentReference.get();
+  //   Map<String, dynamic> currentData =
+  //   documentSnapshot.data() as Map<String, dynamic>;
+  //
+  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
+  //   logs('receivernumber-->$receiverNumber');
+  //   logs('senderNumber-->${AuthService.auth.currentUser!.phoneNumber}');
+  //
+  //   if (receiverNumber == AuthService.auth.currentUser!.phoneNumber) {
+  //     emojiData.remove('senderEmoji');
+  //
+  //     emojiData['senderEmoji'] = {
+  //       "id": AuthService.auth.currentUser!.phoneNumber,
+  //       "emoji": senderEmoji,
+  //     };
+  //   } else {
+  //     emojiData['receiverEmojis'] =
+  //         emojiData['receiverEmojis'] ?? [];
+  //
+  //     emojiData['receiverEmojis'].removeWhere(
+  //             (emoji) => emoji['id'] == receiverNumber);
+  //
+  //     emojiData['receiverEmojis'].add({
+  //       "id": receiverNumber,
+  //       "emoji": receiverEmoji,
+  //     });
+  //   }
+  //
+  //   currentData['emoji'] = emojiData;
+  //   logs('emojiiiiiuppdate-->$currentData');
+  //   await documentReference.set(currentData);
+  // }
+
+  ///=================    array union to work =============== /////
 
   Future<void> addEmoji(
       roomId,
@@ -1100,10 +1352,11 @@ class ChatingPageViewModal {
       receiverNumber,
       receiverEmoji,
       senderEmoji,
-      ) async {
-
+      isGroup,
+      ) async   {
     logs('messageidddddd-->$messageId');
     logs('roomidddddddd-->$roomId');
+
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('rooms')
         .doc(roomId)
@@ -1112,75 +1365,59 @@ class ChatingPageViewModal {
     logs('documentReference-->$documentReference');
 
     DocumentSnapshot documentSnapshot = await documentReference.get();
-    Map<String, dynamic> currentData =
-    documentSnapshot.data() as Map<String, dynamic>;
+    Map<String, dynamic> currentData = documentSnapshot.data() as Map<String, dynamic>;
 
     Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
-    logs('receiver bhdbhdb-->$receiverNumber');
+    logs('receivernumber-->$receiverNumber');
+    logs('senderNumber-->${AuthService.auth.currentUser!.phoneNumber}');
+    if (isGroup) {
+      // Ensure that 'groupEmojis' is an array in the Firestore document
+      emojiData['groupEmojis'] = emojiData['groupEmojis'] ?? [];
 
-    if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
-      emojiData['receiverEmoji'] = {
-        "id": receiverNumber,
-        "emoji": receiverEmoji
-      };
-    } else {
-      emojiData['senderEmoji'] = {
+      // Create a new emoji object
+      Map<String, dynamic> emojiToAdd = {
         "id": AuthService.auth.currentUser!.phoneNumber,
-        "emoji": senderEmoji
+        "emoji": receiverEmoji,
       };
-    }
+      // Check if the sender already has an emoji in 'groupEmojis'
+      final senderIndex = emojiData['groupEmojis']
+          .indexWhere((emoji) => emoji['id'] == emojiToAdd['id']);
 
-    currentData['emoji'] = emojiData;
-    logs('emojiiiiiuppdate-->$currentData');
-    await documentReference.set(currentData);
+      if (senderIndex != -1) {
+        // Replace the existing emoji
+        emojiData['groupEmojis'][senderIndex] = emojiToAdd;
+      } else {
+        // Add the emoji to 'groupEmojis' array
+        emojiData['groupEmojis'].add(emojiToAdd);
+      }
+      // Update 'groupEmojis' in Firestore
+      await documentReference.update({
+        'emoji.groupEmojis': emojiData['groupEmojis'],
+      });
+    }
+    else {
+      //Handle one-on-one chat
+      if (receiverNumber == AuthService.auth.currentUser!.phoneNumber) {
+        emojiData.remove('senderEmoji');
+
+        emojiData['senderEmoji'] = {
+          "id": AuthService.auth.currentUser!.phoneNumber,
+          "emoji": senderEmoji,
+        };
+      } else {
+        emojiData.remove('receiverEmoji');
+        emojiData['receiverEmoji'] = {
+          "id": AuthService.auth.currentUser!.phoneNumber,
+          "emoji": senderEmoji,
+        };
+      }
+      // Update the 'emoji' field in the Firestore document
+      await documentReference.update({'emoji': emojiData});
+    }
   }
 
-  // Future<void>deleteEmoji(roomId, messageId, receiverNumber, receiverEmoji, senderEmoji) async {
-  //   DocumentReference documentReference = FirebaseFirestore.instance
-  //       .collection('rooms')
-  //       .doc(roomId)
-  //       .collection('chats')
-  //       .doc(messageId);
-  //   logs('documentReference-->$documentReference');
-  //   DocumentSnapshot documentSnapshot = await documentReference.get();
-  //   Map<String, dynamic> currentData =
-  //   documentSnapshot.data() as Map<String, dynamic>;
-  //   logs('messageidddddd-->$messageId');
-  //   logs('roomidddddddd-->$roomId');
-  //
-  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
-  //   logs('receiver bhdbhdb-->$receiverNumber');
-  //
-  //   if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
-  //     emojiData['receiverEmoji'] = {
-  //       "id": receiverNumber,
-  //       "emoji": receiverEmoji
-  //     };
-  //   } else {
-  //     emojiData['senderEmoji'] = {
-  //       "id": AuthService.auth.currentUser!.phoneNumber,
-  //       "emoji": senderEmoji
-  //     };
-  //   }
-  //   currentData['emoji'] = emojiData;
-  //   logs('emojiiiiiuppdate-->$currentData');
-  //   if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
-  //     if (emojiData.containsKey('receiverEmoji')) {
-  //       emojiData.remove('receiverEmoji');
-  //     }
-  //   } else {
-  //     if (emojiData.containsKey('senderEmoji')) {
-  //       emojiData.remove('senderEmoji');
-  //     }
-  //   }
-  // }
-  Future<void> deleteEmoji(
-      roomId,
-      messageId,
-      receiverNumber,
-      receiverEmoji,
-      senderEmoji,
-      ) async {
+  /// ======================Delete Emoji Function ==============///
+  Future<void> deleteEmoji(roomId, messageId, receiverNumber, receiverEmoji, senderEmoji,) async {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('rooms')
         .doc(roomId)
@@ -1210,55 +1447,6 @@ class ChatingPageViewModal {
     logs('currrrrrrrentDaata-->$currentData');
   }
 
-
-
-
-  // Future<void> addEmoji(
-  //     roomId, messageId, receiverNumber, receiverEmoji, senderEmoji,) async {
-  //   logs('messageidddddd-->$messageId');
-  //   logs('roomidddddddd-->$roomId');
-  //   DocumentReference documentReference = FirebaseFirestore.instance
-  //       .collection('rooms')
-  //       .doc(roomId)
-  //       .collection('chats')
-  //       .doc(messageId);
-  //   logs('documentReference-->$documentReference');
-  //
-  //   // Retrieve the current document data
-  //   DocumentSnapshot documentSnapshot = await documentReference.get();
-  //   Map<String, dynamic> currentData = documentSnapshot.data() as Map<String, dynamic>;
-  //
-  //   // Create emoji data or delete it
-  //   Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
-  //
-  //   if (deleteEmoji) {
-  //     // If deleteEmoji is true, remove the emoji data
-  //     if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
-  //       emojiData.remove('receiverEmoji');
-  //     } else {
-  //       emojiData.remove('senderEmoji');
-  //     }
-  //   } else {
-  //     // Otherwise, add or update the emoji data
-  //     if (receiverNumber != AuthService.auth.currentUser!.phoneNumber) {
-  //       emojiData['receiverEmoji'] = {"id": receiverNumber, "emoji": receiverEmoji};
-  //     } else {
-  //       emojiData['senderEmoji'] = {
-  //         "id": AuthService.auth.currentUser!.phoneNumber,
-  //         "emoji": senderEmoji
-  //       };
-  //     }
-  //   }
-  //
-  //   // Update the emoji data within the current data
-  //   currentData['emoji'] = emojiData;
-  //   logs('emojiiiiiuppdate-->$currentData');
-  //
-  //   // Update the document with the combined data
-  //   await documentReference.set(currentData);
-  //   await currentData.remove('senderEmoji');
-  //
-  // }
 
   getChatLength() async {
     final chatStream = await FirebaseFirestore.instance

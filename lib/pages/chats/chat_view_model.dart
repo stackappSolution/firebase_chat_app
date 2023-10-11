@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
+import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 
 import '../../app/widget/app_elevated_button.dart';
@@ -15,13 +16,16 @@ import '../../constant/color_constant.dart';
 import '../../constant/string_constant.dart';
 import '../../service/users_service.dart';
 
-
 class ChatViewModel {
   ChatScreen? chatScreen;
   List<Contact> contacts = [];
   List<Contact> filterContacts = [];
   String string = '';
   bool isConnected = false;
+
+  Map<String, dynamic> arguments = {};
+  dynamic snapshots;
+
 
   final Stream<QuerySnapshot> usersStream = UsersService.getUserStream();
 
@@ -62,12 +66,10 @@ class ChatViewModel {
     logs("saved contact length----->  ${contacts.length}");
     for (int i = 0; i < contacts.length; i++) {
       Contact contact = contacts[i];
-      if(contact.phones!.isNotEmpty && contact.displayName!.isNotEmpty)
-      {
+      if (contact.phones!.isNotEmpty && contact.displayName!.isNotEmpty) {
         await DataBaseHelper.setContactDetails(
             contact.displayName, contact.phones!.first.value ?? "");
       }
-
     }
     DataBaseHelper.getContactDetails();
     controller!.update();
@@ -126,4 +128,79 @@ class ChatViewModel {
       },
     );
   }
-}
+
+  // Future<void> markMessagesAsSeen(String chatRoomId, String receiverId) async {
+  //   await FirebaseFirestore.instance
+  //       .collection("rooms")
+  //       .doc().get().then((value){
+  //     List<String> roomsId = [];
+  //     logs('roooomsssssiddd-->$roomsId');
+  //     for (var doc in value.docs) {
+  //       roomsId.add(doc.id);
+  //     }
+  //   });
+  //
+  //   FirebaseFirestore.instance
+  //       .collection("rooms")
+  //       .doc(chatRoomId)
+  //       .collection("chats")
+  //       .where('sender', isEqualTo: receiverId)
+  //       .where("messageStatus", isEqualTo: false)
+  //       .get()
+  //       .then((value) {
+  //     List<String> messageIds = [];
+  //     for (var doc in value.docs) {
+  //       messageIds.add(doc.id);
+  //     }
+  //
+  //     for (var element in messageIds) {
+  //       FirebaseFirestore.instance
+  //           .collection('rooms')
+  //           .doc(chatRoomId)
+  //           .collection('chats')
+  //           .doc(element)
+  //           .update({'messageStatus': true}).then((value) {
+  //         print("massage upgraded");
+  //       });
+  //       print("value-----------> ${value.docs.length}");
+  //     }
+  //   });
+  // }
+  List<String> roomid = [];
+
+  Future<void> markMessagesAsSeenChatPage() async {
+    FirebaseFirestore.instance
+        .collection("rooms").where('members', arrayContains: AuthService.auth.currentUser!.phoneNumber).get().then((value) {
+      for (var doc in value.docs) {
+        roomid.add(doc.id);
+      }
+      logs('rooomIdddd-->$roomid');
+    });
+    for(int i = 0;i<=roomid.length;i++){
+      FirebaseFirestore.instance
+          .collection("rooms")
+          .doc(roomid[i])
+          .collection("chats")
+          .where('messageStatus', isEqualTo: false)
+          .get()
+          .then((value) {
+        List<String> messageIds = [];
+        for (var doc in value.docs) {
+          messageIds.add(doc.id);
+        }
+        for (var element in messageIds) {
+          FirebaseFirestore.instance
+              .collection('rooms')
+              .doc(roomid[i])
+              .collection('chats')
+              .doc(element)
+              .update({'messageStatus': true}).then((value) {
+            print("massage upgraded");
+          });
+          print("value-----------> ${value.docs.length}");
+        }
+      });
+    }
+      }
+  }
+

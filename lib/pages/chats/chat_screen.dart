@@ -19,6 +19,8 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
+import 'package:signal/service/database_service.dart';
+
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
 
@@ -166,14 +168,15 @@ class ChatScreen extends StatelessWidget {
                   child: data.first['photoUrl'].isEmpty
                       ? CircleAvatar(
                           maxRadius: 35.px,
-                          backgroundColor:
-                              AppColorConstant.appYellow.withOpacity(0.2),
+                          backgroundColor:Theme.of(context).colorScheme.primary,
+                              // AppColorConstant.appYellow.withOpacity(0.2),
                           child: AppText(
                             data.first['firstName']
                                 .substring(0, 1)
                                 .toString()
                                 .toUpperCase(),
                             fontSize: 18.px,
+                            color: Theme.of(context).colorScheme.background,
                           ),
                         )
                       : CircleAvatar(
@@ -246,6 +249,9 @@ class ChatScreen extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary),
           ),
           PopupMenuItem(
+              onTap: () async {
+                chatViewModel!.markMessagesAsSeenChatPage();
+              },
               value: 1,
               child: AppText(S.of(Get.context!).markAllRead,
                   color: Theme.of(context).colorScheme.primary)),
@@ -255,10 +261,6 @@ class ChatScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary)),
           PopupMenuItem(
               value: 3,
-              child: AppText(S.of(Get.context!).inviteFriends,
-                  color: Theme.of(context).colorScheme.primary)),
-          PopupMenuItem(
-              value: 4,
               child: AppText(S.of(Get.context!).notification,
                   color: Theme.of(context).colorScheme.primary)),
         ];
@@ -284,7 +286,6 @@ class ChatScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-
                   bool isGroup = documents[index]['isGroup'];
                   logs("is grup  -- ${snapshot.data!.docs.length}");
                   List receiver = documents[index]["members"];
@@ -478,7 +479,8 @@ class ChatScreen extends StatelessWidget {
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Container(width: 30.px,
+                                      Container(
+                                        width: 30.px,
                                         child: StreamBuilder(
                                           stream: controller.getUserName(
                                               messageData.first["sender"]),
@@ -509,7 +511,6 @@ class ChatScreen extends StatelessWidget {
                                         color: AppColorConstant.appYellow,
                                       ),
                                       Container(
-                                        width: 140.px,
                                         child: (messageData
                                                     .first["messageType"] ==
                                                 "image")

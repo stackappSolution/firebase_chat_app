@@ -225,7 +225,7 @@ class ProfileViewModel {
         lastName: lastNameController.text,
         photoUrl: userProfilePicture ?? '',
         fcmToken: NotificationService.instance.fcmToken,
-
+        pin: pin,
         phone: FirebaseAuth.instance.currentUser?.phoneNumber
             ?.trim()
             .replaceAll(' ', '```'),

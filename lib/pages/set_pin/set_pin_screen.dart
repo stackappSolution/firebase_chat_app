@@ -101,6 +101,7 @@ class SetPinScreen extends StatelessWidget {
                 obscureText: true,
                 inputFormatters: (!setPinViewModel!.changeKeyBoard)
                     ? [
+                        LengthLimitingTextInputFormatter(4),
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                       ]
                     : [
@@ -221,6 +222,7 @@ class SetPinScreen extends StatelessWidget {
             autofocus: true,
             obscureText: true,
             inputFormatters: [
+              LengthLimitingTextInputFormatter(4),
               FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
             ],
             decoration: const InputDecoration(
@@ -321,10 +323,12 @@ class EnterPinScreen extends StatelessWidget {
                             obscureText: true,
                             inputFormatters: (!enterPinViewModel!.changeKeyBoard)
                                 ? [
+                              LengthLimitingTextInputFormatter(4),
                               FilteringTextInputFormatter.allow(
                                   RegExp(r'[0-9]')),
                             ]
                                 : [
+                              LengthLimitingTextInputFormatter(4),
                               FilteringTextInputFormatter.allow(
                                   RegExp(r'[a-zA-Z0-9]')),
                             ],

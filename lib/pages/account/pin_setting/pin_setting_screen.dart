@@ -77,9 +77,11 @@ class PinSettingScreen extends StatelessWidget {
             obscureText: true,
             inputFormatters: (!pinSettingViewModel!.changeKeyBoard)
                 ? [
+                  LengthLimitingTextInputFormatter(4),
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                   ]
                 : [
+                    LengthLimitingTextInputFormatter(4),
                     FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
                   ],
             decoration: const InputDecoration(
@@ -176,6 +178,7 @@ class PinSettingScreen extends StatelessWidget {
                 autofocus: true,
                 obscureText: true,
                 inputFormatters: [
+                  LengthLimitingTextInputFormatter(4),
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'))
                 ],
                 decoration: const InputDecoration(
