@@ -15,6 +15,8 @@ import 'package:signal/pages/chats/chat_profile/chat_profile_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../../app/app/utills/theme_util.dart';
+
 class ChatProfileScreen extends StatelessWidget {
   ChatProfileScreen({Key? key}) : super(key: key);
   ChatProfileController? controller;
@@ -34,14 +36,14 @@ class ChatProfileScreen extends StatelessWidget {
 
         Future.delayed(
           const Duration(milliseconds: 0),
-              () async {
+          () async {
             controller = Get.find<ChatProfileController>();
             chatProfileViewModel!.isBlockedByLoggedUser =
-            await UsersService.instance.isBlockedByLoggedInUser(
-                chatProfileViewModel!.arguments['number']
-                    .toString()
-                    .trim()
-                    .removeAllWhitespace);
+                await UsersService.instance.isBlockedByLoggedInUser(
+                    chatProfileViewModel!.arguments['number']
+                        .toString()
+                        .trim()
+                        .removeAllWhitespace);
             controller!.update();
 
             logs(
@@ -53,11 +55,15 @@ class ChatProfileScreen extends StatelessWidget {
       },
       builder: (controller) {
         return WillPopScope(
-          child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            appBar: getAppBar(),
-            body: getBody(context, controller),
-          ),
+          child: Builder(builder: (context) {
+            MediaQueryData mediaQuery = MediaQuery.of(context);
+            ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              appBar: getAppBar(),
+              body: getBody(context, controller),
+            );
+          }),
           onWillPop: () async {
             Get.back();
             // Get.offAndToNamed(RouteHelper.getChattingScreen(), arguments: {
@@ -153,15 +159,15 @@ class ChatProfileScreen extends StatelessWidget {
             backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
             child: (!chatProfileViewModel!.arguments['isGroup'])
                 ? AppText(
-                chatProfileViewModel!.arguments['name']
-                    .substring(0, 1)
-                    .toUpperCase(),
-                fontSize: 30.px)
+                    chatProfileViewModel!.arguments['name']
+                        .substring(0, 1)
+                        .toUpperCase(),
+                    fontSize: 30.px)
                 : AppText(
-                chatProfileViewModel!.arguments['groupName']
-                    .substring(0, 1)
-                    .toUpperCase(),
-                fontSize: 30.px),
+                    chatProfileViewModel!.arguments['groupName']
+                        .substring(0, 1)
+                        .toUpperCase(),
+                    fontSize: 30.px),
           ),
         ),
         if (!chatProfileViewModel!.arguments['isGroup'])
@@ -402,8 +408,9 @@ class ChatProfileScreen extends StatelessWidget {
                       UsersService.instance.isBlockedByReceiver(
                           chatProfileViewModel!.arguments['number']);
                       chatProfileViewModel!.isBlockedByLoggedUser =
-                      await UsersService.instance.isBlockedByLoggedInUser(
-                          chatProfileViewModel!.arguments['number']);
+                          await UsersService.instance.isBlockedByLoggedInUser(
+                              chatProfileViewModel!.arguments['number']);
+
                       Get.back();
                       controller.update();
                     },
@@ -459,8 +466,9 @@ class ChatProfileScreen extends StatelessWidget {
                       UsersService.instance.unblockUser(
                           chatProfileViewModel!.arguments['number']);
                       chatProfileViewModel!.isBlockedByLoggedUser =
-                      await UsersService.instance.isBlockedByLoggedInUser(
-                          chatProfileViewModel!.arguments['number']);
+                          await UsersService.instance.isBlockedByLoggedInUser(
+                              chatProfileViewModel!.arguments['number']);
+
                       controller.update();
                       Get.back();
                     },

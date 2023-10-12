@@ -212,6 +212,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
   }
 
    Future<String> uploadImage(
+
       File url,) async {
     final storage = FirebaseStorage.instance
         .ref('wallpaper')
@@ -220,6 +221,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
         .child('${DateTime.now()}wallpaper.jpg');
 
     final UploadTask uploadTask = storage.putFile(url, SettableMetadata(contentType: 'IMAGE'), // Specify the content type
+
     );
     await uploadTask.whenComplete(() {
       logs('File uploaded successfully');

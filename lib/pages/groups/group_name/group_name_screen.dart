@@ -16,6 +16,8 @@ import 'package:signal/pages/groups/group_name/group_name_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 
+import '../../../app/app/utills/theme_util.dart';
+
 // ignore: must_be_immutable
 class GroupNameScreen extends StatelessWidget {
   GroupNameScreen({Key? key}) : super(key: key);
@@ -40,11 +42,14 @@ class GroupNameScreen extends StatelessWidget {
         );
       },
       builder: (controller) {
-        return Scaffold(
+        return  Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppbar(context),
           body: buildGroupInfoView(context),
-        );
+        );});
       },
     );
   }

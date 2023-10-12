@@ -231,6 +231,7 @@ class ProfileViewModel {
             .replaceAll(' ', '```'),
         wallpaper: '',
         color: '',
+
         about: "Heyy!!! i am using ChatApp!!",
         blockedNumbers: []);
 

@@ -10,6 +10,8 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/pages/chating_page/image_view/image_view_model.dart';
 
+import '../../../app/app/utills/theme_util.dart';
+
 // ignore: must_be_immutable
 class ImageView extends StatelessWidget {
   ImageView({Key? key}) : super(key: key);
@@ -35,11 +37,14 @@ class ImageView extends StatelessWidget {
       },
       init: ChatingPageController(),
       builder: (controller) {
-        return Scaffold(
+        return  Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           body: getBody(context),
           appBar: getAppbar(context),
-        );
+        );});
       },
     );
   }

@@ -18,6 +18,8 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/sign_in_page/sign_in_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 
+import '../../app/app/utills/theme_util.dart';
+
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -81,7 +83,10 @@ class SignInPage extends StatelessWidget {
             );
           },
           child: SafeArea(
-            child: Scaffold(
+            child:  Builder(builder: (context) {
+              MediaQueryData mediaQuery = MediaQuery.of(context);
+              ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+              return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.background,
               body: buildsignInPage(
                 signInViewModel!.selectedCountry.toString(),
@@ -90,7 +95,7 @@ class SignInPage extends StatelessWidget {
                 controller,
                 signInViewModel!,
               ),
-            ),
+            );})
           ),
         );
       },

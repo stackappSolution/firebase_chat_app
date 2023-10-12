@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
+import 'package:signal/app/app/utills/theme_util.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/controller/appearance_controller.dart';
@@ -25,6 +26,7 @@ class AppearanceScreen extends StatelessWidget {
     return GetBuilder<AppearanceController>(
       init: AppearanceController(),
       initState: (state) async {
+
         Future.delayed(
           const Duration(milliseconds: 100),
           () async {
@@ -49,12 +51,18 @@ class AppearanceScreen extends StatelessWidget {
         );
       },
       builder: (AppearanceController controller) {
-        return SafeArea(
-            child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: getAppBar(context),
-          body: getBody(context, controller, appearanceViewModel!),
-        ));
+        return Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+
+          return SafeArea(
+              child: Scaffold(
+                backgroundColor: Theme.of(context).colorScheme.background,
+                appBar: getAppBar(context),
+                body: getBody(context, controller, appearanceViewModel!),
+              ));
+        },
+        );
       },
     );
   }

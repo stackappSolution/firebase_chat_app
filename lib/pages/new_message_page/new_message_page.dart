@@ -3,6 +3,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_loader.dart';
@@ -16,7 +17,9 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 
+import '../../app/app/utills/theme_util.dart';
 import '../../app/widget/app_image_assets.dart';
+import '../../app/widget/app_shimmer.dart';
 import '../../service/database_helper.dart';
 
 class NewMessagePage extends StatelessWidget {
@@ -34,10 +37,9 @@ class NewMessagePage extends StatelessWidget {
       initState: (state) {
         DataBaseHelper.getContactDetails();
         Future.delayed(const Duration(milliseconds: 300), () async {
-
           newMessageController = Get.find<NewMessageController>();
           newMessageController!.getUserPhoneList();
-
+          newMessageController!.update();
         });
         DataBaseHelper.createDB();
         newMessageViewModel!.getContactPermission();
@@ -48,11 +50,15 @@ class NewMessagePage extends StatelessWidget {
       builder: (NewMessageController controller) {
         controller.getUserPhoneList();
         return SafeArea(
-            child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: buildAppBar(context),
-          body: buildSearchBar(context, controller),
-        ));
+          child:  Builder(builder: (context) {
+            MediaQueryData mediaQuery = MediaQuery.of(context);
+            ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+            return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            appBar: buildAppBar(context),
+            body: buildSearchBar(context, controller),
+          );}),
+        );
       },
     );
   }
@@ -73,7 +79,7 @@ class NewMessagePage extends StatelessWidget {
           children: [
             SizedBox(height: 10.px),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SizedBox(
                 height: 50.px,
                 child: AppTextFormField(
@@ -139,7 +145,6 @@ class NewMessagePage extends StatelessWidget {
   buildContactList(BuildContext context, NewMessageController controller) {
     return Stack(
       children: [
-        if (newMessageViewModel!.isLoading)  AppLoader(),
         ListView.builder(
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
@@ -154,8 +159,8 @@ class NewMessagePage extends StatelessWidget {
                 ? contact.phones!.first.value
                 : 'N/A';
             String? displayName = contact.displayName ?? 'unknown';
-            String firstLetter = displayName.substring(0, 1).toUpperCase()?? "  ";
-
+            String firstLetter =
+                displayName.substring(0, 1).toUpperCase() ?? "  ";
 
             return Container(
               margin: EdgeInsets.only(top: 5.px),
@@ -265,7 +270,8 @@ class NewMessagePage extends StatelessWidget {
               ),
             );
           },
-        )
+        ),
+        if (newMessageViewModel!.isLoading) const AppShimmerView()
       ],
     );
   }

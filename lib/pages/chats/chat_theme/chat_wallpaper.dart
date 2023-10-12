@@ -26,6 +26,8 @@ class ChatWallpaperScreen extends StatelessWidget {
   SettingsController? controller;
   Color? wallColor = AppColorConstant.darkBlue;
   File? selectedImage;
+  bool isLoading = false;
+  final users = FirebaseFirestore.instance.collection("users");
 
   @override
   Widget build(BuildContext context) {

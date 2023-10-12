@@ -8,7 +8,6 @@ import 'package:signal/app/app/utills/date_formation.dart';
 import 'package:signal/app/app/utills/theme_util.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
-import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/app_asset.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -19,6 +18,7 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
+import '../../app/widget/app_shimmer.dart';
 
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
@@ -41,12 +41,13 @@ class ChatScreen extends StatelessWidget {
         ThemeUtil.isDark = brightness == Brightness.dark;
         logs("ThemeUtil.isDark--- > ${ThemeUtil.isDark}");
         DataBaseHelper.createDB();
-        chatViewModel!.getPermission();
         Future.delayed(
           const Duration(milliseconds: 0),
           () async {
             controller = Get.find<ContactController>();
             await UsersService.getUserStream();
+            chatViewModel!.getPermission(controller!);
+
             controller!.update();
           },
         );
@@ -58,12 +59,16 @@ class ChatScreen extends StatelessWidget {
             return await chatViewModel!.willPopDialog(context);
           },
           child: SafeArea(
-              child: Scaffold(
-            appBar: getAppBar(context, controller),
-            backgroundColor: Theme.of(context).colorScheme.background,
-            floatingActionButton: buildFloatingButton(),
-            body: getBody(controller),
-          )),
+            child:  Builder(builder: (context) {
+              MediaQueryData mediaQuery = MediaQuery.of(context);
+              ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+              return Scaffold(
+              appBar: getAppBar(context, controller),
+              backgroundColor: Theme.of(context).colorScheme.background,
+              floatingActionButton: buildFloatingButton(),
+              body: getBody(controller),
+            );}),
+          ),
         );
       },
     );
@@ -276,17 +281,23 @@ class ChatScreen extends StatelessWidget {
           return AppText('Error: ${snapshot.error}');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return AppLoader();
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return const AppShimmerView();
+            },
+          );
         }
         final documents = snapshot.data!.docs;
-        return (documents.length != null)
+        return (documents.length != 0)
             ? ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   bool isGroup = documents[index]['isGroup'];
-                  logs("is grup  -- ${snapshot.data!.docs.length}");
+                  logs("is Group  -- ${snapshot.data!.docs.length}");
                   List receiver = documents[index]["members"];
                   receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
                   String receiverNumber =
@@ -322,7 +333,8 @@ class ChatScreen extends StatelessWidget {
                               });
                         },
                         trailing: StreamBuilder(
-                          stream: controller.getLastMessage(documents[0]['id']),
+                          stream:
+                              controller.getLastMessage(documents[index]['id']),
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
@@ -335,7 +347,7 @@ class ChatScreen extends StatelessWidget {
                             final data = snapshot.data!.docs;
                             return AppText(
                                 DateFormation.formatTimestamp(
-                                    data[0]["messageTimestamp"]),
+                                    data.first["messageTimestamp"]),
                                 color: AppColorConstant.grey,
                                 fontSize: 12.px);
                           },
@@ -922,12 +934,13 @@ class ChatScreen extends StatelessWidget {
             : Container(
                 margin: EdgeInsets.all(20.px),
                 alignment: Alignment.center,
-                height: 100.px,
+                height: 200.px,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10.px))),
                 child: AppText(
-                  "Lets Chat",
+                  textAlign: TextAlign.center,
+                  "Let's\nStart Messaging\nwith ChatApp",
                   color: AppColorConstant.yellowLight,
                   fontSize: 25.px,
                 ),

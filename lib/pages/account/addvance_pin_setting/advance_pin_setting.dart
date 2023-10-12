@@ -6,6 +6,7 @@ import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/generated/l10n.dart';
 
+import '../../../app/app/utills/theme_util.dart';
 import '../../../controller/advance_pin_controller.dart';
 import 'advance_pin_view_model.dart';
 
@@ -22,7 +23,10 @@ class AdvancePinSettingScreen extends StatelessWidget {
     return GetBuilder<AdvancePinController>(
       init: AdvancePinController(),
       builder: (controller) {
-        return Scaffold(
+        return  Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppAppBar(
               title: AppText(
@@ -31,7 +35,7 @@ class AdvancePinSettingScreen extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
           )),
           body: getBody(context),
-        );
+        );});
       },
     );
   }
