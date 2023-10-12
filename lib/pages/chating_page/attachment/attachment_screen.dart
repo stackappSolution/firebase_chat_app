@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +13,7 @@ import 'package:signal/service/database_service.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../app/app/utills/app_utills.dart';
+import '../../../app/app/utills/theme_util.dart';
 import '../../../app/widget/app_text.dart';
 import '../../../controller/acccount_controller.dart';
 
@@ -72,8 +72,18 @@ class AttachmentScreen extends StatelessWidget {
             return true;
           },
           child: SafeArea(
-              child: Scaffold(backgroundColor:  Theme.of(context).colorScheme.background,
-                  body: fileViews(controller, context, fileViewIndex()))),
+            child:  Builder(builder: (context) {
+              MediaQueryData mediaQuery = MediaQuery.of(context);
+              ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+              return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: fileViews(
+                controller,
+                context,
+                fileViewIndex(),
+              ),
+            );})
+          ),
         );
       },
     );
@@ -84,7 +94,8 @@ class AttachmentScreen extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.all(20.px),
-          decoration:  BoxDecoration(color:  Theme.of(context).colorScheme.background),
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.background),
           child: Column(children: [
             Align(
                 alignment: Alignment.bottomLeft,
@@ -123,7 +134,7 @@ class AttachmentScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 15.px),
               child: AppTextFormField(
-                controller:attachmentViewModel!.textController ,
+                controller: attachmentViewModel!.textController,
                 suffixIcon: IconButton(
                   onPressed: () {
                     attachmentViewModel!.imageButtonTap(controller);
@@ -137,8 +148,10 @@ class AttachmentScreen extends StatelessWidget {
         ),
         if (DatabaseService.isLoading)
           AppLoader(
-              widget:
-                  AppText("${DatabaseService.downloadPercentage.toString()}%",color:  Theme.of(context).colorScheme.primary,)),
+              widget: AppText(
+            "${DatabaseService.downloadPercentage.toString()}%",
+            color: Theme.of(context).colorScheme.primary,
+          )),
       ],
     );
   }
@@ -148,7 +161,8 @@ class AttachmentScreen extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.all(20.px),
-          decoration:  BoxDecoration(color:  Theme.of(context).colorScheme.background),
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.background),
           child: SingleChildScrollView(
             child: Column(children: [
               Align(
@@ -197,7 +211,9 @@ class AttachmentScreen extends StatelessWidget {
                                             .videoPlayerController
                                             .value
                                             .position),
-                                    fontSize: 10.px,color:  Theme.of(context).colorScheme.primary,
+                                    fontSize: 10.px,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                                 Expanded(
@@ -251,7 +267,9 @@ class AttachmentScreen extends StatelessWidget {
                                               .videoPlayerController
                                               .value
                                               .duration),
-                                      fontSize: 10.px,color:  Theme.of(context).colorScheme.primary,
+                                      fontSize: 10.px,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
                                   ),
                                 ),
@@ -279,7 +297,7 @@ class AttachmentScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 15.px),
                 child: AppTextFormField(
-                  controller: attachmentViewModel!.textController ,
+                  controller: attachmentViewModel!.textController,
                   suffixIcon: IconButton(
                     onPressed: () {
                       attachmentViewModel!.stopVideoPlayback();
@@ -306,7 +324,8 @@ class AttachmentScreen extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.all(20.px),
-          decoration:  BoxDecoration(color:  Theme.of(context).colorScheme.background),
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.background),
           child: SingleChildScrollView(
             child: Column(children: [
               Align(
@@ -348,7 +367,7 @@ class AttachmentScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 15.px),
                 child: AppTextFormField(
-                  controller: attachmentViewModel!.textController ,
+                  controller: attachmentViewModel!.textController,
                   suffixIcon: IconButton(
                     onPressed: () {
                       attachmentViewModel!.documentButtonTap(controller,
@@ -505,7 +524,7 @@ class AttachmentScreen extends StatelessWidget {
                   height: 10.px,
                 ),
                 AppTextFormField(
-                  controller: attachmentViewModel!.textController ,
+                  controller: attachmentViewModel!.textController,
                   suffixIcon: IconButton(
                     onPressed: () {
                       attachmentViewModel!.audioPlayer.dispose();

@@ -11,7 +11,7 @@ class NewMessageViewModel {
   NewMessagePage? newMessagePage;
   List<Contact> contacts = [];
   List<Contact> filteredContacts = [];
-  bool isLoading = true;
+  bool isLoading = false;
   NewMessageController? newMessageController;
   bool isIcon = true;
   bool isKeyBoard = true;
@@ -55,6 +55,8 @@ class NewMessageViewModel {
   void fetchContacts() async {
     if (contacts.isEmpty) {
       logs("fetch contact entered");
+      isLoading = true;
+      newMessageController!.update();
       contacts = await ContactsService.getContacts(withThumbnails: false);
       filteredContacts = List.from(contacts);
       isLoading = false;

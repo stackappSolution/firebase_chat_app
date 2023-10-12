@@ -49,30 +49,32 @@ class ContactUsScreen extends StatelessWidget {
   }
 
   getBody(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText(S.of(Get.context!).contactUs,color:  Theme.of(context).colorScheme.primary,),
-          SizedBox(
-            height: 10.px,
-          ),
-          descriptionField(),
-          SizedBox(
-            height: 10.px,
-          ),
-          AppText(S.of(Get.context!).tellUs,
-              color: Theme.of(context).colorScheme.primary, fontSize: 15.px),
-          selectReasonView(),
-          AppText(
-            'How Do you Feel? (Optional)',
-            color: Theme.of(context).colorScheme.primary,
-            fontSize: 12.px,
-          ),
-          buildEmojiView(),
-          includeDebugLogView(),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppText(S.of(Get.context!).contactUs,color:  Theme.of(context).colorScheme.primary,),
+            SizedBox(
+              height: 10.px,
+            ),
+            descriptionField(),
+            SizedBox(
+              height: 10.px,
+            ),
+            AppText(S.of(Get.context!).tellUs,
+                color: Theme.of(context).colorScheme.primary, fontSize: 15.px),
+            selectReasonView(),
+            AppText(
+              'How Do you Feel? (Optional)',
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 12.px,
+            ),
+            buildEmojiView(),
+            includeDebugLogView(),
+          ],
+        ),
       ),
     );
   }

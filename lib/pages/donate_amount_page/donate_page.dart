@@ -41,7 +41,7 @@ class DonatePage extends StatelessWidget {
             donateViewModel!.handleExternalWallet);
       },
       dispose: (state) {
-        donateViewModel!.razorpay.clear();
+        donateViewModel!.razorpay.clear();;
       },
       builder: (DonateController controller) {
         return Scaffold(
@@ -113,9 +113,9 @@ class DonatePage extends StatelessWidget {
               thickness: 1,
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: AppText('Transaction',fontSize: 20),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: AppText('Transaction',fontSize: 20,color: Theme.of(context).colorScheme.primary),
           ),
           Expanded(
             child: FutureBuilder<List<TransactionsModel>>(

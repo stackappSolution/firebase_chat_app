@@ -9,6 +9,8 @@ import 'package:signal/controller/pin_setting_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/account/pin_setting/pin_setting_view_model.dart';
 
+import '../../../app/app/utills/theme_util.dart';
+
 // ignore: must_be_immutable
 class PinSettingScreen extends StatelessWidget {
   PinSettingViewModel? pinSettingViewModel;
@@ -23,13 +25,15 @@ class PinSettingScreen extends StatelessWidget {
       init: PinSettingController(),
       initState: (state) {},
       builder: (controller) {
-        return SafeArea(
-          child: Scaffold(
+        return SafeArea(child: Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
             body: getBody(context, controller),
             floatingActionButton: getFloatingActionButton(context, controller),
-          ),
-        );
+          );
+        }));
       },
     );
   }
@@ -77,9 +81,11 @@ class PinSettingScreen extends StatelessWidget {
             obscureText: true,
             inputFormatters: (!pinSettingViewModel!.changeKeyBoard)
                 ? [
+                    LengthLimitingTextInputFormatter(4),
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                   ]
                 : [
+                    LengthLimitingTextInputFormatter(4),
                     FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
                   ],
             decoration: const InputDecoration(
@@ -176,6 +182,7 @@ class PinSettingScreen extends StatelessWidget {
                 autofocus: true,
                 obscureText: true,
                 inputFormatters: [
+                  LengthLimitingTextInputFormatter(4),
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'))
                 ],
                 decoration: const InputDecoration(

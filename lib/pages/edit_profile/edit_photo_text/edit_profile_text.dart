@@ -57,6 +57,7 @@ class EditProfileText extends StatelessWidget {
                         radius: 70,
                         backgroundColor: editProfileTextViewModel!.backGroud,
                         child: TextField(
+                          cursorColor: Colors.transparent,
                           autofocus: true,
                           controller:
                               editProfileTextViewModel!.textEditingController,

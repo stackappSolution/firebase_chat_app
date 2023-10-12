@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +16,7 @@ import 'package:signal/controller/settings_controller.dart';
 
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/auth_service.dart';
 
 // ignore: must_be_immutable
 class ChatWallpaperScreen extends StatelessWidget {
@@ -22,6 +25,8 @@ class ChatWallpaperScreen extends StatelessWidget {
   SettingsController? controller;
   Color? wallColor = AppColorConstant.darkBlue;
   File? selectedImage;
+  bool isLoading = false;
+  final users = FirebaseFirestore.instance.collection("users");
 
   @override
   Widget build(BuildContext context) {
@@ -128,14 +133,14 @@ class ChatWallpaperScreen extends StatelessWidget {
   }
 
   Future<void> pickImageGallery() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      logs(selectedImage.toString());
-      // controller!.update();
+      logs('image pick-->${selectedImage.toString()}');
+       // controller!.update();
       Get.toNamed(RouteHelper.getWallpaperPreviewScreen(),
           parameters: {'image': selectedImage!.path});
     }
   }
+
 }

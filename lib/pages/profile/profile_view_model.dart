@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -215,7 +216,6 @@ class ProfileViewModel {
     logs("load--> $isLoading");
     controller!.update();
     return await storage.getDownloadURL();
-
   }
 
   Future<void> onSaveProfile(String pin) async {
@@ -225,13 +225,13 @@ class ProfileViewModel {
         lastName: lastNameController.text,
         photoUrl: userProfilePicture ?? '',
         fcmToken: NotificationService.instance.fcmToken,
-
+        pin: pin,
         phone: FirebaseAuth.instance.currentUser?.phoneNumber
             ?.trim()
             .replaceAll(' ', '```'),
+        wallpaper: wallpaper ??  '',
         about: "Heyy!!! i am using ChatApp!!",
         blockedNumbers: []);
-
 
     bool isUserAdded = await UsersService.instance.addUser(userModel);
     if (isUserAdded) {

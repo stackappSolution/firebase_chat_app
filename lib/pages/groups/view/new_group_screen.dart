@@ -13,6 +13,8 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/view/new_group_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
+import '../../../app/app/utills/theme_util.dart';
+
 // ignore: must_be_immutable
 class NewGroupScreen extends StatelessWidget {
   NewGroupViewModel? newGroupViewModel;
@@ -27,7 +29,10 @@ class NewGroupScreen extends StatelessWidget {
       initState: (state) async {},
       init: GroupController(),
       builder: (controller) {
-        return Scaffold(
+        return  Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
           appBar: AppAppBar(
               title: AppText(
             S.of(context).selectMember,
@@ -247,7 +252,7 @@ class NewGroupScreen extends StatelessWidget {
               )
             ]),
           ),
-        );
+        );});
       },
     );
   }
