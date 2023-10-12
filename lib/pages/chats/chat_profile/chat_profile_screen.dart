@@ -24,8 +24,8 @@ class ChatProfileScreen extends StatelessWidget {
 
   @override
   Widget build(
-    BuildContext context,
-  ) {
+      BuildContext context,
+      ) {
     chatProfileViewModel ?? (chatProfileViewModel = ChatProfileViewModel(this));
     return GetBuilder<ChatProfileController>(
       init: ChatProfileController(),
@@ -343,34 +343,34 @@ class ChatProfileScreen extends StatelessWidget {
     controller.update();
     return (chatProfileViewModel!.isBlockedByLoggedUser)
         ? Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
-            child: ListTile(
-              onTap: () {
-                buildUnBlockDialog(context, controller);
-                controller.update();
-              },
-              title: AppText(
-                  color: Theme.of(context).colorScheme.primary, 'unBlock'),
-              leading: Icon(
-                Icons.block_flipped,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          )
+      padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
+      child: ListTile(
+        onTap: () {
+          buildUnBlockDialog(context, controller);
+          controller.update();
+        },
+        title: AppText(
+            color: Theme.of(context).colorScheme.primary, 'unBlock'),
+        leading: Icon(
+          Icons.block_flipped,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+    )
         : Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
-            child: ListTile(
-              onTap: () {
-                buildBlockDialog(context, controller);
-                controller.update();
-              },
-              title: AppText(
-                color: AppColorConstant.red,
-                S.of(context).block,
-              ),
-              leading: const Icon(Icons.block, color: AppColorConstant.red),
-            ),
-          );
+      padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
+      child: ListTile(
+        onTap: () {
+          buildBlockDialog(context, controller);
+          controller.update();
+        },
+        title: AppText(
+          color: AppColorConstant.red,
+          S.of(context).block,
+        ),
+        leading: const Icon(Icons.block, color: AppColorConstant.red),
+      ),
+    );
   }
 
   buildBlockDialog(BuildContext context, ChatProfileController controller) {
@@ -383,7 +383,7 @@ class ChatProfileScreen extends StatelessWidget {
               shape: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.px)),
               actionsPadding:
-                  EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
+              EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
               backgroundColor: Theme.of(context).colorScheme.background,
               title: AppText(
                   'Are you sure you want to block ${chatProfileViewModel!.arguments['number']}?'),
@@ -410,6 +410,7 @@ class ChatProfileScreen extends StatelessWidget {
                       chatProfileViewModel!.isBlockedByLoggedUser =
                           await UsersService.instance.isBlockedByLoggedInUser(
                               chatProfileViewModel!.arguments['number']);
+
                       Get.back();
                       controller.update();
                     },
@@ -443,7 +444,7 @@ class ChatProfileScreen extends StatelessWidget {
               shape: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.px)),
               actionsPadding:
-                  EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
+              EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
               backgroundColor: Theme.of(context).colorScheme.background,
               title: AppText(
                   'Are you sure you want to unblock ${chatProfileViewModel!.arguments['number']}?',
@@ -467,6 +468,7 @@ class ChatProfileScreen extends StatelessWidget {
                       chatProfileViewModel!.isBlockedByLoggedUser =
                           await UsersService.instance.isBlockedByLoggedInUser(
                               chatProfileViewModel!.arguments['number']);
+
                       controller.update();
                       Get.back();
                     },

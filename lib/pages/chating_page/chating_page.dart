@@ -68,7 +68,7 @@ class ChatingPage extends StatelessWidget {
             controller = Get.find<ChatingPageController>();
             controller!.durationList = List.filled(100, Duration.zero);
             controller!.positionList = List.filled(100, Duration.zero);
-            controller!.isPlayingList = List.filled(100, false.obs);
+            controller!.isPlayingList = List.filled(100, false);
 
             await chatingPageViewModal!.getBlockedList(controller);
             await chatingPageViewModal!.getChatId();
@@ -549,6 +549,172 @@ class ChatingPage extends StatelessWidget {
 
   //===========================  message =============================//
 
+  /// =======================  Official Map in Emoji Show   =======================/////////////////
+  //
+  // buildReceiverMessageView(BuildContext context, MessageModel message) {
+  //   return Container(
+  //     margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
+  //     alignment: Alignment.centerLeft,
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         GestureDetector(
+  //           onLongPressDown: (details) {
+  //             log("receicer isssddd-->${message.sender}");
+  //             chatingPageViewModal!.showEmojiMenu(
+  //                 context,
+  //                 details.globalPosition,
+  //                 chatingPageViewModal!.snapshots.docs[0]['id'],
+  //                 message.messageId,
+  //                 message.sender,chatingPageViewModal!.arguments["isGroup"]);
+  //             logs(
+  //                 'showimg--> ${chatingPageViewModal!.snapshots.docs[0]['id']}');
+  //           },
+  //           child: ChatBubble(
+  //             elevation: 0,
+  //             margin: EdgeInsets.only(right: 100.px),
+  //             clipper: ChatBubbleClipper2(
+  //                 type: BubbleType.receiverBubble,
+  //                 nipHeight: 10.px,
+  //                 nipWidth: 6.px,
+  //                 radius: 5.px),
+  //             backGroundColor: AppColorConstant.appGrey.withOpacity(0.3),
+  //             child: (chatingPageViewModal!.arguments['isGroup'])
+  //                 ? Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Row(
+  //                   children: [
+  //                     Icon(
+  //                       Icons.account_circle_rounded,
+  //                       size: 12.px,
+  //                     ),
+  //                     Padding(
+  //                       padding: EdgeInsets.symmetric(horizontal: 4.px),
+  //                       child: StreamBuilder(
+  //                         stream: controller!.getUserName(message.sender
+  //                             .toString()
+  //                             .trim()
+  //                             .removeAllWhitespace),
+  //                         builder: (context,
+  //                             AsyncSnapshot<QuerySnapshot> snapshot) {
+  //                           if (snapshot.hasError) {
+  //                             return const AppText('');
+  //                           }
+  //                           if (snapshot.connectionState ==
+  //                               ConnectionState.waiting) {
+  //                             return const AppText('.');
+  //                           }
+  //                           final data = snapshot.data!.docs;
+  //                           logs("name -- > ${data.first['firstName']}");
+  //                           logs("length -- > ${data.length}");
+  //
+  //                           return AppText(
+  //                             data.first['firstName'],
+  //                             fontSize: 10.px,
+  //                             overflow: TextOverflow.ellipsis,
+  //                             maxLines: 1,
+  //                             color: AppColorConstant.appWhite,
+  //                             fontWeight: FontWeight.bold,
+  //                           );
+  //                         },
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 AppText(
+  //                   message.message.toString(),
+  //                   color: AppColorConstant.appBlack,
+  //                   fontSize: chatingPageViewModal!.fontSize ==
+  //                       S.of(context).small
+  //                       ? 10.px
+  //                       : chatingPageViewModal!.fontSize ==
+  //                       S.of(context).large
+  //                       ? 20.px
+  //                       : chatingPageViewModal!.fontSize ==
+  //                       S.of(context).extraLarge
+  //                       ? 25.px
+  //                       : 15.px,
+  //                 ),
+  //               ],
+  //             )
+  //                 : AppText(
+  //               message.message.toString(),
+  //               color: AppColorConstant.appBlack,
+  //               fontSize:
+  //               chatingPageViewModal!.fontSize == S.of(context).small
+  //                   ? 10.px
+  //                   : chatingPageViewModal!.fontSize ==
+  //                   S.of(context).large
+  //                   ? 20.px
+  //                   : chatingPageViewModal!.fontSize ==
+  //                   S.of(context).extraLarge
+  //                   ? 25.px
+  //                   : 15.px,
+  //             ),
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: EdgeInsets.only(left: 5.px, top: 3.px),
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               AppText(
+  //                 message.messageTimestamp.toString(),
+  //                 color: Theme.of(context).colorScheme.primary,
+  //                 fontSize: chatingPageViewModal!.fontSize ==
+  //                     S.of(context).small
+  //                     ? 8.px
+  //                     : chatingPageViewModal!.fontSize == S.of(context).large
+  //                     ? 15.px
+  //                     : chatingPageViewModal!.fontSize ==
+  //                     S.of(context).extraLarge
+  //                     ? 20.px
+  //                     : 12.px,
+  //
+  //               ),
+  //               if (message.emoji != null &&
+  //                   message.emoji!.containsKey('receiverEmoji'))
+  //                 GestureDetector(
+  //                     onTap: () {
+  //                       Get.bottomSheet(
+  //                         backgroundColor: AppColorConstant.appWhite,
+  //                         shape: const RoundedRectangleBorder(
+  //                             borderRadius: BorderRadius.only(
+  //                                 topLeft: Radius.circular(30),
+  //                                 topRight: Radius.circular(30))),
+  //                         ListTile(
+  //                           onTap: () {
+  //                             chatingPageViewModal!.deleteEmoji(
+  //                                 chatingPageViewModal!.snapshots.docs[0]['id'],
+  //                                 message.messageId,
+  //                                 message.sender,
+  //                                 message.emoji,
+  //                                 message.emoji);
+  //                             Get.back();
+  //                           },
+  //                           leading: const CircleAvatar(
+  //                               backgroundColor: Colors.deepOrange),
+  //                           title: AppText(message.sender.toString(),
+  //                               fontSize: 16),
+  //                           trailing: AppText(
+  //                               message.emoji!['receiverEmoji']['emoji'],
+  //                               fontSize: 16),
+  //                         ),
+  //                       );
+  //                     },
+  //                     child: AppText(message.emoji!['receiverEmoji']['emoji'])),
+  //               if (message.emoji != null &&
+  //                   message.emoji!.containsKey('senderEmoji'))
+  //                 AppText(message.emoji!['senderEmoji']['emoji']),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  ///  ////////////////// =========================== Only Check For Demo ================================////////////////////////
   buildReceiverMessageView(BuildContext context, MessageModel message) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
@@ -564,7 +730,7 @@ class ChatingPage extends StatelessWidget {
                   details.globalPosition,
                   chatingPageViewModal!.snapshots.docs[0]['id'],
                   message.messageId,
-                  message.sender);
+                  message.sender,chatingPageViewModal!.arguments["isGroup"]);
               logs(
                   'showimg--> ${chatingPageViewModal!.snapshots.docs[0]['id']}');
             },
@@ -652,6 +818,7 @@ class ChatingPage extends StatelessWidget {
               ),
             ),
           ),
+
           Padding(
             padding: EdgeInsets.only(left: 5.px, top: 3.px),
             child: Row(
@@ -671,6 +838,9 @@ class ChatingPage extends StatelessWidget {
                       : 12.px,
 
                 ),
+                if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                  for (var emoji in message.emoji!['groupEmojis'])
+                    AppText(emoji['emoji']),
                 if (message.emoji != null &&
                     message.emoji!.containsKey('receiverEmoji'))
                   GestureDetector(
@@ -713,11 +883,185 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildSenderMessageView(
-      BuildContext context,
-      MessageModel message,
-      ) {
+  /// =======================  Official Map in Emoji Show   =======================/////////////////
 
+  // buildSenderMessageView(BuildContext context, MessageModel message,) {
+  //   return Container(
+  //     margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
+  //     alignment: Alignment.centerRight,
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.end,
+  //       children: [
+  //         GestureDetector(
+  //           onLongPressDown: (details) {
+  //             log("sender isssddd-->${message.sender}");
+  //             chatingPageViewModal!.showEmojiMenu(
+  //                 context,
+  //                 details.globalPosition,
+  //                 chatingPageViewModal!.snapshots.docs[0]['id'],
+  //                 message.messageId,
+  //                 message.sender,
+  //                 chatingPageViewModal!.arguments["isGroup"]);
+  //           },
+  //           child: ChatBubble(
+  //             elevation: 0,
+  //             margin: EdgeInsets.only(left: 80.px),
+  //             clipper: ChatBubbleClipper2(
+  //                 type: BubbleType.sendBubble,
+  //                 nipHeight: 10.px,
+  //                 nipWidth: 6.px,
+  //                 radius: 5.px),
+  //             alignment: Alignment.topRight,
+  //             backGroundColor: chatingPageViewModal!.chatBubbleColor,
+  //             child: AppText(
+  //               message.message.toString(),
+  //               color: AppColorConstant.appWhite,
+  //               fontSize: chatingPageViewModal!.fontSize == S.of(context).small
+  //                   ? 10.px
+  //                   : chatingPageViewModal!.fontSize == S.of(context).large
+  //                   ? 20.px
+  //                   : chatingPageViewModal!.fontSize ==
+  //                   S.of(context).extraLarge
+  //                   ? 25.px
+  //                   : 15.px,
+  //             ),
+  //           ),
+  //         ),
+  //         // Padding(
+  //         //   padding: EdgeInsets.only(right: 5.px, top: 3.px),
+  //         //   child: Row(
+  //         //   mainAxisSize: MainAxisSize.min,
+  //         //   children: [
+  //         //     if (message.emoji != null &&
+  //         //         message.emoji!.containsKey('senderEmoji'))
+  //         //       GestureDetector(
+  //         //           onTap: () {
+  //         //             Get.bottomSheet(
+  //         //               backgroundColor: AppColorConstant.appWhite,
+  //         //               shape: const RoundedRectangleBorder(
+  //         //                   borderRadius: BorderRadius.only(
+  //         //                       topLeft: Radius.circular(30),
+  //         //                       topRight: Radius.circular(30))),
+  //         //               ListTile(
+  //         //                 onTap: () {
+  //         //                   chatingPageViewModal!.deleteEmoji(
+  //         //                       chatingPageViewModal!.snapshots.docs[0]['id'],
+  //         //                       message.messageId,
+  //         //                       message.sender,
+  //         //                       message.emoji,
+  //         //                       message.emoji);
+  //         //                   Get.back();
+  //         //                 },
+  //         //                 leading: const CircleAvatar(
+  //         //                     backgroundColor: Colors.deepOrange),
+  //         //                 title: AppText(message.sender.toString(),
+  //         //                     fontSize: 16),
+  //         //                 trailing: AppText(
+  //         //                     message.emoji!['senderEmoji']['emoji'],
+  //         //                     fontSize: 16),
+  //         //               ),
+  //         //             );
+  //         //           },
+  //         //           child: AppText(message.emoji!['senderEmoji']['emoji'])),
+  //         //     if (message.emoji != null &&
+  //         //         message.emoji!.containsKey('receiverEmoji'))
+  //         //       AppText(message.emoji!['receiverEmoji']['emoji']),
+  //         //     AppText(
+  //         //       message.messageTimestamp.toString(),
+  //         //       color: Theme.of(context).colorScheme.primary,
+  //         //       fontSize: chatingPageViewModal!.fontSize ==
+  //         //           S.of(context).small
+  //         //           ? 8.px
+  //         //           : chatingPageViewModal!.fontSize == S.of(context).large
+  //         //           ? 15.px
+  //         //           : chatingPageViewModal!.fontSize ==
+  //         //           S.of(context).extraLarge
+  //         //           ? 20.px
+  //         //           : 12.px,
+  //         //     ),
+  //         //     SizedBox(
+  //         //       width: 10.px,
+  //         //     ),
+  //         //     (message.sender == AuthService.auth.currentUser!.phoneNumber)
+  //         //         ? (message.messageStatus == true)
+  //         //         ? chatingPageViewModal!.buildDoubleClickView()
+  //         //         : chatingPageViewModal!.buildSingleClickView()
+  //         //         : null,
+  //         //   ],
+  //         // ),
+  //         // ),
+  //         Padding(
+  //           padding: EdgeInsets.only(right: 5.px, top: 3.px),
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               if (message.emoji != null &&
+  //                   message.emoji!.containsKey('senderEmoji'))
+  //                 GestureDetector(
+  //                     onTap: () {
+  //                       Get.bottomSheet(
+  //                         backgroundColor: AppColorConstant.appWhite,
+  //                         shape: const RoundedRectangleBorder(
+  //                             borderRadius: BorderRadius.only(
+  //                                 topLeft: Radius.circular(30),
+  //                                 topRight: Radius.circular(30))),
+  //                         ListTile(
+  //                           onTap: () {
+  //                             chatingPageViewModal!.deleteEmoji(
+  //                                 chatingPageViewModal!.snapshots.docs[0]['id'],
+  //                                 message.messageId,
+  //                                 message.sender,
+  //                                 message.emoji,
+  //                                 message.emoji);
+  //                             Get.back();
+  //                           },
+  //                           leading: const CircleAvatar(
+  //                               backgroundColor: Colors.deepOrange),
+  //                           title: AppText(message.sender.toString(),
+  //                               fontSize: 16),
+  //                           trailing: AppText(
+  //                               message.emoji!['senderEmoji']['emoji'],
+  //                               fontSize: 16),
+  //                         ),
+  //                       );
+  //                     },
+  //                     child: AppText(message.emoji!['senderEmoji']['emoji'])),
+  //               if (message.emoji != null &&
+  //                   message.emoji!.containsKey('receiverEmoji'))
+  //                 AppText(message.emoji!['receiverEmoji']['emoji']),
+  //               AppText(
+  //                 message.messageTimestamp.toString(),
+  //                 color: Theme.of(context).colorScheme.primary,
+  //                 fontSize: chatingPageViewModal!.fontSize ==
+  //                     S.of(context).small
+  //                     ? 8.px
+  //                     : chatingPageViewModal!.fontSize == S.of(context).large
+  //                     ? 15.px
+  //                     : chatingPageViewModal!.fontSize ==
+  //                     S.of(context).extraLarge
+  //                     ? 20.px
+  //                     : 12.px,
+  //               ),
+  //               SizedBox(
+  //                 width: 10.px,
+  //               ),
+  //               (message.sender == AuthService.auth.currentUser!.phoneNumber)
+  //                   ? (message.messageStatus == true)
+  //                   ? chatingPageViewModal!.buildDoubleClickView()
+  //                   : chatingPageViewModal!.buildSingleClickView()
+  //                   : null,
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  ///  ////////////////// =========================== Only Check For Demo ================================////////////////////////
+
+
+  buildSenderMessageView(BuildContext context, MessageModel message,) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
       alignment: Alignment.centerRight,
@@ -732,7 +1076,8 @@ class ChatingPage extends StatelessWidget {
                   details.globalPosition,
                   chatingPageViewModal!.snapshots.docs[0]['id'],
                   message.messageId,
-                  message.sender);
+                  message.sender,
+                  chatingPageViewModal!.arguments["isGroup"]);
             },
             child: ChatBubble(
               elevation: 0,
@@ -763,6 +1108,9 @@ class ChatingPage extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                  for (var emoji in message.emoji!['groupEmojis'])
+                    AppText(emoji['emoji']),
                 if (message.emoji != null &&
                     message.emoji!.containsKey('senderEmoji'))
                   GestureDetector(
@@ -854,7 +1202,7 @@ class ChatingPage extends StatelessWidget {
                   details.globalPosition,
                   chatingPageViewModal!.snapshots.docs[0]['id'],
                   message.messageId,
-                  message.sender,
+                  message.sender,chatingPageViewModal!.arguments["isGroup"],
                 );
                 logs('showimg--> ${chatingPageViewModal!.snapshots}');
               },
@@ -1009,6 +1357,9 @@ class ChatingPage extends StatelessWidget {
                           ? 20.px
                           : 12.px,
                     ),
+                    if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                      for (var emoji in message.emoji!['groupEmojis'])
+                        AppText(emoji['emoji']),
                     if (message.emoji != null &&
                         message.emoji!.containsKey('receiverEmoji'))
                       GestureDetector(
@@ -1082,7 +1433,7 @@ class ChatingPage extends StatelessWidget {
                     details.globalPosition,
                     chatingPageViewModal!.snapshots.docs[0]['id'],
                     message.messageId,
-                    message.sender,
+                    message.sender,chatingPageViewModal!.arguments["isGroup"],
                   );
                 },
                 child: Container(
@@ -1126,37 +1477,7 @@ class ChatingPage extends StatelessWidget {
                   ),
 
                   ),
-                  width: 150.px,
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(12.px),
-                          child: (false)
-                              ? AppImageAsset(image: message.thumb)
-                              : AppImageAsset(image: message.message)),
-                      if (message.text!.isNotEmpty)
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.all(4.px),
-                              child: AppText(
-                                message.text.toString(),
-                                fontSize: chatingPageViewModal!.fontSize ==
-                                        S.of(context).small
-                                    ? 10.px
-                                    : chatingPageViewModal!.fontSize ==
-                                            S.of(context).large
-                                        ? 20.px
-                                        : chatingPageViewModal!.fontSize ==
-                                                S.of(context).extraLarge
-                                            ? 25.px
-                                            : 15.px,
-                                color: AppColorConstant.appWhite,
-                              ),
-                            ))
-                    ],
-                  ),
-                ),
+
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -1165,6 +1486,9 @@ class ChatingPage extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                      for (var emoji in message.emoji!['groupEmojis'])
+                        AppText(emoji['emoji']),
                     if (message.emoji != null &&
                         message.emoji!.containsKey('senderEmoji'))
                       GestureDetector(
@@ -1247,15 +1571,14 @@ class ChatingPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           GestureDetector(
-
             onDoubleTapDown: (details) {
-              // chatingPageViewModal!.showEmojiMenu(
-              //   context,
-              //   details.globalPosition,
-              //   chatingPageViewModal!.snapshots.docs[0]['id'],
-              //   message.messageId,
-              //   message.sender,
-              // );
+              chatingPageViewModal!.showEmojiMenu(
+                context,
+                details.globalPosition,
+                chatingPageViewModal!.snapshots.docs[0]['id'],
+                message.messageId,
+                message.sender,chatingPageViewModal!.arguments["isGroup"],
+              );
             },
             child: Container(
               margin: EdgeInsets.all(6.px),
@@ -1348,11 +1671,11 @@ class ChatingPage extends StatelessWidget {
                                 : 15.px,
                             color: AppColorConstant.blackOff,
                           ),
-                        ))
+                        )),
                 ],
               ),
-            ),
-          ),
+
+          )),
           Align(
             alignment: Alignment.topRight,
             child: Padding(
@@ -1362,6 +1685,9 @@ class ChatingPage extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                    for (var emoji in message.emoji!['groupEmojis'])
+                      AppText(emoji['emoji']),
                   if (message.emoji != null &&
                       message.emoji!.containsKey('senderEmoji'))
                     GestureDetector(
@@ -1447,7 +1773,7 @@ class ChatingPage extends StatelessWidget {
                 details.globalPosition,
                 chatingPageViewModal!.snapshots.docs[0]['id'],
                 message.messageId,
-                message.sender,
+                message.sender,chatingPageViewModal!.arguments["isGroup"],
               );
               logs('showimg--> ${chatingPageViewModal!.snapshots}');
             },
@@ -1566,7 +1892,7 @@ class ChatingPage extends StatelessWidget {
                                 chatingPageViewModal!.viewFile(message.message,
                                     "AUDIO", controller, index);
                               },
-                              icon: (controller!.isPlayingList[index])
+                              icon: (controller.isPlayingList[index])
                                   ? const Icon(
                                 Icons.pause_circle,
                                 color: AppColorConstant.appWhite,
@@ -1631,6 +1957,9 @@ class ChatingPage extends StatelessWidget {
 
                                 color: AppColorConstant.appWhite,
                               ),
+                              if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                                for (var emoji in message.emoji!['groupEmojis'])
+                                  AppText(emoji['emoji']),
                               if (message.emoji != null &&
                                   message.emoji!.containsKey('receiverEmoji'))
                                 GestureDetector(
@@ -1725,7 +2054,7 @@ class ChatingPage extends StatelessWidget {
                     details.globalPosition,
                     chatingPageViewModal!.snapshots.docs[0]['id'],
                     message.messageId,
-                    message.sender,
+                    message.sender,chatingPageViewModal!.arguments["isGroup"],
                   );
                 },
                 child: Container(
@@ -1798,6 +2127,9 @@ class ChatingPage extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                      for (var emoji in message.emoji!['groupEmojis'])
+                        AppText(emoji['emoji']),
                     if (message.emoji != null &&
                         message.emoji!.containsKey('senderEmoji'))
                       GestureDetector(
@@ -1887,7 +2219,7 @@ class ChatingPage extends StatelessWidget {
                     details.globalPosition,
                     chatingPageViewModal!.snapshots.docs[0]['id'],
                     message.messageId,
-                    message.sender);
+                    message.sender,chatingPageViewModal!.arguments["isGroup"]);
                 logs('showimg--> ${chatingPageViewModal!.snapshots}');
               },
               child: Container(
@@ -2048,6 +2380,9 @@ class ChatingPage extends StatelessWidget {
                       ? 20.px
                       : 12.px,
                 ),
+                if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                  for (var emoji in message.emoji!['groupEmojis'])
+                    AppText(emoji['emoji']),
                 if (message.emoji != null &&
                     message.emoji!.containsKey('receiverEmoji'))
                   GestureDetector(
@@ -2127,7 +2462,7 @@ class ChatingPage extends StatelessWidget {
                             details.globalPosition,
                             chatingPageViewModal!.snapshots.docs[0]['id'],
                             message.messageId,
-                            message.sender);
+                            message.sender,chatingPageViewModal!.arguments["isGroup"]);
 
                       },
                       child: Container(
@@ -2235,6 +2570,9 @@ class ChatingPage extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                      for (var emoji in message.emoji!['groupEmojis'])
+                        AppText(emoji['emoji']),
                     if (message.emoji != null &&
                         message.emoji!.containsKey('senderEmoji'))
                       GestureDetector(
@@ -2332,7 +2670,7 @@ class ChatingPage extends StatelessWidget {
                       details.globalPosition,
                       chatingPageViewModal!.snapshots.docs[0]['id'],
                       message.messageId,
-                      message.sender,
+                      message.sender,chatingPageViewModal!.arguments["isGroup"],
                     );
                     logs('showimg--> ${chatingPageViewModal!.snapshots}');
 
@@ -2519,6 +2857,9 @@ class ChatingPage extends StatelessWidget {
                           ? 20.px
                           : 12.px,
                     ),
+                    if (message.emoji != null && message.emoji!.containsKey('groupEmojis'))
+                      for (var emoji in message.emoji!['groupEmojis'])
+                        AppText(emoji['emoji']),
                     if (message.emoji != null &&
                         message.emoji!.containsKey('receiverEmoji'))
                       GestureDetector(

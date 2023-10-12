@@ -82,6 +82,7 @@ class PinSettingScreen extends StatelessWidget {
             inputFormatters: (!pinSettingViewModel!.changeKeyBoard)
                 ? [
                     LengthLimitingTextInputFormatter(4),
+
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                   ]
                 : [

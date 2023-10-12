@@ -18,8 +18,8 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
-
 import '../../app/widget/app_shimmer.dart';
+
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
 
@@ -174,6 +174,7 @@ class ChatScreen extends StatelessWidget {
                           maxRadius: 35.px,
                           backgroundColor:
                               AppColorConstant.appYellow.withOpacity(0.8),
+
                           child: AppText(
                             data.first['firstName']
                                 .substring(0, 1)
