@@ -118,7 +118,6 @@ class ChatColorScreen extends StatelessWidget {
       AppColorConstant.pink,
       AppColorConstant.lightSky,
       AppColorConstant.purple,
-
       AppColorConstant.red,
     ];
 

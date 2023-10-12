@@ -13,6 +13,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/chanage_phone_controller.dart';
 import 'package:signal/generated/l10n.dart';
 
+import '../../../app/app/utills/theme_util.dart';
 import 'change_phone_view_model.dart';
 
 // ignore: must_be_immutable
@@ -28,7 +29,10 @@ class ChangePhoneScreen extends StatelessWidget {
     return GetBuilder<ChangePhoneController>(
       init: ChangePhoneController(),
       builder: (controller) {
-        return Scaffold(
+        return  Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: (!changePhoneViewModel!.isPhoneNumberChange)
               ? const AppAppBar(title: AppText(""))
@@ -39,7 +43,7 @@ class ChangePhoneScreen extends StatelessWidget {
                   fontSize: 22.px,
                 )),
           body: getBody(context, controller),
-        );
+        );});
       },
     );
   }

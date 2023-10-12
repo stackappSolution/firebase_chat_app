@@ -7,6 +7,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/generated/l10n.dart';
 
+import '../../../app/app/utills/theme_util.dart';
 import 'account_view_model.dart';
 
 // ignore: must_be_immutable
@@ -21,11 +22,14 @@ class AccountScreen extends StatelessWidget {
     return GetBuilder<AttachmentController>(
       init: AttachmentController(),
       builder: (controller) {
-        return Scaffold(
+        return  Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppBar(context),
           body: getBody(context, controller),
-        );
+        );});
       },
     );
   }

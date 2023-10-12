@@ -31,7 +31,7 @@ class AppImageAsset extends StatelessWidget {
             height: height,
             width: width,
             fit: fit ?? BoxFit.cover,
-            placeholder: (context, url) => const ShimmerView(),
+            placeholder: (context, url) =>  const AppShimmerView(),
             errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.red),
           )
         : isFile

@@ -16,6 +16,7 @@ import 'package:signal/controller/profile_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/profile/profile_view_model.dart';
 import 'package:signal/service/auth_service.dart';
+import '../../app/app/utills/theme_util.dart';
 import '../../constant/app_asset.dart';
 
 // ignore: must_be_immutable
@@ -38,10 +39,13 @@ class ProfileScreen extends StatelessWidget {
       },
       builder: (GetxController controller) {
         return SafeArea(
-          child: Scaffold(
+          child:  Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
             body: getBody(controller, context),
-          ),
+          );})
         );
       },
     );

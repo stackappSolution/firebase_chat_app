@@ -14,7 +14,6 @@ import 'package:signal/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
-
 class DatabaseService {
   DatabaseService._privateConstructor();
 
@@ -25,13 +24,10 @@ class DatabaseService {
 
   //================================addNewMessage============================//
 
-   addNewMessage(sendMessageModel) async {
+  addNewMessage(sendMessageModel) async {
     logs("database-----> ${sendMessageModel!.members!}");
 
     bool isFirst = await checkFirst(sendMessageModel.members!);
-    if (true) {
-      addChatMessage(sendMessageModel);
-    }
     if (isFirst) {
       addChatMessage(sendMessageModel);
 
@@ -60,6 +56,8 @@ class DatabaseService {
                   'members': sendMessageModel.members,
                 }));
       }
+    } else {
+      addChatMessage(sendMessageModel);
     }
   }
 
@@ -428,5 +426,4 @@ class DatabaseService {
 
     return await storage.getDownloadURL();
   }
-
 }

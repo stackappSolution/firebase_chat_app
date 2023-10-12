@@ -19,8 +19,6 @@ class ThemeUtil {
       selectedTheme = value;
       logs("loadThemeMode----> $value");
 
-
-
       if (selectedTheme == ThemeMode.dark) {
         isDark = true;
         controller.update();

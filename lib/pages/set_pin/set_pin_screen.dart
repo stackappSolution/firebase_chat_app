@@ -16,6 +16,7 @@ import 'package:signal/pages/set_pin/set_pin_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 
 import '../../app/app/utills/app_utills.dart';
+import '../../app/app/utills/theme_util.dart';
 import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_elevated_button.dart';
 import '../../controller/set_pin_controller.dart';
@@ -35,13 +36,16 @@ class SetPinScreen extends StatelessWidget {
       init: SetPinController(),
       initState: (state) {},
       builder: (controller) {
-        return SafeArea(
+        return  Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return SafeArea(
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
             body: getBody(context, controller),
             // floatingActionButton: getFloatingActionButton(context, controller),
           ),
-        );
+        );});
       },
     );
   }

@@ -11,6 +11,7 @@ import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/pages/home/home_view_model.dart';
 import 'package:signal/generated/l10n.dart';
 
+import '../../app/app/utills/theme_util.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
@@ -30,17 +31,20 @@ class HomeScreen extends StatelessWidget {
       },
       builder: (controller) {
         return SafeArea(
-            child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          bottomNavigationBar: buildBottomBar(controller,context),
-          body: getBody(controller),
-        ));
+          child: Builder(builder: (context) {
+            MediaQueryData mediaQuery = MediaQuery.of(context);
+            ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              bottomNavigationBar: buildBottomBar(controller, context),
+              body: getBody(controller),
+            );
+          }),
+        );
       },
     );
   }
 }
-
-
 
 getBody(HomeScreenController controller) {
   return IndexedStack(
@@ -52,16 +56,17 @@ getBody(HomeScreenController controller) {
   );
 }
 
-buildBottomBar(HomeScreenController controller,BuildContext context) {
+buildBottomBar(HomeScreenController controller, BuildContext context) {
   return BottomNavigationBar(
       elevation: 0.0,
-      backgroundColor:  Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       selectedItemColor: AppColorConstant.appYellow,
       onTap: controller.changeTabIndex,
       currentIndex: controller.tabIndex,
       items: [
         BottomNavigationBarItem(
-            label: S.of(Get.context!).chats,backgroundColor:  Theme.of(context).colorScheme.primary,
+            label: S.of(Get.context!).chats,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             icon: Padding(
               padding: EdgeInsets.only(bottom: 5.px),
               child: AppImageAsset(
@@ -84,5 +89,3 @@ buildBottomBar(HomeScreenController controller,BuildContext context) {
             ))
       ]);
 }
-
-

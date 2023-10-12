@@ -59,7 +59,7 @@ class ChatingPageController extends GetxController {
   getUserFcmToken(number) async {
     final t = await users.where('phone', isEqualTo: number).get();
     final data = t.docs;
-    return data[0]["fcmToken"];
+    return data.first["fcmToken"];
   }
 
   @override

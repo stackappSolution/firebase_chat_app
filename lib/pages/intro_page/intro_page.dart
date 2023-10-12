@@ -5,6 +5,7 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_elevated_button.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/generated/l10n.dart';
+import '../../app/app/utills/theme_util.dart';
 import '../../app/widget/app_alert_dialog.dart';
 import '../../app/widget/app_button.dart';
 import '../../app/widget/app_image_assets.dart';
@@ -27,7 +28,10 @@ class IntroPage extends StatelessWidget {
         NetworkConnectivity.checkConnectivity(context);
       },
       builder: (IntroPageController controller) {
-        return Scaffold(
+        return Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
           body: Container(
             alignment: Alignment.center,
             height: double.infinity,
@@ -68,7 +72,7 @@ class IntroPage extends StatelessWidget {
               ],
             ),
           ),
-        );
+        );});
       },
     );
   }
