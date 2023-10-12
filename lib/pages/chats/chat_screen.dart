@@ -19,7 +19,6 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
-import 'package:signal/service/database_service.dart';
 
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
@@ -107,7 +106,7 @@ class ChatScreen extends StatelessWidget {
               Get.toNamed(RouteHelper.getNewMessageScreen());
             },
           ),
-        )
+        ),
       ],
     );
   }
@@ -117,7 +116,7 @@ class ChatScreen extends StatelessWidget {
       return AppAppBar(
         leading: IconButton(
           icon: Icon(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.background,
             Icons.arrow_back_outlined,
           ),
           onPressed: () {
@@ -168,8 +167,8 @@ class ChatScreen extends StatelessWidget {
                   child: data.first['photoUrl'].isEmpty
                       ? CircleAvatar(
                           maxRadius: 35.px,
-                          backgroundColor:Theme.of(context).colorScheme.primary,
-                              // AppColorConstant.appYellow.withOpacity(0.2),
+                          backgroundColor:
+                          AppColorConstant.appYellow.withOpacity(0.8),
                           child: AppText(
                             data.first['firstName']
                                 .substring(0, 1)
@@ -880,7 +879,7 @@ class ChatScreen extends StatelessWidget {
                                                             EdgeInsets.only(
                                                                 right: 5.px),
                                                         child: SizedBox(
-                                                          width: 170.px,
+                                                          width: 140.px,
                                                           height: 20.px,
                                                           child: AppText(
                                                             messageData.first[

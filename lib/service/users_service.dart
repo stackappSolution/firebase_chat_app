@@ -157,6 +157,17 @@ class UsersService {
         .snapshots();
   }
 
+  //================================ getUser ================================//
+
+  static Future<QuerySnapshot<Map<String, dynamic>>> getSingleUserStream() async {
+    final data = await  usersCollection
+        .where('id', isEqualTo: AuthService.auth.currentUser!.uid)
+        .limit(1)
+        .get();
+
+    return data;
+  }
+
   //============================= save transaction detail =====================//
 
   Future<void> saveTransactionToFirestore(TransactionsModel transaction) async {

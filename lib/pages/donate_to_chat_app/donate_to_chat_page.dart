@@ -106,7 +106,7 @@ class DonateToChatPage extends StatelessWidget {
               color: AppColorConstant.appWhite),
             onPressed: () {
               donateChatViewModel!.enterAmount(context, controller);
-            },
+              },
           ),
           SizedBox(
             height: 10.px,

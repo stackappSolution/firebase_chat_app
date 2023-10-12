@@ -187,7 +187,7 @@ class ChatProfileScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(6.px)),
                       color: AppColorConstant.yellowLight),
                   child: AppText(
-                    "${chatProfileViewModel!.totalMembers[index].toString()}  ",
+                    chatProfileViewModel!.totalMembers[index].toString(),
                     color: AppColorConstant.appYellow,
                   ));
             },

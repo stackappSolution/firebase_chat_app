@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +17,7 @@ import 'package:signal/controller/settings_controller.dart';
 
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/auth_service.dart';
 
 // ignore: must_be_immutable
 class ChatWallpaperScreen extends StatelessWidget {
@@ -25,6 +29,7 @@ class ChatWallpaperScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logs('wallcolor-->$wallColor');
     return GetBuilder<SettingsController>(
       init: SettingsController(),
       initState: (state) {},
@@ -95,6 +100,7 @@ class ChatWallpaperScreen extends StatelessWidget {
       AppColorConstant.grey,
     ];
 
+
     return Expanded(
       child: GridView.builder(
         padding: EdgeInsets.all(20.px),
@@ -106,9 +112,9 @@ class ChatWallpaperScreen extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               wallColor = chatColors[index];
-              setStringValue(
-                  wallPaperColor, wallColor!.value.toRadixString(16));
-
+              logs('wallcolor-->$wallColor');
+              // setStringValue(
+              //     wallPaperColor, wallColor!.value.toRadixString(16));
               Get.toNamed(
                 RouteHelper.getWallpaperPreviewScreen(),
               );
@@ -128,14 +134,23 @@ class ChatWallpaperScreen extends StatelessWidget {
   }
 
   Future<void> pickImageGallery() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      logs(selectedImage.toString());
-      // controller!.update();
+      logs('image pick-->${selectedImage.toString()}');
+       // controller!.update();
       Get.toNamed(RouteHelper.getWallpaperPreviewScreen(),
           parameters: {'image': selectedImage!.path});
     }
   }
+
+  // Future<void> chatWallColor()async {
+  //   final users = FirebaseFirestore.instance.collection("users");
+  //   String? colorCode = wallColor!.value.toRadixString(16);
+  //   try {
+  //     await users.doc(FirebaseAuth.instance.currentUser!.uid).update(colorCode as Map<Object, Object?>);
+  //   } catch (e) {
+  //     print('color not added');
+  //   }
+  // }
 }

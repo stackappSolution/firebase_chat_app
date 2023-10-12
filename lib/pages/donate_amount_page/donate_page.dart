@@ -41,7 +41,7 @@ class DonatePage extends StatelessWidget {
             donateViewModel!.handleExternalWallet);
       },
       dispose: (state) {
-        donateViewModel!.razorpay.clear();
+        donateViewModel!.razorpay.clear();;
       },
       builder: (DonateController controller) {
         return Scaffold(

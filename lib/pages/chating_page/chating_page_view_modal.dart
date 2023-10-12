@@ -73,6 +73,7 @@ class ChatingPageViewModal {
   String selectedEmoji = '';
   bool isBlockedByLoggedInUser = false;
   List<bool> isFileDownLoadingList = <bool>[];
+  QuerySnapshot<Map<String, dynamic>>? backWallpaper;
 
   TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;
@@ -626,7 +627,7 @@ class ChatingPageViewModal {
 
   Future<void> pickImageGallery(GetxController controller, members) async {
     final pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 10);
+        .pickImage(source: ImageSource.gallery, imageQuality: 10,);
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));

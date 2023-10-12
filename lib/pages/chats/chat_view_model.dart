@@ -26,7 +26,6 @@ class ChatViewModel {
   Map<String, dynamic> arguments = {};
   dynamic snapshots;
 
-
   final Stream<QuerySnapshot> usersStream = UsersService.getUserStream();
 
   List<DocumentSnapshot> data = [];
@@ -129,54 +128,21 @@ class ChatViewModel {
     );
   }
 
-  // Future<void> markMessagesAsSeen(String chatRoomId, String receiverId) async {
-  //   await FirebaseFirestore.instance
-  //       .collection("rooms")
-  //       .doc().get().then((value){
-  //     List<String> roomsId = [];
-  //     logs('roooomsssssiddd-->$roomsId');
-  //     for (var doc in value.docs) {
-  //       roomsId.add(doc.id);
-  //     }
-  //   });
-  //
-  //   FirebaseFirestore.instance
-  //       .collection("rooms")
-  //       .doc(chatRoomId)
-  //       .collection("chats")
-  //       .where('sender', isEqualTo: receiverId)
-  //       .where("messageStatus", isEqualTo: false)
-  //       .get()
-  //       .then((value) {
-  //     List<String> messageIds = [];
-  //     for (var doc in value.docs) {
-  //       messageIds.add(doc.id);
-  //     }
-  //
-  //     for (var element in messageIds) {
-  //       FirebaseFirestore.instance
-  //           .collection('rooms')
-  //           .doc(chatRoomId)
-  //           .collection('chats')
-  //           .doc(element)
-  //           .update({'messageStatus': true}).then((value) {
-  //         print("massage upgraded");
-  //       });
-  //       print("value-----------> ${value.docs.length}");
-  //     }
-  //   });
-  // }
   List<String> roomid = [];
 
   Future<void> markMessagesAsSeenChatPage() async {
     FirebaseFirestore.instance
-        .collection("rooms").where('members', arrayContains: AuthService.auth.currentUser!.phoneNumber).get().then((value) {
+        .collection("rooms")
+        .where('members',
+            arrayContains: AuthService.auth.currentUser!.phoneNumber)
+        .get()
+        .then((value) {
       for (var doc in value.docs) {
         roomid.add(doc.id);
       }
       logs('rooomIdddd-->$roomid');
     });
-    for(int i = 0;i<=roomid.length;i++){
+    for (int i = 0; i <= roomid.length; i++) {
       FirebaseFirestore.instance
           .collection("rooms")
           .doc(roomid[i])
@@ -201,6 +167,5 @@ class ChatViewModel {
         }
       });
     }
-      }
   }
-
+}

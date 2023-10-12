@@ -212,4 +212,5 @@ class StringConstant {
   static const String donatefriend = 'Donate For Friend';
   static const String enteramount = 'Enter Amount';
   static const String unBlock = 'UnBlock';
+  static const String transaction = 'Transaction';
 }

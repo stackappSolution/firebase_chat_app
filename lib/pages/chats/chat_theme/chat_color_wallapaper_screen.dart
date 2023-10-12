@@ -140,7 +140,6 @@ class ChatColorWallpaperScreen extends StatelessWidget {
             InkWell(
                 onTap: () {
                   Get.back();
-
                 },
                 child: AppText(S.of(context).cancel,
                     color: AppColorConstant.appYellow)),
@@ -192,9 +191,9 @@ class ChatColorWallpaperScreen extends StatelessWidget {
                 setStringValue(
                     chatColor, const Color(0xFFf69533).value.toRadixString(16));
                 setStringValue(wallpaper, '');
+                controller!.update();
                 Get.back();
                 Get.off(ChatColorWallpaperScreen());
-
                 controller!.update();
               },
               child: AppText(

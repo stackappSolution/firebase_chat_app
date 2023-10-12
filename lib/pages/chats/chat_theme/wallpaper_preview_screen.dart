@@ -1,15 +1,21 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/modal/user_model.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
 import 'package:signal/routes/routes_helper.dart';
+
+import '../../../service/auth_service.dart';
 
 // ignore: must_be_immutable
 class WallpaperPreviewScreen extends StatelessWidget {
@@ -18,6 +24,8 @@ class WallpaperPreviewScreen extends StatelessWidget {
   SettingsController? controller;
   Color? wallColor;
   Map<String, dynamic> parameter = {};
+  bool isLoading = false;
+  final users = FirebaseFirestore.instance.collection("users");
 
   @override
   Widget build(BuildContext context) {
@@ -189,20 +197,57 @@ class WallpaperPreviewScreen extends StatelessWidget {
 
   onSetWallpaper() {
     if (parameter['image'] != null) {
-      setStringValue(wallpaper, parameter['image']);
+      uploadImage(File(parameter['image']));
       Get.back();
       Get.off(ChatColorWallpaperScreen());
-
       setStringValue(
           wallPaperColor, const Color(0xFFFFFFFF).value.toRadixString(16));
     } else {
-
-
-      setStringValue(wallpaper, '');
+      setStringValue(wallpaper,'');
       setStringValue(
-          wallPaperColor, wallColor!.value.toRadixString(16));
+      wallPaperColor, wallColor!.value.toRadixString(16));
       Get.back();
       Get.off(ChatColorWallpaperScreen());
+    }
+  }
+
+   Future<String> uploadImage(
+      File url,) async {
+    final storage = FirebaseStorage.instance
+        .ref('wallpaper')
+        .child("images")
+        .child(AuthService.auth.currentUser!.phoneNumber!)
+        .child('${DateTime.now()}wallpaper.jpg');
+
+    final UploadTask uploadTask = storage.putFile(url, SettableMetadata(contentType: 'IMAGE'), // Specify the content type
+    );
+    await uploadTask.whenComplete(() {
+      logs('File uploaded successfully');
+    });
+    storage.getDownloadURL().then(
+          (value) {
+        logs("valueurrrrll--> $value");
+        updateWallpaper(value);
+      },
+    );
+    return await storage.getDownloadURL();
+  }
+
+  Future<void> updateWallpaper(String photoUrl) async {
+    logs("updateUserPhotoUrl Entred");
+    isLoading = true;
+    controller!.update();
+    try {
+      await users.doc(AuthService.auth.currentUser!.uid).update({
+        'wallpaper': photoUrl,
+      });
+      logs('Successfully updated user profile picture');
+      isLoading = false;
+      controller!.update();
+    } catch (e) {
+      logs('Error updating user profile picture: $e');
+      isLoading = false;
+      controller!.update();
     }
   }
 }
