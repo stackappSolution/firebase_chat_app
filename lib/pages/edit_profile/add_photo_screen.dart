@@ -14,7 +14,6 @@ import 'package:signal/pages/edit_profile/add_photo_controller.dart';
 
 import 'package:signal/pages/edit_profile/add_photo_view_model.dart';
 import 'package:signal/pages/edit_profile/edit_photo_text/edit_profile_text.dart';
-import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../app/app/utills/app_utills.dart';

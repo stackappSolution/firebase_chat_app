@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -73,6 +74,8 @@ class ChatingPageViewModal {
   String selectedEmoji = '';
   bool isBlockedByLoggedInUser = false;
   List<bool> isFileDownLoadingList = <bool>[];
+  String? backWallpaper;
+  Color? chatbubblecolor;
 
   TextEditingController chatController = TextEditingController();
   ChatingPageController? controller;
@@ -83,6 +86,11 @@ class ChatingPageViewModal {
   int downloadPercentage = 0;
   int i = 0;
   String? recordFilePath;
+  Color? wallColorbackground;
+  String? wallImage;
+  bool iconChange = false;
+  final firestore = FirebaseFirestore.instance;
+  Color? bubblColors;
 
   ChatingPageViewModal([this.chatingPage]) {
     Future.delayed(const Duration(milliseconds: 0), () async {
@@ -262,25 +270,6 @@ class ChatingPageViewModal {
     return fontSize;
   }
 
-  bool iconChange = false;
-
-  Future<Color> getWallpaperColor() async {
-    final colorCode = await getStringValue(wallPaperColor);
-    if (colorCode != null) {
-      return Color(int.parse(colorCode, radix: 16));
-    } else {
-      return Colors.white;
-    }
-  }
-
-  Future<Color> getChatBubbleColor() async {
-    final colorCode = await getStringValue(chatColor);
-    if (colorCode != null) {
-      return Color(int.parse(colorCode, radix: 16));
-    } else {
-      return AppColorConstant.appYellow;
-    }
-  }
 
   //========================= docs =============================//
 
@@ -1099,6 +1088,7 @@ class ChatingPageViewModal {
       controller!.update();
     }
   }
+  ///=================    array union to work =============== /////
 
   Future<void> addEmoji(
       roomId,
@@ -1264,5 +1254,39 @@ class ChatingPageViewModal {
         DatabaseService.instance
             .markMessagesAsSeen(snapshots.docs.first.id, arguments['number']);
       }
+  }
+
+  Future<void> getColorFromFirestore() async {
+    final users = FirebaseFirestore.instance.collection("users");
+    final userDocument = users.doc(FirebaseAuth.instance.currentUser!.uid);
+    final documentSnapshot = await userDocument.get();
+    if (documentSnapshot.exists) {
+      final data = documentSnapshot.data();
+      if (data != null && data['colorCode'] != null) {
+        wallImage = data['wallpaper'];
+        if(wallImage!.isEmpty) {
+          wallColorbackground = Color(int.parse(data['colorCode'], radix: 16));
+        }
+        logs('wallColorBackground-->$wallColorbackground');
+        logs('wallimage-->$wallImage');
+        controller!.update();
+      }
+    }
+  }
+  Future<Color> getChatBubbleColors() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final colorRef = firestore.collection('users').doc(user.uid);
+      final documentSnapshot = await colorRef.get();
+      if (documentSnapshot.exists) {
+        final data = documentSnapshot.data();
+        final colorHex = data?['bubbleColor'];
+        if (colorHex != null) {
+          bubblColors = Color(int.parse(data!['bubbleColor'], radix: 16));
+          logs('bubbllllllleeeeColors-->$bubblColors');
+        }
+      }
+    }
+    return AppColorConstant.appYellow;
   }
 }

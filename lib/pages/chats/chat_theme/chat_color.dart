@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -18,6 +20,8 @@ class ChatColorScreen extends StatelessWidget {
 
   SettingsController? controller;
   Color selectedColor = AppColorConstant.appYellow;
+  final firestore = FirebaseFirestore.instance;
+  Color? bubbleColor;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,6 @@ class ChatColorScreen extends StatelessWidget {
           const Duration(milliseconds: 0),
               () async {
             controller = Get.find<SettingsController>();
-            selectedColor = await getChatBubbleColor();
             controller!.update();
           },
         );
@@ -134,7 +137,6 @@ class ChatColorScreen extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             selectedColor = chatColors[index];
-            setStringValue(chatColor, selectedColor.value.toRadixString(16));
             logs("selected Color--> $selectedColor");
             controller!.update();
           },
@@ -159,19 +161,9 @@ class ChatColorScreen extends StatelessWidget {
     );
   }
 
-  Future<Color> getChatBubbleColor() async {
-    final colorCode = await getStringValue(chatColor);
-    if (colorCode != null) {
-      return Color(int.parse(colorCode, radix: 16));
-    } else {
-      return AppColorConstant.appYellow;
-    }
-  }
-
   buildSaveButton(BuildContext context) {
-    return InkWell(onTap: () {
-      setStringValue(chatColor, selectedColor.value.toRadixString(16));
-      logs("selected Color--> $selectedColor");
+    return InkWell(onTap: () async {
+      await setChatBubbleColor(selectedColor);
       controller!.update();
       Get.back();
       Get.off(ChatColorWallpaperScreen());
@@ -185,7 +177,6 @@ class ChatColorScreen extends StatelessWidget {
             color: AppColorConstant.appWhite,
             borderRadius: BorderRadius.circular(12.px),
             border: Border.all(color: AppColorConstant.grey, width: 2.px)),
-
         child: const AppText(
           StringConstant.save,
           color: AppColorConstant.appBlack,
@@ -193,6 +184,25 @@ class ChatColorScreen extends StatelessWidget {
       ),
     );
   }
+
+
+  Future<void> setChatBubbleColor(Color selectedColor) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final colorHex = selectedColor.value.toRadixString(16);
+      final colorRef = firestore.collection('users').doc(user.uid);
+      try {
+        await colorRef.set({
+          'bubbleColor': colorHex,
+        }, SetOptions(merge: true));
+        print('Selected color saved successfully');
+      } catch (error) {
+        print('Error saving color: $error');
+      }
+    }
+  }
+
+
 }
 
 
