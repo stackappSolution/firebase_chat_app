@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +11,6 @@ import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/date_formation.dart';
-import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_button.dart';
 import 'package:signal/app/widget/app_image_assets.dart';
@@ -40,6 +38,8 @@ class ChatingPage extends StatelessWidget {
   ChatingPageViewModal? chatingPageViewModal;
   static String date = '';
   ChatingPageController? controller;
+  Color? wallColorbackground;
+  DecorationImage? backgroundImage;
 
   getBlockedList() async {
     chatingPageViewModal!.blockedNumbers =
@@ -78,6 +78,12 @@ class ChatingPage extends StatelessWidget {
 
             chatingPageViewModal!.chatStream();
             chatingPageViewModal!.markMessage();
+            chatingPageViewModal!.getColorFromFirestore();
+            chatingPageViewModal!.getChatBubbleColors();
+            chatingPageViewModal!.backWallpaper =
+                await UsersService.getSinglebackgroundImage();
+            chatingPageViewModal!.getChatBubbleColors();
+            logs('chatBubbleColor-->${chatingPageViewModal!.chatbubblecolor}');
 
             Future<String?> key = getStringValue(wallpaper);
             chatingPageViewModal!.wallpaperPath = await key;
@@ -96,7 +102,6 @@ class ChatingPage extends StatelessWidget {
         return WillPopScope(
           onWillPop: () async {
             controller.player.dispose();
-
             return true;
           },
           child:Builder(builder: (context) {
@@ -128,12 +133,12 @@ class ChatingPage extends StatelessWidget {
                           if (snapshot.hasError) {
                             return AppText(S.of(context).somethingWentWrong);
                           }
-
                           if (snapshot.hasData) {
                             final data = snapshot.data!.docs;
                             chatingPageViewModal!.updateChatLength(data.length);
                             final message = snapshot.data!.docs
                                 .map((doc) => doc.data() as Map<String, dynamic>)
+
                                 .toList();
 
                             Future.delayed(
@@ -277,6 +282,7 @@ class ChatingPage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
+
                                         )
                                     ],
                                   ),
@@ -299,6 +305,7 @@ class ChatingPage extends StatelessWidget {
               ),
             );});
           },)
+
         );
       },
     );
@@ -347,7 +354,7 @@ class ChatingPage extends StatelessWidget {
               ? Padding(
                   padding:
                       EdgeInsets.only(right: 5.px, bottom: 5.px, top: 5.px),
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 )
               : AppButton(
                   margin: EdgeInsets.only(right: 5.px, bottom: 5.px, top: 5.px),
@@ -625,6 +632,7 @@ class ChatingPage extends StatelessWidget {
                                       '',
                                       fontSize: 10.px,
                                     );
+
                                   }
                                   final data = snapshot.data!.docs;
                                   logs("name -- > ${data.first['firstName']}");
@@ -739,10 +747,8 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildSenderMessageView(
-    BuildContext context,
-    MessageModel message,
-  ) {
+
+  buildSenderMessageView(BuildContext context, MessageModel message,) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
       alignment: Alignment.centerRight,
@@ -769,7 +775,7 @@ class ChatingPage extends StatelessWidget {
                   nipWidth: 6.px,
                   radius: 5.px),
               alignment: Alignment.topRight,
-              backGroundColor: chatingPageViewModal!.chatBubbleColor,
+              backGroundColor: chatingPageViewModal!.bubblColors,
               child: AppText(
                 message.message.toString(),
                 color: AppColorConstant.appWhite,

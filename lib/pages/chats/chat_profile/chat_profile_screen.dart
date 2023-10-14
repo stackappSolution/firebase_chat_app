@@ -74,7 +74,6 @@ class ChatProfileScreen extends StatelessWidget {
             //   'members': chatProfileViewModel!.arguments['members'],
             //   'about': chatProfileViewModel!.arguments['about'],
             // });
-
             return true;
           },
         );

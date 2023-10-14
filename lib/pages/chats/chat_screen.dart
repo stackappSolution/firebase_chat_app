@@ -174,6 +174,7 @@ class ChatScreen extends StatelessWidget {
                           maxRadius: 35.px,
                           backgroundColor:
                               AppColorConstant.appYellow.withOpacity(0.8),
+
                           child: AppText(
                             data.first['firstName']
                                 .substring(0, 1)

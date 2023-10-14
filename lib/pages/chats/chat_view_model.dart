@@ -65,7 +65,6 @@ class ChatViewModel {
     contacts = await ContactsService.getContacts();
     isLoading = false;
     controller.update();
-
     logs("saved contact length----->  ${contacts.length}");
     controller!.update();
   }
