@@ -11,8 +11,6 @@ import 'package:signal/pages/settings/privacy/privacy_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 
-import '../../../service/network_connectivity.dart';
-
 // ignore: must_be_immutable
 class PrivacyScreen extends StatelessWidget {
   PrivacyScreen({Key? key}) : super(key: key);
@@ -26,7 +24,6 @@ class PrivacyScreen extends StatelessWidget {
 
     return GetBuilder<SettingsController>(
       initState: (state) {
-          NetworkConnectivity.checkConnectivity(context);
         Future.delayed(
           const Duration(milliseconds: 10),
           () {

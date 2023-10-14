@@ -20,15 +20,16 @@ class SplashScreen extends StatelessWidget {
     NetworkConnectivity.checkConnectivity(context);
     splashViewModel ?? (splashViewModel = SplashViewModel(this));
     Timer(const Duration(seconds: 5), () {
-      SharedPreferences.getInstance().then((prefs) {
-        if (AuthService.auth.currentUser != null) {
-          RouteHelper.getHomeScreen();
-        } else if (AuthService.auth.currentUser?.phoneNumber?.isNotEmpty == true) {
-          RouteHelper.getProfileScreen();
-        } else {
-          RouteHelper.getIntroScreen();
-        }
-      });
+      // SharedPreferences.getInstance().then((prefs) {
+      //   if (AuthService.auth.currentUser != null) {
+      //     RouteHelper.getHomeScreen();
+      //   } else if (AuthService.auth.currentUser?.phoneNumber?.isNotEmpty == true) {
+      //     RouteHelper.getProfileScreen();
+      //   } else {
+      //     RouteHelper.getIntroScreen();
+      //   }
+      // });
+
     });
 
 

@@ -11,7 +11,6 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/appearance/appearance_view_model.dart';
 
 import '../../constant/string_constant.dart';
-import '../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class AppearanceScreen extends StatelessWidget {
@@ -27,7 +26,7 @@ class AppearanceScreen extends StatelessWidget {
     return GetBuilder<AppearanceController>(
       init: AppearanceController(),
       initState: (state) async {
-          NetworkConnectivity.checkConnectivity(context);
+
         Future.delayed(
           const Duration(milliseconds: 100),
           () async {

@@ -8,7 +8,6 @@ import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/generated/l10n.dart';
 
 import '../../../app/app/utills/theme_util.dart';
-import '../../../service/network_connectivity.dart';
 import 'account_view_model.dart';
 
 // ignore: must_be_immutable
@@ -21,10 +20,7 @@ class AccountScreen extends StatelessWidget {
     accountViewModel ?? (accountViewModel = AccountViewModel(this));
 
     return GetBuilder<AttachmentController>(
-      init: AttachmentController(),initState: (state) {
-      NetworkConnectivity.checkConnectivity(context);
-
-      },
+      init: AttachmentController(),
       builder: (controller) {
         return  Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);

@@ -18,7 +18,6 @@ import 'package:signal/service/auth_service.dart';
 
 import '../../app/app/utills/theme_util.dart';
 import '../../app/app/utills/toast_util.dart';
-import '../../service/network_connectivity.dart';
 
 class VerifyOtpPage extends StatelessWidget {
   VerifyOtpPage({super.key});
@@ -31,68 +30,63 @@ class VerifyOtpPage extends StatelessWidget {
     return GetBuilder(
       init: VerifyOtpController(),
       initState: (state) {
-          NetworkConnectivity.checkConnectivity(context);
         verifyOtpViewModel!.parameter = Get.parameters;
         logs("parameter data---->${verifyOtpViewModel!.parameter.values}");
       },
       builder: (VerifyOtpController controller) {
-        return WillPopScope(
-          onWillPop: () async {
-            return await showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.px),
-                      borderSide: const BorderSide(color: Colors.transparent)),
-                  title: const AppText('Exit App', fontWeight: FontWeight.bold),
-                  content:
-                      const AppText('Are you sure you want to exit the app?'),
-                  actions: [
-                    Row(
-                      children: [
-                        const Spacer(),
-                        AppElevatedButton(
-                          buttonWidth: 50.px,
-                          buttonColor: AppColorConstant.appYellow,
-                          buttonHeight: 40.px,
-                          widget: const AppText('Yes',
-                              color: AppColorConstant.appWhite),
-                          onPressed: () {
-                            SystemNavigator.pop();
-                            //Navigator.of(context).pop(true); // Exit the app
-                          },
-                        ),
-                        SizedBox(width: 10.px),
-                        AppElevatedButton(
-                          buttonWidth: 50.px,
-                          buttonColor: AppColorConstant.appYellow,
-                          buttonHeight: 40.px,
-                          widget: const AppText('No',
-                              color: AppColorConstant.appWhite),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pop(false); // Don't exit the app
-                          },
-                        ),
-                        // Add spacing between buttons
-                      ],
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          child: SafeArea(
-            child:  Builder(builder: (context) {
-        MediaQueryData mediaQuery = MediaQuery.of(context);
-        ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
-        return Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.background,
-              body: buildVerifyotpScreen(controller, context),
-            );
-          }))
-        );
+        return WillPopScope(onWillPop: () async {
+          return await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.px),
+                    borderSide: const BorderSide(color: Colors.transparent)),
+                title: const AppText('Exit App', fontWeight: FontWeight.bold),
+                content:
+                    const AppText('Are you sure you want to exit the app?'),
+                actions: [
+                  Row(
+                    children: [
+                      const Spacer(),
+                      AppElevatedButton(
+                        buttonWidth: 50.px,
+                        buttonColor: AppColorConstant.appYellow,
+                        buttonHeight: 40.px,
+                        widget: const AppText('Yes',
+                            color: AppColorConstant.appWhite),
+                        onPressed: () {
+                          SystemNavigator.pop();
+                          //Navigator.of(context).pop(true); // Exit the app
+                        },
+                      ),
+                      SizedBox(width: 10.px),
+                      AppElevatedButton(
+                        buttonWidth: 50.px,
+                        buttonColor: AppColorConstant.appYellow,
+                        buttonHeight: 40.px,
+                        widget: const AppText('No',
+                            color: AppColorConstant.appWhite),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pop(false); // Don't exit the app
+                        },
+                      ),
+                      // Add spacing between buttons
+                    ],
+                  ),
+                ],
+              );
+            },
+          );
+        }, child: SafeArea(child: Builder(builder: (context) {
+          MediaQueryData mediaQuery = MediaQuery.of(context);
+          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            body: buildVerifyotpScreen(controller, context),
+          );
+        })));
       },
     );
   }
@@ -193,7 +187,9 @@ class VerifyOtpPage extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             width: 60.px,
                             child: AppText(
-                                "00 : ${AuthService.countdownSeconds.toString()}",maxLines: 1,)),
+                              "00 : ${AuthService.countdownSeconds.toString()}",
+                              maxLines: 1,
+                            )),
                       Padding(
                         padding: EdgeInsets.all(5.0.px),
                         child: InkWell(
@@ -244,7 +240,9 @@ class VerifyOtpPage extends StatelessWidget {
                                 try {
                                   AuthService.isVerifyLoading = true;
                                   controller.update();
-                                  await AuthService.instance.signInWithOTP(verifyOtpViewModel!.otpcontroller.text,verifyOtpViewModel!.parameter["phoneNo"]);
+                                  await AuthService.instance.signInWithOTP(
+                                      verifyOtpViewModel!.otpcontroller.text,
+                                      verifyOtpViewModel!.parameter["phoneNo"]);
                                 } catch (e) {
                                   ToastUtil.warningToast("Enter Valid OTP");
                                   logs("OTP Verification Failed: $e");
@@ -268,7 +266,6 @@ class VerifyOtpPage extends StatelessWidget {
           ),
         ),
         if (AuthService.isResend) AppLoader(),
-
       ],
     );
   }

@@ -10,7 +10,6 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/account/pin_setting/pin_setting_view_model.dart';
 
 import '../../../app/app/utills/theme_util.dart';
-import '../../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class PinSettingScreen extends StatelessWidget {
@@ -24,9 +23,7 @@ class PinSettingScreen extends StatelessWidget {
 
     return GetBuilder<PinSettingController>(
       init: PinSettingController(),
-      initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
-      },
+      initState: (state) {},
       builder: (controller) {
         return SafeArea(child: Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -85,7 +82,6 @@ class PinSettingScreen extends StatelessWidget {
             inputFormatters: (!pinSettingViewModel!.changeKeyBoard)
                 ? [
                     LengthLimitingTextInputFormatter(4),
-
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                   ]
                 : [

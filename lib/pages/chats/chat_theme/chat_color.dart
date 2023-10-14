@@ -11,8 +11,6 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
 
-import '../../../service/network_connectivity.dart';
-
 class ChatColorScreen extends StatelessWidget {
   ChatColorScreen({Key? key}) : super(key: key);
 
@@ -24,7 +22,6 @@ class ChatColorScreen extends StatelessWidget {
     return GetBuilder<SettingsController>(
       init: SettingsController(),
       initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
         Future.delayed(
           const Duration(milliseconds: 0),
               () async {

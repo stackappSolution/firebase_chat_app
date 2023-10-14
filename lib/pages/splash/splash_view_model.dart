@@ -1,13 +1,30 @@
+import 'package:contacts_service/contacts_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/pages/splash/splash_screen.dart';
 import 'package:signal/routes/app_navigation.dart';
 
+import '../../routes/routes_helper.dart';
+import '../../service/auth_service.dart';
+
 class SplashViewModel {
   SplashScreen? splashScreen;
   String? phoneNumber;
 
-  SplashViewModel(this.splashScreen);
+  SplashViewModel(this.splashScreen) {
+    getPermission();
+    Future.delayed(
+      Duration(seconds: 2),
+      () {
+        if (AuthService.auth.currentUser != null) {
+          goToHomeScreen();
+        } else {
+          goToIntroPage();
+        }
+      },
+    );
+  }
 
   redirect(int index) async {
     switch (index) {
@@ -53,5 +70,28 @@ class SplashViewModel {
     } else {
       goToIntroPage();
     }
+  }
+
+  Future<void> getPermission() async {
+    final PermissionStatus permissionStatus = await Permission.contacts.status;
+
+    if (permissionStatus.isGranted) {
+      fetchContacts();
+    } else {
+      final PermissionStatus requestResult =
+          await Permission.contacts.request();
+
+      if (requestResult.isGranted) {
+        fetchContacts();
+      } else {
+        logs('Contacts permission denied');
+      }
+    }
+  }
+
+  void fetchContacts() async {
+    logs("fetch contact entered");
+    contacts = await ContactsService.getContacts();
+    logs("saved contact length----->  ${contacts.length}");
   }
 }

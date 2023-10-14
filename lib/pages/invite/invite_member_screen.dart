@@ -21,15 +21,16 @@ class InviteMemberScreen extends StatelessWidget {
       init: InviteController(),
       initState: (state) {
         inviteViewModel!.parameter = Get.parameters;
-
       },
       builder: (controller) {
         return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
           appBar: getAppbar(context),
           body: buildInviteView(
               inviteViewModel!.parameter['firstLetter'],
               inviteViewModel!.parameter['displayName'],
-              inviteViewModel!.parameter['phoneNo'],context),
+              inviteViewModel!.parameter['phoneNo'],
+              context),
         );
       },
     );
@@ -47,68 +48,63 @@ class InviteMemberScreen extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary),
         ),
       ),
-      title: AppText(
-        inviteViewModel!.parameter['displayName'],
-          color: Theme.of(context).colorScheme.primary
+      title: AppText(inviteViewModel!.parameter['displayName'],
+          color: Theme.of(context).colorScheme.primary),
+    );
+  }
+
+  buildInviteView(String firstLetter, String displayName, String phoneNo,
+      BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 30.px,
+          ),
+          CircleAvatar(
+            maxRadius: 50.px,
+            backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
+            child: AppText(firstLetter,
+                fontSize: 40.px, color: AppColorConstant.appWhite),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.px),
+            child: AppText(displayName,
+                fontSize: 20.px,
+                textAlign: TextAlign.center,
+                color: Theme.of(context).colorScheme.primary),
+          ),
+          AppText(phoneNo,
+              fontSize: 12.px,
+              textAlign: TextAlign.center,
+              color: AppColorConstant.appGrey),
+          SizedBox(
+            height: 280.px,
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0.px),
+            child: AppText(
+              'Invite ${inviteViewModel!.parameter['phoneNo']} to Signal to keep Conversation here',
+              textAlign: TextAlign.center,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(20.px),
+            child: AppButton(
+                onTap: () async {
+                  inviteViewModel!.inviteFriends();
+                },
+                borderRadius: BorderRadius.circular(18.px),
+                height: 40.px,
+                width: 180.px,
+                color: AppColorConstant.appYellow,
+                stringChild: true,
+                child: const AppText("Invite To signal",
+                    color: AppColorConstant.appWhite)),
+          ),
+        ],
       ),
     );
   }
-
-  buildInviteView(
-    String firstLetter,
-    String displayName,
-    String phoneNo,
-      BuildContext context
-  ) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 30.px,
-        ),
-        CircleAvatar(
-          maxRadius: 50.px,
-          backgroundColor: AppColorConstant.appYellow.withOpacity(0.5),
-          child: AppText(firstLetter,
-              fontSize: 40.px, color: AppColorConstant.appWhite),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.px),
-          child: AppText(
-            displayName,
-            fontSize: 20.px,
-            textAlign: TextAlign.center,
-              color: Theme.of(context).colorScheme.primary
-          ),
-        ),
-        AppText(phoneNo,
-            fontSize: 12.px,
-            textAlign: TextAlign.center,
-            color: AppColorConstant.appGrey),
-        SizedBox(
-          height: 300.px,
-        ),
-        AppText(
-          'Invite ${inviteViewModel!.parameter['phoneNo']} to Signal to keep Conversation here',
-          textAlign: TextAlign.center,
-          color: AppColorConstant.appGrey,
-        ),
-        Padding(
-          padding: EdgeInsets.all(20.px),
-          child: AppButton(
-              onTap: () async {
-                inviteViewModel!.inviteFriends();
-              },
-              borderRadius: BorderRadius.circular(18.px),
-              height: 40.px,
-              width: 180.px,
-              color: AppColorConstant.appYellow,
-              stringChild: true,
-              child: const AppText("Invite To signal",
-                  color: AppColorConstant.appWhite)),
-        ),
-      ],
-    );
-  }
-
-
 }

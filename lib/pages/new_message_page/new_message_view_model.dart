@@ -9,14 +9,19 @@ import 'package:signal/service/database_helper.dart';
 
 class NewMessageViewModel {
   NewMessagePage? newMessagePage;
-  List<Contact> contacts = [];
-  List<Contact> filteredContacts = [];
+  NewMessageController? controller;
+
   bool isLoading = false;
-  NewMessageController? newMessageController;
+  bool isRefreshing = false;
   bool isIcon = true;
   bool isKeyBoard = true;
   TextEditingController textController = TextEditingController();
   TextEditingController searchController = TextEditingController();
+
+  ScrollController scrollController = ScrollController();
+  int page = 1; // Current page
+  bool isLoadingContact = false;
+
   bool isSearching = false;
   List<String> mobileNumbers = [];
   bool isThisUserExist = false;
@@ -25,18 +30,24 @@ class NewMessageViewModel {
 
   NewMessageViewModel(this.newMessagePage) {
     Future.delayed(
-      const Duration(milliseconds: 0),
+      const Duration(milliseconds: 300),
       () {
-        newMessageController = Get.find<NewMessageController>();
-        fetchContacts();
+        controller = Get.isRegistered<NewMessageController>()
+            ? Get.find<NewMessageController>()
+            : Get.put(NewMessageController());
       },
     );
   }
 
-  void toggleIcon() {
+  void refreshTap() {
+    logs("Refreshing");
+    getContactPermission();
+  }
+
+  void toggleIcon(NewMessageController controller) {
     isIcon = !isIcon;
     textController.clear();
-    newMessageController!.update();
+    controller!.update();
     logs('isIcon--> $isIcon');
   }
 
@@ -45,7 +56,7 @@ class NewMessageViewModel {
   }
 
   void getContactPermission() async {
-    if (await Permission.contacts.isGranted && contacts.isEmpty) {
+    if (await Permission.contacts.isGranted) {
       fetchContacts();
     } else {
       await Permission.contacts.request();
@@ -53,15 +64,22 @@ class NewMessageViewModel {
   }
 
   void fetchContacts() async {
-    if (contacts.isEmpty) {
-      logs("fetch contact entered");
-      isLoading = true;
-      newMessageController!.update();
-      contacts = await ContactsService.getContacts(withThumbnails: false);
-      filteredContacts = List.from(contacts);
-      isLoading = false;
-      newMessageController!.update();
+    logs("fetch contact entered");
+    isRefreshing = true;
+    controller!.update();
+
+    // Fetch contacts
+    contacts = await ContactsService.getContacts(withThumbnails: false);
+
+    // Update filteredContacts by checking if each contact already exists
+    for (var contact in contacts) {
+      if (!filteredContacts.contains(contact)) {
+        filteredContacts.add(contact);
+      }
     }
+
+    isRefreshing = false;
+    controller!.update();
   }
 
   getAllContacts() async {
@@ -84,6 +102,6 @@ class NewMessageViewModel {
             mobileNumber!.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
-    newMessageController!.update();
+    controller!.update();
   }
 }

@@ -18,7 +18,7 @@ import 'package:signal/pages/profile/profile_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 import '../../app/app/utills/theme_util.dart';
 import '../../constant/app_asset.dart';
-import '../../service/network_connectivity.dart';
+import '../../constant/string_constant.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
@@ -35,19 +35,65 @@ class ProfileScreen extends StatelessWidget {
     return GetBuilder<ProfileController>(
       init: ProfileController(),
       initState: (state) {
-          NetworkConnectivity.checkConnectivity(context);
         profileViewModel!.parameter = Get.parameters;
         logs('profileStatus---> ${AuthService.auth.currentUser!.photoURL}');
       },
       builder: (GetxController controller) {
-        return SafeArea(
-          child:  Builder(builder: (context) {
-          MediaQueryData mediaQuery = MediaQuery.of(context);
-          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
-          return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: getBody(controller, context),
-          );})
+        return WillPopScope(
+          onWillPop: () async {
+            return await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(color: Colors.transparent)),
+                  title: const AppText('Exit App', fontWeight: FontWeight.bold),
+                  content:
+                      const AppText('Are you sure you want to exit the app?'),
+                  actions: [
+                    Row(
+                      children: [
+                        const Spacer(),
+                        AppElevatedButton(
+                          buttonWidth: 50,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40,
+                          widget: const AppText('Yes',
+                              color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            SystemNavigator.pop();
+                            Navigator.of(context).pop(true); // Exit the app
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        AppElevatedButton(
+                          buttonWidth: 50,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40,
+                          widget: const AppText(StringConstant.cansel,
+                              color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pop(false); // Don't exit the app
+                          },
+                        ),
+                        // Add spacing between buttons
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: SafeArea(child: Builder(builder: (context) {
+            MediaQueryData mediaQuery = MediaQuery.of(context);
+            ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: getBody(controller, context),
+            );
+          })),
         );
       },
     );
@@ -202,14 +248,14 @@ class ProfileScreen extends StatelessWidget {
                                 profileViewModel!.isLoadingOnSave = true;
                                 controller.update();
                                 profileViewModel!
-                                    .onTapNext(context, controller,pin);
+                                    .onTapNext(context, controller, pin);
                               }
                             : null,
                       ),
                     )
                   ],
                 ))),
-        if (profileViewModel!.isLoadingOnSave)  AppLoader(),
+        if (profileViewModel!.isLoadingOnSave) AppLoader(),
       ],
     );
   }
