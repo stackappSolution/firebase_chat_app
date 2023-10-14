@@ -18,9 +18,8 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
-import '../../app/widget/app_shimmer.dart';
 
-import '../../service/network_connectivity.dart';
+import '../../app/widget/app_shimmer.dart';
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
 
@@ -37,7 +36,6 @@ class ChatScreen extends StatelessWidget {
     return GetBuilder<ContactController>(
       init: ContactController(),
       initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
         var brightness =
             SchedulerBinding.instance.platformDispatcher.platformBrightness;
         ThemeUtil.isDark = brightness == Brightness.dark;
@@ -48,7 +46,7 @@ class ChatScreen extends StatelessWidget {
           () async {
             controller = Get.find<ContactController>();
             await UsersService.getUserStream();
-            chatViewModel!.getPermission(controller!);
+            //chatViewModel!.getPermission(controller!);
 
             controller!.update();
           },
@@ -175,7 +173,8 @@ class ChatScreen extends StatelessWidget {
                       ? CircleAvatar(
                           maxRadius: 35.px,
                           backgroundColor:
-                          AppColorConstant.appYellow.withOpacity(0.8),
+                              AppColorConstant.appYellow.withOpacity(0.8),
+
                           child: AppText(
                             data.first['firstName']
                                 .substring(0, 1)

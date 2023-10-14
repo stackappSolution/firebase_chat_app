@@ -1,6 +1,5 @@
 
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:signal/controller/chat_profile_controller.dart';
 import 'package:signal/pages/chats/chat_profile/chat_profile_screen.dart';
@@ -25,15 +24,6 @@ class ChatProfileViewModel{
     },);
   }
 
-String about = '';
-  static final users = FirebaseFirestore.instance.collection('users');
-
-  getAbout(number) async {
-    final t = await users.where('phone', isEqualTo: number).get();
-    final data = t.docs;
-    about = data.first["about"];
-    controller!.update();
-  }
 
   launchPhoneURL(String phoneNumber) async {
     final Uri url = Uri.parse('tel: $phoneNumber}');

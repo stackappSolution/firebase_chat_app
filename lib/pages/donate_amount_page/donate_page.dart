@@ -16,8 +16,6 @@ import 'package:signal/modal/transaction_model.dart';
 import 'package:signal/pages/donate_amount_page/donate_view_model.dart';
 import 'package:signal/service/users_service.dart';
 
-import '../../service/network_connectivity.dart';
-
 class DonatePage extends StatelessWidget {
   DonatePage({super.key});
 
@@ -31,7 +29,6 @@ class DonatePage extends StatelessWidget {
     return GetBuilder(
       init: DonateController(),
       initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
         Future.delayed(const Duration(milliseconds: 300), () async {
           donateController = Get.find<DonateController>();
           donateViewModel!.getTotal(donateController!);

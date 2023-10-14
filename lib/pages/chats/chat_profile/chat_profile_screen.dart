@@ -16,7 +16,6 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../../app/app/utills/theme_util.dart';
-import '../../../service/network_connectivity.dart';
 
 class ChatProfileScreen extends StatelessWidget {
   ChatProfileScreen({Key? key}) : super(key: key);
@@ -25,13 +24,12 @@ class ChatProfileScreen extends StatelessWidget {
 
   @override
   Widget build(
-      BuildContext context,
-      ) {
+    BuildContext context,
+  ) {
     chatProfileViewModel ?? (chatProfileViewModel = ChatProfileViewModel(this));
     return GetBuilder<ChatProfileController>(
       init: ChatProfileController(),
       initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
         chatProfileViewModel!.arguments = Get.arguments;
         chatProfileViewModel!
             .totalMember(chatProfileViewModel!.arguments['number']);
@@ -47,7 +45,7 @@ class ChatProfileScreen extends StatelessWidget {
                         .trim()
                         .removeAllWhitespace);
             controller!.update();
-            chatProfileViewModel!.getAbout(chatProfileViewModel!.arguments['number']);
+
             logs(
                 "reciewvwe---- > ${chatProfileViewModel!.arguments['number']}");
             logs(
@@ -121,7 +119,8 @@ class ChatProfileScreen extends StatelessWidget {
             padding: EdgeInsets.only(top: 10.px, bottom: 10.px),
             child: Center(
                 child: AppText(
-                    chatProfileViewModel!.about ,
+                    chatProfileViewModel?.arguments['about'] ??
+                        'I am useing chatapp..!!!',
                     fontSize: 18.px)),
           ),
         Divider(
@@ -342,34 +341,34 @@ class ChatProfileScreen extends StatelessWidget {
   buildBlockUser(BuildContext context, ChatProfileController controller) {
     return (chatProfileViewModel!.isBlockedByLoggedUser)
         ? Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
-      child: ListTile(
-        onTap: () {
-          buildUnBlockDialog(context, controller);
-          controller.update();
-        },
-        title: AppText(
-            color: Theme.of(context).colorScheme.primary, 'unBlock'),
-        leading: Icon(
-          Icons.block_flipped,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
-    )
+            padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
+            child: ListTile(
+              onTap: () {
+                buildUnBlockDialog(context, controller);
+                controller.update();
+              },
+              title: AppText(
+                  color: Theme.of(context).colorScheme.primary, 'unBlock'),
+              leading: Icon(
+                Icons.block_flipped,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          )
         : Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
-      child: ListTile(
-        onTap: () {
-          buildBlockDialog(context, controller);
-          controller.update();
-        },
-        title: AppText(
-          color: AppColorConstant.red,
-          S.of(context).block,
-        ),
-        leading: const Icon(Icons.block, color: AppColorConstant.red),
-      ),
-    );
+            padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
+            child: ListTile(
+              onTap: () {
+                buildBlockDialog(context, controller);
+                controller.update();
+              },
+              title: AppText(
+                color: AppColorConstant.red,
+                S.of(context).block,
+              ),
+              leading: const Icon(Icons.block, color: AppColorConstant.red),
+            ),
+          );
   }
 
   buildBlockDialog(BuildContext context, ChatProfileController controller) {
@@ -382,7 +381,7 @@ class ChatProfileScreen extends StatelessWidget {
               shape: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.px)),
               actionsPadding:
-              EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
+                  EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
               backgroundColor: Theme.of(context).colorScheme.background,
               title: AppText(
                   'Are you sure you want to block ${chatProfileViewModel!.arguments['number']}?'),
@@ -409,7 +408,6 @@ class ChatProfileScreen extends StatelessWidget {
                       chatProfileViewModel!.isBlockedByLoggedUser =
                           await UsersService.instance.isBlockedByLoggedInUser(
                               chatProfileViewModel!.arguments['number']);
-
                       Get.back();
                       controller.update();
                     },
@@ -443,7 +441,7 @@ class ChatProfileScreen extends StatelessWidget {
               shape: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.px)),
               actionsPadding:
-              EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
+                  EdgeInsets.symmetric(horizontal: 15.px, vertical: 15.px),
               backgroundColor: Theme.of(context).colorScheme.background,
               title: AppText(
                   'Are you sure you want to unblock ${chatProfileViewModel!.arguments['number']}?',
@@ -467,7 +465,6 @@ class ChatProfileScreen extends StatelessWidget {
                       chatProfileViewModel!.isBlockedByLoggedUser =
                           await UsersService.instance.isBlockedByLoggedInUser(
                               chatProfileViewModel!.arguments['number']);
-
                       controller.update();
                       Get.back();
                     },

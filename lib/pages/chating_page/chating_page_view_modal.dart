@@ -1088,6 +1088,7 @@ class ChatingPageViewModal {
       controller!.update();
     }
   }
+
   ///=================    array union to work =============== /////
 
   Future<void> addEmoji(

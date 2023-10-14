@@ -3,10 +3,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
-import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textForm_field.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -17,49 +14,37 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/service/auth_service.dart';
 
+import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/theme_util.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../app/widget/app_shimmer.dart';
 import '../../service/database_helper.dart';
-import '../../service/network_connectivity.dart';
 
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
 
   NewMessageViewModel? newMessageViewModel;
-  NewMessageController? newMessageController;
 
   @override
   Widget build(BuildContext context) {
     newMessageViewModel ?? (newMessageViewModel = NewMessageViewModel(this));
-    newMessageViewModel!.getContactPermission();
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
-          NetworkConnectivity.checkConnectivity(context);
-        DataBaseHelper.getContactDetails();
-        Future.delayed(const Duration(milliseconds: 300), () async {
-          newMessageController = Get.find<NewMessageController>();
-          newMessageController!.getUserPhoneList();
-          newMessageController!.update();
-        });
-        DataBaseHelper.createDB();
-        newMessageViewModel!.getContactPermission();
-        newMessageViewModel!.getAllContacts();
-        // logs(
-        //     "New Message Screen SQF Contacts ---- > ${DataBaseHelper.contactData}");
+        //  DataBaseHelper.getContactDetails();
       },
       builder: (NewMessageController controller) {
-        controller.getUserPhoneList();
+        //controller.getUserPhoneList();
         return SafeArea(
-          child:  Builder(builder: (context) {
+          child: Builder(builder: (context) {
             MediaQueryData mediaQuery = MediaQuery.of(context);
             ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
             return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            appBar: buildAppBar(context),
-            body: buildSearchBar(context, controller),
-          );}),
+              backgroundColor: Theme.of(context).colorScheme.background,
+              appBar: buildAppBar(context),
+              body: buildSearchBar(context, controller),
+            );
+          }),
         );
       },
     );
@@ -72,6 +57,19 @@ class NewMessagePage extends StatelessWidget {
           fontSize: 20.px,
           color: Theme.of(context).colorScheme.primary,
         ),
+        actions: [
+          InkWell(
+            onTap: newMessageViewModel!.refreshTap,
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 22.px, horizontal: 15),
+              child: const Icon(Icons.refresh_outlined),
+            ),
+          ),
+          const SizedBox(
+            width: 15,
+          )
+        ],
       );
 
   buildSearchBar(BuildContext context, NewMessageController controller) =>
@@ -91,8 +89,8 @@ class NewMessagePage extends StatelessWidget {
                   },
                   suffixIcon: InkWell(
                     onTap: () {
-                      newMessageViewModel!.toggleIcon();
-                      newMessageViewModel!.newMessageController!.update();
+                      newMessageViewModel!.toggleIcon(controller);
+                      newMessageViewModel!.controller!.update();
                     },
                     child: (newMessageViewModel!.isIcon)
                         ? const Icon(Icons.dialpad)
@@ -148,132 +146,144 @@ class NewMessagePage extends StatelessWidget {
     return Stack(
       children: [
         ListView.builder(
+          controller: newMessageViewModel!.scrollController,
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
           itemCount: newMessageViewModel!.isSearching == true
-              ? newMessageViewModel!.filteredContacts.length
-              : newMessageViewModel!.contacts.length,
+              ? filteredContacts.length
+              : 100,
           itemBuilder: (context, index) {
             final Contact contact = newMessageViewModel!.isSearching
-                ? newMessageViewModel!.filteredContacts[index]
-                : newMessageViewModel!.contacts[index];
+                ? filteredContacts[index]
+                : contacts[index];
             String? mobileNumber = contact.phones!.isNotEmpty
                 ? contact.phones!.first.value
                 : 'N/A';
             String? displayName = contact.displayName ?? 'unknown';
             String firstLetter =
-                displayName.substring(0, 1).toUpperCase() ?? "  ";
+                displayName.substring(0, 1).toUpperCase();
 
-            return Container(
-              margin: EdgeInsets.only(top: 5.px),
-              child: InkWell(
-                onTap: () {
-                  newMessageViewModel!.isLoading = true;
-                  controller.update();
-                  goToChatingScreen();
-                  controller.update();
-                },
-                child: Column(
-                  children: [
-                    ListTile(
-                      onTap: () async {
-                        newMessageViewModel!.isThisUserExist =
-                            await controller.doesUserExist(mobileNumber
-                                .toString()
-                                .trim()
-                                .removeAllWhitespace);
-                        if (newMessageViewModel!.isThisUserExist &&
-                            mobileNumber
-                                    .toString()
-                                    .trim()
-                                    .removeAllWhitespace !=
-                                AuthService.auth.currentUser!.phoneNumber) {
-                          Get.toNamed(RouteHelper.getChattingScreen(),
-                              arguments: {
-                                'members': [
-                                  AuthService.auth.currentUser!.phoneNumber!,
-                                  mobileNumber
+              return Container(
+                margin: EdgeInsets.only(top: 5.px),
+                child: InkWell(
+                  onTap: () {
+                    newMessageViewModel!.isLoading = true;
+                    controller.update();
+                    goToChatingScreen();
+                    controller.update();
+                  },
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () async {
+                          newMessageViewModel!.isThisUserExist =
+                              await controller.doesUserExist(mobileNumber
+                                  .toString()
+                                  .trim()
+                                  .removeAllWhitespace);
+                          if (newMessageViewModel!.isThisUserExist &&
+                              mobileNumber
                                       .toString()
-                                      .removeAllWhitespace
                                       .trim()
-                                ],
-                                'name': displayName,
-                                'number': mobileNumber
-                                    .toString()
-                                    .trim()
-                                    .removeAllWhitespace,
-                                'isGroup': false,
-                              });
-                        } else {
-                          Get.toNamed(RouteHelper.getInviteMemberScreen(),
-                              parameters: {
-                                'firstLetter': firstLetter,
-                                'displayName': displayName,
-                                'phoneNo': mobileNumber
-                              });
-                        }
-                      },
-                      leading: InkWell(
-                          onTap: () {
-                            Get.toNamed(RouteHelper.getChatProfileScreen());
-                          },
-                          child: StreamBuilder(
-                            stream: controller.getProfile(mobileNumber
-                                .toString()
-                                .trim()
-                                .removeAllWhitespace),
-                            builder: (context,
-                                AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (snapshot.hasError) {
-                                return const AppText('');
-                              }
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const AppText('');
-                              }
-                              final data = snapshot.data!.docs;
-                              return (controller.userList.contains(mobileNumber
-                                          .toString()
-                                          .trim()
-                                          .removeAllWhitespace) &&
-                                      data.first["photoUrl"]
-                                          .toString()
-                                          .contains("https://"))
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(700),
-                                      child: AppImageAsset(
-                                        image: data[0]["photoUrl"],
-                                        fit: BoxFit.cover,
-                                        height: 40.px,
-                                        width: 40.px,
-                                      ))
-                                  : CircleAvatar(
-                                      maxRadius: 20.px,
-                                      backgroundColor: AppColorConstant
-                                          .appYellow
-                                          .withOpacity(0.8),
-                                      child: AppText(
-                                        firstLetter,
-                                        color: AppColorConstant.appWhite,
-                                        fontSize: 20.px,
-                                      ));
+                                      .removeAllWhitespace !=
+                                  AuthService.auth.currentUser!.phoneNumber) {
+                            Get.toNamed(RouteHelper.getChattingScreen(),
+                                arguments: {
+                                  'members': [
+                                    AuthService.auth.currentUser!.phoneNumber!,
+                                    mobileNumber
+                                        .toString()
+                                        .removeAllWhitespace
+                                        .trim()
+                                  ],
+                                  'name': displayName,
+                                  'number': mobileNumber
+                                      .toString()
+                                      .trim()
+                                      .removeAllWhitespace,
+                                  'isGroup': false,
+                                });
+                          } else {
+                            Get.toNamed(RouteHelper.getInviteMemberScreen(),
+                                parameters: {
+                                  'firstLetter': firstLetter,
+                                  'displayName': displayName,
+                                  'phoneNo': mobileNumber
+                                });
+                          }
+                        },
+                        leading: InkWell(
+                            onTap: () {
+                              Get.toNamed(RouteHelper.getChatProfileScreen());
                             },
-                          )),
-                      title: AppText(
-                        displayName,
-                        fontSize: 15.px,
-                        color: Theme.of(context).colorScheme.primary,
+                            child: StreamBuilder(
+                              stream: controller.getProfile(mobileNumber
+                                  .toString()
+                                  .trim()
+                                  .removeAllWhitespace),
+                              builder: (context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  return const AppText('');
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const AppText('');
+                                }
+                                final data = snapshot.data!.docs;
+                                return (controller.userList.contains(
+                                            mobileNumber
+                                                .toString()
+                                                .trim()
+                                                .removeAllWhitespace) &&
+                                        data.first["photoUrl"]
+                                            .toString()
+                                            .contains("https://"))
+                                    ? ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(700),
+                                        child: AppImageAsset(
+                                          image: data[0]["photoUrl"],
+                                          fit: BoxFit.cover,
+                                          height: 40.px,
+                                          width: 40.px,
+                                        ))
+                                    : CircleAvatar(
+                                        maxRadius: 20.px,
+                                        backgroundColor: AppColorConstant
+                                            .appYellow
+                                            .withOpacity(0.8),
+                                        child: AppText(
+                                          firstLetter,
+                                          color: AppColorConstant.appWhite,
+                                          fontSize: 20.px,
+                                        ));
+                              },
+                            )),
+                        title: AppText(
+                          displayName,
+                          fontSize: 15.px,
+                          color: Theme.of(context).colorScheme.primary,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: AppText(mobileNumber!,
+                            color: AppColorConstant.grey, fontSize: 12.px),
                       ),
-                      subtitle: AppText(mobileNumber!,
-                          color: AppColorConstant.grey, fontSize: 12.px),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
+              );
           },
         ),
-        if (newMessageViewModel!.isLoading) const AppShimmerView()
+        if (newMessageViewModel!.isLoading)
+          ListView(
+            children: const [
+              AppShimmerView(),
+              AppShimmerView(),
+              AppShimmerView(),
+            ],
+          )
       ],
     );
   }

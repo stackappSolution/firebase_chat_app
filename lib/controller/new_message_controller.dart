@@ -26,16 +26,16 @@ class NewMessageController extends GetxController {
     return data.docs.isNotEmpty;
   }
 
-  Future getUserPhoneList() async {
-    if (userList.isEmpty) {
-      final data = await userTable.where('phone').get();
-      data.docs.forEach((element) {
-        userList.add(element["phone"]);
-      });
-      logs("getUserPhoneList=== $userList");
-    }
-
-  }
+  // Future getUserPhoneList() async {
+  //   if (userList.isEmpty) {
+  //     final data = await userTable.where('phone').get();
+  //     data.docs.forEach((element) {
+  //       userList.add(element["phone"]);
+  //     });
+  //     logs("getUserPhoneList=== $userList");
+  //   }
+  //
+  // }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getProfile(String number) {
     return userTable.where('phone', isEqualTo: number).snapshots();

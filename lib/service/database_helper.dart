@@ -37,16 +37,16 @@ class DataBaseHelper {
     }
   }
 
-  static getContactDetails() async {
-    try {
-      await createDB().then((value) async {
-        String qry = "select * from data";
-        value.rawQuery(qry).then((value) {
-          contactData = value;
-        });
-      });
-    } catch (e) {
-      logs('Error : $e');
-    }
-  }
+  // static getContactDetails() async {
+  //   try {
+  //     await createDB().then((value) async {
+  //       String qry = "select * from data";
+  //       value.rawQuery(qry).then((value) {
+  //         contactData = value;
+  //       });
+  //     });
+  //   } catch (e) {
+  //     logs('Error : $e');
+  //   }
+  // }
 }

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:signal/app/widget/app_shimmer.dart';
 
+import 'app_image_shimmer.dart';
+
 class AppImageAsset extends StatelessWidget {
   final String? image;
   final double? height;
@@ -31,7 +33,7 @@ class AppImageAsset extends StatelessWidget {
             height: height,
             width: width,
             fit: fit ?? BoxFit.cover,
-            placeholder: (context, url) =>  const AppShimmerView(),
+            placeholder: (context, url) =>  const AppImageShimmer(),
             errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.red),
           )
         : isFile

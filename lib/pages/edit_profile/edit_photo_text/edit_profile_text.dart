@@ -14,7 +14,6 @@ import 'package:widgets_to_image/widgets_to_image.dart';
 
 import '../../../app/app/utills/app_utills.dart';
 import '../../../app/widget/app_elevated_button.dart';
-import '../../../service/network_connectivity.dart';
 
 class EditProfileText extends StatelessWidget {
   EditProfileTextViewModel? editProfileTextViewModel;
@@ -29,9 +28,6 @@ class EditProfileText extends StatelessWidget {
       length: 2,
       child: GetBuilder<EditProfileTextController>(
           init: EditProfileTextController(),
-          initState: (state) {
-            NetworkConnectivity.checkConnectivity(context);
-          },
           builder: (EditProfileTextController controller) {
             return Scaffold(
               appBar: getAppBar(context),

@@ -18,8 +18,7 @@ import '../../service/users_service.dart';
 
 class ChatViewModel {
   ChatScreen? chatScreen;
-  List<Contact> contacts = [];
-  List<Contact> filterContacts = [];
+
   String string = '';
   bool isConnected = false;
   bool isLoading = false;
@@ -42,25 +41,24 @@ class ChatViewModel {
     );
   }
 
-  Future<void> getPermission(ContactController controller) async {
-    final PermissionStatus permissionStatus = await Permission.contacts.status;
-
-    if (permissionStatus.isGranted) {
-      fetchContacts(controller);
-    } else {
-      final PermissionStatus requestResult =
-          await Permission.contacts.request();
-
-      if (requestResult.isGranted) {
-        fetchContacts(controller);
-      } else {
-        logs('Contacts permission denied');
-      }
-    }
-  }
+  // Future<void> getPermission(ContactController controller) async {
+  //   final PermissionStatus permissionStatus = await Permission.contacts.status;
+  //
+  //   if (permissionStatus.isGranted) {
+  //     fetchContacts(controller);
+  //   } else {
+  //     final PermissionStatus requestResult =
+  //         await Permission.contacts.request();
+  //
+  //     if (requestResult.isGranted) {
+  //       fetchContacts(controller);
+  //     } else {
+  //       logs('Contacts permission denied');
+  //     }
+  //   }
+  // }
 
   void fetchContacts(ContactController controller) async {
-    DataBaseHelper.getContactDetails();
     logs("fetch contact entered");
     isLoading = true;
     controller.update();
@@ -68,14 +66,6 @@ class ChatViewModel {
     isLoading = false;
     controller.update();
     logs("saved contact length----->  ${contacts.length}");
-    // for (int i = 0; i < contacts.length; i++) {
-    //   Contact contact = contacts[i];
-    //   if (contact.phones!.isNotEmpty && contact.displayName!.isNotEmpty) {
-    //     await DataBaseHelper.setContactDetails(
-    //         contact.displayName, contact.phones!.first.value ?? "");
-    //   }
-    // }
-    // DataBaseHelper.getContactDetails();
     controller!.update();
   }
 
