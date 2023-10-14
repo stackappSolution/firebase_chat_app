@@ -1107,7 +1107,7 @@ class ChatingPage extends StatelessWidget {
                 child: Container(
                   margin: EdgeInsets.all(10.px),
                   decoration: BoxDecoration(
-                    color: AppColorConstant.appYellow,
+                    color: chatingPageViewModal!.bubblColors,
                     border: Border.all(
                       color: AppColorConstant.appYellow,
                     ),
@@ -1249,7 +1249,7 @@ class ChatingPage extends StatelessWidget {
                 margin: EdgeInsets.all(6.px),
                 width: 265.px,
                 decoration: BoxDecoration(
-                    color: AppColorConstant.yellowLight,
+                    color: chatingPageViewModal!.bubblColors,
                     borderRadius: BorderRadius.circular(12.px)),
                 child: Column(
                   children: [
@@ -1732,7 +1732,7 @@ class ChatingPage extends StatelessWidget {
                   width: 130.px,
                   margin: EdgeInsets.all(8.px),
                   decoration: BoxDecoration(
-                      color: AppColorConstant.appYellow,
+                      color: chatingPageViewModal!.bubblColors,
                       borderRadius: BorderRadius.all(Radius.circular(10.px))),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -2117,7 +2117,7 @@ class ChatingPage extends StatelessWidget {
                 width: 200.px,
                 margin: EdgeInsets.symmetric(horizontal: 10.px, vertical: 5.px),
                 decoration: BoxDecoration(
-                    color: AppColorConstant.yellowLight,
+                    color: chatingPageViewModal!.bubblColors,
                     borderRadius: BorderRadius.all(Radius.circular(10.px))),
                 child: Column(
                   children: [
