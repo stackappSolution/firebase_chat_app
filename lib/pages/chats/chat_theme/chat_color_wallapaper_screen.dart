@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -9,22 +10,22 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
+import 'package:signal/service/auth_service.dart';
+import 'package:signal/service/users_service.dart';
 
 // ignore: must_be_immutable
 class ChatColorWallpaperScreen extends StatelessWidget {
   ChatColorWallpaperScreen({Key? key}) : super(key: key);
 
   SettingsController? controller;
-  Color? chatBubbleColor;
-
+   String? bubblColor;
+  final users = FirebaseFirestore.instance.collection("users");
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SettingsController>(
       didChangeDependencies: (state) async {
         Future.delayed(const Duration(milliseconds: 0), () async {
           controller = Get.find<SettingsController>();
-          chatBubbleColor = await getChatBubbleColor();
-          logs('chatColor----> $chatBubbleColor');
           controller!.update();
         });
       },
@@ -32,8 +33,8 @@ class ChatColorWallpaperScreen extends StatelessWidget {
       initState: (state) async {
         Future.delayed(const Duration(milliseconds: 0), () async {
           controller = Get.find<SettingsController>();
-          chatBubbleColor = await getChatBubbleColor();
-          logs('chatColor----> $chatBubbleColor');
+
+          logs('chatColor----> $bubblColor');
           controller!.update();
         });
       },
@@ -82,8 +83,8 @@ class ChatColorWallpaperScreen extends StatelessWidget {
             trailing: Container(
               height: 20.px,
               width: 20.px,
-              decoration:
-                  BoxDecoration(shape: BoxShape.circle, color: chatBubbleColor),
+              // decoration:
+              //      BoxDecoration(shape: BoxShape.circle, color: Colors.orange),
             )),
         ListTile(
           onTap: () {
@@ -148,10 +149,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                setStringValue(wallPaperColor,
-                    const Color(0xFFFFFFFF).value.toRadixString(16));
-                setStringValue(wallpaper, '');
-                controller!.update();
+                resetwallpaper();
                 Get.back();
               },
               child: AppText(
@@ -188,11 +186,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                setStringValue(
-                    chatColor, const Color(0xFFf69533).value.toRadixString(16));
-                setStringValue(wallpaper, '');
-                controller!.update();
-                Get.back();
+                resetbubblecolor();
                 Get.off(ChatColorWallpaperScreen());
                 controller!.update();
               },
@@ -206,13 +200,39 @@ class ChatColorWallpaperScreen extends StatelessWidget {
       },
     );
   }
+  Future<void> resetbubblecolor() async {
+    try {
+      final currentUser = AuthService.auth.currentUser;
+      final userDocRef = users.doc(currentUser!.uid);
 
-  getChatBubbleColor() async {
-    final colorCode = await getStringValue(chatColor);
-    if (colorCode != null) {
-      return Color(int.parse(colorCode, radix: 16));
-    } else {
-      return AppColorConstant.appYellow;
+      await userDocRef.update({
+        'bubbleColor': "",
+      });
+      controller!.update();
+      logs('Successfully updated wallpaper or color code');
+    } catch (e) {
+      logs('Error updating wallpaper or color code: $e');
     }
   }
+
+  Future<void> resetwallpaper() async {
+    try {
+      final currentUser = AuthService.auth.currentUser;
+      final userDocRef = users.doc(currentUser!.uid);
+
+      await userDocRef.update({
+        'wallpaper': "",
+      });
+      controller!.update();
+
+      await userDocRef.update({
+        'colorCode': "0x00000000",
+      });
+      controller!.update();
+      logs('Successfully updated wallpaper or color code');
+    } catch (e) {
+      logs('Error updating wallpaper or color code: $e');
+    }
+  }
+
 }

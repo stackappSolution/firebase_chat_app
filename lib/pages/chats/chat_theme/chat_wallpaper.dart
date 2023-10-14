@@ -1,37 +1,30 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-
-import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
-
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
-import 'package:signal/service/auth_service.dart';
 
 // ignore: must_be_immutable
 class ChatWallpaperScreen extends StatelessWidget {
   ChatWallpaperScreen({Key? key}) : super(key: key);
 
   SettingsController? controller;
-  Color? wallColor = AppColorConstant.darkBlue;
+  Color? wallColor = AppColorConstant.appTransparent;
   File? selectedImage;
   bool isLoading = false;
   final users = FirebaseFirestore.instance.collection("users");
 
   @override
   Widget build(BuildContext context) {
-    logs('wallcolor-->$wallColor');
     return GetBuilder<SettingsController>(
       init: SettingsController(),
       initState: (state) {},
@@ -46,8 +39,13 @@ class ChatWallpaperScreen extends StatelessWidget {
   }
 
   getAppbar(BuildContext context) {
-    return AppAppBar(backgroundColor:  Theme.of(context).colorScheme.background,
-      title: AppText(S.of(context).chatColorAndWallpaper, fontSize: 20.px,color:  Theme.of(context).colorScheme.primary,),
+    return AppAppBar(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      title: AppText(
+        S.of(context).chatColorAndWallpaper,
+        fontSize: 20.px,
+        color: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 
@@ -61,12 +59,13 @@ class ChatWallpaperScreen extends StatelessWidget {
         ),
         Divider(
           height: 2.px,
-          color:  AppColorConstant.grey,
+          color: AppColorConstant.grey,
         ),
-         Padding(
+        Padding(
           padding: const EdgeInsets.all(12.0),
           child: AppText(S.of(context).presets,
-              color:  Theme.of(context).colorScheme.primary, textAlign: TextAlign.start),
+              color: Theme.of(context).colorScheme.primary,
+              textAlign: TextAlign.start),
         ),
         buildWallpaperGridview(),
       ],
@@ -78,8 +77,12 @@ class ChatWallpaperScreen extends StatelessWidget {
       onTap: () {
         pickImageGallery();
       },
-      title:  AppText(S.of(context).chooseFromPhotos,color:  Theme.of(context).colorScheme.primary,),
-      leading:  Icon(Icons.image_outlined,color:  Theme.of(context).colorScheme.primary),
+      title: AppText(
+        S.of(context).chooseFromPhotos,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      leading: Icon(Icons.image_outlined,
+          color: Theme.of(context).colorScheme.primary),
     );
   }
 
@@ -102,7 +105,6 @@ class ChatWallpaperScreen extends StatelessWidget {
       AppColorConstant.grey,
     ];
 
-
     return Expanded(
       child: GridView.builder(
         padding: EdgeInsets.all(20.px),
@@ -114,12 +116,10 @@ class ChatWallpaperScreen extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               wallColor = chatColors[index];
-              logs('wallcolor-->$wallColor');
-              // setStringValue(
-              //     wallPaperColor, wallColor!.value.toRadixString(16));
-              Get.toNamed(
-                RouteHelper.getWallpaperPreviewScreen(),
-              );
+              String colorCode = wallColor!.value.toRadixString(16);
+              logs('wallcolor-->$colorCode');
+              Get.toNamed(RouteHelper.getWallpaperPreviewScreen(),
+                  arguments: {"selectedItem": colorCode});
             },
             child: Container(
               height: 50.px,
@@ -136,23 +136,14 @@ class ChatWallpaperScreen extends StatelessWidget {
   }
 
   Future<void> pickImageGallery() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
       logs('image pick-->${selectedImage.toString()}');
-       // controller!.update();
+      // controller!.update();
       Get.toNamed(RouteHelper.getWallpaperPreviewScreen(),
-          parameters: {'image': selectedImage!.path});
+          arguments: {'selectedItem': selectedImage!.path});
     }
   }
-
-  // Future<void> chatWallColor()async {
-  //   final users = FirebaseFirestore.instance.collection("users");
-  //   String? colorCode = wallColor!.value.toRadixString(16);
-  //   try {
-  //     await users.doc(FirebaseAuth.instance.currentUser!.uid).update(colorCode as Map<Object, Object?>);
-  //   } catch (e) {
-  //     print('color not added');
-  //   }
-  // }
 }

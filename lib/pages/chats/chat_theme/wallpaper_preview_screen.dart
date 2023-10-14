@@ -1,19 +1,17 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/modal/user_model.dart';
 import 'package:signal/pages/chats/chat_theme/chat_color_wallapaper_screen.dart';
-import 'package:signal/routes/routes_helper.dart';
 
 import '../../../service/auth_service.dart';
 
@@ -22,8 +20,8 @@ class WallpaperPreviewScreen extends StatelessWidget {
   WallpaperPreviewScreen({Key? key}) : super(key: key);
 
   SettingsController? controller;
-  Color? wallColor;
-  Map<String, dynamic> parameter = {};
+  Color wallColorbackground = AppColorConstant.appTransparent;
+  Map<String, dynamic> arguments = {};
   bool isLoading = false;
   final users = FirebaseFirestore.instance.collection("users");
 
@@ -32,14 +30,13 @@ class WallpaperPreviewScreen extends StatelessWidget {
     return GetBuilder<SettingsController>(
       init: SettingsController(),
       initState: (state) async {
-        parameter = Get.parameters;
+        arguments = Get.arguments;
+        logs('backgroundcolor-->$arguments');
 
         Future.delayed(
           const Duration(milliseconds: 100),
-              () async {
+          () async {
             controller = Get.find<SettingsController>();
-            wallColor = await getColorFromPreferences();
-
             controller!.update();
           },
         );
@@ -62,7 +59,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
   getBody(BuildContext context) {
     return Column(
       children: [
-        buildPreview(context),
+     buildPreview(context),
         Container(
           margin: EdgeInsets.all(12.px),
           alignment: Alignment.center,
@@ -81,175 +78,193 @@ class WallpaperPreviewScreen extends StatelessWidget {
   }
 
   buildPreview(BuildContext context) {
-    return (parameter['image'] != null)
+    return (arguments['selectedItem'].toString().contains("myFile"))
         ? Container(
-      height: Device.height * 0.75,
-      width: double.infinity,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: FileImage(File(parameter['image'])))),
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.all(12.px),
-            alignment: Alignment.center,
-            height: 35.px,
-            width: 90.px,
+            height: Device.height * 0.75,
+            width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColorConstant.grey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12.px),
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: FileImage(File(arguments['selectedItem'])))),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(12.px),
+                  alignment: Alignment.center,
+                  height: 35.px,
+                  width: 90.px,
+                  decoration: BoxDecoration(
+                    color: AppColorConstant.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12.px),
+                  ),
+                  child: AppText(S.of(context).today),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(10.px),
+                      height: 40.px,
+                      width: 230.px,
+                      decoration: BoxDecoration(
+                          color: AppColorConstant.appWhite,
+                          borderRadius: BorderRadius.circular(12.px)),
+                      child: AppText(S.of(context).colorIsOnlyVisibleYou)),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(10.px),
+                      height: 40.px,
+                      width: 230.px,
+                      decoration: BoxDecoration(
+                          color: AppColorConstant.grey,
+                          borderRadius: BorderRadius.circular(12.px)),
+                      child: AppText(
+                        S.of(context).colorIsOnlyVisibleYou,
+                        color: AppColorConstant.appWhite,
+                      )),
+                )
+              ],
             ),
-            child: AppText(S.of(context).today),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.all(10.px),
-                height: 40.px,
-                width: 230.px,
-                decoration: BoxDecoration(
-                    color: AppColorConstant.appWhite,
-                    borderRadius: BorderRadius.circular(12.px)),
-                child: AppText(S.of(context).colorIsOnlyVisibleYou)),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.all(10.px),
-                height: 40.px,
-                width: 230.px,
-                decoration: BoxDecoration(
-                    color: AppColorConstant.grey,
-                    borderRadius: BorderRadius.circular(12.px)),
-                child: AppText(
-                  S.of(context).colorIsOnlyVisibleYou,
-                  color: AppColorConstant.appWhite,
-                )),
           )
-        ],
-      ),
-    )
         : Container(
-      height: Device.height * 0.75,
-      width: double.infinity,
-      color: wallColor,
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.all(12.px),
-            alignment: Alignment.center,
-            height: 35.px,
-            width: 90.px,
-            decoration: BoxDecoration(
-              color: AppColorConstant.grey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12.px),
+            height: Device.height * 0.75,
+            width: double.infinity,
+            color: Color(int.parse(arguments['selectedItem'], radix: 16)),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(12.px),
+                  alignment: Alignment.center,
+                  height: 35.px,
+                  width: 90.px,
+                  decoration: BoxDecoration(
+                    color: AppColorConstant.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12.px),
+                  ),
+                  child: AppText(
+                    S.of(context).today,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(10.px),
+                      height: 40.px,
+                      width: 230.px,
+                      decoration: BoxDecoration(
+                          color: AppColorConstant.appWhite,
+                          borderRadius: BorderRadius.circular(12.px)),
+                      child: AppText(
+                        S.of(context).colorIsOnlyVisibleYou,
+                        color: Theme.of(context).colorScheme.primary,
+                      )),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(10.px),
+                      height: 40.px,
+                      width: 230.px,
+                      decoration: BoxDecoration(
+                          color: AppColorConstant.grey,
+                          borderRadius: BorderRadius.circular(12.px)),
+                      child: AppText(
+                        S.of(context).colorIsOnlyVisibleYou,
+                        color: Theme.of(context).colorScheme.primary,
+                      )),
+                )
+              ],
             ),
-            child: AppText(
-              S.of(context).today,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.all(10.px),
-                height: 40.px,
-                width: 230.px,
-                decoration: BoxDecoration(
-                    color: AppColorConstant.appWhite,
-                    borderRadius: BorderRadius.circular(12.px)),
-                child: AppText(
-                  S.of(context).colorIsOnlyVisibleYou,
-                  color: Theme.of(context).colorScheme.primary,
-                )),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.all(10.px),
-                height: 40.px,
-                width: 230.px,
-                decoration: BoxDecoration(
-                    color: AppColorConstant.grey,
-                    borderRadius: BorderRadius.circular(12.px)),
-                child: AppText(
-                  S.of(context).colorIsOnlyVisibleYou,
-                  color: Theme.of(context).colorScheme.primary,
-                )),
-          )
-        ],
-      ),
-    );
+          );
   }
 
-  Future<Color> getColorFromPreferences() async {
-    final colorCode = await getStringValue(wallPaperColor);
-    if (colorCode != null) {
-      return Color(int.parse(colorCode, radix: 16));
-    } else {
-      return Colors.black;
-    }
-  }
+  onSetWallpaper() async {
 
-  onSetWallpaper() {
-    if (parameter['image'] != null) {
-      uploadImage(File(parameter['image']));
+    if (arguments['selectedItem'].toString().contains("myFile")) {
+      logs("its Image");
+
+      uploadImage(File(arguments['selectedItem']));
       Get.back();
       Get.off(ChatColorWallpaperScreen());
-      setStringValue(
-          wallPaperColor, const Color(0xFFFFFFFF).value.toRadixString(16));
     } else {
-      setStringValue(wallpaper,'');
-      setStringValue(
-      wallPaperColor, wallColor!.value.toRadixString(16));
+      logs("color is  ${arguments['selectedItem']}");
+
+      updateColorFirestore(arguments['selectedItem']);
       Get.back();
       Get.off(ChatColorWallpaperScreen());
     }
   }
 
-   Future<String> uploadImage(
-
-      File url,) async {
+  Future<String> uploadImage(
+    File url,
+  ) async {
     final storage = FirebaseStorage.instance
         .ref('wallpaper')
         .child("images")
         .child(AuthService.auth.currentUser!.phoneNumber!)
         .child('${DateTime.now()}wallpaper.jpg');
 
-    final UploadTask uploadTask = storage.putFile(url, SettableMetadata(contentType: 'IMAGE'), // Specify the content type
-
+    final UploadTask uploadTask = storage.putFile(
+      url, SettableMetadata(contentType: 'IMAGE'), // Specify the content type
     );
     await uploadTask.whenComplete(() {
       logs('File uploaded successfully');
     });
     storage.getDownloadURL().then(
-          (value) {
-        logs("valueurrrrll--> $value");
-        updateWallpaper(value);
+      (value) {
+        logs("image urll--> $value");
+        updateImageFirestore(value);
       },
     );
     return await storage.getDownloadURL();
   }
 
-  Future<void> updateWallpaper(String photoUrl) async {
-    logs("updateUserPhotoUrl Entred");
+  Future<void> updateImageFirestore(String photoUrl) async {
+    logs("setWallpaperOrColor Entered --> Photo URL: $photoUrl");
     isLoading = true;
-    controller!.update();
+
     try {
-      await users.doc(AuthService.auth.currentUser!.uid).update({
+      final currentUser = AuthService.auth.currentUser;
+      final userDocRef = users.doc(currentUser!.uid);
+      await userDocRef.update({
+        'colorCode': '',
+      });
+      await userDocRef.update({
         'wallpaper': photoUrl,
       });
-      logs('Successfully updated user profile picture');
+      logs('Successfully updated wallpaper or color code');
       isLoading = false;
-      controller!.update();
     } catch (e) {
-      logs('Error updating user profile picture: $e');
+      logs('Error updating wallpaper or color code: $e');
       isLoading = false;
-      controller!.update();
+    }
+  }
+
+  Future<void> updateColorFirestore(String? colorCode) async {
+    logs("setWallpaperOrColor Entered -->  Color Code: $colorCode");
+    isLoading = true;
+    try {
+      final currentUser = AuthService.auth.currentUser;
+      final userDocRef = users.doc(currentUser!.uid);
+
+      await userDocRef.update({
+        'colorCode': colorCode,
+      });
+      await userDocRef.update({
+        'wallpaper': '',
+      });
+
+      logs('Successfully updated wallpaper or color code');
+      isLoading = false;
+    } catch (e) {
+      logs('Error updating wallpaper or color code: $e');
+      isLoading = false;
     }
   }
 }

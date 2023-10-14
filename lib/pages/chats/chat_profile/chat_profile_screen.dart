@@ -74,7 +74,6 @@ class ChatProfileScreen extends StatelessWidget {
             //   'members': chatProfileViewModel!.arguments['members'],
             //   'about': chatProfileViewModel!.arguments['about'],
             // });
-
             return true;
           },
         );
@@ -340,7 +339,6 @@ class ChatProfileScreen extends StatelessWidget {
   }
 
   buildBlockUser(BuildContext context, ChatProfileController controller) {
-    controller.update();
     return (chatProfileViewModel!.isBlockedByLoggedUser)
         ? Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),

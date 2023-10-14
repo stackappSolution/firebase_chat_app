@@ -159,8 +159,6 @@ class ProfileViewModel {
 
   Future<void> getPermission(
       BuildContext context, GetxController controller) async {
-    // final permissionStatus = await Permission.storage.status;
-    // final permissionStatus1 = await Permission.camera.status;
 
     await Permission.camera.request();
     await Permission.storage.request();
@@ -229,10 +227,10 @@ class ProfileViewModel {
         phone: FirebaseAuth.instance.currentUser?.phoneNumber
             ?.trim()
             .replaceAll(' ', '```'),
-        wallpaper: '',
-        color: '',
-
+        wallpaper :'',
+        colorCode : '',
         about: "Heyy!!! i am using ChatApp!!",
+        bubbleColor:'',
         blockedNumbers: []);
 
     bool isUserAdded = await UsersService.instance.addUser(userModel);

@@ -157,17 +157,25 @@ class UsersService {
         .snapshots();
   }
 
-  //================================ getUser ================================//
+  //================================ getwallpaper ================================//
 
-  static Future<QuerySnapshot<Map<String, dynamic>>> getSingleUserStream() async {
+  static Future<String>? getSinglebackgroundImage() async {
     final data = await  usersCollection
         .where('id', isEqualTo: AuthService.auth.currentUser!.uid)
         .limit(1)
         .get();
 
-    return data;
+    return data.docs.first['wallpaper'];
   }
 
+  static Future<String>? getSinglebubbleColor() async {
+    final data = await  usersCollection
+        .where('id', isEqualTo: AuthService.auth.currentUser!.uid)
+        .limit(1)
+        .get();
+
+    return data.docs.first['bubbleColor'];
+  }
   //============================= save transaction detail =====================//
 
   Future<void> saveTransactionToFirestore(TransactionsModel transaction) async {
@@ -211,9 +219,6 @@ class UsersService {
       return [];
     }
   }
-
-
-
    Future<String> getUserName(String number) async {
     final userData = await usersCollection
         .where('phone', isEqualTo: number)

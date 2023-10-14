@@ -37,7 +37,7 @@ class ChatingPage extends StatelessWidget {
   ChatingPageViewModal? chatingPageViewModal;
   static String date = '';
   ChatingPageController? controller;
-  Color? backgroundColor;
+  Color? wallColorbackground;
   DecorationImage? backgroundImage;
 
   getBlockedList() async {
@@ -76,17 +76,13 @@ class ChatingPage extends StatelessWidget {
 
             chatingPageViewModal!.chatStream();
             chatingPageViewModal!.markMessage();
+            chatingPageViewModal!.getColorFromFirestore();
+            chatingPageViewModal!.getChatBubbleColors();
             chatingPageViewModal!.backWallpaper =
-                await UsersService.getSingleUserStream();
+                await UsersService.getSinglebackgroundImage();
+            chatingPageViewModal!.getChatBubbleColors();
+            logs('chatBubbleColor-->${chatingPageViewModal!.chatbubblecolor}');
 
-            // Future<String?> key = getStringValue(wallpaper);
-            // chatingPageViewModal!.wallpaperPath = await key;
-
-            chatingPageViewModal!.chatBubbleColor =
-                await chatingPageViewModal!.getChatBubbleColor();
-
-            // chatingPageViewModal!.wallpaperColor =
-            // await chatingPageViewModal!.getWallpaperColor();
             controller!.update();
           },
         );
@@ -102,16 +98,16 @@ class ChatingPage extends StatelessWidget {
             appBar: appBar(controller, context),
             body: Stack(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image:  DecorationImage(
-                      image:  NetworkImage(chatingPageViewModal!
-                          .backWallpaper?.docs.first["wallpaper"]),
-                      fit: BoxFit.fill,
-                      opacity: 0.5
-                    ),
+                if (chatingPageViewModal!.wallImage!="")
+                  Container(height: double.infinity,width: double.infinity,
+                    child: AppImageAsset(
+                        image: chatingPageViewModal!.wallImage,
+                        fit: BoxFit.fill),
+                  )
+                else
+                  Container(
+                    color: chatingPageViewModal!.wallColorbackground,
                   ),
-                ),
                 Column(
                   children: [
                     Expanded(
@@ -732,10 +728,7 @@ class ChatingPage extends StatelessWidget {
     );
   }
 
-  buildSenderMessageView(
-    BuildContext context,
-    MessageModel message,
-  ) {
+  buildSenderMessageView(BuildContext context, MessageModel message,) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.px, horizontal: 8.px),
       alignment: Alignment.centerRight,
@@ -762,7 +755,7 @@ class ChatingPage extends StatelessWidget {
                   nipWidth: 6.px,
                   radius: 5.px),
               alignment: Alignment.topRight,
-              backGroundColor: chatingPageViewModal!.chatBubbleColor,
+              backGroundColor: chatingPageViewModal!.bubblColors,
               child: AppText(
                 message.message.toString(),
                 color: AppColorConstant.appWhite,

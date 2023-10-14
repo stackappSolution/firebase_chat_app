@@ -15,7 +15,8 @@ class UserModel {
   String? pin;
   List? blockedNumbers;
   String? wallpaper;
-  String? color;
+  String? colorCode;
+  String? bubbleColor;
 
   UserModel({
     this.pin,
@@ -28,7 +29,8 @@ class UserModel {
     this.about,
     this.blockedNumbers,
     this.wallpaper,
-    this.color
+    this.colorCode,
+    this.bubbleColor,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -42,7 +44,8 @@ class UserModel {
         pin: json["pin"],
     blockedNumbers: json["blockedNumbers"],
     wallpaper:  json["wallpaper"],
-    color:  json["color"],
+    colorCode:  json["colorCode"],
+    bubbleColor:  json["bubbleColor"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -56,6 +59,7 @@ class UserModel {
         "pin": pin,
         "blockedNumbers": blockedNumbers,
         "wallpaper": wallpaper,
-        "color": color,
+        "colorCode": colorCode,
+        "bubbleColor": bubbleColor,
       };
 }
