@@ -28,10 +28,10 @@ class AddPhotoViewModel {
     );
   }
 
-  updateProfilePicture(String imagePath) {
+  updateProfilePicture() {
     isLoading = true;
     controller!.update();
-    uploadImagesStorage(File(imagePath)).then((value) {
+    uploadImagesStorage(File(selectedImage!.path)).then((value) {
       if (value != null) {
         updateUserPhotoUrl(value);
         isLoading = false;

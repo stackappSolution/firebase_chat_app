@@ -18,6 +18,7 @@ import 'package:signal/pages/profile/profile_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 import '../../app/app/utills/theme_util.dart';
 import '../../constant/app_asset.dart';
+import '../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
@@ -34,6 +35,7 @@ class ProfileScreen extends StatelessWidget {
     return GetBuilder<ProfileController>(
       init: ProfileController(),
       initState: (state) {
+          NetworkConnectivity.checkConnectivity(context);
         profileViewModel!.parameter = Get.parameters;
         logs('profileStatus---> ${AuthService.auth.currentUser!.photoURL}');
       },

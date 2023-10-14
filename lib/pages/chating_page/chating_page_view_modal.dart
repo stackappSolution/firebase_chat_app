@@ -1249,8 +1249,11 @@ class ChatingPageViewModal {
   }
 
   markMessage() {
-    DatabaseService.instance
-        .markMessagesAsSeen(snapshots.docs.first.id, arguments['number']);
+    if(arguments.isNotEmpty)
+      {
+        DatabaseService.instance
+            .markMessagesAsSeen(snapshots.docs.first.id, arguments['number']);
+      }
   }
 
   Future<void> getColorFromFirestore() async {

@@ -13,6 +13,8 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../../service/network_connectivity.dart';
+
 // ignore: must_be_immutable
 class ChatColorWallpaperScreen extends StatelessWidget {
   ChatColorWallpaperScreen({Key? key}) : super(key: key);
@@ -31,6 +33,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
       },
       init: SettingsController(),
       initState: (state) async {
+        NetworkConnectivity.checkConnectivity(context);
         Future.delayed(const Duration(milliseconds: 0), () async {
           controller = Get.find<SettingsController>();
 

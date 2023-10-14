@@ -13,6 +13,8 @@ import 'package:signal/pages/edit_profile/edit_profile_name_screen/edit_profile_
 import 'package:signal/pages/edit_profile/edit_profile_view_model.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../service/network_connectivity.dart';
+
 // ignore: must_be_immutable
 class EditProfileScreen extends StatelessWidget {
   EditProfileViewModel? editProfileViewModel;
@@ -25,6 +27,9 @@ class EditProfileScreen extends StatelessWidget {
 
     return GetBuilder<EditProfileController>(
       init: EditProfileController(),
+      initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
+      },
       builder: (controller) {
         return SafeArea(
             child: Scaffold(

@@ -17,6 +17,7 @@ import 'package:signal/pages/edit_profile/edit_photo_text/edit_profile_text.dart
 import 'package:signal/service/users_service.dart';
 
 import '../../app/app/utills/app_utills.dart';
+import '../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class AddPhotoScreen extends StatelessWidget {
@@ -30,6 +31,9 @@ class AddPhotoScreen extends StatelessWidget {
 
     return GetBuilder<AddPhotoController>(
       init: AddPhotoController(),
+      initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
+      },
       builder: (AddPhotoController controller) {
         return SafeArea(
           child: Scaffold(
@@ -50,7 +54,7 @@ class AddPhotoScreen extends StatelessWidget {
         Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 15.px, bottom: 15.px),
+              padding: EdgeInsets.only(top: 50.px, bottom: 35.px),
               child: StreamBuilder(
                 stream: UsersService.getUserStream(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -124,9 +128,6 @@ class AddPhotoScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                  width: 10.px,
-                ),
                 InkWell(
                   onTap: () {
                     logs("Pick Camera");
@@ -204,40 +205,15 @@ class AddPhotoScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: 10.px,
-                ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.px, right: 10.px),
-              child: const Divider(
-                color: AppColorConstant.offBlack,
-              ),
-            ),
-            Expanded(
-              child: GridView.builder(
-                itemCount: 12,
-                padding: EdgeInsets.only(right: 10.px, left: 10.px),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.all(10.px),
-                    child: const CircleAvatar(
-                      backgroundColor: Colors.black38,
-                    ),
-                  );
-                },
-              ),
-            ),
+            const Spacer(),
             Padding(
               padding:
                   EdgeInsets.only(right: 20.px, bottom: 15.px, left: 20.px),
               child: AppElevatedButton(
                   onPressed: () {
-                    addPhotoViewModel!.updateProfilePicture(
-                        addPhotoViewModel!.selectedImage!.path);
+                    addPhotoViewModel!.updateProfilePicture();
                   },
                   buttonHeight: 45.px,
                   widget: AppText(
@@ -246,7 +222,8 @@ class AddPhotoScreen extends StatelessWidget {
                     fontSize: 22.px,
                   ),
                   isBorderShape: true,
-                  buttonColor: AppColorConstant.appYellow),
+                buttonColor: AppColorConstant.appYellow,
+              ),
             ),
           ],
         ),

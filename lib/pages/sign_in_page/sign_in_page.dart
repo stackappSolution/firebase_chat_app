@@ -19,6 +19,7 @@ import 'package:signal/pages/sign_in_page/sign_in_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 
 import '../../app/app/utills/theme_util.dart';
+import '../../service/network_connectivity.dart';
 
 
 class SignInPage extends StatelessWidget {
@@ -33,7 +34,9 @@ class SignInPage extends StatelessWidget {
     signInViewModel ?? (signInViewModel = SignInViewModel(this));
     return GetBuilder(
       init: SignInController(),
-      initState: (state) {},
+      initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
+      },
       builder: (SignInController controller) {
         return WillPopScope(
           onWillPop: () async {

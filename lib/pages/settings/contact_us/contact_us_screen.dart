@@ -11,6 +11,8 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/contact_us/contact_us_view_model.dart';
 
+import '../../../service/network_connectivity.dart';
+
 // ignore: must_be_immutable
 class ContactUsScreen extends StatelessWidget {
   ContactUsScreen({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class ContactUsScreen extends StatelessWidget {
     contactUsViewModel ?? (contactUsViewModel = ContactUsViewModel(this));
     return GetBuilder<SettingsController>(
       initState: (state) {
+          NetworkConnectivity.checkConnectivity(context);
         Future.delayed(
           const Duration(milliseconds: 0),
           () async {

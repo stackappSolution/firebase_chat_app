@@ -18,6 +18,7 @@ import 'package:signal/service/auth_service.dart';
 
 import '../../app/app/utills/theme_util.dart';
 import '../../app/app/utills/toast_util.dart';
+import '../../service/network_connectivity.dart';
 
 class VerifyOtpPage extends StatelessWidget {
   VerifyOtpPage({super.key});
@@ -30,6 +31,7 @@ class VerifyOtpPage extends StatelessWidget {
     return GetBuilder(
       init: VerifyOtpController(),
       initState: (state) {
+          NetworkConnectivity.checkConnectivity(context);
         verifyOtpViewModel!.parameter = Get.parameters;
         logs("parameter data---->${verifyOtpViewModel!.parameter.values}");
       },
