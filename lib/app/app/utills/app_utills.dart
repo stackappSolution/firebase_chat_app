@@ -1,6 +1,13 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+
+
+List<Contact> contacts = [];
+List<Contact> filteredContacts = [];
+bool isLoadingContact = false;
 
 extension SnackBar on String {
   copyCode() => Clipboard.setData(ClipboardData(text: this));

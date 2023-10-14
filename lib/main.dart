@@ -58,9 +58,7 @@ class MyApp extends StatelessWidget {
             title: 'Flutter matrimonial app',
             debugShowCheckedModeBanner: false,
             defaultTransition: Transition.fadeIn,
-            initialRoute: (AuthService.auth.currentUser != null)
-                ? RouteHelper.getHomeScreen()
-                : RouteHelper.getIntroScreen(),
+            initialRoute:RouteHelper.getSplashScreen(),
             getPages: RouteHelper.routes,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,

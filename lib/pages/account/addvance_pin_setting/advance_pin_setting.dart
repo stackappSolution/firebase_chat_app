@@ -8,7 +8,6 @@ import 'package:signal/generated/l10n.dart';
 
 import '../../../app/app/utills/theme_util.dart';
 import '../../../controller/advance_pin_controller.dart';
-import '../../../service/network_connectivity.dart';
 import 'advance_pin_view_model.dart';
 
 // ignore: must_be_immutable
@@ -23,9 +22,6 @@ class AdvancePinSettingScreen extends StatelessWidget {
 
     return GetBuilder<AdvancePinController>(
       init: AdvancePinController(),
-      initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
-      },
       builder: (controller) {
         return  Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);

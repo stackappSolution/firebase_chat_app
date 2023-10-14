@@ -10,8 +10,6 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/privacy/blocked/blocked_users_view_model.dart';
 import 'package:signal/service/users_service.dart';
 
-import '../../../../service/network_connectivity.dart';
-
 // ignore: must_be_immutable
 class BlockedUsersScreen extends StatelessWidget {
   BlockedUsersScreen({Key? key}) : super(key: key);
@@ -27,7 +25,6 @@ class BlockedUsersScreen extends StatelessWidget {
     return GetBuilder(
       init: SettingsController(),
       initState: (state) {
-          NetworkConnectivity.checkConnectivity(context);
         Future.delayed(
           const Duration(milliseconds: 100),
           () {

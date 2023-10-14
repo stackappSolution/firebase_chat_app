@@ -26,6 +26,7 @@ import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../app/app/utills/theme_util.dart';
 import '../../controller/chating_page_controller.dart';
 import '../../modal/send_message_model.dart';
 import '../../routes/app_navigation.dart';
@@ -66,6 +67,7 @@ class ChatingPage extends StatelessWidget {
           () async {
             logs('arg--> ${chatingPageViewModal!.arguments}');
             controller = Get.find<ChatingPageController>();
+
             controller!.durationList = List.filled(100, Duration.zero);
             controller!.positionList = List.filled(100, Duration.zero);
             controller!.isPlayingList = List.filled(100, false);
@@ -83,6 +85,14 @@ class ChatingPage extends StatelessWidget {
             chatingPageViewModal!.getChatBubbleColors();
             logs('chatBubbleColor-->${chatingPageViewModal!.chatbubblecolor}');
 
+            Future<String?> key = getStringValue(wallpaper);
+            chatingPageViewModal!.wallpaperPath = await key;
+
+            chatingPageViewModal!.chatBubbleColor =
+                await chatingPageViewModal!.getChatBubbleColor();
+
+            chatingPageViewModal!.wallpaperColor =
+                await chatingPageViewModal!.getWallpaperColor();
             controller!.update();
           },
         );
@@ -94,21 +104,26 @@ class ChatingPage extends StatelessWidget {
             controller.player.dispose();
             return true;
           },
-          child: Scaffold(
-            appBar: appBar(controller, context),
-            body: Stack(
-              children: [
-                if (chatingPageViewModal!.wallImage!="")
-                  Container(height: double.infinity,width: double.infinity,
-                    child: AppImageAsset(
-                        image: chatingPageViewModal!.wallImage,
-                        fit: BoxFit.fill),
-                  )
-                else
-                  Container(
-                    color: chatingPageViewModal!.wallColorbackground,
-                  ),
-                Column(
+          child:Builder(builder: (context) {
+            MediaQueryData mediaQuery = MediaQuery.of(context);
+            ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+            return   Builder(builder: (context) {
+              MediaQueryData mediaQuery = MediaQuery.of(context);
+              ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+              return Scaffold(
+              appBar: appBar(controller, context),
+              body: Container(
+                decoration: BoxDecoration(
+                    image: (chatingPageViewModal!.wallpaperPath != null)
+                        ? DecorationImage(
+                        fit: BoxFit.fill,
+                        image: FileImage(
+                            File(chatingPageViewModal!.wallpaperPath!)))
+                        : null,
+                    color: (chatingPageViewModal!.wallpaperPath != null)
+                        ? chatingPageViewModal!.wallpaperColor
+                        : Colors.transparent),
+                child: Column(
                   children: [
                     Expanded(
                       child: StreamBuilder<QuerySnapshot>(
@@ -122,41 +137,41 @@ class ChatingPage extends StatelessWidget {
                             final data = snapshot.data!.docs;
                             chatingPageViewModal!.updateChatLength(data.length);
                             final message = snapshot.data!.docs
-                                .map(
-                                    (doc) => doc.data() as Map<String, dynamic>)
+                                .map((doc) => doc.data() as Map<String, dynamic>)
+
                                 .toList();
 
                             Future.delayed(
                               const Duration(milliseconds: 300),
-                              () {
+                                  () {
                                 DatabaseService.instance.markMessagesAsSeen(
-                                    chatingPageViewModal!
-                                        .snapshots.docs.first.id,
+                                    chatingPageViewModal!.snapshots.docs.first.id,
                                     chatingPageViewModal!.arguments['number']);
                               },
                             );
+
                             return Column(
                               children: [
                                 (chatingPageViewModal!.arguments['isGroup'] &&
-                                        message.isEmpty)
+                                    message.isEmpty)
                                     ? Container(
-                                        padding: EdgeInsets.all(8.px),
-                                        margin: EdgeInsets.all(8.px),
-                                        child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.px),
-                                              color: AppColorConstant.appWhite
-                                                  .withOpacity(0.3)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: AppText(
-                                              '${chatingPageViewModal!.arguments['createdBy']} created this group',
-                                              fontSize: 10.px,
-                                            ),
-                                          ),
-                                        ),
-                                      )
+                                  padding: EdgeInsets.all(8.px),
+                                  margin: EdgeInsets.all(8.px),
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(15.px),
+                                        color: AppColorConstant.appWhite
+                                            .withOpacity(0.3)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: AppText(
+                                        '${chatingPageViewModal!.arguments['createdBy']} created this group',
+                                        fontSize: 10.px,
+                                      ),
+                                    ),
+                                  ),
+                                )
                                     : const SizedBox(),
                                 Expanded(
                                   child: Stack(
@@ -168,11 +183,11 @@ class ChatingPage extends StatelessWidget {
 
                                           String formattedTime = DateFormation()
                                               .getChatTimeFormate(
-                                                  element['messageTimestamp']);
+                                              element['messageTimestamp']);
 
                                           DateTime dateTime = DateFormation()
                                               .getDatetime(
-                                                  element['messageTimestamp']);
+                                              element['messageTimestamp']);
 
                                           chatingPageViewModal!.messageTimeStamp
                                               .add(dateTime);
@@ -180,18 +195,16 @@ class ChatingPage extends StatelessWidget {
                                           return buildMessage(
                                               MessageModel(
                                                   messageStatus:
-                                                      element['messageStatus'],
+                                                  element['messageStatus'],
                                                   message: element['message'],
                                                   isSender: element['isSender'],
-                                                  messageTimestamp:
-                                                      formattedTime,
+                                                  messageTimestamp: formattedTime,
                                                   messageType:
-                                                      element['messageType'],
+                                                  element['messageType'],
                                                   sender: element['sender'],
                                                   text: element['text'],
                                                   emoji: element['emoji'],
-                                                  messageId:
-                                                      element['messageid'],
+                                                  messageId: element['messageid'],
                                                   thumb: element['thumb']),
                                               context,
                                               controller,
@@ -199,8 +212,7 @@ class ChatingPage extends StatelessWidget {
                                         },
                                         reverse: true,
                                         physics: const BouncingScrollPhysics(),
-                                        clipBehavior:
-                                            Clip.antiAliasWithSaveLayer,
+                                        clipBehavior: Clip.antiAliasWithSaveLayer,
                                         order: GroupedListOrder.DESC,
                                         useStickyGroupSeparators: true,
                                         floatingHeader: true,
@@ -212,15 +224,15 @@ class ChatingPage extends StatelessWidget {
                                           }
 
                                           int timestamp =
-                                              element['messageTimestamp'];
-                                          DateTime date = DateTime
-                                              .fromMillisecondsSinceEpoch(
-                                                  timestamp);
+                                          element['messageTimestamp'];
+                                          DateTime date =
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              timestamp);
                                           return formatDate(date);
                                         },
                                         groupHeaderBuilder: (value) {
                                           var timestamp =
-                                              value['messageTimestamp'];
+                                          value['messageTimestamp'];
                                           String formatDate = DateFormation()
                                               .headerTimestamp(timestamp);
                                           return Container(
@@ -231,7 +243,7 @@ class ChatingPage extends StatelessWidget {
                                               padding: EdgeInsets.all(5.px),
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(5.px),
+                                                BorderRadius.circular(5.px),
                                                 color: AppColorConstant.appGrey
                                                     .withOpacity(0.3),
                                               ),
@@ -242,7 +254,7 @@ class ChatingPage extends StatelessWidget {
                                                 formatDate,
                                                 style: const TextStyle(
                                                   color:
-                                                      AppColorConstant.appBlack,
+                                                  AppColorConstant.appBlack,
                                                 ),
                                               ),
                                             ),
@@ -259,19 +271,18 @@ class ChatingPage extends StatelessWidget {
                                           child: DecoratedBox(
                                             decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        15.px),
+                                                BorderRadius.circular(15.px),
                                                 color: AppColorConstant.appWhite
                                                     .withOpacity(0.3)),
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: AppText(
                                                 '${chatingPageViewModal!.arguments['createdBy']} created this group',
                                                 fontSize: 10.px,
                                               ),
                                             ),
                                           ),
+
                                         )
                                     ],
                                   ),
@@ -286,14 +297,15 @@ class ChatingPage extends StatelessWidget {
                     (chatingPageViewModal!.isBlockedByLoggedInUser)
                         ? buildUnblockView(context, controller)
                         : (chatingPageViewModal!.isBlockedByLoggedInUser)
-                            ? buildBlockView(context)
-                            : buildTextFormField(context, controller),
+                        ? buildBlockView(context)
+                        : buildTextFormField(context, controller),
                     // chatingPageViewModal!.blockedNumbers.contains(chatingPageViewModal!.arguments['number'])
                   ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );});
+          },)
+
         );
       },
     );
@@ -609,11 +621,18 @@ class ChatingPage extends StatelessWidget {
                                 builder: (context,
                                     AsyncSnapshot<QuerySnapshot> snapshot) {
                                   if (snapshot.hasError) {
-                                    return const AppText('');
+                                    return AppText(
+                                      '',
+                                      fontSize: 10.px,
+                                    );
                                   }
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return const AppText('.');
+                                    return AppText(
+                                      '',
+                                      fontSize: 10.px,
+                                    );
+
                                   }
                                   final data = snapshot.data!.docs;
                                   logs("name -- > ${data.first['firstName']}");
@@ -727,6 +746,7 @@ class ChatingPage extends StatelessWidget {
       ),
     );
   }
+
 
   buildSenderMessageView(BuildContext context, MessageModel message,) {
     return Container(

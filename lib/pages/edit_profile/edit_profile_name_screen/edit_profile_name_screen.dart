@@ -15,8 +15,6 @@ import 'package:signal/pages/edit_profile/edit_profile_name_screen/edit_profile_
 import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/service/users_service.dart';
 
-import '../../../service/network_connectivity.dart';
-
 class EditProfileNameScreen extends StatelessWidget {
   EditProfileNameScreenViewModel? editProfileNameScreenViewModel;
 
@@ -31,7 +29,6 @@ class EditProfileNameScreen extends StatelessWidget {
     return GetBuilder<EditProfileNameController>(
       init: EditProfileNameController(),
       initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
         editProfileNameScreenViewModel!.firstNameController.text =
             data['firstName'];
         editProfileNameScreenViewModel!.lastNameController.text =

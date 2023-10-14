@@ -10,18 +10,13 @@ import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/pages/home/home_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';
 import 'package:signal/pages/set_pin/set_pin_view_model.dart';
-import 'package:signal/routes/app_navigation.dart';
 
-import '../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/theme_util.dart';
-import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_elevated_button.dart';
+import '../../constant/string_constant.dart';
 import '../../controller/set_pin_controller.dart';
-import '../../service/network_connectivity.dart';
-import '../chats/chat_screen.dart';
 
 // ignore: must_be_immutable
 class SetPinScreen extends StatelessWidget {
@@ -35,20 +30,68 @@ class SetPinScreen extends StatelessWidget {
 
     return GetBuilder<SetPinController>(
       init: SetPinController(),
-      initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
-      },
+      initState: (state) {},
       builder: (controller) {
-        return  Builder(builder: (context) {
-          MediaQueryData mediaQuery = MediaQuery.of(context);
-          ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
-          return SafeArea(
-          child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: getBody(context, controller),
-            // floatingActionButton: getFloatingActionButton(context, controller),
-          ),
-        );});
+        return WillPopScope(
+          onWillPop: () async {
+            // Show a confirmation dialog
+            return await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(color: Colors.transparent)),
+                  title: const AppText('Exit App', fontWeight: FontWeight.bold),
+                  content:
+                      const AppText('Are you sure you want to exit the app?'),
+                  actions: [
+                    Row(
+                      children: [
+                        const Spacer(),
+                        AppElevatedButton(
+                          buttonWidth: 50,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40,
+                          widget: const AppText('Yes',
+                              color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            SystemNavigator.pop();
+                            Navigator.of(context).pop(true); // Exit the app
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        AppElevatedButton(
+                          buttonWidth: 50,
+                          buttonColor: AppColorConstant.appYellow,
+                          buttonHeight: 40,
+                          widget: const AppText(StringConstant.cansel,
+                              color: AppColorConstant.appWhite),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pop(false); // Don't exit the app
+                          },
+                        ),
+                        // Add spacing between buttons
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: Builder(builder: (context) {
+            MediaQueryData mediaQuery = MediaQuery.of(context);
+            ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+            return SafeArea(
+              child: Scaffold(
+                backgroundColor: Theme.of(context).colorScheme.background,
+                body: getBody(context, controller),
+                // floatingActionButton: getFloatingActionButton(context, controller),
+              ),
+            );
+          }),
+        );
       },
     );
   }
@@ -280,14 +323,8 @@ class EnterPinScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     enterPinViewModel ?? (enterPinViewModel = EnterPinViewModel(this));
-    Color primaryTheme = Theme
-        .of(context)
-        .colorScheme
-        .primary;
-    Color secondaryTheme = Theme
-        .of(context)
-        .colorScheme
-        .secondary;
+    Color primaryTheme = Theme.of(context).colorScheme.primary;
+    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
     return GetBuilder<EnterPinController>(
         init: EnterPinController(),
         initState: (state) {},
@@ -296,96 +333,105 @@ class EnterPinScreen extends StatelessWidget {
             child: Scaffold(
               backgroundColor: Theme.of(context).colorScheme.background,
               body: Stack(
-                children: [Padding(
-                  padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppText(
-                          'Enter pin',
-                          fontSize: 27.px,
-                          color: primaryTheme,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10.px),
-                          child: AppText(
-                            S.of(context).pinCanHelp,
-                            color: secondaryTheme,
-                            fontSize: 13.px,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AppText(
+                            'Enter pin',
+                            fontSize: 27.px,
+                            color: primaryTheme,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
-                          child: TextField(
-                            style:
-                            const TextStyle(color: AppColorConstant.appBlack),
-                            controller: enterPinViewModel!.pinController,
-                            keyboardType: enterPinViewModel!.changeKeyBoard
-                                ? TextInputType.text
-                                : TextInputType.number,
-                            textAlign: TextAlign.center,
-                            focusNode: enterPinViewModel!.focusNode,
-                            autofocus: true,
-                            obscureText: true,
-                            inputFormatters: (!enterPinViewModel!.changeKeyBoard)
-                                ? [
-                              LengthLimitingTextInputFormatter(4),
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'[0-9]')),
-                            ]
-                                : [
-                              LengthLimitingTextInputFormatter(4),
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'[a-zA-Z0-9]')),
-                            ],
-                            decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: AppColorConstant.yellowLight,
-                                border: UnderlineInputBorder()),
-                            onChanged: (value) {
-                              enterPinViewModel!.onPinChanged(value, controller);
-                            },
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: (!enterPinViewModel!.changeKeyBoard)
-                              ? AppText(S.of(context).pinMustBeChar,
-                            color: secondaryTheme,
-                            fontSize: 12.px,
-                          )
-                              : AppText(S.of(context).pinMustBeChar,
-                            color: secondaryTheme,
-                            fontSize: 12.px,
-                          ),
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 60.px),
-                          child: AppElevatedButton(
-                            onPressed: enterPinViewModel!.isButtonActive
-                                ? () {
-                              enterPinViewModel!.rightPin(context, controller, pin);
-                            }
-                                : null,
-                            buttonColor: enterPinViewModel!.isButtonActive
-                                ? AppColorConstant.appYellow
-                                : Theme.of(context).colorScheme.secondary,
-                            buttonHeight: 50.px,
-                            isBorderShape: true,
-                            widget: AppText(
-                              S.of(context).next,
-                              fontSize: 18.px,
-                              color: AppColorConstant.appWhite,
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.px),
+                            child: AppText(
+                              S.of(context).pinCanHelp,
+                              color: secondaryTheme,
+                              fontSize: 13.px,
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 15.px,
-                        )
-                      ]),
-                ),if(enterPinViewModel!.isLoading) AppLoader()],
+                          Padding(
+                            padding: EdgeInsets.only(top: 15.px, bottom: 8.px),
+                            child: TextField(
+                              style: const TextStyle(
+                                  color: AppColorConstant.appBlack),
+                              controller: enterPinViewModel!.pinController,
+                              keyboardType: enterPinViewModel!.changeKeyBoard
+                                  ? TextInputType.text
+                                  : TextInputType.number,
+                              textAlign: TextAlign.center,
+                              focusNode: enterPinViewModel!.focusNode,
+                              autofocus: true,
+                              obscureText: true,
+                              inputFormatters:
+                                  (!enterPinViewModel!.changeKeyBoard)
+                                      ? [
+                                          LengthLimitingTextInputFormatter(4),
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp(r'[0-9]')),
+                                        ]
+                                      : [
+                                          LengthLimitingTextInputFormatter(4),
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp(r'[a-zA-Z0-9]')),
+                                        ],
+                              decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: AppColorConstant.yellowLight,
+                                  border: UnderlineInputBorder()),
+                              onChanged: (value) {
+                                enterPinViewModel!
+                                    .onPinChanged(value, controller);
+                              },
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: (!enterPinViewModel!.changeKeyBoard)
+                                ? AppText(
+                                    S.of(context).pinMustBeChar,
+                                    color: secondaryTheme,
+                                    fontSize: 12.px,
+                                  )
+                                : AppText(
+                                    S.of(context).pinMustBeChar,
+                                    color: secondaryTheme,
+                                    fontSize: 12.px,
+                                  ),
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 60.px),
+                            child: AppElevatedButton(
+                              onPressed: enterPinViewModel!.isButtonActive
+                                  ? () {
+                                      enterPinViewModel!
+                                          .rightPin(context, controller, pin);
+                                    }
+                                  : null,
+                              buttonColor: enterPinViewModel!.isButtonActive
+                                  ? AppColorConstant.appYellow
+                                  : Theme.of(context).colorScheme.secondary,
+                              buttonHeight: 50.px,
+                              isBorderShape: true,
+                              widget: AppText(
+                                S.of(context).next,
+                                fontSize: 18.px,
+                                color: AppColorConstant.appWhite,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.px,
+                          )
+                        ]),
+                  ),
+                  if (enterPinViewModel!.isLoading) AppLoader()
+                ],
               ),
             ),
           );

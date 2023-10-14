@@ -12,7 +12,6 @@ import 'package:video_player/video_player.dart';
 import '../../../app/app/utills/app_utills.dart';
 import '../../../app/widget/app_text.dart';
 import '../../../controller/video_player_controller.dart';
-import '../../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class VideoPlayerView extends StatelessWidget {
@@ -31,7 +30,6 @@ class VideoPlayerView extends StatelessWidget {
         //  controller!.player.dispose();
       },
       initState: (state) {
-        NetworkConnectivity.checkConnectivity(context);
         videoPlayerViewModel!.argument = Get.arguments;
         videoPlayerViewModel!.videoFilePath =
             videoPlayerViewModel!.argument['video'];
