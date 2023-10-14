@@ -20,6 +20,7 @@ import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
 import '../../app/widget/app_shimmer.dart';
 
+import '../../service/network_connectivity.dart';
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
 
@@ -36,6 +37,7 @@ class ChatScreen extends StatelessWidget {
     return GetBuilder<ContactController>(
       init: ContactController(),
       initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
         var brightness =
             SchedulerBinding.instance.platformDispatcher.platformBrightness;
         ThemeUtil.isDark = brightness == Brightness.dark;
