@@ -11,6 +11,7 @@ import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/pages/chating_page/image_view/image_view_model.dart';
 
 import '../../../app/app/utills/theme_util.dart';
+import '../../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class ImageView extends StatelessWidget {
@@ -24,6 +25,7 @@ class ImageView extends StatelessWidget {
     imageViewModel ?? (imageViewModel = ImageViewModel(this));
     return GetBuilder<ChatingPageController>(
       initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
         imageViewModel!.arguments = Get.arguments;
         Future.delayed(
           const Duration(milliseconds: 10),

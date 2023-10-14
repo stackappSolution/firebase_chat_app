@@ -14,6 +14,7 @@ import 'package:signal/controller/chanage_phone_controller.dart';
 import 'package:signal/generated/l10n.dart';
 
 import '../../../app/app/utills/theme_util.dart';
+import '../../../service/network_connectivity.dart';
 import 'change_phone_view_model.dart';
 
 // ignore: must_be_immutable
@@ -28,6 +29,9 @@ class ChangePhoneScreen extends StatelessWidget {
 
     return GetBuilder<ChangePhoneController>(
       init: ChangePhoneController(),
+      initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
+      },
       builder: (controller) {
         return  Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);

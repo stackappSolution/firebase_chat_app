@@ -9,6 +9,8 @@ import 'package:signal/controller/diappearing_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/settings/privacy/disappear/disappear_view_model.dart';
 
+import '../../../../service/network_connectivity.dart';
+
 // ignore: must_be_immutable
 class DisappearScreen extends StatelessWidget {
   DisappearScreen({Key? key}) : super(key: key);
@@ -21,7 +23,9 @@ class DisappearScreen extends StatelessWidget {
 
     return GetBuilder<DisappearingController>(
       init: DisappearingController(),
-      initState: (state) {},
+      initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
+      },
       builder: (DisappearingController controller) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,

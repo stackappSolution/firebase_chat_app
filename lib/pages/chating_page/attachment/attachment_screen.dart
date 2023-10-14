@@ -16,6 +16,7 @@ import '../../../app/app/utills/app_utills.dart';
 import '../../../app/app/utills/theme_util.dart';
 import '../../../app/widget/app_text.dart';
 import '../../../controller/acccount_controller.dart';
+import '../../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class AttachmentScreen extends StatelessWidget {
@@ -34,6 +35,7 @@ class AttachmentScreen extends StatelessWidget {
         //  controller!.player.dispose();
       },
       initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
         attachmentViewModel!.argument = Get.arguments;
         attachmentViewModel!.selectedImage =
             attachmentViewModel!.argument['image'];

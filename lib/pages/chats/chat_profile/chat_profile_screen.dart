@@ -16,6 +16,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../../app/app/utills/theme_util.dart';
+import '../../../service/network_connectivity.dart';
 
 class ChatProfileScreen extends StatelessWidget {
   ChatProfileScreen({Key? key}) : super(key: key);
@@ -30,6 +31,7 @@ class ChatProfileScreen extends StatelessWidget {
     return GetBuilder<ChatProfileController>(
       init: ChatProfileController(),
       initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
         chatProfileViewModel!.arguments = Get.arguments;
         chatProfileViewModel!
             .totalMember(chatProfileViewModel!.arguments['number']);
@@ -45,7 +47,7 @@ class ChatProfileScreen extends StatelessWidget {
                         .trim()
                         .removeAllWhitespace);
             controller!.update();
-
+            chatProfileViewModel!.getAbout(chatProfileViewModel!.arguments['number']);
             logs(
                 "reciewvwe---- > ${chatProfileViewModel!.arguments['number']}");
             logs(
@@ -120,8 +122,7 @@ class ChatProfileScreen extends StatelessWidget {
             padding: EdgeInsets.only(top: 10.px, bottom: 10.px),
             child: Center(
                 child: AppText(
-                    chatProfileViewModel?.arguments['about'] ??
-                        'I am useing chatapp..!!!',
+                    chatProfileViewModel!.about ,
                     fontSize: 18.px)),
           ),
         Divider(
@@ -340,7 +341,6 @@ class ChatProfileScreen extends StatelessWidget {
   }
 
   buildBlockUser(BuildContext context, ChatProfileController controller) {
-    controller.update();
     return (chatProfileViewModel!.isBlockedByLoggedUser)
         ? Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),

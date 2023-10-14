@@ -11,6 +11,8 @@ import 'package:signal/controller/donate_to_chat_controller.dart';
 import 'package:signal/pages/donate_to_chat_app/donate_chat_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 
+import '../../service/network_connectivity.dart';
+
 class DonateToChatPage extends StatelessWidget {
   DonateToChatPage({super.key});
 
@@ -23,6 +25,7 @@ class DonateToChatPage extends StatelessWidget {
     return GetBuilder(
       init: DonateToChatController(),
       initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
         Future.delayed(const Duration(milliseconds: 300), () async {
           donateToChatController = Get.find<DonateToChatController>();
         });

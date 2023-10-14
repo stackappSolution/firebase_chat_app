@@ -21,6 +21,7 @@ import '../../app/app/utills/theme_util.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../app/widget/app_shimmer.dart';
 import '../../service/database_helper.dart';
+import '../../service/network_connectivity.dart';
 
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
@@ -35,6 +36,7 @@ class NewMessagePage extends StatelessWidget {
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
       initState: (state) {
+          NetworkConnectivity.checkConnectivity(context);
         DataBaseHelper.getContactDetails();
         Future.delayed(const Duration(milliseconds: 300), () async {
           newMessageController = Get.find<NewMessageController>();

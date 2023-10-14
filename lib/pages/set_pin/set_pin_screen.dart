@@ -20,6 +20,7 @@ import '../../app/app/utills/theme_util.dart';
 import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_elevated_button.dart';
 import '../../controller/set_pin_controller.dart';
+import '../../service/network_connectivity.dart';
 import '../chats/chat_screen.dart';
 
 // ignore: must_be_immutable
@@ -34,7 +35,9 @@ class SetPinScreen extends StatelessWidget {
 
     return GetBuilder<SetPinController>(
       init: SetPinController(),
-      initState: (state) {},
+      initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
+      },
       builder: (controller) {
         return  Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);

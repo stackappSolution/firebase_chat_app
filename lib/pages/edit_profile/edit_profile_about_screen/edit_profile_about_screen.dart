@@ -9,6 +9,7 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/pages/edit_profile/edit_profile_about_screen/edit_profile_about_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_about_screen/edit_profile_about_screen_view_model.dart';
 
+import '../../../service/network_connectivity.dart';
 import '../edit_profile_screen.dart';
 
 class EditProfileAboutScreen extends StatelessWidget {
@@ -26,6 +27,7 @@ class EditProfileAboutScreen extends StatelessWidget {
     return GetBuilder(
       init: EditProfileAboutController(),
       initState: (state) {
+        NetworkConnectivity.checkConnectivity(context);
         editProfileAboutScreenViewModel!.captionController.text = data;
       },
       builder: (EditProfileAboutController controller) {

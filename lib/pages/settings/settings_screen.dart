@@ -17,6 +17,8 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../service/network_connectivity.dart';
+
 // ignore: must_be_immutable
 class SettingScreen extends StatelessWidget {
   SettingScreen({Key? key}) : super(key: key);
@@ -31,6 +33,7 @@ class SettingScreen extends StatelessWidget {
 
     return GetBuilder<SettingsController>(
       initState: (state) {
+          NetworkConnectivity.checkConnectivity(context);
         Future.delayed(
           const Duration(milliseconds: 0),
           () async {
@@ -68,7 +71,7 @@ class SettingScreen extends StatelessWidget {
         ),
         buildProfileView(context),
         SizedBox(
-          height: 20.px,
+          height: 10.px,
         ),
         buildSettingsList(context, controller),
       ],
@@ -119,25 +122,33 @@ class SettingScreen extends StatelessWidget {
                 width: 30.px,
                 height: 20.px,
               ),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding:  EdgeInsets.only(top: 10.px),
                       child: AppText(
-                        '${data.first['firstName']} ${data.first['lastName']}',
+                        'Name : ${data.first['firstName']} ${data.first['lastName']}',
                         overflow: TextOverflow.ellipsis,
-                        fontSize: 20.px,
-                        color: primaryTheme,
+                        color: primaryTheme,fontSize: 14.px,
                       ),
                     ),
-                    AppText(AuthService.auth.currentUser!.phoneNumber!,
-                        overflow: TextOverflow.ellipsis,
-                        color: secondaryTheme,
-                        fontSize: 12.px),
-                  ],
-                ),
+                  ),
+                  Flexible(
+                    child: AppText(
+                      'about : ${data.first['about']}',
+                      overflow: TextOverflow.ellipsis,
+                      color: secondaryTheme,
+                    ),
+                  ),
+                  AppText(
+                   "no        : ${AuthService.auth.currentUser!.phoneNumber!}",
+                    overflow: TextOverflow.ellipsis,
+                    color: secondaryTheme,
+                  ),
+                ],
               )
             ],
           );
