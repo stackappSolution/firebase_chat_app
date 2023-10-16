@@ -10,6 +10,7 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/account/pin_setting/pin_setting_view_model.dart';
 
 import '../../../app/app/utills/theme_util.dart';
+import '../../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class PinSettingScreen extends StatelessWidget {

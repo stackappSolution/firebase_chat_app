@@ -19,6 +19,7 @@ import '../../app/app/utills/theme_util.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../app/widget/app_shimmer.dart';
 import '../../service/database_helper.dart';
+import '../../service/network_connectivity.dart';
 
 class NewMessagePage extends StatelessWidget {
   NewMessagePage({super.key});
@@ -30,11 +31,9 @@ class NewMessagePage extends StatelessWidget {
     newMessageViewModel ?? (newMessageViewModel = NewMessageViewModel(this));
     return GetBuilder<NewMessageController>(
       init: NewMessageController(),
-      initState: (state) {
-        //  DataBaseHelper.getContactDetails();
-      },
+      initState: (state) {},
       builder: (NewMessageController controller) {
-        //controller.getUserPhoneList();
+       controller.getUserPhoneList();
         return SafeArea(
           child: Builder(builder: (context) {
             MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -151,7 +150,7 @@ class NewMessagePage extends StatelessWidget {
           shrinkWrap: true,
           itemCount: newMessageViewModel!.isSearching == true
               ? filteredContacts.length
-              : 100,
+              : contacts.length,
           itemBuilder: (context, index) {
             final Contact contact = newMessageViewModel!.isSearching
                 ? filteredContacts[index]

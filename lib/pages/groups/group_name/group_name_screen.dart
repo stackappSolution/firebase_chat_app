@@ -17,6 +17,7 @@ import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_service.dart';
 
 import '../../../app/app/utills/theme_util.dart';
+import '../../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class GroupNameScreen extends StatelessWidget {

@@ -16,6 +16,8 @@ import 'package:signal/modal/transaction_model.dart';
 import 'package:signal/pages/donate_amount_page/donate_view_model.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../service/network_connectivity.dart';
+
 class DonatePage extends StatelessWidget {
   DonatePage({super.key});
 

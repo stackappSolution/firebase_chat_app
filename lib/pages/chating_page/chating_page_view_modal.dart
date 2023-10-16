@@ -100,7 +100,6 @@ class ChatingPageViewModal {
     });
   }
 
-
   Future<bool> checkPermission() async {
     if (!await Permission.microphone.isGranted) {
       PermissionStatus status = await Permission.microphone.request();
@@ -227,11 +226,11 @@ class ChatingPageViewModal {
 
     NotificationModel notificationModel = NotificationModel(
       time:
-      ' ${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+          ' ${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
       sender: AuthService.auth.currentUser!.phoneNumber,
       receiver: arguments['number'],
       receiverName:
-      await UsersService.instance.getUserName('${arguments['number']}'),
+          await UsersService.instance.getUserName('${arguments['number']}'),
       senderName: await UsersService.instance
           .getUserName('${AuthService.auth.currentUser!.phoneNumber}'),
       message: message,
@@ -269,7 +268,6 @@ class ChatingPageViewModal {
     logs('getStringValue(StringConstant.selectedFontSize) : $fontSize');
     return fontSize;
   }
-
 
   //========================= docs =============================//
 
@@ -333,7 +331,7 @@ class ChatingPageViewModal {
       dir.create();
     }
     fileName =
-    "myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}";
+        "myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}";
     File file = File("${dir.path}/$fileName");
 
     await file.writeAsBytes(response.bodyBytes);
@@ -352,7 +350,7 @@ class ChatingPageViewModal {
       mainURL, folderName, ChatingPageController controller, int index) async {
     logs(" View FIle Entred");
     final PermissionStatus permissionStatus =
-    await Permission.manageExternalStorage.status;
+        await Permission.manageExternalStorage.status;
     if (!permissionStatus.isGranted) {
       getPermission();
     } else {
@@ -373,78 +371,41 @@ class ChatingPageViewModal {
         controller.update();
         logs(" The file has already been downloaded, open it.");
         logs("saved file path  ---- > $filePath");
+        if (extensionCheck(mainURL) == "jpg" ||
+            extensionCheck(mainURL) == "png") {
+          logs("It's Image");
+          Get.toNamed(RouteHelper.getImageViewScreen(),
+              arguments: {'image': filePath, 'name': arguments['name']});
+        }
 
         if (extensionCheck(mainURL) == "mp4") {
           logs("Its video");
           Get.toNamed(RouteHelper.getVideoPlayerScreen(),
               arguments: {'video': filePath});
         }
-        if (!controller.player.playing) {
-          // Initialize lists with a sufficient number of elements
-          controller!.positionList = List.filled(100, Duration.zero);
-          controller!.isPlayingList = List.filled(100, false);
-
-          if (index >= 0 && index < isPlayList.length) {
-            isPlayList[index] = true;
-          }
-          controller.update();
-          controller.player.setUrl(filePath);
-          controller.player.play();
-          controller.update();
-
-          if (extensionCheck(mainURL) == "jpg" ||
-              extensionCheck(mainURL) == "png") {
-            logs("It's Image");
-            Get.toNamed(RouteHelper.getImageViewScreen(),
-                arguments: {'image': filePath, 'name': arguments['name']});
-          }
-
-          if (extensionCheck(mainURL) == "mp3") {
-            logs("It's audio");
-
-            if (index >= 0 && index < controller.isPlayingList.length) {
-              controller.isPlayingList[index] =
-              !controller.isPlayingList[index];
-            }
-
+        if (extensionCheck(mainURL) == "mp3") {
+          logs("It's audio");
+          if (!controller.player.playing) {
+            logs("Music not playing");
+            controller!.positionList = List.filled(100, Duration.zero);
+            controller!.isPlayingList = List.filled(100, false);
             controller.update();
-            if (!controller.player.playing) {
-              logs("Music not playing");
-              controller.isPlayingList = List.filled(100, false);
-              controller.update();
-              controller.player.setUrl(filePath);
-              controller.player.play();
-              if (index >= 0 && index < controller.isPlayingList.length) {
-                controller.isPlayingList[index] = true;
-              }
-              controller.update();
-            } else {
-              if (index >= 0 && index < isPlayList.length) {
-                isPlayList[index] = !isPlayList[index];
-              }
-
-              controller.update();
-
-              if (isPlayList[index]) {
-                controller.player.pause();
-                controller.update();
-                controller.positionList =
-                    List.filled(100, const Duration(seconds: 0));
-                controller.isPlayingList = List.filled(100, false);
-              } else {
-                logs("Music already playing");
-                controller.player.stop();
-                controller.update();
-                controller.isPlayingList = List.filled(100, false);
-              }
-            }
+            controller.player.setUrl(filePath);
+            controller.player.play();
+            controller.isPlayingList[index] = true;
           } else {
-            OpenFile.open(filePath);
+            logs("Music already playing");
+            controller.player.stop();
+            controller.update();
+            controller.isPlayingList = List.filled(100, false);
+            controller.update();
           }
         } else {
-          logs("Downloading Start");
-          downloadAndSavePDF(mainURL, folderName, controller, index);
+          OpenFile.open(filePath);
         }
+      } else {
+        logs("Downloading Start");
+        downloadAndSavePDF(mainURL, folderName, controller, index);
       }
     }
   }
@@ -495,9 +456,9 @@ class ChatingPageViewModal {
 
     final PermissionStatus permissionStatus1 = await Permission.storage.status;
     final PermissionStatus permissionStatus2 =
-    await Permission.manageExternalStorage.status;
+        await Permission.manageExternalStorage.status;
     final PermissionStatus permissionStatus3 =
-    await Permission.accessMediaLocation.status;
+        await Permission.accessMediaLocation.status;
 
     if (permissionStatus1.isGranted &&
         permissionStatus2.isGranted &&
@@ -557,7 +518,7 @@ class ChatingPageViewModal {
 
   Future<void> pickVideoGallery(GetxController controller, members) async {
     final pickedFile =
-    await ImagePicker().pickVideo(source: ImageSource.gallery);
+        await ImagePicker().pickVideo(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       if (await isFileLarge(File(pickedFile.path)) == false) {
@@ -604,7 +565,7 @@ class ChatingPageViewModal {
     return await VideoThumbnail.thumbnailFile(
       video: file,
       thumbnailPath:
-      "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/THUMB",
+          "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/THUMB",
       imageFormat: ImageFormat.PNG,
       maxHeight: 64,
       quality: 75,
@@ -614,8 +575,10 @@ class ChatingPageViewModal {
   //========================= pick images =============================//
 
   Future<void> pickImageGallery(GetxController controller, members) async {
-    final pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 10,);
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 10,
+    );
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
@@ -785,28 +748,28 @@ class ChatingPageViewModal {
       items: <PopupMenuEntry>[
         PopupMenuItem(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 15.px,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 20, top: 5.px),
-                  child: AppText(
-                    S.of(Get.context!).select,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18.px,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.px),
-                  child: Divider(
-                    height: 1.px,
-                    color: AppColorConstant.appGrey.withOpacity(0.3),
-                  ),
-                )
-              ],
-            )),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 15.px,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 20, top: 5.px),
+              child: AppText(
+                S.of(Get.context!).select,
+                fontWeight: FontWeight.w800,
+                fontSize: 18.px,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.px),
+              child: Divider(
+                height: 1.px,
+                color: AppColorConstant.appGrey.withOpacity(0.3),
+              ),
+            )
+          ],
+        )),
         PopupMenuItem(
             onTap: () {
               pickImageGallery(controller!, arguments['members']);
@@ -911,13 +874,13 @@ class ChatingPageViewModal {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: (!isBlockedByLoggedInUser)
                     ? [
-                  AppText(S.of(Get.context!).block),
-                  const Icon(Icons.block),
-                ]
+                        AppText(S.of(Get.context!).block),
+                        const Icon(Icons.block),
+                      ]
                     : [
-                  const AppText(StringConstant.unBlock),
-                  const Icon(Icons.block),
-                ],
+                        const AppText(StringConstant.unBlock),
+                        const Icon(Icons.block),
+                      ],
               )),
         ];
       },
@@ -976,7 +939,7 @@ class ChatingPageViewModal {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           border:
-          Border.all(color: Theme.of(Get.context!).colorScheme.primary)),
+              Border.all(color: Theme.of(Get.context!).colorScheme.primary)),
       child: Icon(
         Icons.done,
         color: Theme.of(Get.context!).colorScheme.primary,
@@ -986,14 +949,15 @@ class ChatingPageViewModal {
   }
 
   showEmojiMenu(
-      BuildContext context,
-      Offset position,
-      roomId,
-      messageId,
-      receiverNumber, isGroup,
-      ) async {
+    BuildContext context,
+    Offset position,
+    roomId,
+    messageId,
+    receiverNumber,
+    isGroup,
+  ) async {
     final RenderBox overlay =
-    Overlay.of(context).context.findRenderObject() as RenderBox;
+        Overlay.of(context).context.findRenderObject() as RenderBox;
 
     final selectedEmoji = await showMenu<String>(
       elevation: 1,
@@ -1013,7 +977,8 @@ class ChatingPageViewModal {
                       messageId,
                       receiverNumber,
                       "🙏",
-                      "🙏",isGroup,
+                      "🙏",
+                      isGroup,
                     );
                     Navigator.pop(context, "🙏");
                   },
@@ -1021,60 +986,35 @@ class ChatingPageViewModal {
               GestureDetector(
                   onTap: () {
                     addEmoji(
-                      roomId,
-                      messageId,
-                      receiverNumber,
-                      "😂",
-                      "😂",isGroup
-                    );
+                        roomId, messageId, receiverNumber, "😂", "😂", isGroup);
                     Navigator.pop(context, "😂");
                   },
                   child: AppText('😂', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
                     addEmoji(
-                      roomId,
-                      messageId,
-                      receiverNumber,
-                      "😮",
-                      "😮",isGroup
-                    );
+                        roomId, messageId, receiverNumber, "😮", "😮", isGroup);
                     Navigator.pop(context, "😮");
                   },
                   child: AppText('😮', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
                     addEmoji(
-                      roomId,
-                      messageId,
-                      receiverNumber,
-                      "❤️",
-                      "❤️",isGroup
-                    );
+                        roomId, messageId, receiverNumber, "❤️", "❤️", isGroup);
                     Navigator.pop(context, "❤️");
                   },
                   child: AppText('❤️', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
                     addEmoji(
-                      roomId,
-                      messageId,
-                      receiverNumber,
-                      "👍",
-                      "👍",isGroup
-                    );
+                        roomId, messageId, receiverNumber, "👍", "👍", isGroup);
                     Navigator.pop(context, "👍");
                   },
                   child: AppText('👍', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
                     addEmoji(
-                      roomId,
-                      messageId,
-                      receiverNumber,
-                      "😥",
-                      "😥",isGroup
-                    );
+                        roomId, messageId, receiverNumber, "😥", "😥", isGroup);
                     Navigator.pop(context, "😥");
                   },
                   child: AppText('😥', fontSize: 22.px)),
@@ -1092,13 +1032,13 @@ class ChatingPageViewModal {
   ///=================    array union to work =============== /////
 
   Future<void> addEmoji(
-      roomId,
-      messageId,
-      receiverNumber,
-      receiverEmoji,
-      senderEmoji,
-      isGroup,
-      ) async   {
+    roomId,
+    messageId,
+    receiverNumber,
+    receiverEmoji,
+    senderEmoji,
+    isGroup,
+  ) async {
     logs('messageidddddd-->$messageId');
     logs('roomidddddddd-->$roomId');
 
@@ -1110,7 +1050,8 @@ class ChatingPageViewModal {
     logs('documentReference-->$documentReference');
 
     DocumentSnapshot documentSnapshot = await documentReference.get();
-    Map<String, dynamic> currentData = documentSnapshot.data() as Map<String, dynamic>;
+    Map<String, dynamic> currentData =
+        documentSnapshot.data() as Map<String, dynamic>;
 
     Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
     logs('receivernumber-->$receiverNumber');
@@ -1139,8 +1080,7 @@ class ChatingPageViewModal {
       await documentReference.update({
         'emoji.groupEmojis': emojiData['groupEmojis'],
       });
-    }
-    else {
+    } else {
       //Handle one-on-one chat
       if (receiverNumber == AuthService.auth.currentUser!.phoneNumber) {
         emojiData.remove('senderEmoji');
@@ -1162,7 +1102,13 @@ class ChatingPageViewModal {
   }
 
   /// ======================Delete Emoji Function ==============///
-  Future<void> deleteEmoji(roomId, messageId, receiverNumber, receiverEmoji, senderEmoji,) async {
+  Future<void> deleteEmoji(
+    roomId,
+    messageId,
+    receiverNumber,
+    receiverEmoji,
+    senderEmoji,
+  ) async {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('rooms')
         .doc(roomId)
@@ -1171,7 +1117,7 @@ class ChatingPageViewModal {
 
     DocumentSnapshot documentSnapshot = await documentReference.get();
     Map<String, dynamic> currentData =
-    documentSnapshot.data() as Map<String, dynamic>;
+        documentSnapshot.data() as Map<String, dynamic>;
 
     Map<String, dynamic> emojiData = currentData['emoji'] ?? {};
 
@@ -1191,7 +1137,6 @@ class ChatingPageViewModal {
 
     logs('currrrrrrrentDaata-->$currentData');
   }
-
 
   getChatLength() async {
     final chatStream = await FirebaseFirestore.instance
@@ -1250,11 +1195,10 @@ class ChatingPageViewModal {
   }
 
   markMessage() {
-    if(arguments.isNotEmpty)
-      {
-        DatabaseService.instance
-            .markMessagesAsSeen(snapshots.docs.first.id, arguments['number']);
-      }
+    if (arguments.isNotEmpty) {
+      DatabaseService.instance
+          .markMessagesAsSeen(snapshots.docs.first.id, arguments['number']);
+    }
   }
 
   Future<void> getColorFromFirestore() async {
@@ -1265,7 +1209,7 @@ class ChatingPageViewModal {
       final data = documentSnapshot.data();
       if (data != null && data['colorCode'] != null) {
         wallImage = data['wallpaper'];
-        if(wallImage!.isEmpty) {
+        if (wallImage!.isEmpty) {
           wallColorbackground = Color(int.parse(data['colorCode'], radix: 16));
         }
         logs('wallColorBackground-->$wallColorbackground');
@@ -1274,6 +1218,7 @@ class ChatingPageViewModal {
       }
     }
   }
+
   Future<Color> getChatBubbleColors() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {

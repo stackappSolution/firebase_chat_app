@@ -11,6 +11,8 @@ import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/app_navigation.dart';
 
+import '../../service/network_connectivity.dart';
+
 class CallsScreen extends StatelessWidget {
   const CallsScreen({Key? key}) : super(key: key);
 

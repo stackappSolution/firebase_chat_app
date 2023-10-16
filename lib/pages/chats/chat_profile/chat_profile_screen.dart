@@ -16,6 +16,7 @@ import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/users_service.dart';
 
 import '../../../app/app/utills/theme_util.dart';
+import '../../../service/network_connectivity.dart';
 
 class ChatProfileScreen extends StatelessWidget {
   ChatProfileScreen({Key? key}) : super(key: key);

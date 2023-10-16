@@ -206,7 +206,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
       final userDocRef = users.doc(currentUser!.uid);
 
       await userDocRef.update({
-        'bubbleColor': "",
+        'bubbleColor': "0xFFf69533",
       });
       controller!.update();
       logs('Successfully updated wallpaper or color code');

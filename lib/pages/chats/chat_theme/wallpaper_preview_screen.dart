@@ -78,7 +78,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
   }
 
   buildPreview(BuildContext context) {
-    return (arguments['selectedItem'].toString().contains("myFile"))
+    return (arguments['selectedItem'].toString().length>10)
         ? Container(
             height: Device.height * 0.75,
             width: double.infinity,
@@ -186,7 +186,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
 
   onSetWallpaper() async {
 
-    if (arguments['selectedItem'].toString().contains("myFile")) {
+    if (arguments['selectedItem'].toString().length>10) {
       logs("its Image");
 
       uploadImage(File(arguments['selectedItem']));

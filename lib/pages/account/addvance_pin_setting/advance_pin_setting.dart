@@ -5,6 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/service/network_connectivity.dart';
 
 import '../../../app/app/utills/theme_util.dart';
 import '../../../controller/advance_pin_controller.dart';
@@ -22,6 +23,7 @@ class AdvancePinSettingScreen extends StatelessWidget {
 
     return GetBuilder<AdvancePinController>(
       init: AdvancePinController(),
+      initState: (state) {},
       builder: (controller) {
         return  Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);

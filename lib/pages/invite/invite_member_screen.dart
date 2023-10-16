@@ -8,6 +8,8 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/invite_controller.dart';
 import 'package:signal/pages/invite/invite_view_model.dart';
 
+import '../../service/network_connectivity.dart';
+
 class InviteMemberScreen extends StatelessWidget {
   InviteMemberScreen({Key? key}) : super(key: key);
 
