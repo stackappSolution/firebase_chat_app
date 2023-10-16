@@ -17,6 +17,7 @@ import '../../app/app/utills/theme_util.dart';
 import '../../app/widget/app_elevated_button.dart';
 import '../../constant/string_constant.dart';
 import '../../controller/set_pin_controller.dart';
+import '../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class SetPinScreen extends StatelessWidget {
@@ -30,7 +31,8 @@ class SetPinScreen extends StatelessWidget {
 
     return GetBuilder<SetPinController>(
       init: SetPinController(),
-      initState: (state) {},
+      initState: (state) {
+      },
       builder: (controller) {
         return WillPopScope(
           onWillPop: () async {

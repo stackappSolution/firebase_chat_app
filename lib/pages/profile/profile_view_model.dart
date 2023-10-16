@@ -230,7 +230,7 @@ class ProfileViewModel {
         wallpaper :'',
         colorCode : '',
         about: "Heyy!!! i am using ChatApp!!",
-        bubbleColor:'',
+        bubbleColor:'0xFFf69533',
         blockedNumbers: []);
 
     bool isUserAdded = await UsersService.instance.addUser(userModel);

@@ -19,6 +19,7 @@ import 'package:signal/service/auth_service.dart';
 import '../../app/app/utills/theme_util.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
+import '../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class ProfileScreen extends StatelessWidget {
     return GetBuilder<ProfileController>(
       init: ProfileController(),
       initState: (state) {
-        profileViewModel!.parameter = Get.parameters;
+          profileViewModel!.parameter = Get.parameters;
         logs('profileStatus---> ${AuthService.auth.currentUser!.photoURL}');
       },
       builder: (GetxController controller) {

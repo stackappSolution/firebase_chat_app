@@ -13,6 +13,7 @@ import 'package:signal/pages/groups/view/new_group_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 import '../../../app/app/utills/theme_util.dart';
+import '../../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class NewGroupScreen extends StatelessWidget {
@@ -28,7 +29,7 @@ class NewGroupScreen extends StatelessWidget {
       initState: (state) async {
         Future.delayed(const Duration(milliseconds: 300), () async {
           groupController = Get.find<GroupController>();
-         // groupController!.getUserPhoneList();
+          groupController!.getUserPhoneList();
          // newGroupViewModel!.fetchContacts();
           groupController!.update();
         });

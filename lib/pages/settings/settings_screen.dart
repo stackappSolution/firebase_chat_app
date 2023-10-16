@@ -17,6 +17,8 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/users_service.dart';
 
+import '../../service/network_connectivity.dart';
+
 // ignore: must_be_immutable
 class SettingScreen extends StatelessWidget {
   SettingScreen({Key? key}) : super(key: key);

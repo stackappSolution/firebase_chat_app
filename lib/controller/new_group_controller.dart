@@ -12,7 +12,7 @@ class GroupController extends GetxController{
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
+    getUserPhoneList();
   }
 
   Future<bool> checkFirst(String receiver) async {
@@ -24,14 +24,14 @@ class GroupController extends GetxController{
     return userMessages.docs.isEmpty;
   }
 
-  // Future getUserPhoneList() async {
-  //   if (userList.isEmpty) {
-  //     final data = await userTable.where('phone').get();
-  //     data.docs.forEach((element) {
-  //       userList.add(element["phone"].toString().trim().removeAllWhitespace);
-  //     });
-  //     logs("getUserPhoneList=== $userList");
-  //   }
-  //
-  // }
+  Future getUserPhoneList() async {
+    if (userList.isEmpty) {
+      final data = await userTable.where('phone').get();
+      data.docs.forEach((element) {
+        userList.add(element["phone"].toString().trim().removeAllWhitespace);
+      });
+      logs("getUserPhoneList=== $userList");
+    }
+
+  }
 }

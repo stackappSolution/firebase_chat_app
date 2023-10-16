@@ -47,7 +47,7 @@ class NetworkConnectivity {
     controller.sink.add({result: isOnline});
   }
 
-  static void checkConnectivity(context) {
+   void checkConnectivity(context) {
     initialise();
     NetworkConnectivity.instance.myStream.listen((source) {
       source = source;

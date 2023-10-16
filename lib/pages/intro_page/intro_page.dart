@@ -24,9 +24,7 @@ class IntroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder(
       init: IntroPageController(),
-      initState: (introPage) {
-        NetworkConnectivity.checkConnectivity(context);
-      },
+      initState: (introPage) {},
       builder: (IntroPageController controller) {
         return Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);

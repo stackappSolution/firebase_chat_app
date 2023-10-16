@@ -12,6 +12,8 @@ import 'package:signal/pages/settings/help/help_setting_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../service/network_connectivity.dart';
+
 // ignore: must_be_immutable
 class HelpSettingsScreen extends StatelessWidget {
   HelpSettingsScreen({Key? key}) : super(key: key);

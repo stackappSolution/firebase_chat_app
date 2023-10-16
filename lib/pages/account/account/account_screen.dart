@@ -6,6 +6,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/generated/l10n.dart';
+import 'package:signal/service/network_connectivity.dart';
 
 import '../../../app/app/utills/theme_util.dart';
 import 'account_view_model.dart';
@@ -21,6 +22,7 @@ class AccountScreen extends StatelessWidget {
 
     return GetBuilder<AttachmentController>(
       init: AttachmentController(),
+      initState: (state) {},
       builder: (controller) {
         return  Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);

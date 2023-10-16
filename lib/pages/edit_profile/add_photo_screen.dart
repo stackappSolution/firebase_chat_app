@@ -17,6 +17,7 @@ import 'package:signal/pages/edit_profile/edit_photo_text/edit_profile_text.dart
 import 'package:signal/service/users_service.dart';
 
 import '../../app/app/utills/app_utills.dart';
+import '../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class AddPhotoScreen extends StatelessWidget {
@@ -30,6 +31,8 @@ class AddPhotoScreen extends StatelessWidget {
 
     return GetBuilder<AddPhotoController>(
       init: AddPhotoController(),
+      initState: (state) {
+      },
       builder: (AddPhotoController controller) {
         return SafeArea(
           child: Scaffold(

@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NetworkConnectivity.checkConnectivity(context);
+    NetworkConnectivity.instance.checkConnectivity(context);
     splashViewModel ?? (splashViewModel = SplashViewModel(this));
     Timer(const Duration(seconds: 5), () {
       // SharedPreferences.getInstance().then((prefs) {

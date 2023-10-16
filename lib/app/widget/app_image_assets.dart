@@ -34,7 +34,8 @@ class AppImageAsset extends StatelessWidget {
             width: width,
             fit: fit ?? BoxFit.cover,
             placeholder: (context, url) =>  const AppImageShimmer(),
-            errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.red),
+            errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.transparent),
+
           )
         : isFile
             ? Image.file(File(image ?? ''), height: height, width: width, color: color, fit: fit)

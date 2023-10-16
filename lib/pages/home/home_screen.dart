@@ -12,6 +12,7 @@ import 'package:signal/pages/home/home_view_model.dart';
 import 'package:signal/generated/l10n.dart';
 
 import '../../app/app/utills/theme_util.dart';
+import '../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
@@ -27,6 +28,7 @@ class HomeScreen extends StatelessWidget {
     return GetBuilder<HomeScreenController>(
       init: HomeScreenController(),
       initState: (state) {
+          NetworkConnectivity.instance.checkConnectivity(context);
         homeViewModel!.getLocalizationKey();
       },
       builder: (controller) {
