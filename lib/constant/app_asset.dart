@@ -33,6 +33,7 @@ class AppAsset {
 
   //     ======================= Icons =======================     //
   static const String drawerIcon = '${iconPath}drawer.svg';
+  static const String forword = '${iconPath}forword.png';
   static const String invisibleIcon = '${iconPath}invisible.png';
   static const String visibleIcon = '${iconPath}visible.png';
   static const String person = '${iconPath}person.png';
