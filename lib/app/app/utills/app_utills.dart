@@ -1,6 +1,7 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -39,5 +40,29 @@ void logs(String message) {
     print(message);
   }
 
+
+}
+void infoLogs(String message) {
+  if (kDebugMode) {
+    Logger(printer: PrettyPrinter(methodCount: 0)).i(message);
+  }
+}
+
+void traceLogs(String message) {
+  if (kDebugMode) {
+    Logger(printer: PrettyPrinter(methodCount: 0)).t(message);
+  }
+}
+
+void warningLogs(String message) {
+  if (kDebugMode) {
+    Logger(printer: PrettyPrinter(methodCount: 0)).w(message);
+  }
+}
+
+void errorLogs(String message) {
+  if (kDebugMode) {
+    Logger(printer: PrettyPrinter(methodCount: 0)).e(message);
+  }
 
 }
