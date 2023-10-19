@@ -82,17 +82,12 @@ dependencies:
   bot_toast: ^4.1.1
 
 
-
-
-
   # Fetch server data & State management :
   get: ^4.6.5
   connectivity: ^3.0.6
 
-
-
-
-
+#Swipe to reply
+  swipe_to: ^1.0.2
 
   # contact numbers
   contacts_service: ^0.6.3

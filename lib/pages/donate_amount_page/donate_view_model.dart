@@ -103,14 +103,14 @@ class DonateViewModel {
         .get();
     final total = data;
     logs('llen-->${total.docs.length}');
+    donateController.update();
 
     for(int i=0;i< total.docs.length;i++)
     {
       double totalamount = total.docs[i]["amount"];
       totalHistoryAmount = (totalHistoryAmount + totalamount );
+      donateController.update();
     }
     logs('totallllll23444-->${totalHistoryAmount}');
-    donateController.update();
-
   }
 }

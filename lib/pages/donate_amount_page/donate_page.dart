@@ -12,6 +12,7 @@ import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/donate_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/modal/transaction_model.dart';
 import 'package:signal/pages/donate_amount_page/donate_view_model.dart';
 import 'package:signal/service/users_service.dart';
@@ -34,6 +35,7 @@ class DonatePage extends StatelessWidget {
         Future.delayed(const Duration(milliseconds: 300), () async {
           donateController = Get.find<DonateController>();
           donateViewModel!.getTotal(donateController!);
+          donateController!.update();
         });
         donateViewModel!.razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
             donateViewModel!.handlePaymentSuccess);
@@ -88,8 +90,8 @@ class DonatePage extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                         SizedBox(height: 20.px),
-                        const AppText(
-                          'Total Balance',
+                      AppText(
+                          S.of(context).totalbalance,
                           color: AppColorConstant.appWhite,
                         ),
                         SizedBox(height: 2.px),
@@ -117,7 +119,7 @@ class DonatePage extends StatelessWidget {
           ),
            Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: AppText('Transaction',fontSize: 20,color: Theme.of(context).colorScheme.primary),
+            child: AppText(S.of(context).transaction,fontSize: 20,color: Theme.of(context).colorScheme.primary),
           ),
           Expanded(
             child: FutureBuilder<List<TransactionsModel>>(

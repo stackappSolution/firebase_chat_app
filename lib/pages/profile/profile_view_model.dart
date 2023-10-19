@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_alert_dialog.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -217,6 +216,8 @@ class ProfileViewModel {
   }
 
   Future<void> onSaveProfile(String pin) async {
+    final transparant = AppColorConstant.appTransparent.value.toRadixString(16);
+    final appyellow= AppColorConstant.appYellow.value.toRadixString(16);
     UserModel userModel = UserModel(
         id: FirebaseAuth.instance.currentUser?.uid,
         firstName: firstNameController.text,
@@ -228,9 +229,9 @@ class ProfileViewModel {
             ?.trim()
             .replaceAll(' ', '```'),
         wallpaper :'',
-        colorCode : '',
+    colorCode : transparant,
         about: "Heyy!!! i am using ChatApp!!",
-        bubbleColor:'0xFFf69533',
+        bubbleColor:appyellow,
         blockedNumbers: []);
 
     bool isUserAdded = await UsersService.instance.addUser(userModel);

@@ -78,6 +78,7 @@ class ChatingPageViewModal {
   Color? chatbubblecolor;
 
   TextEditingController chatController = TextEditingController();
+  TextEditingController messageEdit = TextEditingController();
   ChatingPageController? controller;
   String statusText = "";
   bool isRecording = false;
@@ -91,6 +92,10 @@ class ChatingPageViewModal {
   bool iconChange = false;
   final firestore = FirebaseFirestore.instance;
   Color? bubblColors;
+  final myFocusNode = FocusNode();
+  bool isSwipreply = false;
+  String? messageType;
+  String repliedText = '';
 
   ChatingPageViewModal([this.chatingPage]) {
     Future.delayed(const Duration(milliseconds: 0), () async {
