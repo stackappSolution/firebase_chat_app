@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,6 +35,7 @@ import '../../app/app/utills/toast_util.dart';
 import '../../app/widget/app_image_assets.dart';
 import '../../constant/app_asset.dart';
 import '../../constant/string_constant.dart';
+import '../../modal/message.dart';
 import '../../modal/send_message_model.dart';
 import '../../service/auth_service.dart';
 import '../../service/database_service.dart';
@@ -96,6 +98,10 @@ class ChatingPageViewModal {
   bool isSwipreply = false;
   String? messageType;
   String repliedText = '';
+  List<MessageModel> selectedMessage = [];
+  List<bool> selectedMessageTrueFalse = [];
+  bool sendMsg = false;
+  String imageLink = '';
 
   ChatingPageViewModal([this.chatingPage]) {
     Future.delayed(const Duration(milliseconds: 0), () async {
@@ -350,16 +356,15 @@ class ChatingPageViewModal {
 
     return file.path;
   }
-
   Future<void> viewFile(
       mainURL, folderName, ChatingPageController controller, int index) async {
-    logs(" View FIle Entred");
-    final PermissionStatus permissionStatus =
-        await Permission.manageExternalStorage.status;
-    if (!permissionStatus.isGranted) {
+    final PermissionStatus permissionStatus1 = await Permission.storage.status;
+    final PermissionStatus permissionStatus2 = await Permission.manageExternalStorage.status;
+    final PermissionStatus permissionStatus3 = await Permission.accessMediaLocation.status;
+    if (!permissionStatus1.isGranted && !permissionStatus2.isGranted && !permissionStatus3.isGranted  ) {
       getPermission();
     } else {
-      logs("downloadAndOpenPDF Entered");
+      logs("download Entered");
       downloadAndSavePDF(mainURL, folderName, controller, index);
 
       var dirPath =
@@ -953,14 +958,8 @@ class ChatingPageViewModal {
     );
   }
 
-  showEmojiMenu(
-    BuildContext context,
-    Offset position,
-    roomId,
-    messageId,
-    receiverNumber,
-    isGroup,
-  ) async {
+  showEmojiMenu(BuildContext context, Offset position, roomId, messageId,
+      receiverNumber, isGroup) async {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -978,13 +977,9 @@ class ChatingPageViewModal {
               GestureDetector(
                   onTap: () async {
                     addEmoji(
-                      roomId,
-                      messageId,
-                      receiverNumber,
-                      "🙏",
-                      "🙏",
-                      isGroup,
-                    );
+                        roomId, messageId, receiverNumber, "🙏", "🙏", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "🙏");
                   },
                   child: AppText("🙏", fontSize: 22.px)),
@@ -992,6 +987,8 @@ class ChatingPageViewModal {
                   onTap: () {
                     addEmoji(
                         roomId, messageId, receiverNumber, "😂", "😂", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "😂");
                   },
                   child: AppText('😂', fontSize: 22.px)),
@@ -999,6 +996,8 @@ class ChatingPageViewModal {
                   onTap: () {
                     addEmoji(
                         roomId, messageId, receiverNumber, "😮", "😮", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "😮");
                   },
                   child: AppText('😮', fontSize: 22.px)),
@@ -1006,6 +1005,8 @@ class ChatingPageViewModal {
                   onTap: () {
                     addEmoji(
                         roomId, messageId, receiverNumber, "❤️", "❤️", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "❤️");
                   },
                   child: AppText('❤️', fontSize: 22.px)),
@@ -1013,6 +1014,8 @@ class ChatingPageViewModal {
                   onTap: () {
                     addEmoji(
                         roomId, messageId, receiverNumber, "👍", "👍", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "👍");
                   },
                   child: AppText('👍', fontSize: 22.px)),
@@ -1020,9 +1023,36 @@ class ChatingPageViewModal {
                   onTap: () {
                     addEmoji(
                         roomId, messageId, receiverNumber, "😥", "😥", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "😥");
                   },
                   child: AppText('😥', fontSize: 22.px)),
+              SizedBox(width: 5.px,),
+              GestureDetector(
+                  onTap: () {
+                    String SelectedEmoji = '';
+                    showBottomSheet(context: context, builder: (context) {
+                      return  Container(
+                        height: 250.px,
+                        child: EmojiPicker(
+                          onEmojiSelected: (category, emoji) {
+                            SelectedEmoji = emoji.emoji;
+                            addEmoji(
+                                roomId, messageId, receiverNumber, emoji.emoji, emoji.emoji, isGroup);
+                            Navigator.pop(context, emoji.emoji);
+                            controller!.update();
+
+                          },
+                        ),
+                      );
+
+                    },);
+                    selectedMessageTrueFalse[0] = false;
+                    Navigator.pop(context,SelectedEmoji);
+                    controller!.update();
+                  },
+                  child: const Icon(Icons.add_circle_outline_sharp)),
             ],
           ),
         ),
@@ -1036,14 +1066,8 @@ class ChatingPageViewModal {
 
   ///=================    array union to work =============== /////
 
-  Future<void> addEmoji(
-    roomId,
-    messageId,
-    receiverNumber,
-    receiverEmoji,
-    senderEmoji,
-    isGroup,
-  ) async {
+  Future<void> addEmoji(roomId, messageId, receiverNumber, receiverEmoji,
+      senderEmoji, isGroup) async {
     logs('messageidddddd-->$messageId');
     logs('roomidddddddd-->$roomId');
 
@@ -1108,12 +1132,7 @@ class ChatingPageViewModal {
 
   /// ======================Delete Emoji Function ==============///
   Future<void> deleteEmoji(
-    roomId,
-    messageId,
-    receiverNumber,
-    receiverEmoji,
-    senderEmoji,
-  ) async {
+      roomId, messageId, receiverNumber, receiverEmoji, senderEmoji) async {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('rooms')
         .doc(roomId)
@@ -1157,7 +1176,7 @@ class ChatingPageViewModal {
       controller!.durationList = List.filled(chatLength, Duration.zero);
       controller!.positionList = List.filled(chatLength, Duration.zero);
       controller!.isPlayingList = List.filled(chatLength, false);
-      controller!.isPlayingList = List.filled(chatLength, false);
+      selectedMessageTrueFalse = List.filled(chatLength, false);
     }
   }
 
@@ -1169,7 +1188,8 @@ class ChatingPageViewModal {
         isFileDownLoadingList.add(false);
         isFileDownLoadedList = isFileDownLoadedList.toList();
         isFileDownLoadedList.add(false);
-
+        selectedMessageTrueFalse = selectedMessageTrueFalse.toList();
+        selectedMessageTrueFalse.add(false);
         controller!.durationList = controller!.durationList.toList();
         controller!.durationList.add(Duration.zero);
         controller!.positionList = controller!.positionList.toList();
@@ -1240,4 +1260,70 @@ class ChatingPageViewModal {
     }
     return AppColorConstant.appYellow;
   }
+
+  forwardMessage(int index, MessageModel message, BuildContext context, details) {
+    selectedMessage.length < 1
+        ? showEmojiMenu(
+            context,
+            details.globalPosition,
+            snapshots.docs[0]['id'],
+            message.messageId,
+            message.sender,
+            arguments["isGroup"],
+          )
+        : null;
+    if (index >= 0 && index < selectedMessageTrueFalse.length) {
+      selectedMessageTrueFalse[index] = !selectedMessageTrueFalse[index];
+
+      if (selectedMessageTrueFalse[index]) {
+        errorLogs(message.messageType.toString());
+        selectedMessage.add(message);
+      } else {
+        selectedMessage.removeWhere((msg) => msg.messageId == message.messageId);
+      }
+      controller!.update();
+    } else {
+      logs('Invalid index: $index');
+    }
+  }
+
+   forwordMessage(element) async {
+    logs("Members---${arguments['members']}");
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('rooms')
+        .where('members', isEqualTo: arguments['members'])
+        .get();
+    logs("ref Id ---- >${querySnapshot.docs.length.toString()}");
+
+    MessageModel messageModel = MessageModel(
+        messageStatus: false,
+        message: element.message,
+        isSender: true,
+        messageTimestamp: DateTime.now().millisecondsSinceEpoch,
+        messageType: element.messageType,
+        sender: AuthService.auth.currentUser!.phoneNumber,
+        text: element.text,
+        thumb: element.thumb,
+        messageId: element.messageId);
+
+    DocumentReference messageRef = await FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(querySnapshot.docs.first.id)
+        .collection('chats')
+        .add(messageModel.toJson());
+    String messageId = messageRef.id;
+    await messageRef.update({'messageid': messageId});
+
+    (element.messageType == 'text')
+        ? notification(element.message)
+        : (element.messageType == 'image')
+        ? notification('📷 photo')
+        : (element.messageType == 'audio')
+        ? notification('🎶 audio')
+        : (element.messageType == 'doc')
+        ? notification('📃 document')
+        : notification('🎥 video');
+  }
+
 }

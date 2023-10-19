@@ -23,7 +23,10 @@ import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
 
 class ChatScreen extends StatelessWidget {
-  ChatScreen({super.key});
+  bool sent;
+  var  msgList;
+
+  ChatScreen( {this.msgList,this.sent = false,super.key});
 
   ChatViewModel? chatViewModel;
   ContactController? controller;
@@ -54,7 +57,6 @@ class ChatScreen extends StatelessWidget {
       builder: (controller) {
         return WillPopScope(
           onWillPop: () async {
-            // Show a confirmation dialog
             return await chatViewModel!.willPopDialog(context);
           },
           child: SafeArea(
@@ -330,6 +332,8 @@ class ChatScreen extends StatelessWidget {
                                 'name': chatViewModel!
                                     .getNameFromContact(receiverNumber),
                                 'number': receiverNumber,
+                                'sent' : sent,
+                                'msgList' : msgList
                               });
                         },
                         trailing: StreamBuilder(

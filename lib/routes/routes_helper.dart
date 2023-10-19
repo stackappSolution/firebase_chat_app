@@ -42,6 +42,8 @@ import '../pages/splash/splash_screen.dart';
 class RouteHelper {
   static String getSignInPage() => RouteConstant.signInPage;
 
+  static String getChatScreen() => RouteConstant.signInPage;
+
   static String getVerifyOtpPage() => RouteConstant.verifyOtpScreen;
 
   static String getSettingsScreen() => RouteConstant.settingsScreen;
