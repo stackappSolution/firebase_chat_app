@@ -18,9 +18,7 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
-
 import '../../app/widget/app_shimmer.dart';
-import '../../service/network_connectivity.dart';
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
 
@@ -198,7 +196,7 @@ class ChatScreen extends StatelessWidget {
         ),
         title: Padding(
           padding: EdgeInsets.only(left: 5.px),
-          child: AppText(S.of(Get.context!).chatApp,
+          child: AppText(S.of(context).chatapp,
               color: Theme.of(Get.context!).colorScheme.primary,
               fontSize: 18.px),
         ),

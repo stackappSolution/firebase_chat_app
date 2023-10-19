@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "Paymentsucess":
+            MessageLookupByLibrary.simpleMessage("ચુકવણી સફળતાપૂર્વક થઈ"),
         "about": MessageLookupByLibrary.simpleMessage("વિશે"),
         "account": MessageLookupByLibrary.simpleMessage("એકાઉન્ટ"),
         "addBlockUsers":
@@ -64,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chatColor": MessageLookupByLibrary.simpleMessage("ચેટ રંગ"),
         "chatColorAndWallpaper":
             MessageLookupByLibrary.simpleMessage("ચેટ રંગ અને વોલપેપર"),
+        "chatapp": MessageLookupByLibrary.simpleMessage("ચેટ એપ્લિકેશન"),
         "chats": MessageLookupByLibrary.simpleMessage("ચેટ્સ"),
         "checkAgainYourNumber":
             MessageLookupByLibrary.simpleMessage("તમારો નંબર ફરીથી તપાસો"),
@@ -108,10 +111,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "documents": MessageLookupByLibrary.simpleMessage("દસ્તાવેજો"),
         "donateToSignal":
             MessageLookupByLibrary.simpleMessage("સિગ્નલ માટે દાન કરો"),
+        "donatefriend":
+            MessageLookupByLibrary.simpleMessage("મિત્ર માટે દાન કરો"),
+        "donatetochatapp":
+            MessageLookupByLibrary.simpleMessage("ચેટ એપ માં દાન કરો"),
         "editPhoto": MessageLookupByLibrary.simpleMessage("ફોટો સંપાદિત કરો"),
         "english": MessageLookupByLibrary.simpleMessage("અંગ્રેજી"),
         "enterValidName":
             MessageLookupByLibrary.simpleMessage("માન્ય નામ દાખલ કરો"),
+        "enteramount": MessageLookupByLibrary.simpleMessage("રકમ દાખલ કરો"),
         "extraLarge": MessageLookupByLibrary.simpleMessage("વધારાનું મોટું"),
         "featureRequest": MessageLookupByLibrary.simpleMessage("સુવિધા વિનંતી"),
         "feedback": MessageLookupByLibrary.simpleMessage("પ્રતિભાવ"),
@@ -148,6 +156,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "licenses": MessageLookupByLibrary.simpleMessage("લાઇસન્સ"),
         "light": MessageLookupByLibrary.simpleMessage("Light"),
         "linkedDevice": MessageLookupByLibrary.simpleMessage("લિંક કરેલ ઉપકરણ"),
+        "logout": MessageLookupByLibrary.simpleMessage("લૉગ આઉટ"),
         "makeSureYou": MessageLookupByLibrary.simpleMessage(
             "ખાતરી કરો કે તમે તમારો PIN યાદ રાખો છો"),
         "markAllRead":
@@ -170,6 +179,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "off": MessageLookupByLibrary.simpleMessage("બંધ"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
         "other": MessageLookupByLibrary.simpleMessage("અન્ય"),
+        "otherwayto":
+            MessageLookupByLibrary.simpleMessage("દૂર કરવા માટે બીજું રસ્તો"),
         "paymentLock": MessageLookupByLibrary.simpleMessage("ચુકવણી લોક"),
         "payments": MessageLookupByLibrary.simpleMessage("ચુકવણીઓ"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("મોબાઇલ નંબર"),
@@ -182,6 +193,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "presets": MessageLookupByLibrary.simpleMessage("પ્રીસેટ્સ"),
         "preview": MessageLookupByLibrary.simpleMessage("પૂર્વાવલોકન"),
         "privacy": MessageLookupByLibrary.simpleMessage("ગોપનીયતા"),
+        "privacyOverprofit":
+            MessageLookupByLibrary.simpleMessage("લાભ પર પ્રાઇવસી"),
+        "privacyOverprofitdis": MessageLookupByLibrary.simpleMessage(
+            "તમારું મૂલ્યને આપીતું પ્રાઇવેટ મેસેજ, કોઈ વિજ્ઞાપન, કોઈ ટ્રેકિંગ, કોઈ સમઝો નથી. આત્માર્પણ કરો આત્માર્પણ કરો \nચેટ એપ સપોર્ટ કરવામાં. "),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("ગોપનીયતા નીતિ"),
         "profile": MessageLookupByLibrary.simpleMessage("પ્રોફાઇલ"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
@@ -202,6 +217,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ચેટનો રંગ રીસેટ કરીએ?"),
         "resetWallpaper":
             MessageLookupByLibrary.simpleMessage("વૉલપેપર રીસેટ કરો"),
+        "save": MessageLookupByLibrary.simpleMessage("સાચવો"),
         "screenLock": MessageLookupByLibrary.simpleMessage("સ્ક્રીન લોક"),
         "screenLockDescription": MessageLookupByLibrary.simpleMessage(
             "ફિંગરપ્રિન્ટ માટે એન્ડ્રોઇડ સ્ક્રીન લૉક સાથે લૉક સિગ્નલ ઍક્સેસ"),
@@ -245,6 +261,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "toMakeYourDayGreat": MessageLookupByLibrary.simpleMessage(
             "તમારા દિવસને મહાન બનાવવા માટે!"),
         "today": MessageLookupByLibrary.simpleMessage("આજે"),
+        "totalbalance": MessageLookupByLibrary.simpleMessage("કુલ સંતુલન"),
+        "transaction": MessageLookupByLibrary.simpleMessage("લેન-દેન"),
         "transferAccount":
             MessageLookupByLibrary.simpleMessage("એકાઉન્ટ ટ્રાન્સફર કરો"),
         "transferAccountTo": MessageLookupByLibrary.simpleMessage(
@@ -257,6 +275,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "turnOn": MessageLookupByLibrary.simpleMessage("ચાલુ કરો"),
         "typingIndicators":
             MessageLookupByLibrary.simpleMessage("ટાઈપિંગ સૂચકાંકો"),
+        "unBlock": MessageLookupByLibrary.simpleMessage("અનબ્લોક"),
         "unblock": MessageLookupByLibrary.simpleMessage("અનાવરોધિત કરો"),
         "unblockMessage": MessageLookupByLibrary.simpleMessage(
             "તમે આ વપરાશકર્તાને અવરોધિત કર્યા છે, આ વપરાશકર્તાને મોકલવા માટે તમારે અનાવરોધિત કરવું પડશે"),

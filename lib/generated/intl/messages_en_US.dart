@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "Paymentsucess":
+            MessageLookupByLibrary.simpleMessage("Payment Successfull"),
         "about": MessageLookupByLibrary.simpleMessage("About"),
         "account": MessageLookupByLibrary.simpleMessage("Account"),
         "addBlockUsers":
@@ -64,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chatColor": MessageLookupByLibrary.simpleMessage("Chat color"),
         "chatColorAndWallpaper":
             MessageLookupByLibrary.simpleMessage("Chat color & Wallpaper"),
+        "chatapp": MessageLookupByLibrary.simpleMessage("Chat App"),
         "chats": MessageLookupByLibrary.simpleMessage("Chats"),
         "checkAgainYourNumber":
             MessageLookupByLibrary.simpleMessage("Check Again Your Number"),
@@ -108,15 +111,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "documents": MessageLookupByLibrary.simpleMessage("Documents"),
         "donateToSignal":
             MessageLookupByLibrary.simpleMessage("Donate To Signal"),
+        "donatefriend":
+            MessageLookupByLibrary.simpleMessage("Donate For Friend"),
+        "donatetochatapp":
+            MessageLookupByLibrary.simpleMessage("Donate to Chat App"),
         "editPhoto": MessageLookupByLibrary.simpleMessage("Edit Photo"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "enterValidName":
             MessageLookupByLibrary.simpleMessage("Enter Valid Name"),
+        "enteramount": MessageLookupByLibrary.simpleMessage("Enter Amount"),
         "extraLarge": MessageLookupByLibrary.simpleMessage("Extra Large"),
         "featureRequest":
             MessageLookupByLibrary.simpleMessage("Feature Request"),
         "feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
-        "files": MessageLookupByLibrary.simpleMessage("files"),
+        "files": MessageLookupByLibrary.simpleMessage("Files"),
         "fingerprintTransfer": MessageLookupByLibrary.simpleMessage(
             "Require Android screen lock or fingerprint to transfer funds"),
         "firstName":
@@ -148,10 +156,12 @@ class MessageLookup extends MessageLookupByLibrary {
             "Request keyboard to disable personalized learning."),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "large": MessageLookupByLibrary.simpleMessage("Large"),
-        "lastName": MessageLookupByLibrary.simpleMessage("Last Name"),
+        "lastName":
+            MessageLookupByLibrary.simpleMessage("Last Name ( Optional )"),
         "licenses": MessageLookupByLibrary.simpleMessage("Licenses"),
         "light": MessageLookupByLibrary.simpleMessage("Light"),
         "linkedDevice": MessageLookupByLibrary.simpleMessage("Linked Devices"),
+        "logout": MessageLookupByLibrary.simpleMessage("Log Out"),
         "makeSureYou": MessageLookupByLibrary.simpleMessage(
             "Make Sure You memorize your PIN"),
         "markAllRead": MessageLookupByLibrary.simpleMessage("Mark all read"),
@@ -173,6 +183,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "off": MessageLookupByLibrary.simpleMessage("off"),
         "oneTwoOne": MessageLookupByLibrary.simpleMessage("121"),
         "other": MessageLookupByLibrary.simpleMessage("Other"),
+        "otherwayto":
+            MessageLookupByLibrary.simpleMessage("other way to Give Up"),
         "paymentLock": MessageLookupByLibrary.simpleMessage("Payment lock"),
         "payments": MessageLookupByLibrary.simpleMessage("Payments"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
@@ -185,10 +197,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "presets": MessageLookupByLibrary.simpleMessage("Presets"),
         "preview": MessageLookupByLibrary.simpleMessage("Preview"),
         "privacy": MessageLookupByLibrary.simpleMessage("Privacy"),
+        "privacyOverprofit":
+            MessageLookupByLibrary.simpleMessage("Privacy Over Profit"),
+        "privacyOverprofitdis": MessageLookupByLibrary.simpleMessage(
+            "Private messaging, funded by you. No ads,\nno tracking,no compromise.Donate Now \nto Support ChatApp."),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "profileAreVisible": MessageLookupByLibrary.simpleMessage(
-            "Profiles Are Visible To People, Your Message,Contacts and Groups."),
+            "Profiles Are Visible To People, Your Message, Contacts and Groups."),
+        "profilesAreVisible": MessageLookupByLibrary.simpleMessage(
+            "Profiles Are Visible To People, Your Message, Contacts and Groups."),
         "question": MessageLookupByLibrary.simpleMessage("Question"),
         "reEnterThePin": MessageLookupByLibrary.simpleMessage(
             "Re-Enter The PIN You Just Entered."),
@@ -206,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Reset chat color?"),
         "resetWallpaper":
             MessageLookupByLibrary.simpleMessage("Reset Wallpaper"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "screenLock": MessageLookupByLibrary.simpleMessage("Screen lock"),
         "screenLockDescription": MessageLookupByLibrary.simpleMessage(
             "Lock signal access with android screen lock for fingerprint"),
@@ -249,6 +268,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "toMakeYourDayGreat":
             MessageLookupByLibrary.simpleMessage("to make your day great!"),
         "today": MessageLookupByLibrary.simpleMessage("Today"),
+        "totalbalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
+        "transaction": MessageLookupByLibrary.simpleMessage("Transaction"),
         "transferAccount":
             MessageLookupByLibrary.simpleMessage("Transfer account"),
         "transferAccountTo": MessageLookupByLibrary.simpleMessage(
@@ -263,6 +284,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Turn On Registration Lock?"),
         "typingIndicators":
             MessageLookupByLibrary.simpleMessage("Typing indicators"),
+        "unBlock": MessageLookupByLibrary.simpleMessage("UnBlock"),
         "unblock": MessageLookupByLibrary.simpleMessage("Unblock"),
         "unblockMessage": MessageLookupByLibrary.simpleMessage(
             "you Blocked this user, to send this user you have to unblock"),
@@ -296,6 +318,5 @@ class MessageLookup extends MessageLookupByLibrary {
         "yourProfile": MessageLookupByLibrary.simpleMessage("Your Profile"),
         "yourProfileAndChanges": MessageLookupByLibrary.simpleMessage(
             "Your Profile And Changes It Will Be Visible To People Your Message, Contacts, And Groups.")
-
       };
 }

@@ -20,6 +20,8 @@ class AppImageShimmer extends StatelessWidget {
         baseColor: AppColorConstant.yellowLight,
         highlightColor: AppColorConstant.appWhite,
         child: Container(
+          height: double.infinity,
+          width: double.infinity,
           decoration: const BoxDecoration(
             color: AppColorConstant.darkSecondary,
           ),

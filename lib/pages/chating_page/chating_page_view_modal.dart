@@ -80,6 +80,7 @@ class ChatingPageViewModal {
   Color? chatbubblecolor;
 
   TextEditingController chatController = TextEditingController();
+  TextEditingController messageEdit = TextEditingController();
   ChatingPageController? controller;
   String statusText = "";
   bool isRecording = false;
@@ -93,6 +94,10 @@ class ChatingPageViewModal {
   bool iconChange = false;
   final firestore = FirebaseFirestore.instance;
   Color? bubblColors;
+  final myFocusNode = FocusNode();
+  bool isSwipreply = false;
+  String? messageType;
+  String repliedText = '';
   List<MessageModel> selectedMessage = [];
   List<bool> selectedMessageTrueFalse = [];
   bool sendMsg = false;

@@ -180,7 +180,7 @@ class S {
     );
   }
 
-  /// `Profiles Are Visible To People, Your Message,Contacts and Groups.`
+  /// `Profiles Are Visible To People, Your Message, Contacts and Groups.`
   String get profileAreVisible {
     return Intl.message(
       'Profiles Are Visible To People, Your Message, Contacts and Groups.',
@@ -200,10 +200,10 @@ class S {
     );
   }
 
-  /// `Last Name`
+  /// `Last Name ( Optional )`
   String get lastName {
     return Intl.message(
-      'Last Name',
+      'Last Name ( Optional )',
       name: 'lastName',
       desc: '',
       args: [],
@@ -481,10 +481,10 @@ class S {
   }
 
   /// `Signal`
-  String get chatApp {
+  String get signal {
     return Intl.message(
-      'Chat App',
-      name: 'Chat App',
+      'Signal',
+      name: 'signal',
       desc: '',
       args: [],
     );
@@ -720,6 +720,16 @@ class S {
     );
   }
 
+  /// `Profiles Are Visible To People, Your Message, Contacts and Groups.`
+  String get profilesAreVisible {
+    return Intl.message(
+      'Profiles Are Visible To People, Your Message, Contacts and Groups.',
+      name: 'profilesAreVisible',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Check Again Your Number`
   String get checkAgainYourNumber {
     return Intl.message(
@@ -885,6 +895,16 @@ class S {
     return Intl.message(
       'Camera',
       name: 'camera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
       desc: '',
       args: [],
     );
@@ -1460,36 +1480,6 @@ class S {
     );
   }
 
-  /// `Add contact`
-  String get addContact {
-    return Intl.message(
-      'Add contact',
-      name: 'addContact',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View contact`
-  String get viewContact {
-    return Intl.message(
-      'View contact',
-      name: 'viewContact',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `files`
-  String get files {
-    return Intl.message(
-      'Files',
-      name: 'Files',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Something went wrong`
   String get somethingWentWrong {
     return Intl.message(
@@ -1945,6 +1935,156 @@ class S {
     return Intl.message(
       'Sign In',
       name: 'signIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add contact`
+  String get addContact {
+    return Intl.message(
+      'Add contact',
+      name: 'addContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View contact`
+  String get viewContact {
+    return Intl.message(
+      'View contact',
+      name: 'viewContact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Files`
+  String get files {
+    return Intl.message(
+      'Files',
+      name: 'files',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privacy Over Profit`
+  String get privacyOverprofit {
+    return Intl.message(
+      'Privacy Over Profit',
+      name: 'privacyOverprofit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private messaging, funded by you. No ads,\nno tracking,no compromise.Donate Now \nto Support ChatApp.`
+  String get privacyOverprofitdis {
+    return Intl.message(
+      'Private messaging, funded by you. No ads,\nno tracking,no compromise.Donate Now \nto Support ChatApp.',
+      name: 'privacyOverprofitdis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Donate to Chat App`
+  String get donatetochatapp {
+    return Intl.message(
+      'Donate to Chat App',
+      name: 'donatetochatapp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `other way to Give Up`
+  String get otherwayto {
+    return Intl.message(
+      'other way to Give Up',
+      name: 'otherwayto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Donate For Friend`
+  String get donatefriend {
+    return Intl.message(
+      'Donate For Friend',
+      name: 'donatefriend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Amount`
+  String get enteramount {
+    return Intl.message(
+      'Enter Amount',
+      name: 'enteramount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `UnBlock`
+  String get unBlock {
+    return Intl.message(
+      'UnBlock',
+      name: 'unBlock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction`
+  String get transaction {
+    return Intl.message(
+      'Transaction',
+      name: 'transaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment Successfull`
+  String get Paymentsucess {
+    return Intl.message(
+      'Payment Successfull',
+      name: 'Paymentsucess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Balance`
+  String get totalbalance {
+    return Intl.message(
+      'Total Balance',
+      name: 'totalbalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat App`
+  String get chatapp {
+    return Intl.message(
+      'Chat App',
+      name: 'chatapp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log Out`
+  String get logout {
+    return Intl.message(
+      'Log Out',
+      name: 'logout',
       desc: '',
       args: [],
     );

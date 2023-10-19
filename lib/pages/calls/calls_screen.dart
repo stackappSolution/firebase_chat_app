@@ -95,7 +95,8 @@ class CallsScreen extends StatelessWidget {
       ),
       title: Padding(
         padding: EdgeInsets.only(left: 20.px),
-        child: AppText(S.of(Get.context!).chatApp,
+        child:
+        AppText('Chat App',
             color: Theme.of(Get.context!).colorScheme.primary,
             fontSize: 20.px),
       ),
