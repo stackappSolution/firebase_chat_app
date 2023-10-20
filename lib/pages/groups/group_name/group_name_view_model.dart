@@ -18,6 +18,7 @@ import 'package:signal/service/auth_service.dart';
 
 import '../../../controller/new_group_controller.dart';
 import '../../../modal/send_message_model.dart';
+import '../../../routes/routes_helper.dart';
 import '../../../service/database_service.dart';
 
 class GroupNameViewModel {
@@ -34,53 +35,41 @@ class GroupNameViewModel {
   TextEditingController groupNameController = TextEditingController();
 
   GroupNameViewModel(this.groupNameScreen);
-  onChangeName( value, GroupController controller)
-  {
-    if(value.length.toString()!=0)
-    {
+
+  onChangeName(value, GroupController controller) {
+    if (value.length.toString() != 0) {
       isButtonActive = true;
       controller.update();
-    }
-    else
-    {
+    } else {
       isButtonActive = false;
       controller.update();
-
     }
-
   }
 
   onCreateGroup(GroupController controller) async {
     isButtonLoading = true;
     controller.update();
-    mobileNo
-        .add(AuthService.auth.currentUser!.phoneNumber!);
-    List<dynamic> members =mobileNo.toSet().toList();
+    mobileNo.add(AuthService.auth.currentUser!.phoneNumber!);
+    List<dynamic> members = mobileNo.toSet().toList();
     logs("members -- >>  ${members}");
 
-    SendMessageModel sendMessageModel = SendMessageModel(
-        type: 'text',
-        createdBy: AuthService.auth.currentUser!.phoneNumber,
-        groupName: groupNameController.text,
-        profile: userProfile,
-        members: members,
-        isGroup: true,
-        message: "welcome",
-        text: "New Group",
-        sender: "+919999999999"
-    );
-    await DatabaseService.instance.addNewMessage(sendMessageModel);
+
+    Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
+      'isGroup': true,
+      'groupName': groupNameController.text,
+      'members': members,
+    });
     isButtonLoading = false;
     controller.update();
-
   }
+
   showDialogs(context, GetxController controller) {
     showDialog(
       context: context,
       builder: (context) {
         return AppAlertDialog(
             backgroundColor: AppColorConstant.blackOff,
-            title:  AppText(S.of(context).choose,
+            title: AppText(S.of(context).choose,
                 color: AppColorConstant.appWhite, fontWeight: FontWeight.bold),
             actions: [
               Padding(
@@ -141,7 +130,7 @@ class GroupNameViewModel {
                               image: AppAsset.gallery)),
                       Padding(
                         padding: EdgeInsets.only(top: 9.px),
-                        child:  AppText(
+                        child: AppText(
                           S.of(context).gallery,
                           fontSize: 15,
                           color: AppColorConstant.appWhite,
@@ -156,7 +145,7 @@ class GroupNameViewModel {
     );
   }
 
-  void imageCrop( context,  controller) async {
+  void imageCrop(context, controller) async {
     if (selectedImage != null) {
       croppedFile = await ImageCropper().cropImage(
         sourcePath: selectedImage!.path,
@@ -200,7 +189,7 @@ class GroupNameViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(selectedImage!,controller);
+      uploadImage(selectedImage!, controller);
       logs(selectedImage.toString());
 
       controller.update();
@@ -213,7 +202,7 @@ class GroupNameViewModel {
 
     if (pickedFile != null) {
       selectedImage = (File(pickedFile.path));
-      uploadImage(selectedImage!,controller);
+      uploadImage(selectedImage!, controller);
       logs(selectedImage.toString());
       controller.update();
     }
