@@ -245,12 +245,21 @@
         "markAllRead" : "Mark all read",
          "signIn" : "Sign In",
          "phoneNumber" : "Phone Number",
-         "continues" : "Continue"
+         "continues" : "Continue",
 
         "addContact" : "Add contact",
         "viewContact" : "View contact",
-        "files" : "Files"
-
-
-
+        "files" : "Files",
+ "privacyOverprofit" :"Privacy Over Profit",
+ "privacyOverprofitdis" : "Private messaging, funded by you. No ads,\nno tracking,no compromise.Donate Now \nto Support ChatApp.",
+ "donatetochatapp" : "Donate to Chat App",
+ "otherwayto" : "other way to Give Up",
+ "donatefriend" : "Donate For Friend",
+ "enteramount" : "Enter Amount",
+ "unBlock" : "UnBlock",
+ "transaction" : "Transaction",
+ "Paymentsucess" : "Payment Successfull",
+ "totalbalance": "Total Balance",
+ "chatapp": "Chat App",
+ "logout":"Log Out"
 }

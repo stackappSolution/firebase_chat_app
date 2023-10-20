@@ -227,9 +227,22 @@
 
          "signIn" : "સાઇન ઇન",
         "phoneNumber":"મોબાઇલ નંબર",
-        "continues" : "ચાલુ રાખો"
+        "continues" : "ચાલુ રાખો",
 
         "addContact" : "સંપર્ક ઉમેરો",
          "viewContact" : "સંપર્ક જુઓ",
          "files" : "ફાઈલો",
- }
+  "privacyOverprofit": "લાભ પર પ્રાઇવસી",
+  "privacyOverprofitdis": "તમારું મૂલ્યને આપીતું પ્રાઇવેટ મેસેજ, કોઈ વિજ્ઞાપન, કોઈ ટ્રેકિંગ, કોઈ સમઝો નથી. આત્માર્પણ કરો આત્માર્પણ કરો \nચેટ એપ સપોર્ટ કરવામાં. ",
+  "donatetochatapp": "ચેટ એપ માં દાન કરો",
+  "otherwayto": "દૂર કરવા માટે બીજું રસ્તો",
+  "donatefriend": "મિત્ર માટે દાન કરો",
+  "enteramount": "રકમ દાખલ કરો",
+  "unBlock": "અનબ્લોક",
+  "transaction": "લેન-દેન",
+  "Paymentsucess":"ચુકવણી સફળતાપૂર્વક થઈ",
+  "totalbalance": "કુલ સંતુલન",
+  "chatapp":"ચેટ એપ્લિકેશન",
+  "logout":"લૉગ આઉટ"
+
+}

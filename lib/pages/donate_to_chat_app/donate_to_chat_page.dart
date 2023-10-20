@@ -8,6 +8,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/constant/string_constant.dart';
 import 'package:signal/controller/donate_to_chat_controller.dart';
+import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/donate_to_chat_app/donate_chat_view_model.dart';
 import 'package:signal/routes/app_navigation.dart';
 
@@ -85,7 +86,7 @@ class DonateToChatPage extends StatelessWidget {
             height: 15.px,
           ),
           AppText(
-            StringConstant.privacyOverprofit,
+              S.of(context).privacyOverprofit,
             color: Theme.of(context).colorScheme.primary,
             fontSize: 20.px,
           ),
@@ -94,7 +95,7 @@ class DonateToChatPage extends StatelessWidget {
           ),
            AppText(
             textAlign: TextAlign.center,
-            StringConstant.privacyOverprofitdis,
+             S.of(context).privacyOverprofitdis,
             color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
           ),
           SizedBox(
@@ -104,7 +105,7 @@ class DonateToChatPage extends StatelessWidget {
             buttonWidth: 40,
             buttonColor: AppColorConstant.appYellow,
             buttonHeight: 40,
-            widget:  const AppText(StringConstant.donatetochatapp,
+            widget:   AppText(S.of(context).donatetochatapp,
               color: AppColorConstant.appWhite),
             onPressed: () {
               donateChatViewModel!.enterAmount(context, controller);
@@ -124,7 +125,7 @@ class DonateToChatPage extends StatelessWidget {
               SizedBox(
                 width: 20.px,
               ),
-               AppText(StringConstant.otherwayto,color: Theme.of(context).colorScheme.primary,),
+               AppText(S.of(context).otherwayto,color: Theme.of(context).colorScheme.primary,),
             ],
           ),
           SizedBox(
@@ -135,7 +136,7 @@ class DonateToChatPage extends StatelessWidget {
               SizedBox(width: 22.px),
               const Icon(Icons.card_giftcard),
               SizedBox(width: 22.px),
-               AppText(StringConstant.donatefriend,color: Theme.of(context).colorScheme.primary,),
+               AppText(S.of(context).donatefriend,color: Theme.of(context).colorScheme.primary,),
             ],
           ),
         ],

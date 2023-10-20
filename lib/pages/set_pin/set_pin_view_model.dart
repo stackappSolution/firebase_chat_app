@@ -109,11 +109,11 @@ class EnterPinViewModel {
     FocusScope.of(context).nextFocus();
     logs('Enter PIN ------> ${pinController.text}');
     if (pin == pinController.text) {
+      Get.to(HomeScreen());
       ToastUtil.successToast("Pin Verify");
       token = await FirebaseMessaging.instance.getToken();
       logs('New Token ----> $token');
       updateUserName(controller, token ?? '');
-      Get.to(HomeScreen());
     } else {
       ToastUtil.warningToast("Pin Wrong");
     }

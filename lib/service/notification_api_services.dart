@@ -39,8 +39,6 @@ class ResponseService {
 
     final response = await http.post(Uri.parse(url),
         headers: headers, body: json.encode(message));
-    Map<String, dynamic> bodyMap = {"useFor": "message"};
-    logs('bodymaoppp-->$bodyMap');
     try {
       log('Response status:${response.statusCode}');
       log('response body:${response.body}');

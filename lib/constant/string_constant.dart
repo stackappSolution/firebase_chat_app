@@ -205,12 +205,16 @@ class StringConstant {
   static const String yes = 'yes';
 
   ///naimish add remaining String ///
-  static const String privacyOverprofit = 'Privacy Over Profit';
-  static const String privacyOverprofitdis = 'Private messaging, funded by you. No ads,\nno tracking,no compromise.Donate Now \nto Support ChatApp.';
-  static const String donatetochatapp = 'Donate to Chat App';
-  static const String otherwayto = 'other way to Give Up';
-  static const String donatefriend = 'Donate For Friend';
-  static const String enteramount = 'Enter Amount';
-  static const String unBlock = 'UnBlock';
-  static const String transaction = 'Transaction';
+  static const String privacyOverprofit = 'privacyOverprofit';
+  static const String privacyOverprofitdis = 'privacyOverprofitdis';
+  static const String donatetochatapp = 'donatetochatapp';
+  static const String otherwayto = 'otherwayto';
+  static const String donatefriend = 'donatefriend';
+  static const String enteramount = 'enteramount';
+  static const String unBlock = 'unBlock';
+  static const String transaction = 'transaction';
+  static const String Paymentsucess = 'Payment Successfull';
+  static const String totalbalance = 'totalbalance';
+  static const String chatapp= 'chatapp';
+  static const String logout = 'Logout';
 }

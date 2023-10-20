@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -84,6 +85,7 @@ class ChatingPageViewModal {
   Color? chatbubblecolor;
 
   TextEditingController chatController = TextEditingController();
+  TextEditingController messageEdit = TextEditingController();
   ChatingPageController? controller;
   String statusText = "";
   bool isRecording = false;
@@ -97,6 +99,14 @@ class ChatingPageViewModal {
   bool iconChange = false;
   final firestore = FirebaseFirestore.instance;
   Color? bubblColors;
+  final myFocusNode = FocusNode();
+  bool isSwipreply = false;
+  String? messageType;
+  String repliedText = '';
+  List<MessageModel> selectedMessage = [];
+  List<bool> selectedMessageTrueFalse = [];
+  bool sendMsg = false;
+  String imageLink = '';
 
   ChatingPageViewModal([this.chatingPage]) {
     Future.delayed(const Duration(milliseconds: 0), () async {
@@ -351,7 +361,6 @@ class ChatingPageViewModal {
 
     return file.path;
   }
-
   Future<void> viewFile(
       mainURL, folderName, ChatingPageController controller, int index) async {
     final PermissionStatus permissionStatus1 = await Permission.storage.status;
@@ -362,6 +371,9 @@ class ChatingPageViewModal {
     if (!permissionStatus1.isGranted &&
         !permissionStatus2.isGranted &&
         !permissionStatus3.isGranted) {
+    final PermissionStatus permissionStatus2 = await Permission.manageExternalStorage.status;
+    final PermissionStatus permissionStatus3 = await Permission.accessMediaLocation.status;
+    if (!permissionStatus1.isGranted && !permissionStatus2.isGranted && !permissionStatus3.isGranted  ) {
       getPermission();
     } else {
       logs("download Entered");
@@ -959,14 +971,8 @@ class ChatingPageViewModal {
     );
   }
 
-  showEmojiMenu(
-    BuildContext context,
-    Offset position,
-    roomId,
-    messageId,
-    receiverNumber,
-    isGroup,
-  ) async {
+  showEmojiMenu(BuildContext context, Offset position, roomId, messageId,
+      receiverNumber, isGroup) async {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -987,13 +993,9 @@ class ChatingPageViewModal {
                     isSelected.add(false);
                     isSelected.removeWhere((element) => element == true);
                     addEmoji(
-                      roomId,
-                      messageId,
-                      receiverNumber,
-                      "🙏",
-                      "🙏",
-                      isGroup,
-                    );
+                        roomId, messageId, receiverNumber, "🙏", "🙏", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "🙏");
                   },
                   child: AppText("🙏", fontSize: 22.px)),
@@ -1005,6 +1007,8 @@ class ChatingPageViewModal {
 
                     addEmoji(
                         roomId, messageId, receiverNumber, "😂", "😂", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "😂");
                   },
                   child: AppText('😂', fontSize: 22.px)),
@@ -1016,6 +1020,8 @@ class ChatingPageViewModal {
 
                     addEmoji(
                         roomId, messageId, receiverNumber, "😮", "😮", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "😮");
                   },
                   child: AppText('😮', fontSize: 22.px)),
@@ -1027,6 +1033,8 @@ class ChatingPageViewModal {
 
                     addEmoji(
                         roomId, messageId, receiverNumber, "❤️", "❤️", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "❤️");
                   },
                   child: AppText('❤️', fontSize: 22.px)),
@@ -1038,6 +1046,8 @@ class ChatingPageViewModal {
 
                     addEmoji(
                         roomId, messageId, receiverNumber, "👍", "👍", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "👍");
                   },
                   child: AppText('👍', fontSize: 22.px)),
@@ -1049,9 +1059,36 @@ class ChatingPageViewModal {
 
                     addEmoji(
                         roomId, messageId, receiverNumber, "😥", "😥", isGroup);
+                    selectedMessageTrueFalse[0] = false;
+                    controller!.update();
                     Navigator.pop(context, "😥");
                   },
                   child: AppText('😥', fontSize: 22.px)),
+              SizedBox(width: 5.px,),
+              GestureDetector(
+                  onTap: () {
+                    String SelectedEmoji = '';
+                    showBottomSheet(context: context, builder: (context) {
+                      return  Container(
+                        height: 250.px,
+                        child: EmojiPicker(
+                          onEmojiSelected: (category, emoji) {
+                            SelectedEmoji = emoji.emoji;
+                            addEmoji(
+                                roomId, messageId, receiverNumber, emoji.emoji, emoji.emoji, isGroup);
+                            Navigator.pop(context, emoji.emoji);
+                            controller!.update();
+
+                          },
+                        ),
+                      );
+
+                    },);
+                    selectedMessageTrueFalse[0] = false;
+                    Navigator.pop(context,SelectedEmoji);
+                    controller!.update();
+                  },
+                  child: const Icon(Icons.add_circle_outline_sharp)),
             ],
           ),
         ),
@@ -1065,14 +1102,8 @@ class ChatingPageViewModal {
 
   ///=================    array union to work =============== /////
 
-  Future<void> addEmoji(
-    roomId,
-    messageId,
-    receiverNumber,
-    receiverEmoji,
-    senderEmoji,
-    isGroup,
-  ) async {
+  Future<void> addEmoji(roomId, messageId, receiverNumber, receiverEmoji,
+      senderEmoji, isGroup) async {
     logs('messageidddddd-->$messageId');
     logs('roomidddddddd-->$roomId');
 
@@ -1137,12 +1168,7 @@ class ChatingPageViewModal {
 
   /// ======================Delete Emoji Function ==============///
   Future<void> deleteEmoji(
-    roomId,
-    messageId,
-    receiverNumber,
-    receiverEmoji,
-    senderEmoji,
-  ) async {
+      roomId, messageId, receiverNumber, receiverEmoji, senderEmoji) async {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('rooms')
         .doc(roomId)
@@ -1187,7 +1213,7 @@ class ChatingPageViewModal {
       controller!.durationList = List.filled(chatLength, Duration.zero);
       controller!.positionList = List.filled(chatLength, Duration.zero);
       controller!.isPlayingList = List.filled(chatLength, false);
-      controller!.isPlayingList = List.filled(chatLength, false);
+      selectedMessageTrueFalse = List.filled(chatLength, false);
     }
   }
 
@@ -1201,9 +1227,8 @@ class ChatingPageViewModal {
         isFileDownLoadedList = isFileDownLoadedList.toList();
         isFileDownLoadedList.add(false);
 
-        isSelected = isSelected.toList();
-        isSelected.add(false);
-
+        selectedMessageTrueFalse = selectedMessageTrueFalse.toList();
+        selectedMessageTrueFalse.add(false);
         controller!.durationList = controller!.durationList.toList();
         controller!.durationList.add(Duration.zero);
         controller!.positionList = controller!.positionList.toList();
@@ -1304,5 +1329,6 @@ class ChatingPageViewModal {
     return AppColorConstant.appYellow;
   }
 
+  
 
 }
