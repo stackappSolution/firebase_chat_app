@@ -357,73 +357,85 @@ class ChatingPageViewModal {
 
     return file.path;
   }
+
+
   Future<void> viewFile(
       mainURL, folderName, ChatingPageController controller, int index) async {
     final PermissionStatus permissionStatus1 = await Permission.storage.status;
     final PermissionStatus permissionStatus2 =
-        await Permission.manageExternalStorage.status;
+    await Permission.manageExternalStorage.status;
     final PermissionStatus permissionStatus3 =
-        await Permission.accessMediaLocation.status;
+    await Permission.accessMediaLocation.status;
     if (!permissionStatus1.isGranted &&
         !permissionStatus2.isGranted &&
         !permissionStatus3.isGranted) {
-    final PermissionStatus permissionStatus2 = await Permission.manageExternalStorage.status;
-    final PermissionStatus permissionStatus3 = await Permission.accessMediaLocation.status;
-    if (!permissionStatus1.isGranted && !permissionStatus2.isGranted && !permissionStatus3.isGranted  ) {
-      getPermission();
-    } else {
-      logs("download Entered");
-      downloadAndSavePDF(mainURL, folderName, controller, index);
+      final PermissionStatus permissionStatus2 = await Permission
+          .manageExternalStorage.status;
+      final PermissionStatus permissionStatus3 = await Permission
+          .accessMediaLocation.status;
+      if (!permissionStatus1.isGranted && !permissionStatus2.isGranted &&
+          !permissionStatus3.isGranted) {
+        getPermission();
+      } else {
+        logs("download Entered");
+        downloadAndSavePDF(mainURL, folderName, controller, index);
 
-      var dirPath =
-          "${await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
-      Directory dir = Directory(dirPath);
-      List splitUrl = mainURL.split("/");
+        var dirPath =
+            "${await ExternalPath.getExternalStoragePublicDirectory(
+            ExternalPath.DIRECTORY_DOWNLOADS)}/CHATAPP/$folderName";
+        Directory dir = Directory(dirPath);
+        List splitUrl = mainURL.split("/");
 
-      final filePath =
-          '${dir.path}/myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(mainURL)}';
+        final filePath =
+            '${dir.path}/myFile${splitUrl.last.toString().substring(
+            splitUrl.last
+                .toString()
+                .length - 10, splitUrl.last
+            .toString()
+            .length)}.${extensionCheck(mainURL)}';
 
-      logs("ckeck file  --- > $filePath");
-      if (await File(filePath).exists()) {
-        isFileDownLoadedList[index] = true;
-        controller.update();
-        logs(" The file has already been downloaded, open it.");
-        logs("saved file path  ---- > $filePath");
-        if (extensionCheck(mainURL) == "jpg" ||
-            extensionCheck(mainURL) == "png") {
-          logs("It's Image");
-          Get.toNamed(RouteHelper.getImageViewScreen(),
-              arguments: {'image': filePath, 'name': arguments['name']});
-        }
+        logs("ckeck file  --- > $filePath");
+        if (await File(filePath).exists()) {
+          isFileDownLoadedList[index] = true;
+          controller.update();
+          logs(" The file has already been downloaded, open it.");
+          logs("saved file path  ---- > $filePath");
+          if (extensionCheck(mainURL) == "jpg" ||
+              extensionCheck(mainURL) == "png") {
+            logs("It's Image");
+            Get.toNamed(RouteHelper.getImageViewScreen(),
+                arguments: {'image': filePath, 'name': arguments['name']});
+          }
 
-        if (extensionCheck(mainURL) == "mp4") {
-          logs("Its video");
-          Get.toNamed(RouteHelper.getVideoPlayerScreen(),
-              arguments: {'video': filePath});
-        }
-        if (extensionCheck(mainURL) == "mp3") {
-          logs("It's audio");
-          if (!controller.player.playing) {
-            logs("Music not playing");
-            controller!.positionList = List.filled(100, Duration.zero);
-            controller!.isPlayingList = List.filled(100, false);
-            controller.update();
-            controller.player.setUrl(filePath);
-            controller.player.play();
-            controller.isPlayingList[index] = true;
+          if (extensionCheck(mainURL) == "mp4") {
+            logs("Its video");
+            Get.toNamed(RouteHelper.getVideoPlayerScreen(),
+                arguments: {'video': filePath});
+          }
+          if (extensionCheck(mainURL) == "mp3") {
+            logs("It's audio");
+            if (!controller.player.playing) {
+              logs("Music not playing");
+              controller!.positionList = List.filled(100, Duration.zero);
+              controller!.isPlayingList = List.filled(100, false);
+              controller.update();
+              controller.player.setUrl(filePath);
+              controller.player.play();
+              controller.isPlayingList[index] = true;
+            } else {
+              logs("Music already playing");
+              controller.player.stop();
+              controller.update();
+              controller.isPlayingList = List.filled(100, false);
+              controller.update();
+            }
           } else {
-            logs("Music already playing");
-            controller.player.stop();
-            controller.update();
-            controller.isPlayingList = List.filled(100, false);
-            controller.update();
+            OpenFile.open(filePath);
           }
         } else {
-          OpenFile.open(filePath);
+          logs("Downloading Start");
+          downloadAndSavePDF(mainURL, folderName, controller, index);
         }
-      } else {
-        logs("Downloading Start");
-        downloadAndSavePDF(mainURL, folderName, controller, index);
       }
     }
   }
