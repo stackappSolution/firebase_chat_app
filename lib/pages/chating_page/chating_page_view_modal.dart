@@ -99,10 +99,6 @@ class ChatingPageViewModal {
   bool iconChange = false;
   final firestore = FirebaseFirestore.instance;
   Color? bubblColors;
-  final myFocusNode = FocusNode();
-  bool isSwipreply = false;
-  String? messageType;
-  String repliedText = '';
   List<MessageModel> selectedMessage = [];
   List<bool> selectedMessageTrueFalse = [];
   bool sendMsg = false;
@@ -847,6 +843,8 @@ class ChatingPageViewModal {
         isFileDownLoadingList.add(false);
         isFileDownLoadedList = isFileDownLoadedList.toList();
         isFileDownLoadedList.add(false);
+        selectedMessageTrueFalse = selectedMessageTrueFalse.toList();
+        selectedMessageTrueFalse.add(false);
 
         controller.update();
         onSelectItem(value);
@@ -1329,6 +1327,67 @@ class ChatingPageViewModal {
     return AppColorConstant.appYellow;
   }
 
-  
+  forwardMessage(int index, MessageModel message, BuildContext context, details) {
+    selectedMessage.length < 1
+        ? showEmojiMenu(
+            context,
+            details.globalPosition,
+            snapshots.docs[0]['id'],
+            message.messageId,
+            message.sender,
+            arguments["isGroup"],
+          )
+        : null;
+    if (index >= 0 && index < selectedMessageTrueFalse.length) {
+      selectedMessageTrueFalse[index] = !selectedMessageTrueFalse[index];
 
+      if (selectedMessageTrueFalse[index]) {
+        selectedMessage.add(message);
+      } else {
+        selectedMessage.removeWhere((msg) => msg.messageId == message.messageId);
+      }
+      controller!.update();
+    } else {
+      logs('Invalid index: $index');
+    }
+  }
+
+   forwordMessage(element) async {
+    logs("Members---${arguments['members']}");
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('rooms')
+        .where('members', isEqualTo: arguments['members'])
+        .get();
+    logs("ref Id ---- >${querySnapshot.docs.length.toString()}");
+
+    MessageModel messageModel = MessageModel(
+        messageStatus: false,
+        message: element.message,
+        isSender: true,
+        messageTimestamp: DateTime.now().millisecondsSinceEpoch,
+        messageType: element.messageType,
+        sender: AuthService.auth.currentUser!.phoneNumber,
+        text: element.text,
+        thumb: element.thumb,
+        messageId: element.messageId);
+
+    DocumentReference messageRef = await FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(querySnapshot.docs.first.id)
+        .collection('chats')
+        .add(messageModel.toJson());
+    String messageId = messageRef.id;
+    await messageRef.update({'messageid': messageId});
+
+    (element.messageType == 'text')
+        ? notification(element.message)
+        : (element.messageType == 'image')
+        ? notification('📷 photo')
+        : (element.messageType == 'audio')
+        ? notification('🎶 audio')
+        : (element.messageType == 'doc')
+        ? notification('📃 document')
+        : notification('🎥 video');
+  }
 }

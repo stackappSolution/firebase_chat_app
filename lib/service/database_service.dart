@@ -88,9 +88,7 @@ class DatabaseService {
         sender: sendMessageModel.sender,
         text: sendMessageModel.text,
         thumb: sendMessageModel.thumb,
-        messageId: sendMessageModel.messageId,
-      repliedText: sendMessageModel.repliedText,
-    );
+        messageId: sendMessageModel.messageId);
 
     DocumentReference messageRef = await FirebaseFirestore.instance
         .collection('rooms')
@@ -98,9 +96,7 @@ class DatabaseService {
         .collection('chats')
         .add(messageModel.toJson());
     String messageId = messageRef.id;
-    await messageRef.update({
-      'messageid': messageId,
-    });
+    await messageRef.update({'messageid': messageId});
   }
 
   //=============================getChats====================================//
