@@ -3,17 +3,9 @@ import 'package:get/get.dart';
 
 import '../app/app/utills/app_utills.dart';
 
-class GroupController extends GetxController{
-
+class GroupController extends GetxController {
   final userTable = FirebaseFirestore.instance.collection('users');
   List userList = [];
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    getUserPhoneList();
-  }
 
   Future<bool> checkFirst(String receiver) async {
     QuerySnapshot userMessages = await FirebaseFirestore.instance
@@ -32,6 +24,5 @@ class GroupController extends GetxController{
       });
       logs("getUserPhoneList=== $userList");
     }
-
   }
 }

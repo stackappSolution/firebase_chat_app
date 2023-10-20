@@ -25,14 +25,7 @@ class NewGroupViewModel {
   bool isRefreshing = false;
 
 
-  NewGroupViewModel(this.newGroupScreen) {
-    Future.delayed(
-      const Duration(milliseconds: 0),
-      () {
-        controller = Get.find<GroupController>();
-      },
-    );
-  }
+  NewGroupViewModel(this.newGroupScreen) {}
 
   TextInputType getKeyboardType() {
     return isIcon ? TextInputType.text : TextInputType.number;

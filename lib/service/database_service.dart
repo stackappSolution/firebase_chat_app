@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:external_path/external_path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
@@ -49,12 +50,7 @@ class DatabaseService {
           'groupProfile': sendMessageModel.profile,
           'groupName': sendMessageModel.groupName,
           'createdBy': sendMessageModel.createdBy,
-        }).then((value) =>
-                Get.offAllNamed(RouteHelper.getChattingScreen(), arguments: {
-                  'isGroup': true,
-                  'groupName': sendMessageModel.groupName!,
-                  'members': sendMessageModel.members,
-                }));
+        });
       }
     } else {
       addChatMessage(sendMessageModel);
@@ -223,12 +219,12 @@ class DatabaseService {
 
 //======================== markMessageAsSeen ===========================//
 
-  Future<void> markMessagesAsSeen(String chatRoomId, String receiverId) async {
+  Future<void> markMessagesAsSeen(String chatRoomId, String number) async {
     FirebaseFirestore.instance
         .collection("rooms")
         .doc(chatRoomId)
         .collection("chats")
-        .where('sender', isEqualTo: receiverId)
+        .where('sender', isEqualTo: number)
         .where("messageStatus", isEqualTo: false)
         .get()
         .then((value) {
@@ -347,30 +343,40 @@ class DatabaseService {
       controller = Get.find<ChatingPageController>();
     });
 
-    List splitUrl = pdfURL.split("/");
-    final response = await http.get(Uri.parse(pdfURL));
-    String? fileName;
-    var rootPath;
-    rootPath ??= await ExternalPath.getExternalStoragePublicDirectory(
-        ExternalPath.DIRECTORY_DOWNLOADS);
-    var dirPath = "$rootPath/CHATAPP/$folderName";
-    logs("dir path -- $dirPath");
-    Directory dir = Directory(dirPath);
-    if (!await dir.exists()) {
-      await dir.create(recursive: true);
-    }
-    fileName =
-        "myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}";
-    File file = File("${dir.path}/$fileName");
-    logs("saved file path --->  ${file.path}");
+    final PermissionStatus permissionStatus1 = await Permission.storage.status;
+    final PermissionStatus permissionStatus2 =
+        await Permission.manageExternalStorage.status;
+    final PermissionStatus permissionStatus3 =
+        await Permission.accessMediaLocation.status;
+    if (!permissionStatus1.isGranted &&
+        !permissionStatus2.isGranted &&
+        !permissionStatus3.isGranted) {
+      getPermission();
 
-    await file.writeAsBytes(response.bodyBytes);
-    isLoading = false;
-    controller!.update();
-    logs("isLoading-----$isLoading");
-    Get.back();
+      List splitUrl = pdfURL.split("/");
+      final response = await http.get(Uri.parse(pdfURL));
+      String? fileName;
+      var rootPath;
+      rootPath ??= await ExternalPath.getExternalStoragePublicDirectory(
+          ExternalPath.DIRECTORY_DOWNLOADS);
+      var dirPath = "$rootPath/CHATAPP/$folderName";
+      logs("dir path -- $dirPath");
+      Directory dir = Directory(dirPath);
+      if (!await dir.exists()) {
+        await dir.create(recursive: true);
+      }
+      fileName =
+          "myFile${splitUrl.last.toString().substring(splitUrl.last.toString().length - 10, splitUrl.last.toString().length)}.${extensionCheck(pdfURL)}";
+      File file = File("${dir.path}/$fileName");
+      logs("saved file path --->  ${file.path}");
 
-    logs("downloaded path --- > $fileName");
+      await file.writeAsBytes(response.bodyBytes);
+      isLoading = false;
+      controller!.update();
+      logs("isLoading-----$isLoading");
+      Get.back();
+      logs("downloaded path --- > $fileName");
+    } else {}
   }
 
   static extensionCheck(pdfURL) {
@@ -414,9 +420,9 @@ class DatabaseService {
       SettableMetadata(contentType: 'IMAGE'), // Specify the content type
     );
     uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-      double progress = (snapshot.bytesTransferred / snapshot.totalBytes);
-      downloadPercentage = (progress * 100).round();
-      logs("download ---- > ${progress.toString()}");
+      // double progress = (snapshot.bytesTransferred / snapshot.totalBytes);
+      // downloadPercentage = (progress * 100).round();
+      // logs("download ---- > ${progress.toString()}");
       controller.update();
     });
 
@@ -425,5 +431,28 @@ class DatabaseService {
     });
 
     return await storage.getDownloadURL();
+  }
+
+  static Future<void> getPermission() async {
+    logs("permission -------> not given");
+    await Permission.storage.request();
+    await Permission.manageExternalStorage.request();
+    await Permission.accessMediaLocation.request();
+
+    final PermissionStatus permissionStatus1 = await Permission.storage.status;
+    final PermissionStatus permissionStatus2 =
+        await Permission.manageExternalStorage.status;
+    final PermissionStatus permissionStatus3 =
+        await Permission.accessMediaLocation.status;
+
+    if (permissionStatus1.isGranted &&
+        permissionStatus2.isGranted &&
+        permissionStatus3.isGranted) {
+      //do
+    } else {
+      await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
+      await Permission.accessMediaLocation.request();
+    }
   }
 }

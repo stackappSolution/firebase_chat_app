@@ -70,9 +70,12 @@ class ChatViewModel {
   }
 
   getNameFromContact(String number) {
-    for (var contact in DataBaseHelper.contactData) {
-      if (contact["contact"].toString().trim().removeAllWhitespace == number) {
-        return contact["name"] ?? "";
+    for (var contact in contacts) {
+      if (contact.phones!.isNotEmpty) {
+        if (contact.phones!.first.value.toString().trim().removeAllWhitespace ==
+            number) {
+          return contact.displayName ?? "";
+        }
       }
     }
     return "Not Saved Yet";
