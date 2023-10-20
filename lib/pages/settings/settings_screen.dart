@@ -205,7 +205,7 @@ class SettingScreen extends StatelessWidget {
           context,
           9,
           AppAsset.logOut,
-          S.of(context).logout,
+          StringConstant.logOut,
         ),
       ],
     );

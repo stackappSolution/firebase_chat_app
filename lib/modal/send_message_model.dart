@@ -11,7 +11,6 @@ class SendMessageModel {
   final String? groupName;
   final String? profile;
   final String? thumb;
-  final String? repliedText;
 
   SendMessageModel({
     this.type,
@@ -26,7 +25,6 @@ class SendMessageModel {
     this.groupName,
     this.profile,
     this.thumb,
-    this.repliedText
   });
 
   // Create a factory constructor to convert JSON to a Message object.
@@ -44,7 +42,6 @@ class SendMessageModel {
       groupName: json['groupName'],
       profile: json['profile'],
       thumb: json['thumb'],
-        repliedText: json['repliedText']
     );
   }
 
@@ -63,7 +60,6 @@ class SendMessageModel {
       'groupName': groupName,
       'profile': profile,
       'thumb': thumb,
-      'repliedText':repliedText
     };
   }
 }

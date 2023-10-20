@@ -94,10 +94,6 @@ class ChatingPageViewModal {
   bool iconChange = false;
   final firestore = FirebaseFirestore.instance;
   Color? bubblColors;
-  final myFocusNode = FocusNode();
-  bool isSwipreply = false;
-  String? messageType;
-  String repliedText = '';
   List<MessageModel> selectedMessage = [];
   List<bool> selectedMessageTrueFalse = [];
   bool sendMsg = false;
@@ -834,6 +830,8 @@ class ChatingPageViewModal {
         isFileDownLoadingList.add(false);
         isFileDownLoadedList = isFileDownLoadedList.toList();
         isFileDownLoadedList.add(false);
+        selectedMessageTrueFalse = selectedMessageTrueFalse.toList();
+        selectedMessageTrueFalse.add(false);
 
         controller.update();
         onSelectItem(value);
@@ -1276,7 +1274,6 @@ class ChatingPageViewModal {
       selectedMessageTrueFalse[index] = !selectedMessageTrueFalse[index];
 
       if (selectedMessageTrueFalse[index]) {
-        errorLogs(message.messageType.toString());
         selectedMessage.add(message);
       } else {
         selectedMessage.removeWhere((msg) => msg.messageId == message.messageId);

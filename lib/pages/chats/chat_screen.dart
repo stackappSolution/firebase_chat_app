@@ -18,7 +18,10 @@ import 'package:signal/routes/app_navigation.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:signal/service/database_helper.dart';
+
 import '../../app/widget/app_shimmer.dart';
+import '../../modal/message.dart';
+import '../../service/network_connectivity.dart';
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
 
@@ -82,11 +85,79 @@ class ChatScreen extends StatelessWidget {
   }
 
   buildFloatingButton() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 10.px),
+    return sent
+        ? FloatingActionButton(
+            heroTag: 'camera',
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.px)),
+            backgroundColor: AppColorConstant.appYellow,
+            child:
+                Icon(Icons.send, size: 25.px, color: AppColorConstant.appWhite),
+            onPressed: () {
+              List sampleList = Set.of(chatViewModel!.selectedContacts).toList();
+              List Final = sampleList;
+              for (int j = 0; j < sampleList.length; j++) {
+                List receiver = sampleList[j]["members"];
+                String phoneNumberToRemove = AuthService.auth.currentUser!.phoneNumber!;
+
+                if (receiver.contains(phoneNumberToRemove)) {
+                  receiver.remove(phoneNumberToRemove);
+                }
+
+                String receiverNumber = receiver.join("").toString().trim();
+                chatViewModel!.getToken(receiverNumber);
+                for (int i = 0; i < msgList.length - 1; i++) {
+
+                  logs("msgList length -- > ");
+
+                  var messageModel = msgList[i] as MessageModel;
+                  warningLogs('messageModel.message --> ${messageModel}');
+                  warningLogs('messageModel.message --> ${messageModel.message}');
+                  chatViewModel!.addChatMessage(messageModel, sampleList[j]['id']);
+
+                  Future.delayed(const Duration(microseconds: 1), () {
+                    (messageModel.messageType == 'text')
+                        ? chatViewModel!
+                            .notification(messageModel.message.toString())
+                        : (messageModel.messageType == 'image')
+                            ? chatViewModel!.notification('📷 photo')
+                            : (messageModel.messageType == 'audio')
+                                ? chatViewModel!.notification('🎶 audio')
+                                : (messageModel.messageType == 'doc')
+                                    ? chatViewModel!.notification('📃 document')
+                                    : chatViewModel!.notification('🎥 video');
+                  });
+                }
+                chatViewModel!.token = "";
+                controller!.update();
+              }
+              // List receiver = Final.last["members"];
+              // receiver.remove(AuthService.auth.currentUser!.phoneNumber!);
+              // String receiverNumber =
+              //     receiver.join("").toString().trim().removeAllWhitespace;
+              // Get.toNamed(RouteHelper.getChattingScreen(), arguments: {
+              //   'groupProfile':
+              //       (Final.last['isGroup']) ? Final.last['groupProfile'] : '',
+              //   'isGroup': (Final.last['isGroup']) ? true : false,
+              //   'groupName':
+              //       (Final.last['isGroup']) ? Final.last['groupName'] : '',
+              //   'createdBy':
+              //       (Final.last['isGroup']) ? Final.last['createdBy'] : '',
+              //   'id': Final.last['id'],
+              //   'members': Final.last['members'],
+              //   'name': chatViewModel!.getNameFromContact(receiverNumber),
+              //   'number': receiverNumber,
+              //   'sent': sent,
+              //   'msgList': msgList
+              // });
+            },
+          )
+        : Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: 10.px),
           child: FloatingActionButton(
             heroTag: 'camera',
             elevation: 0.0,
@@ -122,7 +193,7 @@ class ChatScreen extends StatelessWidget {
       return AppAppBar(
         leading: IconButton(
           icon: Icon(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.onSecondary,
             Icons.arrow_back_outlined,
           ),
           onPressed: () {
@@ -151,25 +222,34 @@ class ChatScreen extends StatelessWidget {
     } else {
       return AppAppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        leading: Padding(
-          padding: EdgeInsets.only(left: 15.px),
-          child: InkWell(
-            onTap: () {
-              goToSettingPage();
-            },
-            child: StreamBuilder(
-              stream: UsersService.getUserStream(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return const AppText('');
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const AppText('');
-                }
-                final data = snapshot.data!.docs;
-                return Padding(
-                  padding:
-                      EdgeInsets.only(left: 11.px, top: 3.px, bottom: 3.px),
+        leading: sent
+            ? IconButton(
+                icon: Icon(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  Icons.arrow_back_outlined,
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+              )
+            : Padding(
+                padding: EdgeInsets.only(left: 15.px),
+                child: InkWell(
+                  onTap: () {
+                    goToSettingPage();
+                  },
+                  child: StreamBuilder(
+                    stream: UsersService.getUserStream(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const AppText('');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const AppText('');
+                      }
+                      final data = snapshot.data!.docs;
+                      return Padding(
+                        padding: EdgeInsets.only(left: 11.px, top: 3.px, bottom: 3.px),
                   child: data.first['photoUrl'].isEmpty
                       ? CircleAvatar(
                           maxRadius: 35.px,
@@ -195,10 +275,14 @@ class ChatScreen extends StatelessWidget {
           ),
         ),
         title: Padding(
-          padding: EdgeInsets.only(left: 5.px),
-          child: AppText(S.of(context).chatapp,
-              color: Theme.of(Get.context!).colorScheme.primary,
-              fontSize: 18.px),
+          padding: sent ? EdgeInsets.only(left: 0.px) : EdgeInsets.only(left: 5.px),
+          child: sent
+              ? AppText('Select contect',
+                  color: Theme.of(Get.context!).colorScheme.primary,
+                  fontSize: 18.px)
+              : AppText(S.of(Get.context!).chatApp,
+                  color: Theme.of(Get.context!).colorScheme.primary,
+                  fontSize: 18.px),
         ),
         actions: [
           InkWell(
@@ -214,7 +298,21 @@ class ChatScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 )),
           ),
-          buildPopupMenu(context),
+          sent
+              ? Padding(
+                  padding: EdgeInsets.only(left: 7.px),
+                  child: Container(
+                      alignment: Alignment.center,
+                      width: 25,
+                      height: 25,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.primary)),
+                      child:
+                          AppText('${chatViewModel!.selectedContacts.length}')),
+                )
+              : buildPopupMenu(context),
         ],
       );
     }
@@ -310,10 +408,12 @@ class ChatScreen extends StatelessWidget {
                       .substring(0, 1);
 
                   return Container(
-                      margin: EdgeInsets.all(10.px),
+                      color: chatViewModel!.selectedContactsTrueFalse[index]
+                          ? AppColorConstant.yellowLight
+                          : Colors.transparent,
                       child: ListTile(
                         onTap: () {
-                          Get.toNamed(RouteHelper.getChattingScreen(),
+                       !sent ? Get.toNamed(RouteHelper.getChattingScreen(),
                               arguments: {
                                 'groupProfile': (documents[index]['isGroup'])
                                     ? documents[index]['groupProfile']
@@ -334,7 +434,8 @@ class ChatScreen extends StatelessWidget {
                                 'number': receiverNumber,
                                 'sent' : sent,
                                 'msgList' : msgList
-                              });
+                              })
+                              : chatViewModel!.addRemove(index,documents[index]);
                         },
                         trailing: StreamBuilder(
                           stream:

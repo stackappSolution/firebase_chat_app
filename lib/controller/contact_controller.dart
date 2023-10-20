@@ -45,6 +45,7 @@ class ContactController extends GetxController {
     return rooms.where('members', arrayContains: number).snapshots();
   }
 
+
   getTimeStamp(id) async {
     final data = await rooms
         .doc(id)
@@ -54,5 +55,11 @@ class ContactController extends GetxController {
         .get();
     final docs = data.docs;
     logs("time Stamp --- > ${docs[0]["messageTimestamp"]}");
+  }
+
+  getUserFcmToken(number) async {
+    final t = await users.where('phone', isEqualTo: number).get();
+    final data = t.docs;
+    return data.first["fcmToken"];
   }
 }
