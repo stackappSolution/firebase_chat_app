@@ -72,7 +72,7 @@ class ChatingPage extends StatelessWidget {
             controller!.durationList = List.filled(100, Duration.zero);
             controller!.positionList = List.filled(100, Duration.zero);
             controller!.isPlayingList = List.filled(100, false);
-
+            chatingPageViewModal!.firstMessage();
             await chatingPageViewModal!.getBlockedList(controller);
             await chatingPageViewModal!.getChatId();
             await chatingPageViewModal!.getChatLength();
@@ -3244,6 +3244,7 @@ class ChatingPage extends StatelessWidget {
       message: message,
       sender: AuthService.auth.currentUser!.phoneNumber!,
       isGroup: false,
+      repliedText: ''
     );
 
     (chatingPageViewModal!.blockedNumbers

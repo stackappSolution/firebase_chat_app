@@ -1302,6 +1302,7 @@ class ChatingPageViewModal {
             profile: userProfile,
             members: arguments['members'],
             isGroup: true,
+            repliedText: '',
             message: '  ',
             text: '',
             sender: AuthService.auth.currentUser!.phoneNumber);

@@ -51,7 +51,7 @@ class AttachmentViewModel {
   AttachmentViewModel(this.attachmentScreen) {
     Future.delayed(
       const Duration(milliseconds: 0),
-      () {
+          () {
         chatController = Get.find<ChatingPageController>();
       },
     );
@@ -66,7 +66,7 @@ class AttachmentViewModel {
     try {
       if (r.contains(currentUserPhoneNumber)) {
         List filteredList =
-            r.where((element) => element != currentUserPhoneNumber).toList();
+        r.where((element) => element != currentUserPhoneNumber).toList();
         rN = filteredList.join("").toString().trim();
         logs('receiver number after exclusion ----> $rN');
       }
@@ -78,7 +78,7 @@ class AttachmentViewModel {
 
     NotificationModel notificationModel = NotificationModel(
       time:
-          '${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+      '${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
       sender: AuthService.auth.currentUser!.phoneNumber,
       receiver: rN,
       receiverName: await UsersService.instance.getUserName(rN ?? ''),
@@ -104,8 +104,6 @@ class AttachmentViewModel {
   }
 
   void stopVideoPlayback() {
-    DatabaseService.isLoading = false;
-    chatController!.update();
     if (videoPlayerController.value.isPlaying) {
       videoPlayerController.pause();
     }
@@ -185,7 +183,7 @@ class AttachmentViewModel {
       if (msgType == "image") {
         DatabaseService.uploadThumb(File(argument["thumbnail"]), controller)
             .then(
-          (thumb) {
+              (thumb) {
             logs("thumbbbb ===== > $thumb");
             DatabaseService.uploadImage(File(selectedImage), controller)
                 .then((value) {
