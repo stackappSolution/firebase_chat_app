@@ -197,6 +197,7 @@ class AttachmentViewModel {
                   thumb: thumb,
                   sender: AuthService.auth.currentUser!.phoneNumber!,
                   isGroup: false,
+                  repliedText: '',
                   text: textController.text.trim());
               DatabaseService.instance.addNewMessage(sendMessageModel);
             });
@@ -214,6 +215,7 @@ class AttachmentViewModel {
               message: value,
               sender: AuthService.auth.currentUser!.phoneNumber!,
               isGroup: false,
+              repliedText: '',
               text: textController.text.trim());
           DatabaseService.instance.addNewMessage(sendMessageModel);
           notification('🎥 video');
@@ -229,6 +231,7 @@ class AttachmentViewModel {
               message: value,
               sender: AuthService.auth.currentUser!.phoneNumber!,
               isGroup: false,
+              repliedText: '',
               text: textController.text.trim());
           DatabaseService.instance.addNewMessage(sendMessageModel);
           notification('📃 document');
@@ -245,6 +248,7 @@ class AttachmentViewModel {
               message: value,
               sender: AuthService.auth.currentUser!.phoneNumber!,
               isGroup: false,
+              repliedText: '',
               text: textController.text.trim());
           DatabaseService.instance.addNewMessage(sendMessageModel);
           notification('🎶 audio');
