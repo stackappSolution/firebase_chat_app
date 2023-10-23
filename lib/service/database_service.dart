@@ -343,10 +343,7 @@ class DatabaseService {
 
   static ChatingPageController? controller;
 
-  static downloadAndSaveFile(
-    String pdfURL,
-    folderName,
-  ) async {
+  static downloadAndSaveFile(String pdfURL, folderName,) async {
     Future.delayed(const Duration(milliseconds: 0), () async {
       controller = Get.find<ChatingPageController>();
     });
@@ -403,8 +400,7 @@ class DatabaseService {
 
   //======================== upload image thumb ===========================//
 
-  static Future<String> uploadThumb(
-      File url, AttachmentController controller) async {
+  static Future<String> uploadThumb(File url, AttachmentController controller) async {
     isLoading = true;
     controller.update();
     logs("isLoading-----$isLoading");
@@ -429,5 +425,17 @@ class DatabaseService {
     });
 
     return await storage.getDownloadURL();
+  }
+
+  Future<void> clearChat(String chatRoomId) async {
+    CollectionReference messagesCollection = FirebaseFirestore.instance.collection('rooms').doc(chatRoomId).collection('chats');
+    logs('messageCollection-->$messagesCollection');
+
+    QuerySnapshot chatMessages = await messagesCollection.get();
+    logs('chatmessages->$chatMessages');
+    for (QueryDocumentSnapshot message in chatMessages.docs) {
+      await messagesCollection.doc(message.id).delete();
+    }
+    controller!.update();
   }
 }

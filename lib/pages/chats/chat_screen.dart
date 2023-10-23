@@ -580,9 +580,7 @@ class ChatScreen extends StatelessWidget {
                                                                 right: 5.px),
                                                         child: AppText(
                                                           "document",
-                                                          color:
-                                                              AppColorConstant
-                                                                  .appYellow,
+                                                          color: AppColorConstant.appYellow,
                                                           fontSize: 10.px,
                                                         ),
                                                       ),
@@ -591,8 +589,7 @@ class ChatScreen extends StatelessWidget {
                                                         Icon(
                                                           Icons.done_all,
                                                           size: 13.px,
-                                                          color: AppColorConstant
-                                                              .extraLightSky,
+                                                          color: AppColorConstant.extraLightSky,
                                                         )
                                                       else
                                                         Icon(
