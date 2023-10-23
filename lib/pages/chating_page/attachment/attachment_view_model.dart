@@ -104,6 +104,8 @@ class AttachmentViewModel {
   }
 
   void stopVideoPlayback() {
+    DatabaseService.isLoading = false;
+    chatController!.update();
     if (videoPlayerController.value.isPlaying) {
       videoPlayerController.pause();
     }

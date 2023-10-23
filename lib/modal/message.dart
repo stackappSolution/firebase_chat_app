@@ -19,7 +19,6 @@ class MessageModel {
   Map<String,dynamic>? emoji;
   String? messageId;
   String? thumb;
-  String? repliedText;
 
   MessageModel({
     this.messageStatus,
@@ -32,7 +31,6 @@ class MessageModel {
     this.emoji,
     this.messageId,
     this.thumb,
-    this.repliedText,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
@@ -46,7 +44,6 @@ class MessageModel {
     emoji: json["emoji"],
     messageId: json["messageId"],
     thumb: json["thumb"],
-    repliedText: json["repliedText"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -60,6 +57,5 @@ class MessageModel {
     "emoji": emoji,
     "messageId": messageId,
     "thumb": thumb,
-    "repliedText": repliedText,
   };
 }

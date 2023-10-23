@@ -18,7 +18,7 @@ import '../../../service/network_connectivity.dart';
 // ignore: must_be_immutable
 class NewGroupScreen extends StatelessWidget {
   NewGroupViewModel? newGroupViewModel;
-  GroupController? groupController;
+  GroupController? controllers;
 
   NewGroupScreen({super.key});
 
@@ -27,11 +27,10 @@ class NewGroupScreen extends StatelessWidget {
     newGroupViewModel ?? (newGroupViewModel = NewGroupViewModel(this));
     return GetBuilder<GroupController>(
       initState: (state) async {
-        Future.delayed(const Duration(milliseconds: 300), () async {
-          groupController = Get.find<GroupController>();
-          groupController!.getUserPhoneList();
-         // newGroupViewModel!.fetchContacts();
-          groupController!.update();
+        Future.delayed(const Duration(milliseconds: 0), () async {
+          controllers = Get.isRegistered<GroupController>() ? Get.find<GroupController>() : Get.put(GroupController());
+          controllers!.getUserPhoneList();
+          controllers!.update();
         });
       },
       init: GroupController(),
@@ -85,7 +84,7 @@ class NewGroupScreen extends StatelessWidget {
                               contact.displayName ?? 'unknown';
                           String firstLetter =
                               displayName.substring(0, 1).toUpperCase();
-                          return (groupController!.userList
+                          return (controllers!.userList
                                   .contains("+911111111111"))
                               ? Padding(
                                   padding: EdgeInsets.all(12.px),
@@ -207,7 +206,7 @@ class NewGroupScreen extends StatelessWidget {
                               color: AppColorConstant.darkSecondary,
                               fontSize: 13.px,
                             ),
-                            trailing: (groupController!.userList.contains(
+                            trailing: (controllers!.userList.contains(
                                     mobileNumber
                                         .toString()
                                         .trim()

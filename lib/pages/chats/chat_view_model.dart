@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
+import 'package:signal/controller/chat_controller.dart';
 import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/service/auth_service.dart';
@@ -14,6 +15,10 @@ import '../../app/widget/app_elevated_button.dart';
 import '../../app/widget/app_text.dart';
 import '../../constant/color_constant.dart';
 import '../../constant/string_constant.dart';
+import '../../modal/message.dart';
+import '../../modal/notification_model.dart';
+import '../../modal/send_message_model.dart';
+import '../../service/notification_api_services.dart';
 import '../../service/users_service.dart';
 
 class ChatViewModel {
@@ -22,7 +27,7 @@ class ChatViewModel {
   String string = '';
   bool isConnected = false;
   bool isLoading = false;
-
+  String token = '';
   Map<String, dynamic> arguments = {};
   dynamic snapshots;
 
@@ -31,7 +36,8 @@ class ChatViewModel {
   List<DocumentSnapshot> data = [];
   List timeStamp = [];
   ContactController? controller;
-
+  List selectedContacts = [];
+  List selectedContactsTrueFalse =  List.filled(1500, false) ;
   ChatViewModel(this.chatScreen) {
     Future.delayed(
       const Duration(milliseconds: 100),
@@ -41,22 +47,55 @@ class ChatViewModel {
     );
   }
 
-  // Future<void> getPermission(ContactController controller) async {
-  //   final PermissionStatus permissionStatus = await Permission.contacts.status;
-  //
-  //   if (permissionStatus.isGranted) {
-  //     fetchContacts(controller);
-  //   } else {
-  //     final PermissionStatus requestResult =
-  //         await Permission.contacts.request();
-  //
-  //     if (requestResult.isGranted) {
-  //       fetchContacts(controller);
-  //     } else {
-  //       logs('Contacts permission denied');
-  //     }
-  //   }
-  // }
+  addRemove(index, message) {
+    selectedContactsTrueFalse[index] = !selectedContactsTrueFalse[index];
+    if (selectedContactsTrueFalse[index]) {
+      selectedContacts.add(message);
+    } else {
+      selectedContacts.removeWhere((msg) => msg['id'] == message['id']);
+    }
+  }
+
+  getToken(number) async {
+    token = await controller!.getUserFcmToken(number);
+  }
+
+  Future<void> notification(String message) async {
+    ResponseService.postRestUrl(message, token);
+    NotificationModel notificationModel = NotificationModel(
+      time:' ${DateTime.now().hour}:${DateTime.now().minute} | ${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+      sender: AuthService.auth.currentUser!.phoneNumber,
+      receiver: arguments['number'],
+      receiverName: await UsersService.instance.getUserName('${arguments['number']}'),
+      senderName: await UsersService.instance.getUserName('${AuthService.auth.currentUser!.phoneNumber}'),
+      message: message,
+    );
+
+    await UsersService.instance.notification(notificationModel);
+  }
+
+  addChatMessage(MessageModel messageModel, String sampleList) async {
+    errorLogs('messageModel.message --> ${messageModel.message}');
+
+    MessageModel newMessageModel = MessageModel(
+        messageStatus: false,
+        message: messageModel.message,
+        isSender: true,
+        messageTimestamp: DateTime.now().millisecondsSinceEpoch,
+        messageType: messageModel.messageType,
+        sender: AuthService.auth.currentUser!.phoneNumber,
+        text: messageModel.text,
+        thumb: messageModel.thumb,
+        messageId: messageModel.messageId);
+
+    DocumentReference messageRef = await FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(sampleList)
+        .collection('chats')
+        .add(newMessageModel.toJson());
+    String messageId = messageRef.id;
+    await messageRef.update({'messageid': messageId});
+  }
 
   void fetchContacts(ContactController controller) async {
     logs("fetch contact entered");
@@ -70,9 +109,12 @@ class ChatViewModel {
   }
 
   getNameFromContact(String number) {
-    for (var contact in DataBaseHelper.contactData) {
-      if (contact["contact"].toString().trim().removeAllWhitespace == number) {
-        return contact["name"] ?? "";
+    for (var contact in contacts) {
+      if (contact.phones!.isNotEmpty) {
+        if (contact.phones!.first.value.toString().trim().removeAllWhitespace ==
+            number) {
+          return contact.displayName ?? "";
+        }
       }
     }
     return "Not Saved Yet";

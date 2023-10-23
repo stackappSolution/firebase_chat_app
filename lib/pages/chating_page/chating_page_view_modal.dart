@@ -73,6 +73,11 @@ class ChatingPageViewModal {
   List isFileDownLoadedList = [];
   List isPlayList = [];
 
+  List<bool> isSelected = [];
+  List<MessageModel> selectedItems = [];
+  List selectedItemsIndex = [];
+  bool isForwarding = false;
+
   String selectedEmoji = '';
   bool isBlockedByLoggedInUser = false;
   List<bool> isFileDownLoadingList = <bool>[];
@@ -94,10 +99,6 @@ class ChatingPageViewModal {
   bool iconChange = false;
   final firestore = FirebaseFirestore.instance;
   Color? bubblColors;
-  final myFocusNode = FocusNode();
-  bool isSwipreply = false;
-  String? messageType;
-  String repliedText = '';
   List<MessageModel> selectedMessage = [];
   List<bool> selectedMessageTrueFalse = [];
   bool sendMsg = false;
@@ -359,6 +360,13 @@ class ChatingPageViewModal {
   Future<void> viewFile(
       mainURL, folderName, ChatingPageController controller, int index) async {
     final PermissionStatus permissionStatus1 = await Permission.storage.status;
+    final PermissionStatus permissionStatus2 =
+        await Permission.manageExternalStorage.status;
+    final PermissionStatus permissionStatus3 =
+        await Permission.accessMediaLocation.status;
+    if (!permissionStatus1.isGranted &&
+        !permissionStatus2.isGranted &&
+        !permissionStatus3.isGranted) {
     final PermissionStatus permissionStatus2 = await Permission.manageExternalStorage.status;
     final PermissionStatus permissionStatus3 = await Permission.accessMediaLocation.status;
     if (!permissionStatus1.isGranted && !permissionStatus2.isGranted && !permissionStatus3.isGranted  ) {
@@ -460,6 +468,7 @@ class ChatingPageViewModal {
   }
 
   Future<void> getPermission() async {
+    logs("permission -------> not given");
     await Permission.storage.request();
     await Permission.manageExternalStorage.request();
     await Permission.accessMediaLocation.request();
@@ -834,6 +843,8 @@ class ChatingPageViewModal {
         isFileDownLoadingList.add(false);
         isFileDownLoadedList = isFileDownLoadedList.toList();
         isFileDownLoadedList.add(false);
+        selectedMessageTrueFalse = selectedMessageTrueFalse.toList();
+        selectedMessageTrueFalse.add(false);
 
         controller.update();
         onSelectItem(value);
@@ -965,7 +976,7 @@ class ChatingPageViewModal {
 
     final selectedEmoji = await showMenu<String>(
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.px)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.px)),
       position: RelativeRect.fromRect(position & const Size(0, 0),
           overlay.localToGlobal(const Offset(-200, 100)) & overlay.size),
       context: context,
@@ -976,6 +987,9 @@ class ChatingPageViewModal {
             children: [
               GestureDetector(
                   onTap: () async {
+                    isSelected = isSelected.toList();
+                    isSelected.add(false);
+                    isSelected.removeWhere((element) => element == true);
                     addEmoji(
                         roomId, messageId, receiverNumber, "🙏", "🙏", isGroup);
                     selectedMessageTrueFalse[0] = false;
@@ -985,6 +999,10 @@ class ChatingPageViewModal {
                   child: AppText("🙏", fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
+                    isSelected = isSelected.toList();
+                    isSelected.add(false);
+                    isSelected.removeWhere((element) => element == true);
+
                     addEmoji(
                         roomId, messageId, receiverNumber, "😂", "😂", isGroup);
                     selectedMessageTrueFalse[0] = false;
@@ -994,6 +1012,10 @@ class ChatingPageViewModal {
                   child: AppText('😂', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
+                    isSelected = isSelected.toList();
+                    isSelected.add(false);
+                    isSelected.removeWhere((element) => element == true);
+
                     addEmoji(
                         roomId, messageId, receiverNumber, "😮", "😮", isGroup);
                     selectedMessageTrueFalse[0] = false;
@@ -1003,6 +1025,10 @@ class ChatingPageViewModal {
                   child: AppText('😮', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
+                    isSelected = isSelected.toList();
+                    isSelected.add(false);
+                    isSelected.removeWhere((element) => element == true);
+
                     addEmoji(
                         roomId, messageId, receiverNumber, "❤️", "❤️", isGroup);
                     selectedMessageTrueFalse[0] = false;
@@ -1012,6 +1038,10 @@ class ChatingPageViewModal {
                   child: AppText('❤️', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
+                    isSelected = isSelected.toList();
+                    isSelected.add(false);
+                    isSelected.removeWhere((element) => element == true);
+
                     addEmoji(
                         roomId, messageId, receiverNumber, "👍", "👍", isGroup);
                     selectedMessageTrueFalse[0] = false;
@@ -1021,6 +1051,10 @@ class ChatingPageViewModal {
                   child: AppText('👍', fontSize: 22.px)),
               GestureDetector(
                   onTap: () {
+                    isSelected = isSelected.toList();
+                    isSelected.add(false);
+                    isSelected.removeWhere((element) => element == true);
+
                     addEmoji(
                         roomId, messageId, receiverNumber, "😥", "😥", isGroup);
                     selectedMessageTrueFalse[0] = false;
@@ -1173,6 +1207,7 @@ class ChatingPageViewModal {
     if (isFileDownLoadingList.isEmpty) {
       isFileDownLoadingList = List.filled(chatLength, false);
       isFileDownLoadedList = List.filled(chatLength, false);
+      isSelected = List.filled(chatLength, false);
       controller!.durationList = List.filled(chatLength, Duration.zero);
       controller!.positionList = List.filled(chatLength, Duration.zero);
       controller!.isPlayingList = List.filled(chatLength, false);
@@ -1186,8 +1221,10 @@ class ChatingPageViewModal {
       for (int i = 0; i < lenDiff; i++) {
         isFileDownLoadingList = isFileDownLoadingList.toList();
         isFileDownLoadingList.add(false);
+
         isFileDownLoadedList = isFileDownLoadedList.toList();
         isFileDownLoadedList.add(false);
+
         selectedMessageTrueFalse = selectedMessageTrueFalse.toList();
         selectedMessageTrueFalse.add(false);
         controller!.durationList = controller!.durationList.toList();
@@ -1200,7 +1237,36 @@ class ChatingPageViewModal {
     }
   }
 
-  getBlockedList(ChatingPageController? controller) async {
+  Future<void> firstMessage() async {
+
+    if(!arguments['isGroup']) {
+      SendMessageModel sendMessageModel = SendMessageModel(
+        type: '',
+        members: arguments['members'],
+        message: '  ',
+        sender: AuthService.auth.currentUser!.phoneNumber!,
+        isGroup: arguments['isGroup'],
+      );
+      await DatabaseService.instance.addNewMessage(sendMessageModel);
+    }
+    else
+      {
+        SendMessageModel sendMessageModel = SendMessageModel(
+            type: 'text',
+            createdBy: AuthService.auth.currentUser!.phoneNumber,
+            groupName: arguments['groupName'],
+            profile: userProfile,
+            members: arguments['members'],
+            isGroup: true,
+            message: '  ',
+            text: '',
+            sender: AuthService.auth.currentUser!.phoneNumber);
+        await DatabaseService.instance.addNewMessage(sendMessageModel);
+
+      }
+  }
+
+  Future<void> getBlockedList(ChatingPageController? controller) async {
     if (!arguments["isGroup"]) {
       isBlockedByLoggedInUser = await UsersService.instance
           .isBlockedByLoggedInUser(arguments['number']);
@@ -1209,18 +1275,18 @@ class ChatingPageViewModal {
     }
   }
 
-  getChatId() async {
+  Future<void> getChatId() async {
     snapshots = await DatabaseService.instance.getChatDoc(arguments['members']);
   }
 
-  chatStream() {
+  void chatStream() {
     getChatsStream = DatabaseService.instance.getChatStream(
       snapshots.docs.first.id,
     );
   }
 
-  markMessage() {
-    if (arguments.isNotEmpty) {
+  void markMessage() {
+    if (arguments.isNotEmpty && !arguments['isGroup']) {
       DatabaseService.instance
           .markMessagesAsSeen(snapshots.docs.first.id, arguments['number']);
     }
@@ -1276,7 +1342,6 @@ class ChatingPageViewModal {
       selectedMessageTrueFalse[index] = !selectedMessageTrueFalse[index];
 
       if (selectedMessageTrueFalse[index]) {
-        errorLogs(message.messageType.toString());
         selectedMessage.add(message);
       } else {
         selectedMessage.removeWhere((msg) => msg.messageId == message.messageId);
@@ -1325,5 +1390,4 @@ class ChatingPageViewModal {
         ? notification('📃 document')
         : notification('🎥 video');
   }
-
 }
