@@ -280,7 +280,7 @@ class ChatScreen extends StatelessWidget {
               ? AppText('Select contect',
                   color: Theme.of(Get.context!).colorScheme.primary,
                   fontSize: 18.px)
-              : AppText(S.of(Get.context!).chatApp,
+              : AppText(S.of(Get.context!).chatapp,
                   color: Theme.of(Get.context!).colorScheme.primary,
                   fontSize: 18.px),
         ),

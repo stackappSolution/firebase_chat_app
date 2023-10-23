@@ -11,8 +11,6 @@ import 'package:signal/controller/contact_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/app_navigation.dart';
 
-import '../../service/network_connectivity.dart';
-
 class CallsScreen extends StatelessWidget {
   const CallsScreen({Key? key}) : super(key: key);
 
@@ -95,7 +93,7 @@ class CallsScreen extends StatelessWidget {
       ),
       title: Padding(
         padding: EdgeInsets.only(left: 20.px),
-        child: AppText(S.of(Get.context!).chatApp,
+        child: AppText(S.of(Get.context!).chatapp,
             color: Theme.of(Get.context!).colorScheme.primary,
             fontSize: 20.px),
       ),
