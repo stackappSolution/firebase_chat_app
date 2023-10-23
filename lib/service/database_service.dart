@@ -88,6 +88,7 @@ class DatabaseService {
         sender: sendMessageModel.sender,
         text: sendMessageModel.text,
         thumb: sendMessageModel.thumb,
+        repliedText: sendMessageModel.repliedText,
         messageId: sendMessageModel.messageId);
 
     DocumentReference messageRef = await FirebaseFirestore.instance
