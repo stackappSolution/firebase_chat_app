@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -45,27 +44,22 @@ class ChatColorScreen extends StatelessWidget {
     );
   }
 
-  getAppBar(BuildContext context) {
-    return AppAppBar(
+   getAppBar(BuildContext context) => AppAppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
       title: AppText(
         S.of(context).chatColor,
         color: Theme.of(context).colorScheme.primary,
       ),
     );
-  }
 
-  getBody(BuildContext context) {
-    return ListView(
+  ListView getBody(BuildContext context) => ListView(
       children: [
         buildDemoChatView(context),
         buildColorsGridView(),
       ],
     );
-  }
 
-  buildDemoChatView(BuildContext context) {
-    return Container(
+  Container buildDemoChatView(BuildContext context) => Container(
       height: 150.px,
       width: double.infinity,
       color: AppColorConstant.grey,
@@ -102,9 +96,8 @@ class ChatColorScreen extends StatelessWidget {
         ],
       ),
     );
-  }
 
-  buildColorsGridView() {
+  GridView buildColorsGridView() {
     List<Color> chatColors = [
       AppColorConstant.appYellow,
       AppColorConstant.darkBlue,
@@ -158,8 +151,7 @@ class ChatColorScreen extends StatelessWidget {
     );
   }
 
-  buildSaveButton(BuildContext context) {
-    return InkWell(onTap: () async {
+  InkWell buildSaveButton(BuildContext context) => InkWell(onTap: () async {
       await setChatBubbleColor(selectedColor);
       controller!.update();
       Get.back();
@@ -180,8 +172,6 @@ class ChatColorScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
 
   Future<void> setChatBubbleColor(Color selectedColor) async {
     final user = FirebaseAuth.instance.currentUser;
@@ -198,8 +188,6 @@ class ChatColorScreen extends StatelessWidget {
       }
     }
   }
-
-
 }
 
 

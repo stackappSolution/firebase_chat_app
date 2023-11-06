@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 class ContactUsViewModel {
   ContactUsScreen? contactUsScreen;
 
-  includeDebugUrl() async {
+  void includeDebugUrl() async {
     final Uri url =
         Uri.parse('https://support.signal.org/hc/en-us/articles/360007318591');
     if (!await launchUrl(url,mode: LaunchMode.externalNonBrowserApplication)) {
@@ -12,7 +12,7 @@ class ContactUsViewModel {
     }
   }
 
-  faqUrl() async {
+  void faqUrl() async {
     final Uri url = Uri.parse('https://support.signal.org/hc/en-us');
     if (!await launchUrl(url, mode: LaunchMode.externalNonBrowserApplication)) {
       throw Exception('Could not launch $url');

@@ -168,9 +168,7 @@ class IntroPage extends StatelessWidget {
                     ),
                     actions: [
                       AppButton(
-                        onTap: () {
-                          Get.back();
-                        },
+                        onTap: () => Get.back(),
                         fontColor: AppColorConstant.appWhite,
                         string: "back",
                         fontSize: 20,

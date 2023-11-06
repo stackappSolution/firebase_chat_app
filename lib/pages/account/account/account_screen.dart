@@ -6,7 +6,6 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/service/network_connectivity.dart';
 
 import '../../../app/app/utills/theme_util.dart';
 import 'account_view_model.dart';
@@ -16,6 +15,7 @@ class AccountScreen extends StatelessWidget {
   AccountViewModel? accountViewModel;
 
   AccountScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     accountViewModel ?? (accountViewModel = AccountViewModel(this));
@@ -24,14 +24,15 @@ class AccountScreen extends StatelessWidget {
       init: AttachmentController(),
       initState: (state) {},
       builder: (controller) {
-        return  Builder(builder: (context) {
+        return Builder(builder: (context) {
           MediaQueryData mediaQuery = MediaQuery.of(context);
           ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
           return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: getAppBar(context),
-          body: getBody(context, controller),
-        );});
+            backgroundColor: Theme.of(context).colorScheme.background,
+            appBar: getAppBar(context),
+            body: getBody(context, controller),
+          );
+        });
       },
     );
   }
@@ -46,12 +47,11 @@ class AccountScreen extends StatelessWidget {
     );
   }
 
-  getBody(
+  SingleChildScrollView getBody(
     context,
     AttachmentController controller,
   ) {
-    Color primaryTheme = Theme.of(context).colorScheme.primary;
-    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,36 +65,32 @@ class AccountScreen extends StatelessWidget {
                   S.of(context).chaAppPin,
                   fontSize: 15.px,
                   fontWeight: FontWeight.bold,
-                  color: primaryTheme,
+                  color: accountViewModel!.primaryTheme,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 32.px),
                   child: InkWell(
-                    onTap: () {
-                      accountViewModel!.changePinTap();
-                    },
+                    onTap: () => accountViewModel!.changePinTap(),
                     child: AppText(
                       S.of(context).changeYourPin,
-                      color: primaryTheme,
+                      color: accountViewModel!.primaryTheme,
                     ),
                   ),
                 ),
-                AppText(S.of(context).pinReminders, color: primaryTheme),
+                AppText(S.of(context).pinReminders, color: accountViewModel!.primaryTheme),
                 Row(
                   children: [
                     Expanded(
                       child: AppText(
                         S.of(context).youWillBeAsked,
-                        color: secondaryTheme,
+                        color: accountViewModel!.secondaryTheme,
                         fontSize: 13.px,
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 13.px),
                       child: InkWell(
-                        onTap: () {
-                          accountViewModel!.pinReminderTap(context, controller);
-                        },
+                        onTap: () => accountViewModel!.pinReminderTap(context, controller),
                         child:
                             customSwitch(accountViewModel!.isPinReminderActive),
                       ),
@@ -104,14 +100,14 @@ class AccountScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 32.px),
                   child: AppText(S.of(context).registrationLock,
-                      color: primaryTheme),
+                      color: accountViewModel!.primaryTheme),
                 ),
                 Row(
                   children: [
                     Expanded(
                       child: AppText(
                         S.of(context).requireYourChatApp,
-                        color: secondaryTheme,
+                        color: accountViewModel!.secondaryTheme,
                         fontSize: 13.px,
                         maxLines: 3,
                       ),
@@ -119,10 +115,8 @@ class AccountScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(left: 13.px),
                       child: InkWell(
-                        onTap: () {
-                          accountViewModel!
-                              .registrationLockTap(context, controller);
-                        },
+                        onTap: () => accountViewModel!
+                              .registrationLockTap(context, controller),
                         child: customSwitch(
                             accountViewModel!.isRegistrationLockActive),
                       ),
@@ -132,11 +126,9 @@ class AccountScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 32.px),
                   child: InkWell(
-                    onTap: () {
-                      accountViewModel!.onAdvancePinSettingTap();
-                    },
+                    onTap: () => accountViewModel!.onAdvancePinSettingTap(),
                     child: AppText(S.of(context).advancePinSetting,
-                        color: primaryTheme),
+                        color: accountViewModel!.primaryTheme),
                   ),
                 ),
               ],
@@ -157,34 +149,30 @@ class AccountScreen extends StatelessWidget {
                   child: AppText(
                     S.of(context).account,
                     fontWeight: FontWeight.bold,
-                    color: primaryTheme,
+                    color: accountViewModel!.primaryTheme,
                   ),
                 ),
                 InkWell(
-                    onTap: () {
-                      accountViewModel!.changePhoneTap();
-                    },
+                    onTap: () => accountViewModel!.changePhoneTap(),
                     child: AppText(S.of(context).changePhoneNumber,
-                        color: primaryTheme)),
+                        color: accountViewModel!.primaryTheme)),
                 Padding(
                   padding: EdgeInsets.only(top: 32.px),
                   child: AppText(S.of(context).transferAccount,
-                      color: primaryTheme),
+                      color: accountViewModel!.primaryTheme),
                 ),
                 AppText(
                   S.of(context).transferAccountTo,
-                  color: secondaryTheme,
+                  color: accountViewModel!.secondaryTheme,
                   fontSize: 13.px,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 32.px),
                   child: AppText(S.of(context).yourAccountData,
-                      color: primaryTheme),
+                      color: accountViewModel!.primaryTheme),
                 ),
                 InkWell(
-                  onTap: () async {
-                    accountViewModel!.deleteAccountTap(controller,context);
-                  },
+                  onTap: () async => accountViewModel!.deleteAccountTap(controller, context),
                   child: AppText(
                     S.of(context).deleteAccount,
                     color: AppColorConstant.red,
@@ -198,27 +186,25 @@ class AccountScreen extends StatelessWidget {
     );
   }
 
-  customSwitch(isActive) {
-    return Container(
-      padding: (isActive) ? EdgeInsets.all(3.px) : EdgeInsets.all(5.px),
-      alignment: (isActive) ? Alignment.centerRight : Alignment.centerLeft,
-      height: 30.px,
-      width: 55.px,
-      decoration: BoxDecoration(
-          color: (isActive)
-              ? AppColorConstant.appYellow
-              : AppColorConstant.blackOff.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(27.px),
-          border: Border.all(color: Colors.grey.shade600, width: 1.px)),
-      child: Container(
-        height: (isActive) ? 23.px : 19.px,
-        width: (isActive) ? 23.px : 19.px,
+  Container customSwitch(isActive) => Container(
+        padding: (isActive) ? EdgeInsets.all(3.px) : EdgeInsets.all(5.px),
+        alignment: (isActive) ? Alignment.centerRight : Alignment.centerLeft,
+        height: 30.px,
+        width: 55.px,
         decoration: BoxDecoration(
             color: (isActive)
-                ? AppColorConstant.appWhite
-                : AppColorConstant.blackOff,
-            shape: BoxShape.circle),
-      ),
-    );
-  }
+                ? AppColorConstant.appYellow
+                : AppColorConstant.blackOff.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(27.px),
+            border: Border.all(color: Colors.grey.shade600, width: 1.px)),
+        child: Container(
+          height: (isActive) ? 23.px : 19.px,
+          width: (isActive) ? 23.px : 19.px,
+          decoration: BoxDecoration(
+              color: (isActive)
+                  ? AppColorConstant.appWhite
+                  : AppColorConstant.blackOff,
+              shape: BoxShape.circle),
+        ),
+      );
 }

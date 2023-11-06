@@ -100,8 +100,7 @@ class ChatProfileScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context, ChatProfileController controller) {
-    return ListView(
+  ListView getBody(BuildContext context, ChatProfileController controller) => ListView(
       children: [
         buildProfileView(context),
         SizedBox(
@@ -144,10 +143,8 @@ class ChatProfileScreen extends StatelessWidget {
           buildBlockUser(context, controller)
       ],
     );
-  }
 
-  buildProfileView(BuildContext context) {
-    return Column(
+  Column buildProfileView(BuildContext context) => Column(
       children: [
         SizedBox(
           height: 20.px,
@@ -201,10 +198,8 @@ class ChatProfileScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  buildMenu(BuildContext context) {
-    return Row(
+  Row buildMenu(BuildContext context) => Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Column(
@@ -232,10 +227,8 @@ class ChatProfileScreen extends StatelessWidget {
         Column(
           children: [
             InkWell(
-              onTap: () {
-                chatProfileViewModel!
-                    .launchPhoneURL(chatProfileViewModel!.arguments['number']);
-              },
+              onTap: () => chatProfileViewModel!
+                    .launchPhoneURL(chatProfileViewModel!.arguments['number']),
               child: Container(
                   height: 50.px,
                   width: 50.px,
@@ -297,13 +290,9 @@ class ChatProfileScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  chatSettingView(index, image, tittle, context) {
-    return ListTile(
-      onTap: () {
-        chatProfileViewModel!.mainTap(index);
-      },
+  ListTile chatSettingView(index, image, tittle, context) => ListTile(
+      onTap: () => chatProfileViewModel!.mainTap(index),
       title: AppText(
         tittle,
         fontSize: 15.px,
@@ -320,10 +309,8 @@ class ChatProfileScreen extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary),
       ),
     );
-  }
 
-  buildProfileListView(BuildContext context) {
-    return Column(
+  Column buildProfileListView(BuildContext context) => Column(
       children: [
         chatSettingView(
             1, AppAsset.audio, S.of(context).disappearingMessages, context),
@@ -337,10 +324,8 @@ class ChatProfileScreen extends StatelessWidget {
             5, AppAsset.audio, S.of(context).viewSafetyNumbers, context),
       ],
     );
-  }
 
-  buildBlockUser(BuildContext context, ChatProfileController controller) {
-    return (chatProfileViewModel!.isBlockedByLoggedUser)
+  Widget buildBlockUser(BuildContext context, ChatProfileController controller) => (chatProfileViewModel!.isBlockedByLoggedUser)
         ? Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 10.px),
             child: ListTile(
@@ -370,10 +355,8 @@ class ChatProfileScreen extends StatelessWidget {
               leading: const Icon(Icons.block, color: AppColorConstant.red),
             ),
           );
-  }
 
-  buildBlockDialog(BuildContext context, ChatProfileController controller) {
-    return showDialog(
+  buildBlockDialog(BuildContext context, ChatProfileController controller) => showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
@@ -388,9 +371,7 @@ class ChatProfileScreen extends StatelessWidget {
                   'Are you sure you want to block ${chatProfileViewModel!.arguments['number']}?'),
               actions: [
                 InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
+                    onTap: () => Get.back(),
                     child: AppText(S.of(context).cancel,
                         color: AppColorConstant.appYellow)),
                 SizedBox(
@@ -430,10 +411,8 @@ class ChatProfileScreen extends StatelessWidget {
         );
       },
     );
-  }
 
-  buildUnBlockDialog(BuildContext context, ChatProfileController controller) {
-    return showDialog(
+  buildUnBlockDialog(BuildContext context, ChatProfileController controller) => showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
@@ -449,9 +428,7 @@ class ChatProfileScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary),
               actions: [
                 InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
+                    onTap: () => Get.back(),
                     child: AppText(S.of(context).cancel,
                         color: AppColorConstant.appYellow)),
                 SizedBox(
@@ -487,5 +464,4 @@ class ChatProfileScreen extends StatelessWidget {
         );
       },
     );
-  }
 }

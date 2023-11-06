@@ -6,7 +6,7 @@ import 'package:signal/app/widget/app_elevated_button.dart';
 import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/pages/edit_profile/edit_profile_about_screen/edit_profile_about_controller.dart';
+import 'package:signal/controller/edit_profile_about_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_about_screen/edit_profile_about_screen_view_model.dart';
 
 import '../../../service/network_connectivity.dart';
@@ -38,7 +38,7 @@ class EditProfileAboutScreen extends StatelessWidget {
     );
   }
 
-  getBody(EditProfileAboutController controller, context) {
+  Stack getBody(EditProfileAboutController controller, context) {
     Color primaryTheme = Theme.of(context).colorScheme.primary;
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;
     return Stack(

@@ -2,12 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:signal/controller/pin_setting_controller.dart';
-import 'package:signal/pages/account/pin_setting/pin_setting_screen.dart';
-import 'package:signal/pages/chats/chat_screen.dart';
 import 'package:signal/pages/set_pin/set_pin_screen.dart';
-import 'package:signal/service/users_service.dart';
 
 import '../../../app/app/utills/app_utills.dart';
 import '../../app/app/utills/toast_util.dart';
@@ -20,6 +15,8 @@ class SetPinViewModel {
   int? cursorPosition;
   final pinController = TextEditingController();
   final conformPinController = TextEditingController();
+  Color primaryTheme = Theme.of(Get.context!).colorScheme.primary;
+  Color secondaryTheme = Theme.of(Get.context!).colorScheme.secondary;
   final pageController = PageController();
   bool changeKeyBoard = false;
   bool isButtonActive = false;
@@ -30,7 +27,7 @@ class SetPinViewModel {
 
   SetPinViewModel(this.setPinScreen);
 
-  onPinChanged(newValue, SetPinController controller) {
+  void onPinChanged(newValue, SetPinController controller) {
     if (newValue.toString().length >= 4) {
       isButtonActive = true;
       logs("isButtonActive---------> $isButtonActive");
@@ -43,7 +40,7 @@ class SetPinViewModel {
     }
   }
 
-  onPinConformChanged(newValue, SetPinController controller) {
+  void onPinConformChanged(newValue, SetPinController controller) {
     if (newValue.toString() == newPin) {
       isButtonActive = true;
       logs("isButtonActive---------> $isButtonActive");
@@ -56,14 +53,14 @@ class SetPinViewModel {
     }
   }
 
-  onKeyBoardChangeTap(SetPinController controller) {
+  void onKeyBoardChangeTap(SetPinController controller) {
     changeKeyBoard = !changeKeyBoard;
     pinController.clear();
     logs("changeKeyBoard --------> $changeKeyBoard");
     controller.update();
   }
 
-  nextCreateButtonTap(SetPinController controller) {
+  void nextCreateButtonTap(SetPinController controller) {
     isConformPage = true;
     isButtonActive = false;
     newPin = pinController.text;
@@ -73,7 +70,7 @@ class SetPinViewModel {
     controller.update();
   }
 
-  nextConformButtonTap(SetPinController controller) {
+  void nextConformButtonTap(SetPinController controller) {
     logs("next conform tapped------> ${conformPinController.text}");
     controller.update();
   }
@@ -85,14 +82,14 @@ class EnterPinViewModel {
   bool isButtonActive = false;
   bool isLoading = false;
   FocusNode focusNode = FocusNode();
-  String ?token;
+  String? token;
   final users = FirebaseFirestore.instance.collection('users');
 
   EnterPinViewModel(this.enterPin);
 
   TextEditingController pinController = TextEditingController();
 
-  onPinChanged(newValue, EnterPinController controller) {
+  void onPinChanged(newValue, EnterPinController controller) {
     if (newValue.toString().length >= 4) {
       isButtonActive = true;
       logs("isButtonActive---------> $isButtonActive");
@@ -103,7 +100,8 @@ class EnterPinViewModel {
       controller.update();
     }
   }
-  rightPin(context, EnterPinController controller, pin) async {
+
+  void rightPin(context, EnterPinController controller, pin) async {
     isLoading = true;
     controller.update();
     FocusScope.of(context).nextFocus();

@@ -53,10 +53,7 @@ class ChangePhoneScreen extends StatelessWidget {
   Padding getBody(
     BuildContext context,
     ChangePhoneController controller,
-  ) {
-    Color primaryTheme = Theme.of(context).colorScheme.primary;
-    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
-    return Padding(
+  ) => Padding(
       padding: EdgeInsets.only(top: 30.px, left: 25.px, right: 25.px),
       child: (!changePhoneViewModel!.isPhoneNumberChange)
           ? Column(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -76,7 +73,7 @@ class ChangePhoneScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 25.px, bottom: 20.px),
                 child: AppText(
                   S.of(context).changePhoneNumber,
-                  color: primaryTheme,
+                  color: changePhoneViewModel!.primaryTheme,
                   fontWeight: FontWeight.bold,
                   fontSize: 25.px,
                 ),
@@ -93,7 +90,7 @@ class ChangePhoneScreen extends StatelessWidget {
                     AppText(
                       textAlign: TextAlign.center,
                       S.of(context).useThisToChange,
-                      color: secondaryTheme,
+                      color:  changePhoneViewModel!.secondaryTheme,
                       fontSize: 14.px,
                     ),
                     Padding(
@@ -101,7 +98,7 @@ class ChangePhoneScreen extends StatelessWidget {
                       child: AppText(
                         textAlign: TextAlign.center,
                         S.of(context).beforeContinuing,
-                        color: secondaryTheme,
+                        color:  changePhoneViewModel!.secondaryTheme,
                         fontSize: 14.px,
                       ),
                     ),
@@ -111,13 +108,11 @@ class ChangePhoneScreen extends StatelessWidget {
                           buttonRadius: 30.px,
                           buttonColor: AppColorConstant.appYellow,
                           buttonHeight: 42.px,
-                          onPressed: () {
-                            changePhoneViewModel!.continueTap(controller);
-                          },
+                          onPressed: () => changePhoneViewModel!.continueTap(controller),
                           widget: AppText(
                             S.of(context).continues,
                             fontSize: 13.px,
-                            color: primaryTheme,
+                            color:  changePhoneViewModel!.primaryTheme,
                           )),
                     )
                   ],
@@ -129,7 +124,7 @@ class ChangePhoneScreen extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 5.px),
                 child: AppText(
                   S.of(context).yourOldNumber,
-                  color: primaryTheme,
+                  color:  changePhoneViewModel!.primaryTheme,
                 ),
               ),
               Row(
@@ -146,13 +141,11 @@ class ChangePhoneScreen extends StatelessWidget {
                     child: CountryCodePicker(
                       showFlag: false,
                       showFlagDialog: true,
-                      onChanged: (country) {
-                        changePhoneViewModel!.oldNumCountryCode =
-                            country.toString();
-                      },
+                      onChanged: (country) => changePhoneViewModel!.oldNumCountryCode =
+                            country.toString(),
                       initialSelection: 'IN',
                       textStyle: TextStyle(
-                        color: primaryTheme,
+                        color:  changePhoneViewModel!.primaryTheme,
                         fontWeight: FontWeight.w600,
                       ),
                       // Set initial country code
@@ -177,7 +170,7 @@ class ChangePhoneScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 15.px, bottom: 5.px),
                 child: AppText(
                   S.of(context).yourNewNumber,
-                  color: primaryTheme,
+                  color:  changePhoneViewModel!.primaryTheme,
                 ),
               ),
               Row(
@@ -200,7 +193,7 @@ class ChangePhoneScreen extends StatelessWidget {
                       },
                       initialSelection: 'IN',
                       textStyle: TextStyle(
-                        color: primaryTheme,
+                        color:  changePhoneViewModel!.primaryTheme,
                         fontWeight: FontWeight.w600,
                       ),
                       // Set initial country code
@@ -239,10 +232,9 @@ class ChangePhoneScreen extends StatelessWidget {
                     widget: AppText(
                       S.of(context).continues,
                       fontSize: 13.px,
-                      color: primaryTheme,
+                      color:  changePhoneViewModel!.primaryTheme,
                     )),
               )
             ]),
     );
-  }
 }

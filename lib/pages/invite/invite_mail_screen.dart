@@ -17,14 +17,11 @@ class InviteMailScreen extends StatelessWidget {
     );
   }
 
-  getAppbar() {
-    return const AppAppBar(
+  getAppbar() => const AppAppBar(
       title: AppText('Invite Friends'),
     );
-  }
 
-  getBody() {
-    return ListView(
+  ListView getBody() => ListView(
       children: [
         Container(
           padding: EdgeInsets.only(left: 20.px,top: 20.px),
@@ -43,9 +40,7 @@ class InviteMailScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
-            onTap: () {
-              Share.share('Visit Signal at http://signal.org/install');
-            },
+            onTap: () => Share.share('Visit Signal at http://signal.org/install'),
             leading: const Icon(
               Icons.share,
               color: AppColorConstant.appBlack,
@@ -55,5 +50,4 @@ class InviteMailScreen extends StatelessWidget {
         )
       ],
     );
-  }
 }

@@ -14,6 +14,8 @@ class PinSettingViewModel {
   int? cursorPosition;
   final pinController = TextEditingController();
   final conformPinController = TextEditingController();
+  Color primaryTheme = Theme.of(Get.context!).colorScheme.primary;
+  Color secondaryTheme = Theme.of(Get.context!).colorScheme.secondary;
   final pageController = PageController();
   bool changeKeyBoard = false;
   bool isLoading = false;

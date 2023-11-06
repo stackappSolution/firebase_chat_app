@@ -13,7 +13,6 @@ import 'package:signal/pages/groups/view/new_group_view_model.dart';
 import 'package:signal/routes/routes_helper.dart';
 
 import '../../../app/app/utills/theme_util.dart';
-import '../../../service/network_connectivity.dart';
 
 // ignore: must_be_immutable
 class NewGroupScreen extends StatelessWidget {
@@ -29,7 +28,7 @@ class NewGroupScreen extends StatelessWidget {
       initState: (state) async {
         Future.delayed(const Duration(milliseconds: 0), () async {
           controllers = Get.isRegistered<GroupController>() ? Get.find<GroupController>() : Get.put(GroupController());
-          controllers!.getUserPhoneList();
+          newGroupViewModel!.getUserPhoneList(controllers!);
           controllers!.update();
         });
       },
@@ -84,7 +83,7 @@ class NewGroupScreen extends StatelessWidget {
                               contact.displayName ?? 'unknown';
                           String firstLetter =
                               displayName.substring(0, 1).toUpperCase();
-                          return (controllers!.userList
+                          return (newGroupViewModel!.userList
                                   .contains("+911111111111"))
                               ? Padding(
                                   padding: EdgeInsets.all(12.px),
@@ -206,7 +205,7 @@ class NewGroupScreen extends StatelessWidget {
                               color: AppColorConstant.darkSecondary,
                               fontSize: 13.px,
                             ),
-                            trailing: (controllers!.userList.contains(
+                            trailing: (newGroupViewModel!.userList.contains(
                                     mobileNumber
                                         .toString()
                                         .trim()
@@ -267,8 +266,7 @@ class NewGroupScreen extends StatelessWidget {
     );
   }
 
-  buildFloatingActionButton() {
-    return (newGroupViewModel!.groupMembers.isNotEmpty)
+  Widget  buildFloatingActionButton() => (newGroupViewModel!.groupMembers.isNotEmpty)
         ? FloatingActionButton(
             backgroundColor: AppColorConstant.appYellow,
             onPressed: () {
@@ -280,5 +278,4 @@ class NewGroupScreen extends StatelessWidget {
               color: AppColorConstant.appWhite,
             ))
         : const SizedBox();
-  }
 }

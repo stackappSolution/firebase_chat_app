@@ -55,8 +55,7 @@ class GroupNameScreen extends StatelessWidget {
     );
   }
 
-  buildGroupInfoView(BuildContext context) {
-    return Stack(
+  Stack buildGroupInfoView(BuildContext context) => Stack(
       children: [
         ListView(
           children: [
@@ -65,9 +64,7 @@ class GroupNameScreen extends StatelessWidget {
               child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                   title: TextFormField(
-                      onChanged: (value) {
-                        groupNameViewModel!.onChangeName(value, controller!);
-                      },
+                      onChanged: (value) => groupNameViewModel!.onChangeName(value, controller!),
                       controller: groupNameViewModel!.groupNameController,
                       decoration: InputDecoration(
                           border: InputBorder.none,
@@ -83,10 +80,8 @@ class GroupNameScreen extends StatelessWidget {
                           backgroundColor:
                               AppColorConstant.appYellow.withOpacity(0.5),
                           child: IconButton(
-                              onPressed: () {
-                                groupNameViewModel!
-                                    .showDialogs(context, controller!);
-                              },
+                              onPressed: () => groupNameViewModel!
+                                    .showDialogs(context, controller!),
                               icon: const Icon(
                                 Icons.camera_alt_outlined,
                                 color: AppColorConstant.appWhite,
@@ -119,15 +114,13 @@ class GroupNameScreen extends StatelessWidget {
         if (groupNameViewModel!.isLoading) AppLoader(),
       ],
     );
-  }
 
   void addNumbers(String mobileNumbers) {
     groupNameViewModel!.mobileNo
         .add(mobileNumbers.toString().trim().removeAllWhitespace);
   }
 
-  buildMembersList() {
-    return ListView.builder(
+  ListView buildMembersList() => ListView.builder(
       physics: const PageScrollPhysics(),
       shrinkWrap: true,
       itemCount: groupNameViewModel!.membersList.length,
@@ -158,7 +151,6 @@ class GroupNameScreen extends StatelessWidget {
         );
       },
     );
-  }
 
   getAppbar(BuildContext context) {
     return AppAppBar(
@@ -171,13 +163,10 @@ class GroupNameScreen extends StatelessWidget {
     );
   }
 
-  buildFloatingActionButton(BuildContext context) {
-    return InkWell(
+  InkWell buildFloatingActionButton(BuildContext context) => InkWell(
       onTap:
           (groupNameViewModel!.isButtonActive && !groupNameViewModel!.isLoading)
-              ? () {
-                  groupNameViewModel!.onCreateGroup(controller!);
-                }
+              ? () => groupNameViewModel!.onCreateGroup(controller!)
               : null,
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -203,7 +192,6 @@ class GroupNameScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 
 
 }

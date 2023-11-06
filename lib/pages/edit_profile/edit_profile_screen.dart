@@ -39,7 +39,7 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context) {
+  Padding getBody(BuildContext context) {
     Color primaryTheme = Theme.of(context).colorScheme.primary;
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;
     return Padding(

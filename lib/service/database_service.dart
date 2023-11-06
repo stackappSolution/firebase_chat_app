@@ -10,7 +10,6 @@ import 'package:signal/controller/acccount_controller.dart';
 import 'package:signal/controller/chating_page_controller.dart';
 import 'package:signal/modal/message.dart';
 import 'package:signal/modal/send_message_model.dart';
-import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -98,6 +97,7 @@ class DatabaseService {
         .add(messageModel.toJson());
     String messageId = messageRef.id;
     await messageRef.update({'messageid': messageId});
+    await messageRef.update({'messageId': messageId});
   }
 
   //=============================getChats====================================//
@@ -148,7 +148,6 @@ class DatabaseService {
       File url, AttachmentController controller) async {
     isLoading = true;
     controller.update();
-
     final storage = FirebaseStorage.instance
         .ref('chat')
         .child("audio")
@@ -233,7 +232,6 @@ class DatabaseService {
       for (var doc in value.docs) {
         messageIds.add(doc.id);
       }
-
       for (var element in messageIds) {
         FirebaseFirestore.instance
             .collection('rooms')
@@ -269,7 +267,6 @@ class DatabaseService {
         .child("video")
         .child(AuthService.auth.currentUser!.phoneNumber!)
         .child('${DateTime.now()}sentDoc.mp4');
-
     final UploadTask uploadTask = storage.putFile(
       url,
       SettableMetadata(contentType: 'VIDEO'), // Specify the content type
@@ -441,8 +438,6 @@ class DatabaseService {
       await messagesCollection.doc(message.id).delete();
     }
     controller!.update();
-    
-    
   }
   static Future<void> getPermission() async {
     logs("permission -------> not given");

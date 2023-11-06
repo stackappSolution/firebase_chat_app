@@ -13,7 +13,7 @@ class LicensesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:       Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: getAppBar(context),
       body: getBody(),
     );
@@ -25,8 +25,7 @@ class LicensesScreen extends StatelessWidget {
     );
   }
 
-  getBody() {
-    return ListView(
+  ListView getBody() => ListView(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       children: [
@@ -60,5 +59,4 @@ class LicensesScreen extends StatelessWidget {
             )),
       ],
     );
-  }
 }

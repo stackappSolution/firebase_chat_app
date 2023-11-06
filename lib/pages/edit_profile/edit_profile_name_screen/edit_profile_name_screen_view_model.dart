@@ -5,7 +5,7 @@ import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/toast_util.dart';
 import 'package:signal/app/app/utills/validation.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/pages/edit_profile/edit_profile_name_screen/edit_profile_name_controller.dart';
+import 'package:signal/controller/edit_profile_name_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_name_screen/edit_profile_name_screen.dart';
 import 'package:signal/service/auth_service.dart';
 
@@ -23,7 +23,7 @@ class EditProfileNameScreenViewModel {
 
 
 
-  onChangedValue(value, GetxController controller, BuildContext context) {
+  void onChangedValue(value, GetxController controller, BuildContext context) {
     if (ValidationUtil.validateName(value)) {
       errorFirstName = "";
 

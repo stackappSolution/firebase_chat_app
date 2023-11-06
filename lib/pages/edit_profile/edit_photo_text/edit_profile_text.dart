@@ -8,7 +8,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/widget/app_loader.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
-import 'package:signal/pages/edit_profile/edit_photo_text/edit_profile_text_controller.dart';
+import 'package:signal/controller/edit_profile_text_controller.dart';
 import 'package:signal/pages/edit_profile/edit_photo_text/edit_profile_text_view_model.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 
@@ -42,10 +42,8 @@ class EditProfileText extends StatelessWidget {
     );
   }
 
-  getBody(EditProfileTextController controller, context) {
-    return Stack(
+  Stack getBody(EditProfileTextController controller, context) => Stack(
       children: [
-
           Column(
             children: [
               Padding(
@@ -149,10 +147,8 @@ class EditProfileText extends StatelessWidget {
           AppLoader(),
       ],
     );
-  }
 
-  AppBar getAppBar(BuildContext context) {
-    return AppBar(
+  AppBar getAppBar(BuildContext context) => AppBar(
       elevation: 0.5,
       backgroundColor: AppColorConstant.appWhite,
       title: const AppText(
@@ -160,7 +156,6 @@ class EditProfileText extends StatelessWidget {
         fontSize: 20,
       ),
     );
-  }
 
   void saveBytesToFile(
     Uint8List bytes,

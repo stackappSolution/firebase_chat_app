@@ -25,7 +25,7 @@ class ChatProfileViewModel{
   }
 
 
-  launchPhoneURL(String phoneNumber) async {
+  Future<void> launchPhoneURL(String phoneNumber) async {
     final Uri url = Uri.parse('tel: $phoneNumber}');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
@@ -68,7 +68,4 @@ class ChatProfileViewModel{
         break;
     }
   }
-
-
-
 }

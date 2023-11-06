@@ -50,8 +50,7 @@ class ContactUsScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context) {
-    return SingleChildScrollView(
+  SingleChildScrollView getBody(BuildContext context) => SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -79,10 +78,8 @@ class ContactUsScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 
-  TextFormField descriptionField() {
-    return TextFormField(
+  TextFormField descriptionField() => TextFormField(
       cursorColor: AppColorConstant.appBlack,
       style: const TextStyle(color: AppColorConstant.appBlack),
       maxLines: 6,
@@ -93,13 +90,11 @@ class ContactUsScreen extends StatelessWidget {
           filled: true,
           fillColor: AppColorConstant.grey.withOpacity(0.3)),
     );
-  }
 
-  getAppBar(BuildContext context) {
-    return AppAppBar(
-      title: AppText(S.of(Get.context!).help, fontSize: 20.px,      color: Theme.of(context).colorScheme.primary,),
+  getAppBar(BuildContext context) => AppAppBar(
+      title: AppText(S.of(Get.context!).help, fontSize: 20.px,
+        color: Theme.of(context).colorScheme.primary,),
     );
-  }
 
   StatefulBuilder selectReasonView() {
     String dropdownValue = S.of(Get.context!).other;
@@ -121,17 +116,15 @@ class ContactUsScreen extends StatelessWidget {
                   fontSize: 15, color: Theme.of(context).colorScheme.primary,),
             );
           }).toList(),
-          onChanged: (String? newValue) {
-            setState(() {
+          onChanged: (String? newValue) => setState(() {
               dropdownValue = newValue!;
-            });
-          },
+            }),
         );
       },
     );
   }
 
-  buildEmojiView() {
+  Row buildEmojiView() {
     List<String> emojis = ['😃', '😋', '🤩', '😌'];
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -159,14 +152,11 @@ class ContactUsScreen extends StatelessWidget {
     );
   }
 
-  buildNextButton() {
-    return Row(
+  Row buildNextButton() => Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         InkWell(
-            onTap: () {
-              contactUsViewModel!.faqUrl();
-            },
+            onTap: () => contactUsViewModel!.faqUrl(),
             child: AppText(S.of(Get.context!).readFaq,
                 color: AppColorConstant.blue, fontSize: 15.px)),
         AppButton(
@@ -181,7 +171,6 @@ class ContactUsScreen extends StatelessWidget {
         )
       ],
     );
-  }
 
   StatefulBuilder includeDebugLogView() {
     bool isSelected = false;
@@ -192,11 +181,9 @@ class ContactUsScreen extends StatelessWidget {
           children: [
             Checkbox(
               value: isSelected,
-              onChanged: (value) {
-                setState(() {
+              onChanged: (value) => setState(() {
                   isSelected = value!;
-                });
-              },
+                }),
             ),
             AppText(
               S.of(Get.context!).includeDebug,
@@ -207,9 +194,7 @@ class ContactUsScreen extends StatelessWidget {
               width: 20.px,
             ),
             InkWell(
-              onTap: () {
-                contactUsViewModel!.includeDebugUrl();
-              },
+              onTap: () => contactUsViewModel!.includeDebugUrl(),
               child: AppText(
                 S.of(Get.context!).whatsThis,
                 color: Colors.blue,

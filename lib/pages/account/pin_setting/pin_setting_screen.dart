@@ -43,16 +43,14 @@ class PinSettingScreen extends StatelessWidget {
     context,
     PinSettingController controller,
   ) {
-    Color primaryTheme = Theme.of(context).colorScheme.primary;
-    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
+
     return (!pinSettingViewModel!.isConformPage)
-        ? createPinView(primaryTheme, secondaryTheme, controller, context)
-        : conformPinView(primaryTheme, secondaryTheme, controller, context);
+        ? createPinView(pinSettingViewModel!.primaryTheme, pinSettingViewModel!.secondaryTheme, controller, context)
+        : conformPinView(pinSettingViewModel!.primaryTheme, pinSettingViewModel!.secondaryTheme, controller, context);
   }
 
-  createPinView(Color primaryTheme, Color secondaryTheme,
-      PinSettingController controller, BuildContext context) {
-    return Padding(
+  Padding createPinView(Color primaryTheme, Color secondaryTheme,
+      PinSettingController controller, BuildContext context) => Padding(
       padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         AppText(
@@ -93,9 +91,7 @@ class PinSettingScreen extends StatelessWidget {
                 filled: true,
                 fillColor: AppColorConstant.yellowLight,
                 border: UnderlineInputBorder()),
-            onChanged: (value) {
-              pinSettingViewModel!.onPinChanged(value, controller);
-            },
+            onChanged: (value) => pinSettingViewModel!.onPinChanged(value, controller),
           ),
         ),
         Align(
@@ -115,9 +111,7 @@ class PinSettingScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 70.px, right: 50.px, top: 30.px),
           child: InkWell(
-            onTap: () {
-              pinSettingViewModel!.onKeyBoardChangeTap(controller);
-            },
+            onTap: () => pinSettingViewModel!.onKeyBoardChangeTap(controller),
             child: (pinSettingViewModel!.changeKeyBoard)
                 ? Row(
                     children: [
@@ -149,11 +143,9 @@ class PinSettingScreen extends StatelessWidget {
         )
       ]),
     );
-  }
 
-  conformPinView(Color primaryTheme, Color secondaryTheme,
-      PinSettingController controller, BuildContext context) {
-    return Stack(
+  Stack conformPinView(Color primaryTheme, Color secondaryTheme,
+      PinSettingController controller, BuildContext context) => Stack(
       children: [
         Padding(
           padding: EdgeInsets.only(top: 65.px, left: 20.px, right: 20.px),
@@ -190,9 +182,7 @@ class PinSettingScreen extends StatelessWidget {
                     filled: true,
                     fillColor: AppColorConstant.yellowLight,
                     border: UnderlineInputBorder()),
-                onChanged: (value) {
-                  pinSettingViewModel!.onPinConformChanged(value, controller);
-                },
+                onChanged: (value) => pinSettingViewModel!.onPinConformChanged(value, controller),
               ),
             ),
           ]),
@@ -200,10 +190,8 @@ class PinSettingScreen extends StatelessWidget {
         if (pinSettingViewModel!.isLoading) AppLoader()
       ],
     );
-  }
 
-  getFloatingActionButton(context, PinSettingController controller) {
-    return Padding(
+  Padding getFloatingActionButton(context, PinSettingController controller) => Padding(
       padding: EdgeInsets.only(right: 30.px, bottom: 12.px),
       child: (!pinSettingViewModel!.isConformPage)
           ? InkWell(
@@ -253,5 +241,4 @@ class PinSettingScreen extends StatelessWidget {
               ),
             ),
     );
-  }
 }

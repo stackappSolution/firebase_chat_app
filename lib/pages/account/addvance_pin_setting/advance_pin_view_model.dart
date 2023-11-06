@@ -16,7 +16,7 @@ class AdvancePinViewModel {
 
   AdvancePinViewModel(this.advancePinSettingScreen);
 
-  disablePinTap(context) {
+  void disablePinTap(context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -34,9 +34,7 @@ class AdvancePinViewModel {
           ),
           actions: [
             InkWell(
-                onTap: () {
-                  Get.back();
-                },
+                onTap: () => Get.back(),
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 15.px),
                   child: AppText(

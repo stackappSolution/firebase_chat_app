@@ -92,8 +92,7 @@ class VerifyOtpPage extends StatelessWidget {
     );
   }
 
-  buildVerifyotpScreen(controller, BuildContext context) {
-    return Stack(
+  Stack buildVerifyotpScreen(controller, BuildContext context) => Stack(
       children: [
         Container(
           height: double.infinity,
@@ -218,7 +217,7 @@ class VerifyOtpPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 130.px,
+                  height: 100.px,
                 ),
                 Align(
                     alignment: Alignment.center,
@@ -269,5 +268,4 @@ class VerifyOtpPage extends StatelessWidget {
         if (AuthService.isResend) AppLoader(),
       ],
     );
-  }
 }

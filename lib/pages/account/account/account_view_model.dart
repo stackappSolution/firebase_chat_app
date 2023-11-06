@@ -29,6 +29,8 @@ class AccountViewModel {
 
   String firebaseStoredPin = "";
   String countryCode = "+91";
+  Color primaryTheme = Theme.of(Get.context!).colorScheme.primary;
+  Color secondaryTheme = Theme.of(Get.context!).colorScheme.secondary;
   final textController = TextEditingController();
 
   final pinController = TextEditingController();

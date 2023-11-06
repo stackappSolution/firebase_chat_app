@@ -17,6 +17,8 @@ class ChangePhoneViewModel {
   bool isButtonActive = false;
   final oldNumberController = TextEditingController();
   final newNumberController = TextEditingController();
+  Color primaryTheme = Theme.of(Get.context!).colorScheme.primary;
+  Color secondaryTheme = Theme.of(Get.context!).colorScheme.secondary;
   String fireBaseStoredAccountNumber =
       AuthService.auth.currentUser!.phoneNumber.toString();
   String oldNumCountryCode = "+91";

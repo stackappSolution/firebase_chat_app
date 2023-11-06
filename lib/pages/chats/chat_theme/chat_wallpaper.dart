@@ -49,8 +49,7 @@ class ChatWallpaperScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context) {
-    return Column(
+  Column getBody(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildWallpaperFromCamera(context),
@@ -70,13 +69,9 @@ class ChatWallpaperScreen extends StatelessWidget {
         buildWallpaperGridview(),
       ],
     );
-  }
 
-  buildWallpaperFromCamera(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        pickImageGallery();
-      },
+  ListTile buildWallpaperFromCamera(BuildContext context) => ListTile(
+      onTap: () => pickImageGallery(),
       title: AppText(
         S.of(context).chooseFromPhotos,
         color: Theme.of(context).colorScheme.primary,
@@ -84,9 +79,8 @@ class ChatWallpaperScreen extends StatelessWidget {
       leading: Icon(Icons.image_outlined,
           color: Theme.of(context).colorScheme.primary),
     );
-  }
 
-  buildWallpaperGridview() {
+  Widget buildWallpaperGridview() {
     List<Color> chatColors = [
       AppColorConstant.darkBlue,
       AppColorConstant.darkOrange,

@@ -58,17 +58,13 @@ class HelpSettingsScreen extends StatelessWidget {
     return ListView(
       children: [
         ListTile(
-          onTap: () {
-            supportUrlLaunch();
-          },
+          onTap: () => supportUrlLaunch(),
           trailing: AppImageAsset(
               image: AppAsset.arrowSend, height: 20.px, width: 20.px),
           title: AppText(S.of(Get.context!).supportCenter,color: Theme.of(context).colorScheme.primary,),
         ),
         ListTile(
-          onTap: () {
-            Get.toNamed(RouteHelper.getContactUsScreen());
-          },
+          onTap: () => Get.toNamed(RouteHelper.getContactUsScreen()),
           title: AppText(S.of(Get.context!).contactUs,color: Theme.of(context).colorScheme.primary,),
         ),
         Divider(
@@ -82,18 +78,14 @@ class HelpSettingsScreen extends StatelessWidget {
               fontSize: 12.px, color:Theme.of(context).colorScheme.secondary,),
         ),
         ListTile(
-          onTap: () {
-            Get.toNamed(RouteHelper.getLicensesScreen());
-          },
+          onTap: () => Get.toNamed(RouteHelper.getLicensesScreen()),
           title: AppText(S.of(Get.context!).licenses,color: Theme.of(context).colorScheme.primary,),
         ),
         ListTile(
           title: AppText(S.of(Get.context!).debugLog,color: Theme.of(context).colorScheme.primary,),
         ),
         ListTile(
-          onTap: () {
-            termsUrl();
-          },
+          onTap: () => termsUrl(),
           trailing: AppImageAsset(
               image: AppAsset.arrowSend, height: 20.px, width: 20.px),
           title: AppText(S.of(Get.context!).terms,color: Theme.of(context).colorScheme.primary,),

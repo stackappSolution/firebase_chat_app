@@ -107,6 +107,7 @@ class AttachmentViewModel {
     if (videoPlayerController.value.isPlaying) {
       videoPlayerController.pause();
     }
+    DatabaseService.isLoading = false;
   }
 
   String formatDuration(Duration duration) {
@@ -252,6 +253,7 @@ class AttachmentViewModel {
           notification('🎶 audio');
         });
       }
+      controller.update();
     }
   }
 

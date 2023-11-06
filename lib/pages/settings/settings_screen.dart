@@ -62,8 +62,7 @@ class SettingScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context, SettingsController controller) {
-    return ListView(
+  ListView getBody(BuildContext context, SettingsController controller) => ListView(
       children: [
         SizedBox(
           height: 10.px,
@@ -75,15 +74,12 @@ class SettingScreen extends StatelessWidget {
         buildSettingsList(context, controller),
       ],
     );
-  }
 
-  buildProfileView(context) {
+  Widget buildProfileView(context) {
     Color primaryTheme = Theme.of(context).colorScheme.primary;
     Color secondaryTheme = Theme.of(context).colorScheme.secondary;
     return InkWell(
-      onTap: () {
-        Get.to(EditProfileScreen());
-      },
+      onTap: () => Get.to(EditProfileScreen()),
       child: StreamBuilder(
         stream: UsersService.getUserStream(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -148,8 +144,7 @@ class SettingScreen extends StatelessWidget {
     );
   }
 
-  buildSettingsList(BuildContext context, SettingsController controller) {
-    return ListView(
+  ListView buildSettingsList(BuildContext context, SettingsController controller) => ListView(
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
@@ -209,15 +204,11 @@ class SettingScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  settingsView(context, index, image, tittle) {
-    return Padding(
+  Padding settingsView(context, index, image, tittle) => Padding(
       padding: EdgeInsets.all(10.px),
       child: ListTile(
-        onTap: () {
-          settingViewModel!.mainTap(index);
-        },
+        onTap: () => settingViewModel!.mainTap(index),
         title: AppText(
           tittle,
           color: Theme.of(context).colorScheme.primary,
@@ -237,5 +228,4 @@ class SettingScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 }

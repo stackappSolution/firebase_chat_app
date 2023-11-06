@@ -14,6 +14,8 @@ import 'package:signal/pages/chats/chat_theme/chat_wallpaper.dart';
 import 'package:signal/pages/chats/chat_theme/wallpaper_preview_screen.dart';
 import 'package:signal/pages/donate_amount_page/donate_page.dart';
 import 'package:signal/pages/donate_to_chat_app/donate_to_chat_page.dart';
+import 'package:signal/pages/dynamicLink/LinkProductPage.dart';
+import 'package:signal/pages/dynamicLink/dynamic_link.dart';
 import 'package:signal/pages/edit_profile/add_photo_screen.dart';
 import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/pages/groups/view/new_group_screen.dart';
@@ -119,6 +121,8 @@ class RouteHelper {
   static String getDonateToChatScreen() => RouteConstant.donateToChatScreen;
 
   static String getDonateScreen() => RouteConstant.donateScreen;
+  static String getDynamicScreen() => RouteConstant.dynamicLink;
+  static String getLinkScreen() => RouteConstant.linkPage;
 
   static List<GetPage> routes = [
     GetPage(name: RouteConstant.verifyOtpScreen, page: () => VerifyOtpPage()),
@@ -313,6 +317,14 @@ class RouteHelper {
     GetPage(
       name: RouteConstant.donateScreen,
       page: () => DonatePage(),
+    ),
+    GetPage(
+      name: RouteConstant.dynamicLink,
+      page: () => const DynamicLinkPage(),
+    ),
+    GetPage(
+      name: RouteConstant.linkPage,
+      page: () => const LinkPage(),
     )
   ];
 }

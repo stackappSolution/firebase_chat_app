@@ -47,7 +47,7 @@ class ChatViewModel {
     );
   }
 
-  addRemove(index, message) {
+  void addRemove(index, message) {
     selectedContactsTrueFalse[index] = !selectedContactsTrueFalse[index];
     if (selectedContactsTrueFalse[index]) {
       selectedContacts.add(message);
@@ -56,7 +56,7 @@ class ChatViewModel {
     }
   }
 
-  getToken(number) async {
+  void getToken(number) async {
     token = await controller!.getUserFcmToken(number);
   }
 
@@ -74,7 +74,7 @@ class ChatViewModel {
     await UsersService.instance.notification(notificationModel);
   }
 
-  addChatMessage(MessageModel messageModel, String sampleList) async {
+  void addChatMessage(MessageModel messageModel, String sampleList) async {
     errorLogs('messageModel.message --> ${messageModel.message}');
 
     MessageModel newMessageModel = MessageModel(

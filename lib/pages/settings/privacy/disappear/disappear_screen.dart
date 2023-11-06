@@ -40,8 +40,7 @@ class DisappearScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context, DisappearingController controller) {
-    return Column(
+  Column getBody(BuildContext context, DisappearingController controller) => Column(
       children: [
         Padding(
           padding: EdgeInsets.all(15.px),
@@ -54,9 +53,8 @@ class DisappearScreen extends StatelessWidget {
         buildSelectionView(controller,context),
       ],
     );
-  }
 
-  buildSelectionView(DisappearingController controller,BuildContext context) {
+  ListView buildSelectionView(DisappearingController controller,BuildContext context) {
     return ListView(
       shrinkWrap: true,
       children: [
@@ -83,45 +81,35 @@ class DisappearScreen extends StatelessWidget {
           activeColor: AppColorConstant.appYellow,
           value: '1 week',
           groupValue:controller.selectedValue.value,
-          onChanged: (value) {
-            controller.updateSelectedValue(value!);
-          },
+          onChanged: (value) => controller.updateSelectedValue(value!),
           title:  AppText('1${S.of(context).week}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
           value: '1 day',
           groupValue:controller.selectedValue.value,
-          onChanged: (value) {
-           controller.updateSelectedValue(value!);
-          },
+          onChanged: (value) => controller.updateSelectedValue(value!),
           title:  AppText('1 ${S.of(context).day}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
           value: '8 hours',
           groupValue:controller.selectedValue.value,
-          onChanged: (value) {
-           controller.updateSelectedValue(value!);
-          },
+          onChanged: (value) => controller.updateSelectedValue(value!),
           title:  AppText('8 ${S.of(context).hours}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
           value: '1 hour',
           groupValue:controller.selectedValue.value,
-          onChanged: (value) {
-          controller.updateSelectedValue(value!);
-          },
+          onChanged: (value) => controller.updateSelectedValue(value!),
           title:  AppText('1 ${S.of(context).hour}'),
         ),
         RadioListTile<String>(
           activeColor: AppColorConstant.appYellow,
           value: '5 minutes',
           groupValue:controller.selectedValue.value,
-          onChanged: (value) {
-           controller.updateSelectedValue(value!);
-          },
+          onChanged: (value) => controller.updateSelectedValue(value!),
           title:  AppText('5 ${S.of(context).minutes}'),
         ),
       ],

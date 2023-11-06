@@ -29,7 +29,6 @@ class SplashScreen extends StatelessWidget {
       //     RouteHelper.getIntroScreen();
       //   }
       // });
-
     });
 
 

@@ -5,7 +5,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/controller/new_message_controller.dart';
 import 'package:signal/pages/new_message_page/new_message_page.dart';
-import 'package:signal/service/database_helper.dart';
 
 class NewMessageViewModel {
   NewMessagePage? newMessagePage;
@@ -47,7 +46,7 @@ class NewMessageViewModel {
   void toggleIcon(NewMessageController controller) {
     isIcon = !isIcon;
     textController.clear();
-    controller!.update();
+    controller.update();
     logs('isIcon--> $isIcon');
   }
 
@@ -82,7 +81,7 @@ class NewMessageViewModel {
     controller!.update();
   }
 
-  getAllContacts() async {
+  void getAllContacts() async {
     List<Contact> contacts =
         (await ContactsService.getContacts(withThumbnails: false)).toList();
     logs("contacts length-->${contacts.length}");

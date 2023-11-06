@@ -48,18 +48,15 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-getBody(HomeScreenController controller) {
-  return IndexedStack(
+IndexedStack getBody(HomeScreenController controller) => IndexedStack(
     index: controller.tabIndex,
     children: [
       ChatScreen(),
-      const CallsScreen(),
+       CallsScreen(),
     ],
   );
-}
 
-buildBottomBar(HomeScreenController controller, BuildContext context) {
-  return BottomNavigationBar(
+BottomNavigationBar buildBottomBar(HomeScreenController controller, BuildContext context) => BottomNavigationBar(
       elevation: 0.0,
       backgroundColor: Theme.of(context).colorScheme.background,
       selectedItemColor: AppColorConstant.appYellow,
@@ -90,4 +87,3 @@ buildBottomBar(HomeScreenController controller, BuildContext context) {
                       : AppAsset.phoneOutline),
             ))
       ]);
-}

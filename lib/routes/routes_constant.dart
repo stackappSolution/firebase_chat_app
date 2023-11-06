@@ -41,5 +41,7 @@ class RouteConstant{
   static const String fileView = '/fileView';
   static const String donateToChatScreen = '/DonateToChat';
   static const String donateScreen = '/DonateScreen';
+  static const String dynamicLink = '/dynamicLink';
+  static const String linkPage = '/linkPage';
 
 }
