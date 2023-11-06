@@ -100,9 +100,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  getBody(GetxController controller, BuildContext context) {
-    Color primaryTheme = Theme.of(context).colorScheme.primary;
-    Color secondaryTheme = Theme.of(context).colorScheme.secondary;
+  Stack getBody(GetxController controller, BuildContext context) {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -117,13 +115,13 @@ class ProfileScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AppText(S.of(context).yourProfile,
-                              color: primaryTheme,
+                              color: profileViewModel!.primaryTheme,
                               fontSize: 35.px,
                               fontWeight: FontWeight.bold),
                           Padding(
                             padding: EdgeInsets.only(top: 20.px),
                             child: AppText(S.of(context).profileAreVisible,
-                                color: secondaryTheme),
+                                color: profileViewModel!.secondaryTheme),
                           ),
                         ],
                       ),

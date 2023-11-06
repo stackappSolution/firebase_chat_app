@@ -57,8 +57,7 @@ class ImageView extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context) {
-    return Column(
+  Column getBody(BuildContext context) => Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
@@ -76,5 +75,4 @@ class ImageView extends StatelessWidget {
             ))
       ],
     );
-  }
 }

@@ -12,7 +12,7 @@ import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/app_navigation.dart';
 
 class CallsScreen extends StatelessWidget {
-  const CallsScreen({Key? key}) : super(key: key);
+  CallsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +22,16 @@ class CallsScreen extends StatelessWidget {
       init: ContactController(),
       initState: (state) {},
       builder: (controller) {
-        return  SafeArea(
-            child: Scaffold(appBar: getAppBar(context,controller),
+        return SafeArea(
+            child: Scaffold(
+          appBar: getAppBar(context, controller),
           backgroundColor: Theme.of(context).colorScheme.background,
         ));
       },
     );
   }
 
-  buildFloatingButton() {
-    return Column(
+  Column buildFloatingButton() => Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Padding(
@@ -42,79 +42,80 @@ class CallsScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.px)),
             backgroundColor: AppColorConstant.appYellow,
+            onPressed: () {},
             child: AppImageAsset(
                 image: AppAsset.phonePlus, height: 25.px, width: 25.px),
-            onPressed: () {},
           ),
         ),
       ],
     );
-  }
 
   getAppBar(BuildContext context, ContactController controller) {
     return controller.searchValue
         ? AppAppBar(
-      leading: IconButton(
-        icon:  Icon(color: Theme.of(context).colorScheme.primary,
-          Icons.arrow_back_outlined,
-        ),
-        onPressed: () {
-          controller.setSearch(false);
-        },
-      ),
-      title: SizedBox(
-        height: 30,
-        child: TextFormField(
-          onChanged: (value) {
-            controller.setFilterText(value);
-          },
-          decoration: InputDecoration(
-              hintText: 'Search',
-              fillColor: AppColorConstant.grey.withOpacity(0.2),
-              filled: true,
-              contentPadding:
-              EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.px),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(18.px),
-              )),
-        ),
-      ),
-    )
+            leading: IconButton(
+              icon: Icon(
+                color: Theme.of(context).colorScheme.primary,
+                Icons.arrow_back_outlined,
+              ),
+              onPressed: () {
+                controller.setSearch(false);
+              },
+            ),
+            title: SizedBox(
+              height: 30,
+              child: TextFormField(
+                onChanged: (value) {
+                  controller.setFilterText(value);
+                },
+                decoration: InputDecoration(
+                    hintText: 'Search',
+                    fillColor: AppColorConstant.grey.withOpacity(0.2),
+                    filled: true,
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.px),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(18.px),
+                    )),
+              ),
+            ),
+          )
         : AppAppBar(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      leading: Padding(
-        padding: EdgeInsets.only(left: 15.px),
-        child: CircleAvatar(
-          backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
-          child: AppText('S',
-              fontSize: 20.px, color: AppColorConstant.appYellow),
-        ),
-      ),
-      title: Padding(
-        padding: EdgeInsets.only(left: 20.px),
-        child: AppText(S.of(Get.context!).chatapp,
-            color: Theme.of(Get.context!).colorScheme.primary,
-            fontSize: 20.px),
-      ),
-      actions: [
-        InkWell(
-          onTap: () {
-            controller.setSearch(true);
-            controller.setFilterText('');
-          },
-          child: Padding(
-              padding: EdgeInsets.all(18.px),
-              child:  AppImageAsset(image: AppAsset.search,color: Theme.of(context).colorScheme.primary,)),
-        ),
-        buildPopupMenu(context),
-      ],
-    );
+            backgroundColor: Theme.of(context).colorScheme.background,
+            leading: Padding(
+              padding: EdgeInsets.only(left: 15.px),
+              child: CircleAvatar(
+                backgroundColor: AppColorConstant.appYellow.withOpacity(0.2),
+                child: AppText('S',
+                    fontSize: 20.px, color: AppColorConstant.appYellow),
+              ),
+            ),
+            title: Padding(
+              padding: EdgeInsets.only(left: 20.px),
+              child: AppText(S.of(Get.context!).chatapp,
+                  color: Theme.of(Get.context!).colorScheme.primary,
+                  fontSize: 20.px),
+            ),
+            actions: [
+              InkWell(
+                onTap: () {
+                  controller.setSearch(true);
+                  controller.setFilterText('');
+                },
+                child: Padding(
+                    padding: EdgeInsets.all(18.px),
+                    child: AppImageAsset(
+                      image: AppAsset.search,
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
+              ),
+              buildPopupMenu(context),
+            ],
+          );
   }
 
-
-  buildPopupMenu(BuildContext context) {
-    return PopupMenuButton(
+  PopupMenuButton buildPopupMenu(BuildContext context) => PopupMenuButton(
       onSelected: (value) {
         if (value == 2) {
           goToSettingPage();
@@ -126,7 +127,10 @@ class CallsScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.px)),
       icon: Padding(
         padding: EdgeInsets.all(10.px),
-        child:  AppImageAsset(image: AppAsset.popup,color: Theme.of(context).colorScheme.primary,),
+        child: AppImageAsset(
+          image: AppAsset.popup,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
       itemBuilder: (context) {
         return [
@@ -142,6 +146,5 @@ class CallsScreen extends StatelessWidget {
         ];
       },
     );
-  }
 
 }

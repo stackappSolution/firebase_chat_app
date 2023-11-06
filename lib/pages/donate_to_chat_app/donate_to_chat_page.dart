@@ -36,9 +36,7 @@ class DonateToChatPage extends StatelessWidget {
         donateChatViewModel!.razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
             donateChatViewModel!.handleExternalWallet);
       },
-      dispose: (state) {
-        donateChatViewModel!.razorpay.clear();
-      },
+      dispose: (state) => donateChatViewModel!.razorpay.clear(),
       builder: (DonateToChatController controller) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -57,11 +55,10 @@ class DonateToChatPage extends StatelessWidget {
     );
   }
 
-  buildBody(
+  SingleChildScrollView buildBody(
     context,
     DonateToChatController controller,
-  ) {
-    return SingleChildScrollView(
+  ) => SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(
@@ -107,9 +104,7 @@ class DonateToChatPage extends StatelessWidget {
             buttonHeight: 40,
             widget:   AppText(S.of(context).donatetochatapp,
               color: AppColorConstant.appWhite),
-            onPressed: () {
-              donateChatViewModel!.enterAmount(context, controller);
-              },
+            onPressed: () => donateChatViewModel!.enterAmount(context, controller),
           ),
           SizedBox(
             height: 10.px,
@@ -142,5 +137,4 @@ class DonateToChatPage extends StatelessWidget {
         ],
       ),
     );
-  }
 }

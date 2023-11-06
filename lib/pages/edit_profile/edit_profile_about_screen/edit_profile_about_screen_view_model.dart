@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
 import 'package:signal/app/app/utills/toast_util.dart';
-import 'package:signal/pages/edit_profile/edit_profile_about_screen/edit_profile_about_controller.dart';
+import 'package:signal/controller/edit_profile_about_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_about_screen/edit_profile_about_screen.dart';
 import 'package:signal/pages/edit_profile/edit_profile_screen.dart';
 import 'package:signal/pages/profile/profile_screen.dart';

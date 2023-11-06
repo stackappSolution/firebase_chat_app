@@ -21,7 +21,6 @@ import 'package:signal/service/database_helper.dart';
 
 import '../../app/widget/app_shimmer.dart';
 import '../../modal/message.dart';
-import '../../service/network_connectivity.dart';
 import '../../service/users_service.dart';
 import '../notifications/notifications.dart';
 
@@ -78,14 +77,11 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  getBody(ContactController controller) {
-    return ListView(
+  ListView getBody(ContactController controller) => ListView(
       children: [buildContactList(controller)],
     );
-  }
 
-  buildFloatingButton() {
-    return sent
+  Widget buildFloatingButton() => sent
         ? FloatingActionButton(
             heroTag: 'camera',
             elevation: 0.0,
@@ -108,9 +104,7 @@ class ChatScreen extends StatelessWidget {
                 String receiverNumber = receiver.join("").toString().trim();
                 chatViewModel!.getToken(receiverNumber);
                 for (int i = 0; i < msgList.length - 1; i++) {
-
                   logs("msgList length -- > ");
-
                   var messageModel = msgList[i] as MessageModel;
                   warningLogs('messageModel.message --> ${messageModel}');
                   warningLogs('messageModel.message --> ${messageModel.message}');
@@ -186,9 +180,8 @@ class ChatScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  getAppBar(BuildContext context, ContactController controller) {
+   getAppBar(BuildContext context, ContactController controller) {
     if (controller.searchValue) {
       return AppAppBar(
         leading: IconButton(
@@ -196,16 +189,12 @@ class ChatScreen extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSecondary,
             Icons.arrow_back_outlined,
           ),
-          onPressed: () {
-            controller.setSearch(false);
-          },
+          onPressed: () => controller.setSearch(false),
         ),
         title: SizedBox(
           height: 30,
           child: TextFormField(
-            onChanged: (value) {
-              controller.setFilterText(value);
-            },
+            onChanged: (value) => controller.setFilterText(value),
             decoration: InputDecoration(
                 hintText: 'Search',
                 fillColor: AppColorConstant.grey.withOpacity(0.2),
@@ -235,9 +224,7 @@ class ChatScreen extends StatelessWidget {
             : Padding(
                 padding: EdgeInsets.only(left: 15.px),
                 child: InkWell(
-                  onTap: () {
-                    goToSettingPage();
-                  },
+                  onTap: () => goToSettingPage(),
                   child: StreamBuilder(
                     stream: UsersService.getUserStream(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -318,8 +305,7 @@ class ChatScreen extends StatelessWidget {
     }
   }
 
-  buildPopupMenu(BuildContext context) {
-    return PopupMenuButton(
+  PopupMenuButton buildPopupMenu(BuildContext context) => PopupMenuButton(
       onSelected: (value) {
         if (value == 0) {
           goToNewGroupScreen();
@@ -370,10 +356,8 @@ class ChatScreen extends StatelessWidget {
         ];
       },
     );
-  }
 
-  buildContactList(ContactController controller) {
-    return StreamBuilder<QuerySnapshot>(
+  Widget buildContactList(ContactController controller) => StreamBuilder<QuerySnapshot>(
       stream: controller
           .getMyChatContactList(AuthService.auth.currentUser!.phoneNumber!),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -1049,5 +1033,4 @@ class ChatScreen extends StatelessWidget {
               );
       },
     );
-  }
 }

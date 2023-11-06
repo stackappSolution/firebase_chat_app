@@ -51,8 +51,7 @@ class BlockedUsersScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context) {
-    return Column(
+  Column getBody(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildAddBlockView(context),
@@ -68,10 +67,8 @@ class BlockedUsersScreen extends StatelessWidget {
         buildBlockedListView(),
       ],
     );
-  }
 
-  buildAddBlockView(BuildContext context) {
-    return ListTile(
+  ListTile buildAddBlockView(BuildContext context) => ListTile(
       title: AppText(S.of(context).addBlockUsers,
           fontSize: 15.px, color: Theme.of(context).colorScheme.primary),
       subtitle: AppText(
@@ -79,10 +76,8 @@ class BlockedUsersScreen extends StatelessWidget {
           fontSize: 12.px,
           color: Theme.of(context).colorScheme.secondary),
     );
-  }
 
-  buildBlockedListView() {
-    return ListView.builder(
+  ListView buildBlockedListView() => ListView.builder(
       shrinkWrap: true,
       itemCount: blockedUsersViewModel!.blockedUsersList.length,
       itemBuilder: (context, index) {
@@ -99,9 +94,8 @@ class BlockedUsersScreen extends StatelessWidget {
         );
       },
     );
-  }
 
-  getBlockedUsersList() async {
+  void getBlockedUsersList() async {
     blockedUsersViewModel!.blockedUsersList =
         await UsersService.instance.getBlockedUsers();
     controller!.update();

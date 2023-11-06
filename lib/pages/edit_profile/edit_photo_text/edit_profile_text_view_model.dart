@@ -8,7 +8,7 @@ import 'package:signal/service/auth_service.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 import '../../../app/app/utills/app_utills.dart';
 import 'edit_profile_text.dart';
-import 'edit_profile_text_controller.dart';
+import '../../../controller/edit_profile_text_controller.dart';
 
 class EditProfileTextViewModel {
    bool isLoading = false;
@@ -29,7 +29,7 @@ class EditProfileTextViewModel {
   }
 
 // Update the user's profile picture
-  updateProfilePicture(String imagePath) {
+  void updateProfilePicture(String imagePath) {
     isLoading = true;
     editProfileTextController!.update();
     uploadImages(File(imagePath)).then((value) {

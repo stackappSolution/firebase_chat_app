@@ -56,7 +56,7 @@ class ChatingPageViewModal {
   bool isGroup = false;
   dynamic snapshots;
 
-  String? formatedTime;
+  String? forMatedTime;
   bool isBlockedByReceiver = false;
   File? selectedImage;
   File? selectedVideo;
@@ -82,7 +82,7 @@ class ChatingPageViewModal {
   bool isBlockedByLoggedInUser = false;
   List<bool> isFileDownLoadingList = <bool>[];
   String? backWallpaper;
-  Color? chatbubblecolor;
+  Color? chatBubbleColors;
 
   TextEditingController chatController = TextEditingController();
   TextEditingController messageEdit = TextEditingController();
@@ -94,16 +94,16 @@ class ChatingPageViewModal {
   int downloadPercentage = 0;
   int i = 0;
   String? recordFilePath;
-  Color? wallColorbackground;
+  Color? wallColorBackground;
   String? wallImage;
   bool iconChange = false;
-  final firestore = FirebaseFirestore.instance;
-  Color? bubblColors;
+  final fireStore = FirebaseFirestore.instance;
+  Color? bubbleColors;
   List<MessageModel> selectedMessage = [];
   List<bool> selectedMessageTrueFalse = [];
   bool sendMsg = false;
   String imageLink = '';
-  bool isSwipreply = false;
+  bool isSwipReply = false;
   String? messageType;
   String repliedText = '';
 
@@ -125,7 +125,7 @@ class ChatingPageViewModal {
     return true;
   }
 
-  startRecord() async {
+  Future<void> startRecord() async {
     bool hasPermission = await checkPermission();
     if (hasPermission) {
       recordFilePath = await getFilePath();
@@ -140,7 +140,7 @@ class ChatingPageViewModal {
     }
   }
 
-  stopRecord() {
+  void stopRecord() {
     bool s = RecordMp3.instance.stop();
     if (s) {
       File audioFile = File(recordFilePath!);
@@ -206,7 +206,7 @@ class ChatingPageViewModal {
     return await storage.getDownloadURL();
   }
 
-  downloadAndSaveFile(
+  Future<void> downloadAndSaveFile(
     String pdfURL,
     folderName,
   ) async {
@@ -536,7 +536,7 @@ class ChatingPageViewModal {
 
   //=========================== audio =============================//
 
-  audioSendTap() async {
+  Future<void> audioSendTap() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['mp3'],
@@ -554,14 +554,13 @@ class ChatingPageViewModal {
               extension: "");
         }
       } else {}
-
       logs('Selected MP3 file: ${file.name}');
     } else {
       logs('User canceled file picking');
     }
   }
 
-  onSendAudio(String msgType, controller) async {
+  Future<void> onSendAudio(String msgType, controller) async {
     DatabaseService.uploadAudio(File(audioFile!.path), controller)
         .then((value) {
       logs('message---> $value');
@@ -597,11 +596,11 @@ class ChatingPageViewModal {
     }
   }
 
-  videoSendTap() {
+  void videoSendTap() {
     pickVideoGallery(controller!, arguments['members']);
   }
 
-  onSendVideo(String msgType, controller) async {
+  Future<void> onSendVideo(String msgType, controller) async {
     DatabaseService.uploadAudio(File(audioFile!.path), controller)
         .then((value) {
       logs('message---> $value');
@@ -671,7 +670,7 @@ class ChatingPageViewModal {
     }
   }
 
-  uploadImage(File imageUrl) async {
+  Future<void> uploadImage(File imageUrl) async {
     isLoading = true;
     logs("load--> $isLoading");
     controller!.update();
@@ -703,8 +702,7 @@ class ChatingPageViewModal {
     }
   }
 
-  buildPopupMenu(BuildContext context, ChatingPageController controller) {
-    return PopupMenuButton(
+  PopupMenuButton buildPopupMenu(BuildContext context, ChatingPageController controller) => PopupMenuButton(
       offset: const Offset(-10, kToolbarHeight),
       onSelected: (value) {
         if (value == 0) {
@@ -798,10 +796,8 @@ class ChatingPageViewModal {
         ];
       },
     );
-  }
 
-  buildImagePickerMenu(BuildContext context) {
-    showMenu(
+  buildImagePickerMenu(BuildContext context) => showMenu(
       color: AppColorConstant.appLightGrey,
       elevation: 0.3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.px)),
@@ -870,7 +866,6 @@ class ChatingPageViewModal {
             )),
       ],
     );
-  }
 
   Future<String> compressFile(File file) async {
     File compressedFile = await FlutterNativeImage.compressImage(
@@ -880,8 +875,7 @@ class ChatingPageViewModal {
     return compressedFile.path;
   }
 
-  buildNavigationMenu(BuildContext context, ChatingPageController controller) {
-    return PopupMenuButton(
+  PopupMenuButton buildNavigationMenu(BuildContext context, ChatingPageController controller) => PopupMenuButton(
       onSelected: (value) {
         isFileDownLoadingList = isFileDownLoadingList.toList();
         isFileDownLoadingList.add(false);
@@ -906,13 +900,15 @@ class ChatingPageViewModal {
       ),
       itemBuilder: (context) {
         return [
-          PopupMenuItem(
+          PopupMenuItem(onTap: () {
+            DatabaseService.instance.clearChat(snapshots.docs.first.id,);
+          },
               value: 0,
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppText(S.of(Get.context!).addContact),
-                  const Icon(Icons.add)
+                  AppText('clear chat'),
+                  Icon(Icons.delete)
                 ],
               )),
           PopupMenuItem(
@@ -950,9 +946,8 @@ class ChatingPageViewModal {
         ];
       },
     );
-  }
 
-  onSelectItem(value) {
+  void onSelectItem(value) {
     if (value == 1) {
       Get.toNamed(RouteHelper.getChatProfileScreen(), arguments: {
         'name': arguments['name'],
@@ -978,8 +973,7 @@ class ChatingPageViewModal {
     }
   }
 
-  buildDoubleClickView() {
-    return Container(
+   Container buildDoubleClickView() => Container(
       alignment: Alignment.center,
       height: 15.px,
       width: 15.px,
@@ -994,10 +988,8 @@ class ChatingPageViewModal {
         size: 12.px,
       ),
     );
-  }
 
-  buildSingleClickView() {
-    return Container(
+  Container buildSingleClickView() => Container(
       alignment: Alignment.center,
       height: 15.px,
       width: 15.px,
@@ -1011,9 +1003,8 @@ class ChatingPageViewModal {
         size: 12.px,
       ),
     );
-  }
 
-  showEmojiMenu(BuildContext context, Offset position, roomId, messageId,
+  void showEmojiMenu(BuildContext context, Offset position, roomId, messageId,
       receiverNumber, isGroup) async {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -1259,7 +1250,7 @@ class ChatingPageViewModal {
     }
   }
 
-  updateChatLength(int length) {
+  void updateChatLength(int length) {
     if (length >= isFileDownLoadedList.length) {
       int lenDiff = length - isFileDownLoadedList.length;
       for (int i = 0; i < lenDiff; i++) {
@@ -1346,9 +1337,9 @@ class ChatingPageViewModal {
       if (data != null && data['colorCode'] != null) {
         wallImage = data['wallpaper'];
         if (wallImage!.isEmpty) {
-          wallColorbackground = Color(int.parse(data['colorCode'], radix: 16));
+          wallColorBackground = Color(int.parse(data['colorCode'], radix: 16));
         }
-        logs('wallColorBackground-->$wallColorbackground');
+        logs('wallColorBackground-->$wallColorBackground');
         logs('wallimage-->$wallImage');
         controller!.update();
       }
@@ -1358,14 +1349,14 @@ class ChatingPageViewModal {
   Future<Color> getChatBubbleColors() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      final colorRef = firestore.collection('users').doc(user.uid);
+      final colorRef = fireStore.collection('users').doc(user.uid);
       final documentSnapshot = await colorRef.get();
       if (documentSnapshot.exists) {
         final data = documentSnapshot.data();
         final colorHex = data?['bubbleColor'];
         if (colorHex != null) {
-          bubblColors = Color(int.parse(data!['bubbleColor'], radix: 16));
-          logs('bubbllllllleeeeColors-->$bubblColors');
+          bubbleColors = Color(int.parse(data!['bubbleColor'], radix: 16));
+          logs('bubbllllllleeeeColors-->$bubbleColors');
         }
       }
     }

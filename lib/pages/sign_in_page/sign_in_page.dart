@@ -19,8 +19,6 @@ import 'package:signal/pages/sign_in_page/sign_in_view_model.dart';
 import 'package:signal/service/auth_service.dart';
 
 import '../../app/app/utills/theme_util.dart';
-import '../../service/network_connectivity.dart';
-
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -34,8 +32,7 @@ class SignInPage extends StatelessWidget {
     signInViewModel ?? (signInViewModel = SignInViewModel(this));
     return GetBuilder(
       init: SignInController(),
-      initState: (state) {
-      },
+      initState: (state) {},
       builder: (SignInController controller) {
         return WillPopScope(
           onWillPop: () async {
@@ -48,7 +45,8 @@ class SignInPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       borderSide: const BorderSide(color: Colors.transparent)),
                   title: const AppText('Exit App', fontWeight: FontWeight.bold),
-                  content: const AppText('Are you sure you want to exit the app?'),
+                  content:
+                      const AppText('Are you sure you want to exit the app?'),
                   actions: [
                     Row(
                       children: [
@@ -57,8 +55,8 @@ class SignInPage extends StatelessWidget {
                           buttonWidth: 50,
                           buttonColor: AppColorConstant.appYellow,
                           buttonHeight: 40,
-                          widget:
-                              const AppText('Yes', color: AppColorConstant.appWhite),
+                          widget: const AppText('Yes',
+                              color: AppColorConstant.appWhite),
                           onPressed: () {
                             SystemNavigator.pop();
                             Navigator.of(context).pop(true); // Exit the app
@@ -69,8 +67,8 @@ class SignInPage extends StatelessWidget {
                           buttonWidth: 50,
                           buttonColor: AppColorConstant.appYellow,
                           buttonHeight: 40,
-                          widget:
-                              const AppText(StringConstant.cansel, color: AppColorConstant.appWhite),
+                          widget: const AppText(StringConstant.cansel,
+                              color: AppColorConstant.appWhite),
                           onPressed: () {
                             Navigator.of(context)
                                 .pop(false); // Don't exit the app
@@ -84,11 +82,10 @@ class SignInPage extends StatelessWidget {
               },
             );
           },
-          child: SafeArea(
-            child:  Builder(builder: (context) {
-              MediaQueryData mediaQuery = MediaQuery.of(context);
-              ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
-              return Scaffold(
+          child: SafeArea(child: Builder(builder: (context) {
+            MediaQueryData mediaQuery = MediaQuery.of(context);
+            ThemeUtil.isDark = mediaQuery.platformBrightness == Brightness.dark;
+            return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.background,
               body: buildsignInPage(
                 signInViewModel!.selectedCountry.toString(),
@@ -97,8 +94,8 @@ class SignInPage extends StatelessWidget {
                 controller,
                 signInViewModel!,
               ),
-            );})
-          ),
+            );
+          })),
         );
       },
     );
@@ -141,14 +138,14 @@ class SignInPage extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).colorScheme.primary,
                   )),
-               Padding(
-                 padding:  EdgeInsets.symmetric(vertical: 5.px),
-                 child: AppText(
-                    S.of(Get.context!).signInDescription,
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontWeight: FontWeight.w400,
-                  ),
-               ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5.px),
+                child: AppText(
+                  S.of(Get.context!).signInDescription,
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
               SizedBox(
                 height: 10.px,
               ),
@@ -262,8 +259,9 @@ class SignInPage extends StatelessWidget {
                                       pref.setString(
                                           "MobileNumber", phoneNumber);
                                       AuthService.verifyPhoneNumber(
-                                          countryCode,"$countryCode$phoneNumber",
-                                        );
+                                        countryCode,
+                                        "$countryCode$phoneNumber",
+                                      );
                                       signInViewModel.isLoading = true;
                                       controller.update();
                                     } catch (e) {

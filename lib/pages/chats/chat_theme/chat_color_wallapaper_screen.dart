@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:signal/app/app/utills/app_utills.dart';
-import 'package:signal/app/app/utills/shared_preferences.dart';
 import 'package:signal/app/widget/app_app_bar.dart';
 import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/constant/color_constant.dart';
@@ -11,7 +10,6 @@ import 'package:signal/controller/settings_controller.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/routes/routes_helper.dart';
 import 'package:signal/service/auth_service.dart';
-import 'package:signal/service/users_service.dart';
 
 // ignore: must_be_immutable
 class ChatColorWallpaperScreen extends StatelessWidget {
@@ -48,17 +46,14 @@ class ChatColorWallpaperScreen extends StatelessWidget {
     );
   }
 
-  getAppbar(BuildContext context) {
-    return AppAppBar(
+   getAppbar(BuildContext context) => AppAppBar(
       title: AppText(
         S.of(context).chatColorAndWallpaper,
         color: Theme.of(context).colorScheme.primary,
       ),
     );
-  }
 
-  getBody(BuildContext context) {
-    return Column(
+  Column getBody(BuildContext context) => Column(
       children: [
         buildChatThemeList(context),
         Divider(
@@ -68,16 +63,12 @@ class ChatColorWallpaperScreen extends StatelessWidget {
         buildWallpaperThemeList(context),
       ],
     );
-  }
 
-  buildChatThemeList(BuildContext context) {
-    return ListView(
+  ListView buildChatThemeList(BuildContext context) => ListView(
       shrinkWrap: true,
       children: [
         ListTile(
-            onTap: () async {
-              Get.toNamed(RouteHelper.getChatColorScreen());
-            },
+            onTap: () async => Get.toNamed(RouteHelper.getChatColorScreen()),
             title: AppText(S.of(context).chatColor,
                 color: Theme.of(context).colorScheme.primary),
             trailing: Container(
@@ -87,24 +78,18 @@ class ChatColorWallpaperScreen extends StatelessWidget {
               //      BoxDecoration(shape: BoxShape.circle, color: Colors.orange),
             )),
         ListTile(
-          onTap: () {
-            buildChatResetDialog(context);
-          },
+          onTap: () => buildChatResetDialog(context),
           title: AppText(S.of(context).resetChatColor,
               color: Theme.of(context).colorScheme.primary),
         ),
       ],
     );
-  }
 
-  buildWallpaperThemeList(BuildContext context) {
-    return ListView(
+  ListView buildWallpaperThemeList(BuildContext context) => ListView(
       shrinkWrap: true,
       children: [
         ListTile(
-          onTap: () {
-            Get.toNamed(RouteHelper.getChatWallpaperScreen());
-          },
+          onTap: () => Get.toNamed(RouteHelper.getChatWallpaperScreen()),
           title: AppText(S.of(Get.context!).setWallpaper,
               color: Theme.of(context).colorScheme.primary),
         ),
@@ -117,18 +102,14 @@ class ChatColorWallpaperScreen extends StatelessWidget {
           ),
         ),
         ListTile(
-          onTap: () {
-            buildResetDialog(Get.context!);
-          },
+          onTap: () => buildResetDialog(Get.context!),
           title: AppText(S.of(Get.context!).resetWallpaper,
               color: Theme.of(context).colorScheme.primary),
         ),
       ],
     );
-  }
 
-  buildResetDialog(BuildContext context) {
-    return showDialog(
+    buildResetDialog(BuildContext context) => showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -139,9 +120,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
           title: AppText(S.of(context).resetWallpaper),
           actions: [
             InkWell(
-                onTap: () {
-                  Get.back();
-                },
+                onTap: () => Get.back(),
                 child: AppText(S.of(context).cancel,
                     color: AppColorConstant.appYellow)),
             SizedBox(
@@ -161,7 +140,6 @@ class ChatColorWallpaperScreen extends StatelessWidget {
         );
       },
     );
-  }
 
   buildChatResetDialog(BuildContext context) {
     return showDialog(
@@ -176,9 +154,7 @@ class ChatColorWallpaperScreen extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary),
           actions: [
             InkWell(
-                onTap: () {
-                  Get.back();
-                },
+                onTap: () => Get.back(),
                 child: AppText(S.of(context).cancel,
                     color: AppColorConstant.appYellow)),
             SizedBox(

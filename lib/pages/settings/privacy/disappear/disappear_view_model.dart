@@ -6,15 +6,14 @@ class DisappearViewModel {
   DisappearScreen? disappearingMessagesScreen;
   DisappearingController? controller;
 
-  List<String> selectedStatus=[
-    'off',
-    '4 weeks'
-  ];
+  List<String> selectedStatus = ['off', '4 weeks'];
 
-
-  DisappearViewModel(this.disappearingMessagesScreen){
-    Future.delayed(const Duration(milliseconds: 200),() {
-      controller= Get.find<DisappearingController>();
-    },);
+  DisappearViewModel(this.disappearingMessagesScreen) {
+    Future.delayed(
+      const Duration(milliseconds: 200),
+      () {
+        controller = Get.find<DisappearingController>();
+      },
+    );
   }
 }

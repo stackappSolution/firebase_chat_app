@@ -28,6 +28,8 @@ class ProfileViewModel {
   ProfileScreen? profileScreen;
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  Color primaryTheme = Theme.of(Get.context!).colorScheme.primary;
+  Color secondaryTheme = Theme.of(Get.context!).colorScheme.secondary;
   String errorFirstName = "";
   bool isButtonActive = false;
   File? selectedImage;
@@ -47,7 +49,7 @@ class ProfileViewModel {
     );
   }
 
-  onChangedValue(value, GetxController controller, BuildContext context) {
+  void onChangedValue(value, GetxController controller, BuildContext context) {
     if (ValidationUtil.validateName(value)) {
       isButtonActive = true;
       errorFirstName = "";
@@ -62,20 +64,19 @@ class ProfileViewModel {
     }
   }
 
-  onTapNext(context, GetxController controller, String pin) async {
+  void onTapNext(context, GetxController controller, String pin) async {
     logs("NextTapped");
     controller.update();
     onSaveProfile(pin);
     goToHomeScreen();
   }
 
-  addProfileTap(BuildContext context, GetxController controller) async {
+  void addProfileTap(BuildContext context, GetxController controller) async {
     await getPermission(context, controller);
     // ignore: use_build_context_synchronously
   }
 
-  showDialogs(context, GetxController controller) {
-    showDialog(
+   showDialogs(context, GetxController controller) => showDialog(
       context: context,
       builder: (context) {
         return AppAlertDialog(
@@ -154,7 +155,6 @@ class ProfileViewModel {
             ));
       },
     );
-  }
 
   Future<void> getPermission(
       BuildContext context, GetxController controller) async {
@@ -198,7 +198,7 @@ class ProfileViewModel {
     }
   }
 
-  uploadImageStorage(File filepath) async {
+  Future<String> uploadImageStorage(File filepath) async {
     isLoading = true;
     logs("load--> $isLoading");
     controller!.update();

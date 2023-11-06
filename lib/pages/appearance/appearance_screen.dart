@@ -76,9 +76,8 @@ class AppearanceScreen extends StatelessWidget {
     ));
   }
 
-  getBody(BuildContext context, AppearanceController controller,
-      AppearanceViewModel appearanceViewModel) {
-    return SingleChildScrollView(
+  SingleChildScrollView getBody(BuildContext context, AppearanceController controller,
+      AppearanceViewModel appearanceViewModel) => SingleChildScrollView(
       padding: EdgeInsets.only(top: 20.px),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         appearanceViewTile(
@@ -114,19 +113,15 @@ class AppearanceScreen extends StatelessWidget {
             S.of(context).normal, controller),
       ]),
     );
-  }
 
-  appearanceViewTile(
+  InkWell appearanceViewTile(
     index,
     context,
     title,
     subtitle,
     AppearanceController controller,
-  ) {
-    return InkWell(
-      onTap: () {
-        appearanceViewModel!.mainTap(index, context, controller);
-      },
+  ) => InkWell(
+      onTap: () => appearanceViewModel!.mainTap(index, context, controller),
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 25.px, vertical: 13.px),
@@ -149,5 +144,4 @@ class AppearanceScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 }

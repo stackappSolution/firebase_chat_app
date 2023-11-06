@@ -15,7 +15,7 @@ class NewGroupViewModel {
   List<Contact> items = [];
   List groupMembers = [];
   List selectedItemsIndex = [];
-  List<bool>selectedItems = List.filled(2000, false);
+  List<bool> selectedItems = List.filled(2000, false);
   List userList = [];
   bool isLoading = true;
   bool isIcon = true;
@@ -23,13 +23,25 @@ class NewGroupViewModel {
   bool isSearching = false;
   bool isChecked = false;
   bool isRefreshing = false;
-
+  final userTable = FirebaseFirestore.instance.collection('users');
 
   NewGroupViewModel(this.newGroupScreen) {}
 
   TextInputType getKeyboardType() {
     return isIcon ? TextInputType.text : TextInputType.number;
   }
+
+  Future getUserPhoneList(GroupController controllers) async {
+    if (userList.isEmpty) {
+      final data = await userTable.where('phone').get();
+      data.docs.forEach((element) {
+        userList.add(element["phone"].toString().trim().removeAllWhitespace);
+      });
+      logs("getUserPhoneList=== $userList");
+    }
+    controllers.update();
+  }
+
   void fetchContacts() async {
     logs("fetch contact entered");
     isRefreshing = true;
@@ -48,8 +60,6 @@ class NewGroupViewModel {
     controller!.update();
   }
 
-
-
   void filterContacts(String query) {
     if (query.isEmpty) {
       isSearching = false;
@@ -58,9 +68,8 @@ class NewGroupViewModel {
       isSearching = true;
       filteredContacts = contacts.where((contact) {
         final displayName = contact.displayName ?? 'unknown';
-        final mobileNumber = contact.phones!.isNotEmpty
-            ? contact.phones!.first.value
-            : 'N/A';
+        final mobileNumber =
+            contact.phones!.isNotEmpty ? contact.phones!.first.value : 'N/A';
         return displayName.toLowerCase().contains(query.toLowerCase()) ||
             mobileNumber!.toLowerCase().contains(query.toLowerCase());
       }).toList();
@@ -68,12 +77,11 @@ class NewGroupViewModel {
     controller!.update();
   }
 
-  void inviteTap(number)
-  {
+  void inviteTap(number) {
     inviteFriends(number);
   }
 
- void inviteFriends(number) async {
+  void inviteFriends(number) async {
     if (Platform.isAndroid) {
       String uri =
           'sms:${number}?body=${Uri.encodeComponent("Lets switch to signal: \n http://signal.org/install")}';
@@ -84,6 +92,4 @@ class NewGroupViewModel {
       await launchUrl(Uri.parse(uri));
     }
   }
-
-
 }

@@ -9,7 +9,7 @@ class HomeViewModel {
   HomeScreen? homeScreen;
   HomeViewModel(this.homeScreen);
 
-  getLocalizationKey() async {
+  void getLocalizationKey() async {
     String? localeKey = await getStringValue(getLanguage);
     if (localeKey != null) {
       S.load(Locale(localeKey));

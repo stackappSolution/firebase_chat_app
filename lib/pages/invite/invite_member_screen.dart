@@ -8,8 +8,6 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/controller/invite_controller.dart';
 import 'package:signal/pages/invite/invite_view_model.dart';
 
-import '../../service/network_connectivity.dart';
-
 class InviteMemberScreen extends StatelessWidget {
   InviteMemberScreen({Key? key}) : super(key: key);
 
@@ -38,8 +36,7 @@ class InviteMemberScreen extends StatelessWidget {
     );
   }
 
-  getAppbar(BuildContext context) {
-    return AppAppBar(
+   getAppbar(BuildContext context) => AppAppBar(
       leadingWidth: 110.px,
       leading: Padding(
         padding: EdgeInsets.all(5.px),
@@ -53,11 +50,9 @@ class InviteMemberScreen extends StatelessWidget {
       title: AppText(inviteViewModel!.parameter['displayName'],
           color: Theme.of(context).colorScheme.primary),
     );
-  }
 
-  buildInviteView(String firstLetter, String displayName, String phoneNo,
-      BuildContext context) {
-    return SingleChildScrollView(
+  SingleChildScrollView buildInviteView(String firstLetter, String displayName, String phoneNo,
+      BuildContext context) => SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(
@@ -108,5 +103,4 @@ class InviteMemberScreen extends StatelessWidget {
         ],
       ),
     );
-  }
 }

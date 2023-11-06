@@ -28,9 +28,7 @@ class PrivacyScreen extends StatelessWidget {
       initState: (state) {
         Future.delayed(
           const Duration(milliseconds: 10),
-          () {
-            Get.find<SettingsController>();
-          },
+          () => Get.find<SettingsController>(),
         );
         getBlockedContacts();
         privacyViewModel!.secureScreen();
@@ -56,8 +54,7 @@ class PrivacyScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context) {
-    return ListView(
+  ListView getBody(BuildContext context) => ListView(
       children: [
         buildBlockView(context),
         Divider(
@@ -71,15 +68,11 @@ class PrivacyScreen extends StatelessWidget {
         buildAdvanceView(context),
       ],
     );
-  }
 
-  buildBlockView(context) {
-    return Padding(
+  Padding buildBlockView(context) => Padding(
       padding: EdgeInsets.all(12.px),
       child: ListTile(
-        onTap: () {
-          Get.toNamed(RouteHelper.getBlockedUsersScreen());
-        },
+        onTap: () => Get.toNamed(RouteHelper.getBlockedUsersScreen()),
         title: AppText(
           S.of(context).blocked,
           color: Theme.of(context).colorScheme.primary,
@@ -90,10 +83,8 @@ class PrivacyScreen extends StatelessWidget {
             fontSize: 12.px),
       ),
     );
-  }
 
-  buildMessagingView(BuildContext context) {
-    return Column(
+  Column buildMessagingView(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -139,10 +130,8 @@ class PrivacyScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  buildMessageDisappearingView(BuildContext context) {
-    return Column(
+  Column buildMessageDisappearingView(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -156,9 +145,7 @@ class PrivacyScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(10.px),
           child: ListTile(
-            onTap: () {
-              Get.toNamed(RouteHelper.getDisappearingScreen());
-            },
+            onTap: () => Get.toNamed(RouteHelper.getDisappearingScreen()),
             title: AppText(S.of(context).defaultTimerForNewChats,
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 15.px,
@@ -178,10 +165,8 @@ class PrivacyScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  buildApSecurityView(BuildContext context) {
-    return Column(
+  Column buildApSecurityView(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -263,10 +248,8 @@ class PrivacyScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  buildPaymentView(BuildContext context) {
-    return Column(
+  Column buildPaymentView(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -296,10 +279,8 @@ class PrivacyScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  buildAdvanceView(BuildContext context) {
-    return Padding(
+  Padding buildAdvanceView(BuildContext context) => Padding(
       padding: EdgeInsets.all(10.px),
       child: ListTile(
         title: AppText(S.of(context).advance,
@@ -310,10 +291,8 @@ class PrivacyScreen extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary, fontSize: 12.px),
       ),
     );
-  }
 
-  customSwitch(isActive) {
-    return Container(
+  Container customSwitch(isActive) => Container(
       padding: (isActive) ? EdgeInsets.all(3.px) : EdgeInsets.all(5.px),
       alignment: (isActive) ? Alignment.centerRight : Alignment.centerLeft,
       height: 30.px,
@@ -334,9 +313,8 @@ class PrivacyScreen extends StatelessWidget {
             shape: BoxShape.circle),
       ),
     );
-  }
 
-  getBlockedContacts() async {
+  void getBlockedContacts() async {
     privacyViewModel!.blockedNumbers =
         await UsersService.instance.getBlockedUsers();
     controller!.update();

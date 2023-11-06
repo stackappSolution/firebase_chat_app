@@ -42,13 +42,10 @@ class AdvancePinSettingScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context) {
-    return Padding(
+  Padding getBody(BuildContext context) => Padding(
       padding: EdgeInsets.only(top: 30.px, left: 17.px, right: 17.px),
       child: InkWell(
-        onTap: () {
-          advancePinViewModel!.disablePinTap(context);
-        },
+        onTap: () => advancePinViewModel!.disablePinTap(context),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AppText(
             S.of(context).disablePIN,
@@ -63,5 +60,4 @@ class AdvancePinSettingScreen extends StatelessWidget {
         ]),
       ),
     );
-  }
 }

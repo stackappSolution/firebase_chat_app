@@ -12,13 +12,13 @@ class HelpSettingViewModel{
 
 
 
-  HelpSettingViewModel(this.helpSettingsScreen){
+   HelpSettingViewModel(this.helpSettingsScreen){
     Future.delayed(Duration(milliseconds: 0),() {
       controller = Get.find<HelpSettingController>();
     },);
   }
 
-  getVersionStatus() async {
+   getVersionStatus() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
    localVersion =  packageInfo.version;
    controller!.update();

@@ -15,11 +15,8 @@ import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
 import 'package:signal/pages/groups/group_name/group_name_screen.dart';
 import 'package:signal/service/auth_service.dart';
-
 import '../../../controller/new_group_controller.dart';
-import '../../../modal/send_message_model.dart';
 import '../../../routes/routes_helper.dart';
-import '../../../service/database_service.dart';
 
 class GroupNameViewModel {
   GroupNameScreen? groupNameScreen;
@@ -36,7 +33,7 @@ class GroupNameViewModel {
 
   GroupNameViewModel(this.groupNameScreen);
 
-  onChangeName(value, GroupController controller) {
+  void onChangeName(value, GroupController controller) {
     if (value.length.toString() != 0) {
       isButtonActive = true;
       controller.update();
@@ -46,7 +43,7 @@ class GroupNameViewModel {
     }
   }
 
-  onCreateGroup(GroupController controller) async {
+  void onCreateGroup(GroupController controller) async {
     isButtonLoading = true;
     controller.update();
     mobileNo.add(AuthService.auth.currentUser!.phoneNumber!);
@@ -76,9 +73,7 @@ class GroupNameViewModel {
                 padding: EdgeInsets.only(
                     left: 80.px, top: 20.px, bottom: 10.px, right: 10.px),
                 child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                   child: AppText(
                     S.of(context).cancel,
                     color: AppColorConstant.appYellow,
@@ -208,7 +203,7 @@ class GroupNameViewModel {
     }
   }
 
-  uploadImage(File imageUrl, GetxController controller) async {
+  void uploadImage(File imageUrl, GetxController controller) async {
     isLoading = true;
     logs("load--> $isLoading");
     controller.update();

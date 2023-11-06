@@ -32,8 +32,6 @@ class VerifyOtpViewModel{
 
   bool isVerificationSuccessful = false;
 
-  bool isValidOtp(String value) {
-    return value.length == 6 && int.tryParse(value) != null;
-  }
+  bool isValidOtp(String value) => value.length == 6 && int.tryParse(value) != null;
 
 }

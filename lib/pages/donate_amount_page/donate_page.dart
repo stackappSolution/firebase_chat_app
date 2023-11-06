@@ -44,9 +44,7 @@ class DonatePage extends StatelessWidget {
         donateViewModel!.razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
             donateViewModel!.handleExternalWallet);
       },
-      dispose: (state) {
-        donateViewModel!.razorpay.clear();;
-      },
+      dispose: (state) => donateViewModel!.razorpay.clear(),
       builder: (DonateController controller) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -62,8 +60,7 @@ class DonatePage extends StatelessWidget {
     );
   }
 
-  buildBody(DonateController controller, context) {
-    return Column(
+  Column buildBody(DonateController controller, context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -204,7 +201,6 @@ class DonatePage extends StatelessWidget {
             ),
           ),
         ]);
-  }
 
   Future<void> createPDF(TransactionsModel selectedTransaction) async {
     final pdf = pw.Document();

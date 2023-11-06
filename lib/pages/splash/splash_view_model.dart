@@ -26,7 +26,7 @@ class SplashViewModel {
     );
   }
 
-  redirect(int index) async {
+  void redirect(int index) async {
     switch (index) {
       case 1:
         {

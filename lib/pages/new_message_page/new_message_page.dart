@@ -71,7 +71,7 @@ class NewMessagePage extends StatelessWidget {
         ],
       );
 
-  buildSearchBar(BuildContext context, NewMessageController controller) =>
+  SingleChildScrollView buildSearchBar(BuildContext context, NewMessageController controller) =>
       SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,8 +141,7 @@ class NewMessagePage extends StatelessWidget {
         ),
       );
 
-  buildContactList(BuildContext context, NewMessageController controller) {
-    return Stack(
+  Stack buildContactList(BuildContext context, NewMessageController controller) => Stack(
       children: [
         ListView.builder(
           controller: newMessageViewModel!.scrollController,
@@ -285,5 +284,4 @@ class NewMessagePage extends StatelessWidget {
           )
       ],
     );
-  }
 }

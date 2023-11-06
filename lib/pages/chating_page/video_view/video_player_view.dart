@@ -90,8 +90,7 @@ class VideoPlayerView extends StatelessWidget {
     );
   }
 
-  videoShowView(VideosPlayerController controller, BuildContext context) {
-    return Stack(
+  Stack videoShowView(VideosPlayerController controller, BuildContext context) => Stack(
       children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20.px),
@@ -227,5 +226,4 @@ class VideoPlayerView extends StatelessWidget {
         if (DatabaseService.isLoading) AppLoader(),
       ],
     );
-  }
 }

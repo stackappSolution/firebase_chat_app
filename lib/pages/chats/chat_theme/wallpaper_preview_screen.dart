@@ -56,8 +56,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context) {
-    return Column(
+  Column getBody(BuildContext context) => Column(
       children: [
      buildPreview(context),
         Container(
@@ -75,10 +74,8 @@ class WallpaperPreviewScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  buildPreview(BuildContext context) {
-    return (arguments['selectedItem'].toString().length>10)
+   Widget buildPreview(BuildContext context) => (arguments['selectedItem'].toString().length>10)
         ? Container(
             height: Device.height * 0.75,
             width: double.infinity,
@@ -182,10 +179,8 @@ class WallpaperPreviewScreen extends StatelessWidget {
               ],
             ),
           );
-  }
 
-  onSetWallpaper() async {
-
+  Future<void> onSetWallpaper() async {
     if (arguments['selectedItem'].toString().length>10) {
       logs("its Image");
 

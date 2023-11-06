@@ -47,8 +47,7 @@ class AddPhotoScreen extends StatelessWidget {
     );
   }
 
-  getBody(AddPhotoController controller) {
-    return Stack(
+  Stack getBody(AddPhotoController controller) => Stack(
       children: [
         Column(
           children: [
@@ -255,9 +254,6 @@ class AddPhotoScreen extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  getAppBar() {
-    return const AppAppBar();
-  }
+  getAppBar() => const AppAppBar();
 }

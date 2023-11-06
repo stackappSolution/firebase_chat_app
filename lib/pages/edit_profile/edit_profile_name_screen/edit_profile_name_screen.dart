@@ -10,7 +10,7 @@ import 'package:signal/app/widget/app_text.dart';
 import 'package:signal/app/widget/app_textform_field.dart';
 import 'package:signal/constant/color_constant.dart';
 import 'package:signal/generated/l10n.dart';
-import 'package:signal/pages/edit_profile/edit_profile_name_screen/edit_profile_name_controller.dart';
+import 'package:signal/controller/edit_profile_name_controller.dart';
 import 'package:signal/pages/edit_profile/edit_profile_name_screen/edit_profile_name_screen_view_model.dart';
 import 'package:signal/pages/settings/settings_screen.dart';
 import 'package:signal/service/users_service.dart';
@@ -45,8 +45,7 @@ class EditProfileNameScreen extends StatelessWidget {
     );
   }
 
-  getBody(BuildContext context, EditProfileNameController controller) {
-    return Padding(
+  Padding getBody(BuildContext context, EditProfileNameController controller) => Padding(
       padding: EdgeInsets.only(top: 25.px, left: 25.px, right: 25.px),
       child: Stack(
         children: [Column(
@@ -114,7 +113,6 @@ class EditProfileNameScreen extends StatelessWidget {
         ],
       ),
     );
-  }
 
   getAppBar(context) {
     return AppAppBar(
